@@ -1,0 +1,62 @@
+<resources>
+    <string name="app_name">KES for Student</string>
+    <string name="default_notification_channel_id" translatable="false">fcm_default_channel</string>
+    <string name="facebook_app_id">287281171956441</string>
+    <string name="fb_login_protocol_scheme">fb287281171956441</string>
+    <string name="msg_token_fmt" translatable="false">InstanceID Token: %s</string>
+    <string name="pilih_sekolah_anda">Pilih Sekolah Anda</string>
+
+    //////// daftar_public/daftar_parent
+    <string name="et_nama_lengkap">Nama Lengkap</string>
+    <string name="et_nik">NIK / NIORA</string>
+    <string name="et_email">Alamat Email</string>
+    <string name="et_number_handphone">Nomor Handphone</string>
+    <string name="et_kata_sandi">Kata Sandi</string>
+    <string name="et_ulangi_kata_sandi">Ulangi Kata Sandi</string>
+    <string name="et_hubungan">Hubungan</string>
+    <string name="btn_ayah">Ayah</string>
+    <string name="btn_ibu">Ibu</string>
+    <string name="btn_wali">Wali</string>
+    <string name="rb_laki_laki">Laki - Laki</string>
+    <string name="rb_perempuan">Perempuan</string>
+    <string name="btn_buat_akun">Buat Akun</string>
+    <string name="hub_ayah">Ayah</string>
+    <string name="hub_ibu">Ibu</string>
+    <string name="hub_wali">Wali</string>
+    <string name="validate_fullname">* Mohon isi nama lengkap anda</string>
+    <string name="validate_nik">* Masukan NIK / NIORA anda</string>
+    <string name="validate_email">* Email tidak sesuai</string>
+    <string name="validate_mobile_phone">* Masukan nomor handphone anda</string>
+    <string name="validate_nomor_rumah">* Masukkan nomor rumah anda</string>
+    <string name="validate_pass">* Masukan kata sandi anda</string>
+    <string name="validate_pass_lengh">* Minimal 6 karakter</string>
+    <string name="validate_number_lengh">* Minimal 10 karakter</string>
+    <string name="validate_nik_lengh">* Harus dalam 16 karakter</string>
+    <string name="validate_cpass">* Kata sandi sama, periksa kembali</string>
+    <string name="validate_hubungan">* Mohon Pilih Hubungan Anda</string>
+    <string name="validate_name_depan">* Mohon isi nama depan anda</string>
+    <string name="validate_name_belakang">* Mohon isi nama belakang anda</string>
+    <string name="validate_tempat_lahir">* Masukan tempat lahir anda</string>
+    <string name="validate_negara">* Masukkan negara asal anda</string>
+    <string name="validate_tanggal_lahir">* Masukan tanggal lahir anda</string>
+    <string name="validate_kewarganegaraan">* Mohon pilih kewarganegaraan anda</string>
+    <string name="validate_alamat_rumah">* Mohon masukkan alamat rumah anda</string>
+    <string name="validate2_nik">Pastikan NIK / NIORA benar, agar dapat mengaskses anak anda. Bisa dengan Scan NIK dari KTP/KK</string>
+    <string name="validate2_mobile_phone">Pasikan nomor ponsel anda aktif untuk keamanan dan kemudahan akses</string>
+    <string name="validate2_pass_lengh">Minimal 6 karakter</string>
+    <string name="tcb_ketentuan">Mohon, Disetujui terlebih dahulu</string>
+    <string name="title_activity_menu_utama">MenuUtama</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+    <string name="validate_alamat">* Masukkan alamat anda</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="rb_pria">Pria</string>
+    <string name="rb_wanita">Wanita</string>
+
+
+</resources>

@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "209640833214",
+    "firebase_url": "https://kes-for-student.firebaseio.com",
+    "project_id": "kes-for-student",
+    "storage_bucket": "kes-for-student.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:209640833214:android:eacc14484aefc5ac",
+        "android_client_info": {
+          "package_name": "com.fingertech.kesforstudent"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "209640833214-2m4pm5d28c59f48rf7hshufpe37n9l9v.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.fingertech.kesforstudent",
+            "certificate_hash": "24c53167db113da086d8d501a4e8a6b5362a4394"
+          }
+        },
+        {
+          "client_id": "209640833214-mb9vjhmdk6ckbjg09jh05b978v1r2r9b.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDbKNGOWvfT27RrhL7i-t_Co7xGkOd8lv8"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "209640833214-mb9vjhmdk6ckbjg09jh05b978v1r2r9b.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
