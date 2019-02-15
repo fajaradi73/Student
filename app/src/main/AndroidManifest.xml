@@ -29,7 +29,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        tools:ignore="GoogleAppIndexingWarning,InnerclassSeparator">
+        tools:ignore="AllowBackup,GoogleAppIndexingWarning,InnerclassSeparator">
 
         <uses-library
             android:name="org.apache.http.legacy"
@@ -103,10 +103,21 @@
             android:label="Edit Profile"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".Activity.JadwalPelajaran"
+        <activity
+            android:name=".Activity.JadwalPelajaran"
             android:label="Jadwal Pelajaran"
             android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".Activity.JadwalUjian"
+            android:label="Jadwal Ujian"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".Activity.TugasAnak"
+            android:label="Tugas Anak"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"/>
+
 
     </application>
 

@@ -12,4 +12,9 @@
     <color name="mtrl_textinput_default_box_stroke_color" tools:override="true">#E0E0E0</color>
     <color name="lightgray">#ededed</color>
     <color name="textColor_Grey">#cacaca</color>
+    <color name="mint_color">#1abd9c</color>
+    <color name="ForestGreenDarkColor">#2C4F33</color>
+    <color name="Primary_alpha_04">#6650C4FA</color>
+    <color name="primaryAlpha03">#0050C4FA</color>
+    <color name="NavyColor">#2F475E</color>
 </resources>

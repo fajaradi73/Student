@@ -3,6 +3,8 @@ package com.fingertech.kesforstudent.Service;
 import android.app.Application;
 import android.content.Context;
 
+import net.danlew.android.joda.JodaTimeAndroid;
+
 public class  App extends Application {
     private static Context context;
     private static DBHelper dbHelper;
@@ -13,6 +15,7 @@ public class  App extends Application {
         super.onCreate();
         context = this.getApplicationContext();
         dbHelper = new DBHelper(this);
+        JodaTimeAndroid.init(this);
         DatabaseManager.initializeInstance(dbHelper);
 
     }

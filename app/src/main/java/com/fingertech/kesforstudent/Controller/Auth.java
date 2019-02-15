@@ -75,5 +75,37 @@ public interface Auth {
                                                              @Query("school_code") String school_code,
                                                              @Query("student_id") String student_id,
                                                              @Query("classroom_id") String classroom_id);
+    ///// Jadwal Ujian
+    @GET("students/kes_exam_schedule")
+    Call<JSONResponse.JadwalUjian>kes_exam_schedule_get(@Header("Authorization") String authorization,
+                                                        @Query("school_code") String school_code,
+                                                        @Query("student_id") String member_id,
+                                                        @Query("classroom_id") String classroom_id,
+                                                        @Query("semester_id") String semester_id);
+
+    ///// Check Semester
+    @GET("students/kes_check_semester")
+    Call<JSONResponse.CheckSemester>kes_check_semester_get(@Header("Authorization") String authorization,
+                                                           @Query("school_code") String school_code,
+                                                           @Query("classroom_id") String classroom_id,
+                                                           @Query("date_now") String date_now);
+    ///// List Semester
+    @GET("students/kes_list_semester")
+    Call<JSONResponse.ListSemester>kes_list_semester_get(@Header("Authorization") String authorization,
+                                                         @Query("school_code") String school_code,
+                                                         @Query("classroom_id") String classroom_id);
+
+    ///// List Mata Pelajaran
+    @GET("students/kes_list_cources")
+    Call<JSONResponse.ListMapel>kes_list_cources_get(@Header("Authorization") String authorization,
+                                                         @Query("school_code") String school_code);
+
+    ///// Tugas Anak
+    @GET("students/kes_cources_score")
+    Call<JSONResponse.TugasAnak>kes_cources_score_get(@Header("Authorization") String authorization,
+                                                      @Query("school_code") String school_code,
+                                                      @Query("student_id") String student_id,
+                                                      @Query("classroom_id") String classroom_id);
+
 
 }
