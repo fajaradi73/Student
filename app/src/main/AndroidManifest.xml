@@ -113,8 +113,18 @@
             android:label="Jadwal Ujian"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".Activity.TugasAnak"
+        <activity
+            android:name=".Activity.TugasAnak"
             android:label="Tugas Anak"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".Activity.RaporAnak"
+            android:label="Rapor Anak"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".Activity.PesanAnak"
+            android:label="Pesan Anak"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"/>
 

@@ -13,6 +13,7 @@ public class JSONResponse {
     @SerializedName("code")
     public String code;
 
+
     @SerializedName("token")
     public String token;
 
@@ -2157,6 +2158,1112 @@ public class JSONResponse {
             return examTypeName;
         }
     }
+
+    ///// Response Raport Anak
+    public class Raport{
+        @SerializedName("status")
+        public int status;
+
+        @SerializedName("code")
+        public String code;
+
+        @SerializedName("data")
+        public RaportData data;
+
+        public String getCode() {
+            return code;
+        }
+
+        public void setCode(String code) {
+            this.code = code;
+        }
+
+        public RaportData getData() {
+            return data;
+        }
+
+        public void setData(RaportData data) {
+            this.data = data;
+        }
+
+        public int getStatus() {
+            return status;
+        }
+
+        public void setStatus(int status) {
+            this.status = status;
+        }
+    }
+    public class RaportData{
+
+        @SerializedName("detail_score")
+        public List<DetailScoreItem> detailScore;
+
+        @SerializedName("classroom")
+        public Classroom classroom;
+
+        public List<DetailScoreItem> getDetailScore() {
+            return detailScore;
+        }
+
+        public void setDetailScore(List<DetailScoreItem> detailScore) {
+            this.detailScore = detailScore;
+        }
+
+        public Classroom getClassroom() {
+            return classroom;
+        }
+
+        public void setClassroom(Classroom classroom) {
+            this.classroom = classroom;
+        }
+    }
+    public class DetailScoreItem{
+
+        @SerializedName("member_id")
+        private String memberId;
+
+        @SerializedName("religion_type")
+        private String religionType;
+
+        @SerializedName("datez")
+        private String datez;
+
+        @SerializedName("colour_id")
+        private String colourId;
+
+        @SerializedName("scoring_percent")
+        private int scoringPercent;
+
+        @SerializedName("type_exam")
+        private TypeExam typeExam;
+
+        @SerializedName("cources_publish")
+        private String courcesPublish;
+
+        @SerializedName("cources_spec")
+        private String courcesSpec;
+
+        @SerializedName("class_average_score")
+        private double classAverageScore;
+
+        @SerializedName("cources_type")
+        private String courcesType;
+
+        @SerializedName("final_score")
+        private double finalScore;
+
+        @SerializedName("cources_code")
+        private String courcesCode;
+
+        @SerializedName("cources_name")
+        private String courcesName;
+
+        @SerializedName("lastupdate")
+        private String lastupdate;
+
+        @SerializedName("courcesid")
+        private String courcesid;
+
+        public void setMemberId(String memberId){
+            this.memberId = memberId;
+        }
+
+        public String getMemberId(){
+            return memberId;
+        }
+
+        public void setReligionType(String religionType){
+            this.religionType = religionType;
+        }
+
+        public String getReligionType(){
+            return religionType;
+        }
+
+        public void setDatez(String datez){
+            this.datez = datez;
+        }
+
+        public String getDatez(){
+            return datez;
+        }
+
+        public void setColourId(String colourId){
+            this.colourId = colourId;
+        }
+
+        public String getColourId(){
+            return colourId;
+        }
+
+        public void setScoringPercent(int scoringPercent){
+            this.scoringPercent = scoringPercent;
+        }
+
+        public int getScoringPercent(){
+            return scoringPercent;
+        }
+
+        public void setTypeExam(TypeExam typeExam){
+            this.typeExam = typeExam;
+        }
+
+        public TypeExam getTypeExam(){
+            return typeExam;
+        }
+
+        public void setCourcesPublish(String courcesPublish){
+            this.courcesPublish = courcesPublish;
+        }
+
+        public String getCourcesPublish(){
+            return courcesPublish;
+        }
+
+        public void setCourcesSpec(String courcesSpec){
+            this.courcesSpec = courcesSpec;
+        }
+
+        public String getCourcesSpec(){
+            return courcesSpec;
+        }
+
+        public void setClassAverageScore(double classAverageScore){
+            this.classAverageScore = classAverageScore;
+        }
+
+        public double getClassAverageScore(){
+            return classAverageScore;
+        }
+
+        public void setCourcesType(String courcesType){
+            this.courcesType = courcesType;
+        }
+
+        public String getCourcesType(){
+            return courcesType;
+        }
+
+        public void setFinalScore(double finalScore){
+            this.finalScore = finalScore;
+        }
+
+        public double getFinalScore(){
+            return finalScore;
+        }
+
+        public void setCourcesCode(String courcesCode){
+            this.courcesCode = courcesCode;
+        }
+
+        public String getCourcesCode(){
+            return courcesCode;
+        }
+
+        public void setCourcesName(String courcesName){
+            this.courcesName = courcesName;
+        }
+
+        public String getCourcesName(){
+            return courcesName;
+        }
+
+        public void setLastupdate(String lastupdate){
+            this.lastupdate = lastupdate;
+        }
+
+        public String getLastupdate(){
+            return lastupdate;
+        }
+
+        public void setCourcesid(String courcesid){
+            this.courcesid = courcesid;
+        }
+
+        public String getCourcesid(){
+            return courcesid;
+        }
+    }
+    public class Classroom{
+        @SerializedName("classroom_desc")
+        private String classroomDesc;
+
+        @SerializedName("classroom_name")
+        private String classroomName;
+
+        @SerializedName("scyear_id")
+        private String scyearId;
+
+        @SerializedName("promote_ranking")
+        private String promoteRanking;
+
+        @SerializedName("classroom_code")
+        private String classroomCode;
+
+        @SerializedName("promote_text")
+        private String promoteText;
+
+        @SerializedName("promote_status")
+        private String promoteStatus;
+
+        @SerializedName("classroomid")
+        private String classroomid;
+
+        @SerializedName("description_text")
+        private String descriptionText;
+
+        @SerializedName("edulevel_id")
+        private String edulevelId;
+
+        public void setClassroomDesc(String classroomDesc){
+            this.classroomDesc = classroomDesc;
+        }
+
+        public String getClassroomDesc(){
+            return classroomDesc;
+        }
+
+        public void setClassroomName(String classroomName){
+            this.classroomName = classroomName;
+        }
+
+        public String getClassroomName(){
+            return classroomName;
+        }
+
+        public void setScyearId(String scyearId){
+            this.scyearId = scyearId;
+        }
+
+        public String getScyearId(){
+            return scyearId;
+        }
+
+        public void setPromoteRanking(String promoteRanking){
+            this.promoteRanking = promoteRanking;
+        }
+
+        public String getPromoteRanking(){
+            return promoteRanking;
+        }
+
+        public void setClassroomCode(String classroomCode){
+            this.classroomCode = classroomCode;
+        }
+
+        public String getClassroomCode(){
+            return classroomCode;
+        }
+
+        public void setPromoteText(String promoteText){
+            this.promoteText = promoteText;
+        }
+
+        public String getPromoteText(){
+            return promoteText;
+        }
+
+        public void setPromoteStatus(String promoteStatus){
+            this.promoteStatus = promoteStatus;
+        }
+
+        public String getPromoteStatus(){
+            return promoteStatus;
+        }
+
+        public void setClassroomid(String classroomid){
+            this.classroomid = classroomid;
+        }
+
+        public String getClassroomid(){
+            return classroomid;
+        }
+
+        public void setDescriptionText(String descriptionText){
+            this.descriptionText = descriptionText;
+        }
+
+        public String getDescriptionText(){
+            return descriptionText;
+        }
+
+        public void setEdulevelId(String edulevelId){
+            this.edulevelId = edulevelId;
+        }
+
+        public String getEdulevelId(){
+            return edulevelId;
+        }
+    }
+    public class TypeExam{
+
+        @SerializedName("1")
+        private UjianSekolah ujianSekolah;
+
+        @SerializedName("2")
+        private UjianNegara ujianNegara;
+
+        @SerializedName("3")
+        private UlanganHarian ulanganHarian;
+
+        @SerializedName("4")
+        private LatihanTeori latihanTeori;
+
+        @SerializedName("5")
+        private Praktikum praktikum;
+
+        @SerializedName("6")
+        private Ekstrakulikuler ekstrakulikuler;
+
+        public UjianSekolah getUjianSekolah() {
+            return ujianSekolah;
+        }
+
+        public void setUjianSekolah(UjianSekolah ujianSekolah) {
+            this.ujianSekolah = ujianSekolah;
+        }
+
+        public UjianNegara getUjianNegara() {
+            return ujianNegara;
+        }
+
+        public void setUjianNegara(UjianNegara ujianNegara) {
+            this.ujianNegara = ujianNegara;
+        }
+
+        public UlanganHarian getUlanganHarian() {
+            return ulanganHarian;
+        }
+
+        public void setUlanganHarian(UlanganHarian ulanganHarian) {
+            this.ulanganHarian = ulanganHarian;
+        }
+
+        public LatihanTeori getLatihanTeori() {
+            return latihanTeori;
+        }
+
+        public void setLatihanTeori(LatihanTeori latihanTeori) {
+            this.latihanTeori = latihanTeori;
+        }
+
+        public Praktikum getPraktikum() {
+            return praktikum;
+        }
+
+        public void setPraktikum(Praktikum praktikum) {
+            this.praktikum = praktikum;
+        }
+
+        public Ekstrakulikuler getEkstrakulikuler() {
+            return ekstrakulikuler;
+        }
+
+        public void setEkstrakulikuler(Ekstrakulikuler ekstrakulikuler) {
+            this.ekstrakulikuler = ekstrakulikuler;
+        }
+    }
+    public class UjianSekolah{
+        @SerializedName("type_name")
+        private String typeName;
+
+        @SerializedName("type_id")
+        private String typeId;
+
+        @SerializedName("score_status")
+        private int scoreStatus;
+
+        @SerializedName("score_exam")
+        private double scoreExam;
+
+        public void setTypeName(String typeName){
+            this.typeName = typeName;
+        }
+
+        public String getTypeName(){
+            return typeName;
+        }
+
+        public void setTypeId(String typeId){
+            this.typeId = typeId;
+        }
+
+        public String getTypeId(){
+            return typeId;
+        }
+
+        public void setScoreStatus(int scoreStatus){
+            this.scoreStatus = scoreStatus;
+        }
+
+        public int getScoreStatus(){
+            return scoreStatus;
+        }
+
+        public void setScoreExam(double scoreExam){
+            this.scoreExam = scoreExam;
+        }
+
+        public double getScoreExam(){
+            return scoreExam;
+        }
+    }
+    public class UjianNegara{
+
+        @SerializedName("type_name")
+        private String typeName;
+
+        @SerializedName("type_id")
+        private String typeId;
+
+        @SerializedName("score_status")
+        private int scoreStatus;
+
+        @SerializedName("score_exam")
+        private double scoreExam;
+
+        public void setTypeName(String typeName){
+            this.typeName = typeName;
+        }
+
+        public String getTypeName(){
+            return typeName;
+        }
+
+        public void setTypeId(String typeId){
+            this.typeId = typeId;
+        }
+
+        public String getTypeId(){
+            return typeId;
+        }
+
+        public void setScoreStatus(int scoreStatus){
+            this.scoreStatus = scoreStatus;
+        }
+
+        public int getScoreStatus(){
+            return scoreStatus;
+        }
+
+        public void setScoreExam(double scoreExam){
+            this.scoreExam = scoreExam;
+        }
+
+        public double getScoreExam(){
+            return scoreExam;
+        }
+    }
+    public class UlanganHarian{
+        @SerializedName("type_name")
+        private String typeName;
+
+        @SerializedName("type_id")
+        private String typeId;
+
+        @SerializedName("score_status")
+        private int scoreStatus;
+
+        @SerializedName("score_exam")
+        private double scoreExam;
+
+        public void setTypeName(String typeName){
+            this.typeName = typeName;
+        }
+
+        public String getTypeName(){
+            return typeName;
+        }
+
+        public void setTypeId(String typeId){
+            this.typeId = typeId;
+        }
+
+        public String getTypeId(){
+            return typeId;
+        }
+
+        public void setScoreStatus(int scoreStatus){
+            this.scoreStatus = scoreStatus;
+        }
+
+        public int getScoreStatus(){
+            return scoreStatus;
+        }
+
+        public void setScoreExam(double scoreExam){
+            this.scoreExam = scoreExam;
+        }
+
+        public double getScoreExam(){
+            return scoreExam;
+        }
+    }
+    public class LatihanTeori{
+        @SerializedName("type_name")
+        private String typeName;
+
+        @SerializedName("type_id")
+        private String typeId;
+
+        @SerializedName("score_status")
+        private int scoreStatus;
+
+        @SerializedName("score_exam")
+        private double scoreExam;
+
+        public void setTypeName(String typeName){
+            this.typeName = typeName;
+        }
+
+        public String getTypeName(){
+            return typeName;
+        }
+
+        public void setTypeId(String typeId){
+            this.typeId = typeId;
+        }
+
+        public String getTypeId(){
+            return typeId;
+        }
+
+        public void setScoreStatus(int scoreStatus){
+            this.scoreStatus = scoreStatus;
+        }
+
+        public int getScoreStatus(){
+            return scoreStatus;
+        }
+
+        public void setScoreExam(double scoreExam){
+            this.scoreExam = scoreExam;
+        }
+
+        public double getScoreExam(){
+            return scoreExam;
+        }
+    }
+    public class Praktikum{
+        @SerializedName("type_name")
+        private String typeName;
+
+        @SerializedName("type_id")
+        private String typeId;
+
+        @SerializedName("score_status")
+        private int scoreStatus;
+
+        @SerializedName("score_exam")
+        private double scoreExam;
+
+        public void setTypeName(String typeName){
+            this.typeName = typeName;
+        }
+
+        public String getTypeName(){
+            return typeName;
+        }
+
+        public void setTypeId(String typeId){
+            this.typeId = typeId;
+        }
+
+        public String getTypeId(){
+            return typeId;
+        }
+
+        public void setScoreStatus(int scoreStatus){
+            this.scoreStatus = scoreStatus;
+        }
+
+        public int getScoreStatus(){
+            return scoreStatus;
+        }
+
+        public void setScoreExam(double scoreExam){
+            this.scoreExam = scoreExam;
+        }
+
+        public double getScoreExam(){
+            return scoreExam;
+        }
+    }
+    public class Ekstrakulikuler{
+        @SerializedName("type_name")
+        private String typeName;
+
+        @SerializedName("type_id")
+        private String typeId;
+
+        @SerializedName("score_status")
+        private int scoreStatus;
+
+        @SerializedName("score_exam")
+        private double scoreExam;
+
+        public void setTypeName(String typeName){
+            this.typeName = typeName;
+        }
+
+        public String getTypeName(){
+            return typeName;
+        }
+
+        public void setTypeId(String typeId){
+            this.typeId = typeId;
+        }
+
+        public String getTypeId(){
+            return typeId;
+        }
+
+        public void setScoreStatus(int scoreStatus){
+            this.scoreStatus = scoreStatus;
+        }
+
+        public int getScoreStatus(){
+            return scoreStatus;
+        }
+
+        public void setScoreExam(double scoreExam){
+            this.scoreExam = scoreExam;
+        }
+
+        public double getScoreExam(){
+            return scoreExam;
+        }
+    }
+    ////--------------------------------///
+
+    ///// Response Classroom Detail
+    public class ClassroomDetail{
+
+        @SerializedName("status")
+        public int status;
+
+        @SerializedName("code")
+        public String code;
+
+        @SerializedName("data")
+        public DataClassroom data;
+
+        public int getStatus() {
+            return status;
+        }
+
+        public void setStatus(int status) {
+            this.status = status;
+        }
+
+        public String getCode() {
+            return code;
+        }
+
+        public void setCode(String code) {
+            this.code = code;
+        }
+
+        public DataClassroom getData() {
+            return data;
+        }
+
+        public void setData(DataClassroom data) {
+            this.data = data;
+        }
+    }
+    public class DataClassroom{
+        @SerializedName("classroom_name")
+        public String classroom_name;
+
+        @SerializedName("teacher_id")
+        public String teacher_id;
+
+        @SerializedName("edulevel_id")
+        public String edulevel_id;
+
+        @SerializedName("scyear_id")
+        public String scyear_id;
+
+        @SerializedName("scyear_name")
+        public String scyear_name;
+
+        @SerializedName("homeroom_teacher")
+        public String homeroom_teacher;
+
+        @SerializedName("edulevel_name")
+        public String edulevel_name;
+
+        public String getClassroom_name() {
+            return classroom_name;
+        }
+
+        public void setClassroom_name(String classroom_name) {
+            this.classroom_name = classroom_name;
+        }
+
+        public String getTeacher_id() {
+            return teacher_id;
+        }
+
+        public void setTeacher_id(String teacher_id) {
+            this.teacher_id = teacher_id;
+        }
+
+        public String getEdulevel_id() {
+            return edulevel_id;
+        }
+
+        public void setEdulevel_id(String edulevel_id) {
+            this.edulevel_id = edulevel_id;
+        }
+
+        public String getScyear_id() {
+            return scyear_id;
+        }
+
+        public void setScyear_id(String scyear_id) {
+            this.scyear_id = scyear_id;
+        }
+
+        public String getScyear_name() {
+            return scyear_name;
+        }
+
+        public void setScyear_name(String scyear_name) {
+            this.scyear_name = scyear_name;
+        }
+
+        public String getHomeroom_teacher() {
+            return homeroom_teacher;
+        }
+
+        public void setHomeroom_teacher(String homeroom_teacher) {
+            this.homeroom_teacher = homeroom_teacher;
+        }
+
+        public String getEdulevel_name() {
+            return edulevel_name;
+        }
+
+        public void setEdulevel_name(String edulevel_name) {
+            this.edulevel_name = edulevel_name;
+        }
+    }
+
+    //// Response Pesan Anak
+    public class PesanAnak{
+        @SerializedName("status")
+        public int status;
+
+        @SerializedName("code")
+        public String code;
+
+        @SerializedName("data")
+        public List<DataPesan> data;
+
+        public int getStatus() {
+            return status;
+        }
+
+        public void setStatus(int status) {
+            this.status = status;
+        }
+
+        public String getCode() {
+            return code;
+        }
+
+        public void setCode(String code) {
+            this.code = code;
+        }
+
+        public List<DataPesan> getData() {
+            return data;
+        }
+
+        public void setData(List<DataPesan> data) {
+            this.data = data;
+        }
+    }
+    public class DataPesan{
+        @SerializedName("messageid")
+        public String messageid;
+
+        @SerializedName("user_id_from")
+        public String user_id_from;
+
+        @SerializedName("user_id_to")
+        public String user_id_to;
+
+        @SerializedName("message_cont")
+        public String message_cont;
+
+        @SerializedName("message_date")
+        public String message_date;
+
+        @SerializedName("message_status")
+        public String message_status;
+
+        @SerializedName("message_type")
+        public String message_type;
+
+        @SerializedName("classroom_id")
+        public String classroom_id;
+
+        @SerializedName("cources_id")
+        public String cources_id;
+
+        @SerializedName("datez")
+        public String datez;
+
+        @SerializedName("member_id")
+        public String member_id;
+
+        @SerializedName("reply_message_id")
+        public String reply_message_id;
+
+        @SerializedName("read_status")
+        public String read_status;
+
+        @SerializedName("read_date")
+        public String read_date;
+
+        @SerializedName("read_message_id")
+        public String read_message_id;
+
+        @SerializedName("school_id")
+        public String school_id;
+
+        @SerializedName("parent_status")
+        public String parent_status;
+
+        @SerializedName("teacher_id")
+        public String teacher_id;
+
+        @SerializedName("datez_ok")
+        public String datez_ok;
+
+        @SerializedName("classroom_name")
+        public String classroom_name;
+
+        @SerializedName("cources_name")
+        public String cources_name;
+
+        @SerializedName("sender_name")
+        public String sender_name;
+
+        @SerializedName("member_type_text")
+        public String member_type_text;
+
+        @SerializedName("parent_message_id")
+        public String parent_message_id;
+
+        @SerializedName("reply_status")
+        public int reply_status;
+
+        public String getMessageid() {
+            return messageid;
+        }
+
+        public void setMessageid(String messageid) {
+            this.messageid = messageid;
+        }
+
+        public String getUser_id_from() {
+            return user_id_from;
+        }
+
+        public void setUser_id_from(String user_id_from) {
+            this.user_id_from = user_id_from;
+        }
+
+        public String getUser_id_to() {
+            return user_id_to;
+        }
+
+        public void setUser_id_to(String user_id_to) {
+            this.user_id_to = user_id_to;
+        }
+
+        public String getMessage_cont() {
+            return message_cont;
+        }
+
+        public void setMessage_cont(String message_cont) {
+            this.message_cont = message_cont;
+        }
+
+        public String getMessage_date() {
+            return message_date;
+        }
+
+        public void setMessage_date(String message_date) {
+            this.message_date = message_date;
+        }
+
+        public String getMessage_status() {
+            return message_status;
+        }
+
+        public void setMessage_status(String message_status) {
+            this.message_status = message_status;
+        }
+
+        public String getMessage_type() {
+            return message_type;
+        }
+
+        public void setMessage_type(String message_type) {
+            this.message_type = message_type;
+        }
+
+        public String getClassroom_id() {
+            return classroom_id;
+        }
+
+        public void setClassroom_id(String classroom_id) {
+            this.classroom_id = classroom_id;
+        }
+
+        public String getCources_id() {
+            return cources_id;
+        }
+
+        public void setCources_id(String cources_id) {
+            this.cources_id = cources_id;
+        }
+
+        public String getDatez() {
+            return datez;
+        }
+
+        public void setDatez(String datez) {
+            this.datez = datez;
+        }
+
+        public String getMember_id() {
+            return member_id;
+        }
+
+        public void setMember_id(String member_id) {
+            this.member_id = member_id;
+        }
+
+        public String getReply_message_id() {
+            return reply_message_id;
+        }
+
+        public void setReply_message_id(String reply_message_id) {
+            this.reply_message_id = reply_message_id;
+        }
+
+        public String getRead_status() {
+            return read_status;
+        }
+
+        public void setRead_status(String read_status) {
+            this.read_status = read_status;
+        }
+
+        public String getRead_date() {
+            return read_date;
+        }
+
+        public void setRead_date(String read_date) {
+            this.read_date = read_date;
+        }
+
+        public String getRead_message_id() {
+            return read_message_id;
+        }
+
+        public void setRead_message_id(String read_message_id) {
+            this.read_message_id = read_message_id;
+        }
+
+        public String getSchool_id() {
+            return school_id;
+        }
+
+        public void setSchool_id(String school_id) {
+            this.school_id = school_id;
+        }
+
+        public String getParent_status() {
+            return parent_status;
+        }
+
+        public void setParent_status(String parent_status) {
+            this.parent_status = parent_status;
+        }
+
+        public String getTeacher_id() {
+            return teacher_id;
+        }
+
+        public void setTeacher_id(String teacher_id) {
+            this.teacher_id = teacher_id;
+        }
+
+        public String getDatez_ok() {
+            return datez_ok;
+        }
+
+        public void setDatez_ok(String datez_ok) {
+            this.datez_ok = datez_ok;
+        }
+
+        public String getClassroom_name() {
+            return classroom_name;
+        }
+
+        public void setClassroom_name(String classroom_name) {
+            this.classroom_name = classroom_name;
+        }
+
+        public String getCources_name() {
+            return cources_name;
+        }
+
+        public void setCources_name(String cources_name) {
+            this.cources_name = cources_name;
+        }
+
+        public String getSender_name() {
+            return sender_name;
+        }
+
+        public void setSender_name(String sender_name) {
+            this.sender_name = sender_name;
+        }
+
+        public String getMember_type_text() {
+            return member_type_text;
+        }
+
+        public void setMember_type_text(String member_type_text) {
+            this.member_type_text = member_type_text;
+        }
+
+        public String getParent_message_id() {
+            return parent_message_id;
+        }
+
+        public void setParent_message_id(String parent_message_id) {
+            this.parent_message_id = parent_message_id;
+        }
+
+        public int getReply_status() {
+            return reply_status;
+        }
+
+        public void setReply_status(int reply_status) {
+            this.reply_status = reply_status;
+        }
+    }
+
 
 }
 

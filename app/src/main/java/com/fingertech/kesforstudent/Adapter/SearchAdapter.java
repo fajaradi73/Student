@@ -49,18 +49,22 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.MyHolder> 
     public void onBindViewHolder(final MyHolder holder, final int position) {
 
         // Get car item dto in list.
-        JSONResponse.SData viewItem = viewItemList.get(position);
-        holder.name.setText(viewItem.getSchool_name());
-        String nama = viewItem.getSchool_name().toLowerCase(Locale.getDefault());
-        if (nama.contains(searchString)) {
-            Log.e("test", nama + " contains: " + searchString);
-            int startPos = nama.indexOf(searchString);
-            int endPos = startPos + searchString.length();
-            Spannable spanText = Spannable.Factory.getInstance().newSpannable(holder.name.getText());
-            spanText.setSpan(new ForegroundColorSpan(context.getResources().getColor(R.color.colorPrimary)), startPos, endPos, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-            holder.name.setText(spanText, TextView.BufferType.SPANNABLE);
+        if (position == 0) {
+
+        } else {
+            JSONResponse.SData viewItem = viewItemList.get(position);
+            holder.name.setText(viewItem.getSchool_name());
+            String nama = viewItem.getSchool_name().toLowerCase(Locale.getDefault());
+            if (nama.contains(searchString)) {
+                Log.e("test", nama + " contains: " + searchString);
+                int startPos = nama.indexOf(searchString);
+                int endPos = startPos + searchString.length();
+                Spannable spanText = Spannable.Factory.getInstance().newSpannable(holder.name.getText());
+                spanText.setSpan(new ForegroundColorSpan(context.getResources().getColor(R.color.colorPrimary)), startPos, endPos, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                holder.name.setText(spanText, TextView.BufferType.SPANNABLE);
+            }
         }
-        }
+    }
 
     @Override
     public int getItemCount() {

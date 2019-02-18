@@ -232,7 +232,7 @@ public class TugasAnak extends AppCompatActivity {
     private void Tugas_anak(){
         progressBar();
         showDialog();
-        Call<JSONResponse.TugasAnak> call = mApiInterface.kes_cources_score_get(authorization.toString(),school_code.toString().toLowerCase(),memberid.toString(),classroom_id.toString());
+        Call<JSONResponse.TugasAnak> call = mApiInterface.kes_cources_score_get(authorization.toString(),school_code.toString().toLowerCase(),memberid.toString(),classroom_id.toString(),semester_id.toString());
 
         call.enqueue(new Callback<JSONResponse.TugasAnak>() {
 
@@ -278,7 +278,6 @@ public class TugasAnak extends AppCompatActivity {
                         rv_tugas.setVisibility(View.GONE);
                     }
                 }
-
             }
 
             @Override

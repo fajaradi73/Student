@@ -164,22 +164,14 @@ public class MenuUtama extends AppCompatActivity
         ParentPager.setAdapter(fragmentAdapter);
         inkPageIndicator.setViewPager(ParentPager);
 
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG).show();
-            }
-        });
+        fab.setOnClickListener(view -> Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG).show());
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
-        image_profile.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MenuUtama.this, ProfileAnak.class);
-                startActivity(intent);
-            }
+        image_profile.setOnClickListener(v -> {
+            Intent intent = new Intent(MenuUtama.this, ProfileAnak.class);
+            startActivity(intent);
         });
 
         navigationView.setNavigationItemSelectedListener(this);
@@ -208,7 +200,7 @@ public class MenuUtama extends AppCompatActivity
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
@@ -251,7 +243,7 @@ public class MenuUtama extends AppCompatActivity
         }
 
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
@@ -270,6 +262,7 @@ public class MenuUtama extends AppCompatActivity
                     send_data();
                     return new MenuSatuFragment();
                 case 1:
+                    send_data2();
                     return new MenuDuaFragment();
             }
             return null;
@@ -288,7 +281,7 @@ public class MenuUtama extends AppCompatActivity
     public void get_profile() {
         progressBar();
         showDialog();
-        Call<JSONResponse.GetProfile> call = mApiInterface.kes_profile_get(authorization.toString(), school_code.toLowerCase(), memberid.toString());
+        Call<JSONResponse.GetProfile> call = mApiInterface.kes_profile_get(authorization, school_code.toLowerCase(), memberid);
         call.enqueue(new Callback<JSONResponse.GetProfile>() {
             @Override
             public void onResponse(Call<JSONResponse.GetProfile> call, Response<JSONResponse.GetProfile> response) {
@@ -305,8 +298,8 @@ public class MenuUtama extends AppCompatActivity
                     String imageFile = Base_anak + picture;
                     Picasso.with(MenuUtama.this).load(imageFile).into(image_profile);
                     Jadwal_pelajaran();
-
                     send_data();
+                    send_data2();
                 }
             }
 
@@ -341,9 +334,26 @@ public class MenuUtama extends AppCompatActivity
             Toast.makeText(MenuUtama.this,"harap refresh kembali",Toast.LENGTH_LONG).show();
         }
     }
+    public void send_data2(){
+        Bundle bundle = new Bundle();
+        if (bundle != null) {
+            bundle.putString("member_id", memberid);
+            bundle.putString("school_code", school_code);
+            bundle.putString("authorization", authorization);
+            bundle.putString("classroom_id", classroom_id);
+            MenuDuaFragment menuSatuFragment = new MenuDuaFragment();
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.replace(R.id.fragMenuDua, menuSatuFragment);
+            fragmentTransaction.commit();
+            menuSatuFragment.setArguments(bundle);
+        }else {
+            Toast.makeText(MenuUtama.this,"harap refersh kembali",Toast.LENGTH_LONG).show();
+        }
+    }
     private void Jadwal_pelajaran() {
 
-            Call<JSONResponse.JadwalPelajaran> call = mApiInterface.kes_class_schedule_get(authorization.toString(), school_code.toString().toLowerCase(), memberid.toString(), classroom_id.toString());
+            Call<JSONResponse.JadwalPelajaran> call = mApiInterface.kes_class_schedule_get(authorization, school_code.toLowerCase(), memberid, classroom_id);
 
             call.enqueue(new Callback<JSONResponse.JadwalPelajaran>() {
 
@@ -370,7 +380,7 @@ public class MenuUtama extends AppCompatActivity
                             day_status = jadwalData.getDayStatus();
                             daysid = jadwalData.getDayid();
                             day_type = jadwalData.getDayType();
-                            if (daysid.toString().equals("1") && days_name.toString().equals("Senin") && day_status.toString().equals("1") && day_type.toString().equals("1")) {
+                            if (daysid.equals("1") && days_name.equals("Senin") && day_status.equals("1") && day_type.equals("1")) {
 
                                 for (int o = 0; o < response.body().getData().get(i).getScheduleClass().size(); o++) {
                                     mapel = response.body().getData().get(i).getScheduleClass().get(o).getCourcesName();
@@ -395,7 +405,7 @@ public class MenuUtama extends AppCompatActivity
                                 rv_senin.setLayoutManager(new SnappyLinearLayoutManager(MenuUtama.this));
                                 rv_senin.setLayoutManager(layoutManager);
                                 rv_senin.setAdapter(seninAdapter);
-                            } else if (daysid.toString().equals("2") && days_name.toString().equals("Selasa") && day_status.toString().equals("1") && day_type.toString().equals("1")) {
+                            } else if (daysid.equals("2") && days_name.equals("Selasa") && day_status.equals("1") && day_type.equals("1")) {
                                 for (int o = 0; o < response.body().getData().get(i).getScheduleClass().size(); o++) {
                                     mapel = response.body().getData().get(i).getScheduleClass().get(o).getCourcesName();
                                     jam_mulai = response.body().getData().get(i).getScheduleClass().get(o).getTimezOk();
@@ -418,7 +428,7 @@ public class MenuUtama extends AppCompatActivity
                                 rv_selasa.setLayoutManager(new SnappyLinearLayoutManager(MenuUtama.this));
                                 rv_selasa.setLayoutManager(layoutManager);
                                 rv_selasa.setAdapter(selasaAdapter);
-                            } else if (daysid.toString().equals("3") && days_name.toString().equals("Rabu") && day_status.toString().equals("1") && day_type.toString().equals("1")) {
+                            } else if (daysid.equals("3") && days_name.equals("Rabu") && day_status.equals("1") && day_type.equals("1")) {
                                 for (int o = 0; o < response.body().getData().get(i).getScheduleClass().size(); o++) {
                                     mapel = response.body().getData().get(i).getScheduleClass().get(o).getCourcesName();
                                     jam_mulai = response.body().getData().get(i).getScheduleClass().get(o).getTimezOk();
@@ -441,7 +451,7 @@ public class MenuUtama extends AppCompatActivity
                                 rv_rabu.setLayoutManager(new SnappyLinearLayoutManager(MenuUtama.this));
                                 rv_rabu.setLayoutManager(layoutManager);
                                 rv_rabu.setAdapter(rabuAdapter);
-                            } else if (daysid.toString().equals("4") && days_name.toString().equals("Kamis") && day_status.toString().equals("1") && day_type.toString().equals("1")) {
+                            } else if (daysid.equals("4") && days_name.equals("Kamis") && day_status.equals("1") && day_type.equals("1")) {
                                 for (int o = 0; o < response.body().getData().get(i).getScheduleClass().size(); o++) {
                                     mapel = response.body().getData().get(i).getScheduleClass().get(o).getCourcesName();
                                     jam_mulai = response.body().getData().get(i).getScheduleClass().get(o).getTimezOk();
@@ -464,7 +474,7 @@ public class MenuUtama extends AppCompatActivity
                                 rv_kamis.setLayoutManager(new SnappyLinearLayoutManager(MenuUtama.this));
                                 rv_kamis.setLayoutManager(layoutManager);
                                 rv_kamis.setAdapter(kamisAdapter);
-                            } else if (daysid.toString().equals("5") && days_name.toString().equals("Jumat") && day_status.toString().equals("1") && day_type.toString().equals("1")) {
+                            } else if (daysid.equals("5") && days_name.equals("Jumat") && day_status.equals("1") && day_type.equals("1")) {
                                 for (int o = 0; o < response.body().getData().get(i).getScheduleClass().size(); o++) {
                                     mapel = response.body().getData().get(i).getScheduleClass().get(o).getCourcesName();
                                     jam_mulai = response.body().getData().get(i).getScheduleClass().get(o).getTimezOk();
@@ -487,7 +497,7 @@ public class MenuUtama extends AppCompatActivity
                                 rv_jumat.setLayoutManager(new SnappyLinearLayoutManager(MenuUtama.this));
                                 rv_jumat.setLayoutManager(layoutManager);
                                 rv_jumat.setAdapter(jumatAdapter);
-                            } else if (daysid.toString().equals("6") && days_name.toString().equals("Sabtu") && day_status.toString().equals("1") && day_type.toString().equals("1")) {
+                            } else if (daysid.equals("6") && days_name.equals("Sabtu") && day_status.equals("1") && day_type.equals("1")) {
                                 for (int o = 0; o < response.body().getData().get(i).getScheduleClass().size(); o++) {
                                     mapel = response.body().getData().get(i).getScheduleClass().get(o).getCourcesName();
                                     jam_mulai = response.body().getData().get(i).getScheduleClass().get(o).getTimezOk();
