@@ -44,7 +44,6 @@
                     android:inputType="date"
                     android:background="@drawable/edt_bg_selector_kes"
                     android:paddingBottom="6dp"
-                    android:text="2018-12-30"
                     android:textColor="@color/white"
                     android:paddingTop="10dp"
                     android:paddingStart="8dp"

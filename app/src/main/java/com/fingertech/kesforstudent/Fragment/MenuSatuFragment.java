@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import com.fingertech.kesforstudent.Activity.JadwalPelajaran;
 import com.fingertech.kesforstudent.Activity.JadwalUjian;
+import com.fingertech.kesforstudent.Activity.KalendarKelas;
 import com.fingertech.kesforstudent.Activity.MenuUtama;
 import com.fingertech.kesforstudent.Activity.RaporAnak;
 import com.fingertech.kesforstudent.Activity.TugasAnak;
@@ -67,51 +68,54 @@ public class MenuSatuFragment extends Fragment {
                 }
             }
         });
-        btn_ujian.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (authorization != null  && school_code != null && member_id != null && classroom_id != null) {
-                    Intent intent = new Intent(getContext(), JadwalUjian.class);
-                    intent.putExtra("authorization", authorization);
-                    intent.putExtra("school_code", school_code);
-                    intent.putExtra("member_id", member_id);
-                    intent.putExtra("classroom_id", classroom_id);
-                    startActivity(intent);
-                }else{
-                    Toast.makeText(getContext(),"Harap refresh kembali",Toast.LENGTH_LONG).show();
-                }
+        btn_ujian.setOnClickListener(v -> {
+            if (authorization != null  && school_code != null && member_id != null && classroom_id != null) {
+                Intent intent = new Intent(getContext(), JadwalUjian.class);
+                intent.putExtra("authorization", authorization);
+                intent.putExtra("school_code", school_code);
+                intent.putExtra("member_id", member_id);
+                intent.putExtra("classroom_id", classroom_id);
+                startActivity(intent);
+            }else{
+                Toast.makeText(getContext(),"Harap refresh kembali",Toast.LENGTH_LONG).show();
             }
         });
 
-        btn_tugas.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (authorization != null  && school_code != null && member_id != null && classroom_id != null) {
-                    Intent intent = new Intent(getContext(), TugasAnak.class);
-                    intent.putExtra("authorization", authorization);
-                    intent.putExtra("school_code", school_code);
-                    intent.putExtra("member_id", member_id);
-                    intent.putExtra("classroom_id", classroom_id);
-                    startActivity(intent);
-                }else{
-                    Toast.makeText(getContext(),"Harap refresh kembali",Toast.LENGTH_LONG).show();
-                }
+        btn_tugas.setOnClickListener(v -> {
+            if (authorization != null  && school_code != null && member_id != null && classroom_id != null) {
+                Intent intent = new Intent(getContext(), TugasAnak.class);
+                intent.putExtra("authorization", authorization);
+                intent.putExtra("school_code", school_code);
+                intent.putExtra("member_id", member_id);
+                intent.putExtra("classroom_id", classroom_id);
+                startActivity(intent);
+            }else{
+                Toast.makeText(getContext(),"Harap refresh kembali",Toast.LENGTH_LONG).show();
             }
         });
 
-        btn_raport.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (authorization != null  && school_code != null && member_id != null && classroom_id != null) {
-                    Intent intent = new Intent(getContext(), RaporAnak.class);
-                    intent.putExtra("authorization", authorization);
-                    intent.putExtra("school_code", school_code);
-                    intent.putExtra("member_id", member_id);
-                    intent.putExtra("classroom_id", classroom_id);
-                    startActivity(intent);
-                }else{
-                    Toast.makeText(getContext(),"Harap refresh kembali",Toast.LENGTH_LONG).show();
-                }
+        btn_raport.setOnClickListener(v -> {
+            if (authorization != null  && school_code != null && member_id != null && classroom_id != null) {
+                Intent intent = new Intent(getContext(), RaporAnak.class);
+                intent.putExtra("authorization", authorization);
+                intent.putExtra("school_code", school_code);
+                intent.putExtra("member_id", member_id);
+                intent.putExtra("classroom_id", classroom_id);
+                startActivity(intent);
+            }else{
+                Toast.makeText(getContext(),"Harap refresh kembali",Toast.LENGTH_LONG).show();
+            }
+        });
+        btn_kalendar.setOnClickListener(v -> {
+            if (authorization != null  && school_code != null && member_id != null && classroom_id != null) {
+                Intent intent = new Intent(getContext(), KalendarKelas.class);
+                intent.putExtra("authorization", authorization);
+                intent.putExtra("school_code", school_code);
+                intent.putExtra("member_id", member_id);
+                intent.putExtra("classroom_id", classroom_id);
+                startActivity(intent);
+            }else{
+                Toast.makeText(getContext(),"Harap refresh kembali",Toast.LENGTH_LONG).show();
             }
         });
         return view;

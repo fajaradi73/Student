@@ -123,12 +123,24 @@
             android:label="Rapor Anak"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".Activity.PesanAnak"
+        <activity
+            android:name=".Activity.PesanAnak"
             android:label="Pesan Anak"
             android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".Activity.PesanDetail"
+            android:label="Pesan Detail"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".Activity.KalendarDetail"
+            android:label="Kalendar Detail"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"/>
-
-
+        <activity android:name=".Activity.KalendarKelas"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:label="Kalendar Kelas"/>
     </application>
 
 </manifest>

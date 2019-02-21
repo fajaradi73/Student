@@ -89,7 +89,7 @@ public class PesanAnak extends AppCompatActivity {
         mDatePicker = new DatePickerDialog(this, R.style.DialogTheme,
                 (datepicker, selectedyear, selectedmonth, selectedday) ->
                         date_from.setText(convertDate(selectedyear, selectedmonth, selectedday)), mYear, mMonth, mDay);
-
+        date_from.setText(converDate("2018-12-30"));
         date_from.setOnClickListener(view -> mDatePicker.show());
 
         date_from.setOnFocusChangeListener((view, b) -> {
@@ -145,11 +145,22 @@ public class PesanAnak extends AppCompatActivity {
             return "";
         }
     }
+    String convertTanggal(String tanggal){
+        SimpleDateFormat calendarDateFormat = new SimpleDateFormat("yyyy-MM-dd",Locale.getDefault());
+        SimpleDateFormat newDateFormat = new SimpleDateFormat("dd MMM yyyy",Locale.getDefault());
+        try {
+            String e = calendarDateFormat.format(newDateFormat.parse(tanggal));
+            return e;
+        } catch (java.text.ParseException e) {
+            e.printStackTrace();
+            return "";
+        }
+    }
 
     public void dapat_pesan(){
         progressBar();
         showDialog();
-        Call<JSONResponse.PesanAnak> call = mApiInterface.kes_message_inbox_get(authorization.toString(),school_code.toLowerCase(),member_id.toString());
+        Call<JSONResponse.PesanAnak> call = mApiInterface.kes_message_inbox_get(authorization.toString(),school_code.toLowerCase(),member_id.toString(),convertTanggal(date_from.getText().toString()),convertTanggal(date_to.getText().toString()));
         call.enqueue(new Callback<JSONResponse.PesanAnak>() {
             @Override
             public void onResponse(Call<JSONResponse.PesanAnak> call, final Response<JSONResponse.PesanAnak> response) {
@@ -178,17 +189,14 @@ public class PesanAnak extends AppCompatActivity {
                     }
                     no_pesan.setVisibility(View.GONE);
                     pesanAdapter = new PesanAdapter(pesanModelList);
-                    pesanAdapter.setOnItemClickListener(new PesanAdapter.OnItemClickListener() {
-                        @Override
-                        public void onItemClick(View view, int position) {
-//                            Intent intent = new Intent(getApplicationContext(),PesanDetail.class);
-//                            intent.putExtra("authorization",authorization);
-//                            intent.putExtra("school_code",school_code);
-//                            intent.putExtra("member_id",member_id);
-//                            intent.putExtra("message_id",response.body().getData().get(position).getMessageid());
-//                            intent.putExtra("parent_message_id",response.body().getData().get(position).getParent_message_id());
-//                            startActivity(intent);
-                        }
+                    pesanAdapter.setOnItemClickListener((view, position) -> {
+                        Intent intent = new Intent(getApplicationContext(),PesanDetail.class);
+                        intent.putExtra("authorization",authorization);
+                        intent.putExtra("school_code",school_code);
+                        intent.putExtra("member_id",member_id);
+                        intent.putExtra("message_id",response.body().getData().get(position).getMessageid());
+                        intent.putExtra("classroom_id",response.body().getData().get(position).getClassroom_id());
+                        startActivity(intent);
                     });
                     RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(PesanAnak.this);
                     recyclerView.setLayoutManager(layoutManager);

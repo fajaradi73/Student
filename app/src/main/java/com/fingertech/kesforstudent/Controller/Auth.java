@@ -96,9 +96,10 @@ public interface Auth {
                                                          @Query("classroom_id") String classroom_id);
 
     ///// List Mata Pelajaran
-    @GET("students/kes_list_cources")
+    @GET("students/kes_class_cources")
     Call<JSONResponse.ListMapel>kes_list_cources_get(@Header("Authorization") String authorization,
-                                                         @Query("school_code") String school_code);
+                                                     @Query("school_code") String school_code,
+                                                     @Query("classroom_id") String classroom_id);
 
     ///// Tugas Anak
     @GET("students/kes_cources_score")
@@ -126,5 +127,38 @@ public interface Auth {
     @GET("students/kes_message_inbox")
     Call<JSONResponse.PesanAnak>kes_message_inbox_get(@Header("Authorization") String authorization,
                                                       @Query("school_code") String school_code,
-                                                      @Query("student_id") String member_id);
+                                                      @Query("student_id") String member_id,
+                                                      @Query("date_from") String date_from,
+                                                      @Query("date_to") String date_to);
+
+    //// Pesan Detail
+    @GET("students/kes_message_detail")
+    Call<JSONResponse.PesanDetail>kes_message_detail_get(@Header("Authorization") String authorization,
+                                                         @Query("school_code") String school_code,
+                                                         @Query("student_id") String student_id,
+                                                         @Query("classroom_id") String classroom_id,
+                                                         @Query("message_id") String message_id);
+
+    ///// Absen Siswa
+    @GET("students/kes_class_attendance")
+    Call<JSONResponse.AbsenSiswa>kes_class_attendance_get(@Header("Authorization") String authorization,
+                                                          @Query("school_code") String school_code,
+                                                          @Query("student_id") String student_id,
+                                                          @Query("classroom_id") String classroom_id,
+                                                          @Query("attendance_month") String attendance_month,
+                                                          @Query("attendance_year") String attendance_year);
+    ///// Calendar Kelas
+    @GET("students/kes_class_calendar")
+    Call<JSONResponse.ClassCalendar>kes_class_calendar_get(@Header("Authorization") String authorization,
+                                                           @Query("school_code") String school_code,
+                                                           @Query("student_id") String student_id,
+                                                           @Query("classroom_id") String classroom_id,
+                                                           @Query("calendar_month") String calendar_month,
+                                                           @Query("calendar_year") String calendar_year);
+
+    ///// Calendar Detail
+    @GET("students/kes_calendar_detail")
+    Call<JSONResponse.CalendarDetail>kes_calendar_detail_get(@Header("Authorization") String authorization,
+                                                             @Query("school_code") String school_code,
+                                                             @Query("calendar_id") String calendar_id);
 }

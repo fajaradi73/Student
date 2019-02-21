@@ -22,8 +22,11 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -66,7 +69,7 @@ public class JadwalUjian extends AppCompatActivity {
     String jam,tanggal,type,nilai,mapel,deskripsi,semester_id,start_date,end_date,semester,start_year,start_end;
     TextView no_ujian;
     String date,semester_nama;
-    TextView tv_semester,tv_start,tv_end,tv_filter,tv_semesters;
+    TextView tv_semester,tv_start,tv_end,tv_filter,tv_semesters,tv_reset,tv_slide;
     EditText et_kata_kunci;
     LinearLayout ll_slide;
     com.rey.material.widget.Spinner sp_type;
@@ -78,7 +81,10 @@ public class JadwalUjian extends AppCompatActivity {
             "MID",
             "UN"
     };
+    Button btn_cari;
+    ImageView btn_down;
     View view;
+    String mata_pelajaran,type_pelajaran;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -126,67 +132,88 @@ public class JadwalUjian extends AppCompatActivity {
         tv_filter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                openBottomSheet();
+                openBottomSheet();
             }
         });
     }
 
-//    public void openBottomSheet() {
-//
-//        View view = getLayoutInflater().inflate(R.layout.filter_sheet, null);
-//        LinearLayout ll_slide   = view.findViewById(R.id.slide_down);
-//        tv_semesters     = view.findViewById(R.id.tv_semesters);
-//        sp_mapel        = view.findViewById(R.id.sp_mapel);
-//        sp_type         = view.findViewById(R.id.sp_tipe);
-//
-//        final Dialog mBottomSheetDialog = new Dialog(JadwalUjian.this,
-//                R.style.MaterialDialogSheet);
-//
-//        mBottomSheetDialog.setContentView(view);
-//        mBottomSheetDialog.setCancelable(true);
-//        mBottomSheetDialog.getWindow().setLayout(LinearLayout.LayoutParams.MATCH_PARENT,
-//                LinearLayout.LayoutParams.WRAP_CONTENT);
-//        mBottomSheetDialog.getWindow().setGravity(Gravity.BOTTOM);
-//        mBottomSheetDialog.show();
-//        tv_semesters.setText(semester);
-//
-//        List<String> listMapel = new ArrayList<>();
-//        for (int m = 0;m < dataMapelList.size();m++){
-//            listMapel.add(dataMapelList.get(m).getCources_name());
-//        }
-//
-//        try {
-//            Field popup = Spinner.class.getDeclaredField("mPopup");
-//            popup.setAccessible(true);
-//
-//            // Get private mPopup member variable and try cast to ListPopupWindow
-//            android.widget.ListPopupWindow popupWindow = (android.widget.ListPopupWindow) popup.get(sp_mapel);
-//
-//            // Set popupWindow height to 500px
-//            popupWindow.setHeight(500);
-//        }
-//        catch (NoClassDefFoundError | ClassCastException | NoSuchFieldException | IllegalAccessException e) {
-//            // silently fail...
-//            Log.d("eror",e.getMessage());
-//        }
-//        final  ArrayAdapter<String> adapterMapel = new ArrayAdapter<String>(JadwalUjian.this,R.layout.spinner_black,listMapel);
-//        adapterMapel.setDropDownViewResource(R.layout.simple_spinner_dropdown);
-//        sp_mapel.setAdapter(adapterMapel);
-//
-//
-//        final List<String> listtype = new ArrayList<>(Arrays.asList(tipe));
-//        final  ArrayAdapter<String> adapterTipe = new ArrayAdapter<String>(JadwalUjian.this,R.layout.spinner_black,listtype);
-//        adapterTipe.setDropDownViewResource(R.layout.simple_spinner_dropdown);
-//        sp_type.setAdapter(adapterTipe);
-//
-//        ll_slide.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                mBottomSheetDialog.dismiss();
-//            }
-//        });
-//
-//    }
+    public void openBottomSheet() {
+
+        View view = getLayoutInflater().inflate(R.layout.filter_sheet, null);
+        LinearLayout ll_slide   = view.findViewById(R.id.slide_down);
+        tv_semesters     = view.findViewById(R.id.tv_semesters);
+        sp_mapel        = view.findViewById(R.id.sp_mapel);
+        sp_type         = view.findViewById(R.id.sp_tipe);
+        btn_cari        = view.findViewById(R.id.btn_cari);
+        tv_reset        = view.findViewById(R.id.reset);
+        tv_slide        = view.findViewById(R.id.name);
+        btn_down        = view.findViewById(R.id.arrow_down);
+
+        final Dialog mBottomSheetDialog = new Dialog(JadwalUjian.this,
+                R.style.MaterialDialogSheet);
+
+        mBottomSheetDialog.setContentView(view);
+        mBottomSheetDialog.setCancelable(true);
+        mBottomSheetDialog.getWindow().setLayout(LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT);
+        mBottomSheetDialog.getWindow().setGravity(Gravity.BOTTOM);
+        mBottomSheetDialog.show();
+        tv_semesters.setText(semester);
+
+        List<String> listMapel = new ArrayList<>();
+        for (int m = 0;m < dataMapelList.size();m++){
+            listMapel.add(dataMapelList.get(m).getCources_name());
+        }
+
+        try {
+            Field popup = Spinner.class.getDeclaredField("mPopup");
+            popup.setAccessible(true);
+
+            // Get private mPopup member variable and try cast to ListPopupWindow
+            android.widget.ListPopupWindow popupWindow = (android.widget.ListPopupWindow) popup.get(sp_mapel);
+
+            // Set popupWindow height to 500px
+            popupWindow.setHeight(500);
+        }
+        catch (NoClassDefFoundError | ClassCastException | NoSuchFieldException | IllegalAccessException e) {
+            // silently fail...
+            Log.d("eror",e.getMessage());
+        }
+        final  ArrayAdapter<String> adapterMapel = new ArrayAdapter<String>(JadwalUjian.this,R.layout.spinner_full,listMapel);
+        adapterMapel.setDropDownViewResource(R.layout.simple_spinner_dropdown);
+        sp_mapel.setAdapter(adapterMapel);
+        sp_mapel.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                mata_pelajaran = listMapel.get(position).toString();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+        final List<String> listtype = new ArrayList<>(Arrays.asList(tipe));
+        final  ArrayAdapter<String> adapterTipe = new ArrayAdapter<String>(JadwalUjian.this,R.layout.spinner_full,listtype);
+        adapterTipe.setDropDownViewResource(R.layout.simple_spinner_dropdown);
+        sp_type.setAdapter(adapterTipe);
+        sp_type.setOnItemClickListener((parent, view1, position, id) -> {
+            type_pelajaran = listtype.get(position).toString();
+            return true;
+        });
+        type_pelajaran = sp_type.getSelectedItem().toString();
+
+        btn_down.setOnClickListener(v -> mBottomSheetDialog.dismiss());
+        tv_slide.setOnClickListener(v -> mBottomSheetDialog.dismiss());
+        tv_reset.setOnClickListener(v -> {
+            Jadwal_ujian();
+            mBottomSheetDialog.dismiss();
+        });
+        btn_cari.setOnClickListener(v -> {
+            ujianAdapter.getfilter(mata_pelajaran.toLowerCase()).filter(type_pelajaran.toLowerCase());
+            mBottomSheetDialog.dismiss();
+        });
+    }
 
     private void Check_Semester(){
 
@@ -262,7 +289,7 @@ public class JadwalUjian extends AppCompatActivity {
     }
 
     public void dapat_mapel(){
-        Call<JSONResponse.ListMapel> call = mApiInterface.kes_list_cources_get(authorization.toString(),school_code.toLowerCase());
+        Call<JSONResponse.ListMapel> call = mApiInterface.kes_list_cources_get(authorization.toString(),school_code.toLowerCase(),classroom_id);
         call.enqueue(new Callback<JSONResponse.ListMapel>() {
             @Override
             public void onResponse(Call<JSONResponse.ListMapel> call, Response<JSONResponse.ListMapel> response) {
