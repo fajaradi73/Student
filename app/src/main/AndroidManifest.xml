@@ -30,7 +30,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="AllowBackup,GoogleAppIndexingWarning,InnerclassSeparator">
-        <activity android:name=".Activity.AbsenAnak"></activity>
+
 
         <uses-library
             android:name="org.apache.http.legacy"
@@ -144,6 +144,10 @@
             android:label="Kalendar Kelas"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".Activity.AbsenAnak"
+            android:label="Absen Anak"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"/>
     </application>
 
 </manifest>
