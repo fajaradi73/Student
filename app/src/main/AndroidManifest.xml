@@ -30,6 +30,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="AllowBackup,GoogleAppIndexingWarning,InnerclassSeparator">
+        <activity android:name=".Activity.AbsenAnak"></activity>
 
         <uses-library
             android:name="org.apache.http.legacy"
@@ -133,14 +134,16 @@
             android:label="Pesan Detail"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".Activity.KalendarDetail"
+        <activity
+            android:name=".Activity.KalendarDetail"
             android:label="Kalendar Detail"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"/>
-        <activity android:name=".Activity.KalendarKelas"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".Activity.KalendarKelas"
+            android:label="Kalendar Kelas"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:label="Kalendar Kelas"/>
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>

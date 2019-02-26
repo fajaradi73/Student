@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.fingertech.kesforstudent.Activity.AbsenAnak;
 import com.fingertech.kesforstudent.Activity.JadwalPelajaran;
 import com.fingertech.kesforstudent.Activity.JadwalUjian;
 import com.fingertech.kesforstudent.Activity.KalendarKelas;
@@ -53,19 +54,16 @@ public class MenuSatuFragment extends Fragment {
         member_id           = sharedPreferences.getString("member_id",null);
         classroom_id        = sharedPreferences.getString("classroom_id",null);
 
-        btn_jadwal.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (authorization != null  && school_code != null && member_id != null && classroom_id != null) {
-                    Intent intent = new Intent(getContext(), JadwalPelajaran.class);
-                    intent.putExtra("authorization", authorization);
-                    intent.putExtra("school_code", school_code);
-                    intent.putExtra("member_id", member_id);
-                    intent.putExtra("classroom_id", classroom_id);
-                    startActivity(intent);
-                }else{
-                    Toast.makeText(getContext(),"Harap refresh kembali",Toast.LENGTH_LONG).show();
-                }
+        btn_jadwal.setOnClickListener(v -> {
+            if (authorization != null  && school_code != null && member_id != null && classroom_id != null) {
+                Intent intent = new Intent(getContext(), JadwalPelajaran.class);
+                intent.putExtra("authorization", authorization);
+                intent.putExtra("school_code", school_code);
+                intent.putExtra("member_id", member_id);
+                intent.putExtra("classroom_id", classroom_id);
+                startActivity(intent);
+            }else{
+                Toast.makeText(getContext(),"Harap refresh kembali",Toast.LENGTH_LONG).show();
             }
         });
         btn_ujian.setOnClickListener(v -> {
@@ -109,6 +107,18 @@ public class MenuSatuFragment extends Fragment {
         btn_kalendar.setOnClickListener(v -> {
             if (authorization != null  && school_code != null && member_id != null && classroom_id != null) {
                 Intent intent = new Intent(getContext(), KalendarKelas.class);
+                intent.putExtra("authorization", authorization);
+                intent.putExtra("school_code", school_code);
+                intent.putExtra("member_id", member_id);
+                intent.putExtra("classroom_id", classroom_id);
+                startActivity(intent);
+            }else{
+                Toast.makeText(getContext(),"Harap refresh kembali",Toast.LENGTH_LONG).show();
+            }
+        });
+        btn_absen.setOnClickListener(v -> {
+            if (authorization != null  && school_code != null && member_id != null && classroom_id != null) {
+                Intent intent = new Intent(getContext(), AbsenAnak.class);
                 intent.putExtra("authorization", authorization);
                 intent.putExtra("school_code", school_code);
                 intent.putExtra("member_id", member_id);
