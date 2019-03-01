@@ -71,7 +71,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.MyHolder> 
         return viewItemList.size();
     }
 
-    public Filter getFilter() {
+    public Filter getFilter(String searchString) {
         this.searchString = searchString;
         return new Filter() {
             @Override

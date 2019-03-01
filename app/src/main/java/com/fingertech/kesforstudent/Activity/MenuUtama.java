@@ -95,6 +95,10 @@ public class MenuUtama extends AppCompatActivity
     public static final String TAG_SCHOOL_CODE = "school_code";
     public static final String my_viewpager_preferences = "my_viewpager_preferences";
 
+    private Date dates,date_now;
+    private SimpleDateFormat jamformat  = new SimpleDateFormat("HH:mm:ss",Locale.getDefault());
+    private SimpleDateFormat tanggalFormat  = new SimpleDateFormat("yyyy-MM-dd",Locale.getDefault());
+    private DateFormat times_format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
 
     SharedPreferences sharedpreferences,sharedViewpager;
     String picture, Base_anak;
@@ -534,7 +538,26 @@ public class MenuUtama extends AppCompatActivity
                                 rv_sabtu.setLayoutManager(layoutManager);
                                 rv_sabtu.setAdapter(sabtuAdapter);
                             }
+                            if (days_name.equals(day)){
+                                jam_mulai   = response.body().getData().get(i).getScheduleClass().get(response.body().getData().get(i).getScheduleClass().size()-1).getTimezFinish();
+                            }
                         }
+                        String tanggal = tanggalFormat.format(Calendar.getInstance().getTime());
+                        // Set car item title.
+                        String jam_sekarang = jamformat.format(Calendar.getInstance().getTime());
+                        try {
+                            date_now    = times_format.parse(tanggal+" "+ jam_sekarang +":00");
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+                        Long times_now = date_now.getTime();
+                        try {
+                            dates = times_format.parse(tanggal+" "+jam_mulai+":00");
+
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+                        Long times_start = dates.getTime();
                         if (day.equals("Senin")){
                             if (itemlist.size() == 0){
                                 title_jadwal.setText("Jadwal besok");
@@ -542,8 +565,13 @@ public class MenuUtama extends AppCompatActivity
                                 rv_selasa.setVisibility(View.VISIBLE);
                             }
                             else {
-                                title_jadwal.setText("Jadwal hari ini");
-                                rv_senin.setVisibility(View.VISIBLE);
+                                if (times_now > times_start){
+                                    title_jadwal.setText("Jadwal besok");
+                                    rv_selasa.setVisibility(View.VISIBLE);
+                                }else {
+                                    title_jadwal.setText("Jadwal hari ini");
+                                    rv_senin.setVisibility(View.VISIBLE);
+                                }
                             }
                         }else if (day.equals("Selasa")){
                             if (itemselasa.size() == 0){
@@ -551,8 +579,13 @@ public class MenuUtama extends AppCompatActivity
                                 Snackbar.make(coordinatorLayout,"Tidak ada jadwal hari ini",Snackbar.LENGTH_LONG).show();
                                 rv_rabu.setVisibility(View.VISIBLE);
                             }else {
-                                title_jadwal.setText("Jadwal hari ini");
-                                rv_selasa.setVisibility(View.VISIBLE);
+                                if (times_now > times_start){
+                                    title_jadwal.setText("Jadwal besok");
+                                    rv_rabu.setVisibility(View.VISIBLE);
+                                }else {
+                                    title_jadwal.setText("Jadwal hari ini");
+                                    rv_selasa.setVisibility(View.VISIBLE);
+                                }
                             }
                         }else if (day.equals("Rabu")){
                             if (itemRabu.size() == 0){
@@ -560,8 +593,13 @@ public class MenuUtama extends AppCompatActivity
                                 Snackbar.make(coordinatorLayout,"Tidak ada jadwal hari ini",Snackbar.LENGTH_LONG).show();
                                 rv_kamis.setVisibility(View.VISIBLE);
                             }else {
-                                title_jadwal.setText("Jadwal hari ini");
-                                rv_rabu.setVisibility(View.VISIBLE);
+                                if (times_now > times_start){
+                                    title_jadwal.setText("Jadwal besok");
+                                    rv_kamis.setVisibility(View.VISIBLE);
+                                }else {
+                                    title_jadwal.setText("Jadwal hari ini");
+                                    rv_rabu.setVisibility(View.VISIBLE);
+                                }
                             }
                         }else if (day.equals("Kamis")){
                             if (itemKamis.size() == 0){
@@ -569,8 +607,13 @@ public class MenuUtama extends AppCompatActivity
                                 Snackbar.make(coordinatorLayout,"Tidak ada jadwal hari ini",Snackbar.LENGTH_LONG).show();
                                 rv_jumat.setVisibility(View.VISIBLE);
                             }else {
-                                title_jadwal.setText("Jadwal hari ini");
-                                rv_kamis.setVisibility(View.VISIBLE);
+                                if (times_now > times_start){
+                                    title_jadwal.setText("Jadwal besok");
+                                    rv_jumat.setVisibility(View.VISIBLE);
+                                }else {
+                                    title_jadwal.setText("Jadwal hari ini");
+                                    rv_kamis.setVisibility(View.VISIBLE);
+                                }
                             }
                         }else if (day.equals("Jumat")){
                             if (itemJumat.size() == 0){
@@ -578,8 +621,14 @@ public class MenuUtama extends AppCompatActivity
                                 Snackbar.make(coordinatorLayout,"Tidak ada jadwal hari ini",Snackbar.LENGTH_LONG).show();
                                 rv_sabtu.setVisibility(View.VISIBLE);
                             }else {
-                                title_jadwal.setText("Jadwal hari ini");
-                                rv_jumat.setVisibility(View.VISIBLE);
+                                if (times_now > times_start){
+                                    title_jadwal.setText("Jadwal besok");
+                                    rv_sabtu.setVisibility(View.VISIBLE);
+
+                                }else {
+                                    title_jadwal.setText("Jadwal hari ini");
+                                    rv_jumat.setVisibility(View.VISIBLE);
+                                }
                             }
                         }else if (day.equals("Sabtu")){
                             if (itemSabtu.size() == 0){
@@ -587,8 +636,13 @@ public class MenuUtama extends AppCompatActivity
                                 Snackbar.make(coordinatorLayout,"Tidak ada jadwal hari ini",Snackbar.LENGTH_LONG).show();
                                 rv_senin.setVisibility(View.VISIBLE);
                             }else {
-                                title_jadwal.setText("Jadwal hari ini");
-                                rv_sabtu.setVisibility(View.VISIBLE);
+                                if (times_now > times_start){
+                                    title_jadwal.setText("Jadwal hari Senin");
+                                    rv_senin.setVisibility(View.VISIBLE);
+                                }else {
+                                    title_jadwal.setText("Jadwal hari ini");
+                                    rv_sabtu.setVisibility(View.VISIBLE);
+                                }
                             }
                         }
                     }
