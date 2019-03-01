@@ -57,6 +57,11 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="rb_pria">Pria</string>
     <string name="rb_wanita">Wanita</string>
+    <string name="url_faq">http://kes.co.id/faq</string>
+    <string name="url_term">http://kes.co.id/</string>
+    <string name="pref_ringtone_silent">silent</string>
+    <string name="summary_choose_ringtone">Choose notification sound</string>
+
 
 
 </resources>
