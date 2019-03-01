@@ -96,14 +96,11 @@ public class MainActivity extends AppCompatActivity {
             public void afterTextChanged(Editable s) {
             }
         });
-        btn_selanjutnya.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this,Masuk.class);
-                intent.putExtra("school_code",sekolah_kode.toLowerCase());
-                intent.putExtra("school_name",school_name);
-                startActivity(intent);
-            }
+        btn_selanjutnya.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this,Masuk.class);
+            intent.putExtra("school_code",sekolah_kode.toLowerCase());
+            intent.putExtra("school_name",school_name);
+            startActivity(intent);
         });
         sharedpreferences = getSharedPreferences(my_shared_preferences, Context.MODE_PRIVATE);
         session     = sharedpreferences.getBoolean(session_status, false);
@@ -157,22 +154,19 @@ public class MainActivity extends AppCompatActivity {
                     searchAdapter = new SearchAdapter(arraylist, MainActivity.this);
                     recyclerView.setAdapter(searchAdapter);
                     searchAdapter.notifyDataSetChanged();
-                    searchAdapter.getFilter().filter(key);
-                    searchAdapter.setOnItemClickListener(new SearchAdapter.OnItemClickListener() {
-                        @Override
-                        public void onItemClick(View view, int position) {
-                            school_name         = response.body().getData().get(position).getSchool_name();
-                            sekolah_kode        = response.body().getData().get(position).getSchool_code();
-                            school_id           = response.body().getData().get(position).getSchool_id();
-                            sekolah_kode        = sekolah_kode.toLowerCase();
+                    searchAdapter.getFilter(key).filter(key);
+                    searchAdapter.setOnItemClickListener((view, position) -> {
+                        school_name         = response.body().getData().get(position).getSchool_name();
+                        sekolah_kode        = response.body().getData().get(position).getSchool_code();
+                        school_id           = response.body().getData().get(position).getSchool_id();
+                        sekolah_kode        = sekolah_kode.toLowerCase();
 
-                            et_search.setText(school_name);
-                            recyclerView.setVisibility(View.GONE);
-                            logo.setVisibility(View.VISIBLE);
-                            footer.setVisibility(View.VISIBLE);
-                            hideKeyboard(MainActivity.this);
-                            et_search.clearFocus();
-                        }
+                        et_search.setText(school_name);
+                        recyclerView.setVisibility(View.GONE);
+                        logo.setVisibility(View.VISIBLE);
+                        footer.setVisibility(View.VISIBLE);
+                        hideKeyboard(MainActivity.this);
+                        et_search.clearFocus();
                     });
 
                 } else {
