@@ -29,6 +29,8 @@ import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.fingertech.kesforstudent.Activity.Setting.Setting_Activity;
+import com.fingertech.kesforstudent.Activity.Setting.SettingsActivity;
 import com.fingertech.kesforstudent.Adapter.HariAdapter.JumatAdapter;
 import com.fingertech.kesforstudent.Adapter.HariAdapter.KamisAdapter;
 import com.fingertech.kesforstudent.Adapter.HariAdapter.RabuAdapter;
@@ -60,6 +62,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.SimpleTimeZone;
+import java.util.TimeZone;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import retrofit2.Call;
@@ -125,7 +129,7 @@ public class MenuUtama extends AppCompatActivity
     String jam_mulai;
     String jam_selesai;
     String guru, daysid, day_type, day_status;
-    String date, day,id_classroom;
+    String date, day,id_classroom,time;
     SnappyRecycleView rv_senin, rv_selasa, rv_rabu, rv_kamis, rv_jumat, rv_sabtu;
     CoordinatorLayout coordinatorLayout;
     @Override
@@ -180,11 +184,11 @@ public class MenuUtama extends AppCompatActivity
 
         navigationView.setNavigationItemSelectedListener(this);
         get_profile();
-        DateFormat df = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
+        DateFormat df = new SimpleDateFormat("dd-MM-yyyy  HH:mm:ss", Locale.getDefault());
         date = df.format(Calendar.getInstance().getTime());
 
 
-        SimpleDateFormat inFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
+        SimpleDateFormat inFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss", Locale.getDefault());
         Date dater = null;
         try {
             dater = inFormat.parse(date);
@@ -192,6 +196,7 @@ public class MenuUtama extends AppCompatActivity
             e.printStackTrace();
         }
         SimpleDateFormat outFormat = new SimpleDateFormat("EEEE", Locale.getDefault());
+        df.setTimeZone(TimeZone.getDefault());
         day = outFormat.format(dater);
 
         itemlist = new ArrayList<JadwalSenin>();
@@ -200,6 +205,7 @@ public class MenuUtama extends AppCompatActivity
         itemKamis = new ArrayList<JadwalKamis>();
         itemJumat = new ArrayList<JadwalJumat>();
         itemSabtu = new ArrayList<JadwalSabtu>();
+        Jadwal_pelajaran();
     }
 
     @Override
@@ -244,6 +250,10 @@ public class MenuUtama extends AppCompatActivity
             Intent intent = new Intent(MenuUtama.this, ProfileAnak.class);
             startActivity(intent);
         } else if (id == R.id.nav_tentang) {
+
+        }else if (id == R.id.nav_pengaturan){
+            Intent intent = new Intent(MenuUtama.this, Setting_Activity.class);
+            startActivity(intent);
         }
 
 
@@ -409,6 +419,7 @@ public class MenuUtama extends AppCompatActivity
                                     jadwalSenin.setJam_selesai(jam_selesai);
                                     itemlist.add(jadwalSenin);
                                 }
+
                                 seninAdapter = new SeninAdapter(itemlist);
                                 final SnappyLinearLayoutManager layoutManager = new SnappyLinearLayoutManager(MenuUtama.this);
                                 layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
@@ -432,6 +443,8 @@ public class MenuUtama extends AppCompatActivity
                                     jadwalSelasa.setJam_selesai(jam_selesai);
                                     itemselasa.add(jadwalSelasa);
                                 }
+                                DateFormat df = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
+                                date = df.format(Calendar.getInstance().getTime());
                                 selasaAdapter = new SelasaAdapter(itemselasa);
                                 final SnappyLinearLayoutManager layoutManager = new SnappyLinearLayoutManager(MenuUtama.this);
                                 layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);

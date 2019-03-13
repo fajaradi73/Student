@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.fingertech.kesforstudent">
-
+    <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
@@ -129,6 +129,10 @@
             android:label="Pesan Anak"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".Activity.Setting.Setting_Activity"
+            android:label="Pengaturan"
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".Activity.PesanDetail"
             android:label="Pesan Detail"
