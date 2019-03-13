@@ -332,12 +332,18 @@ public class MenuUtama extends AppCompatActivity
             FragmentManager fragmentManager = getSupportFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             fragmentTransaction.replace(R.id.fragMenuSatu, menuSatuFragment);
-            fragmentTransaction.commit();
+            fragmentTransaction.commitAllowingStateLoss();
             menuSatuFragment.setArguments(bundle);
         }else {
             Toast.makeText(MenuUtama.this,"harap refresh kembali",Toast.LENGTH_LONG).show();
         }
     }
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putString("WORKAROUND_FOR_BUG_19917_KEY", "WORKAROUND_FOR_BUG_19917_VALUE");
+        super.onSaveInstanceState(outState);
+    }
+
     public void send_data2(){
         Bundle bundle = new Bundle();
         if (bundle != null) {
@@ -349,10 +355,10 @@ public class MenuUtama extends AppCompatActivity
             FragmentManager fragmentManager = getSupportFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             fragmentTransaction.replace(R.id.fragMenuDua, menuSatuFragment);
-            fragmentTransaction.commit();
+            fragmentTransaction.commitAllowingStateLoss();
             menuSatuFragment.setArguments(bundle);
         }else {
-            Toast.makeText(MenuUtama.this,"harap refersh kembali",Toast.LENGTH_LONG).show();
+            Toast.makeText(MenuUtama.this,"harap refresh kembali",Toast.LENGTH_LONG).show();
         }
     }
     private void Jadwal_pelajaran() {

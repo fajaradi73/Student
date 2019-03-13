@@ -28,7 +28,6 @@
             android:id="@+id/image_profile"
             android:background="@drawable/ic_logo"
             android:scaleType="centerCrop"
-            app:border_color="@color/colorPrimary"
             android:layout_gravity="center"
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"/>

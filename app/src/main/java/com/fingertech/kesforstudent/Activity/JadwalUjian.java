@@ -298,14 +298,14 @@ public class JadwalUjian extends AppCompatActivity {
 
                 status  = resource.status;
                 code    = resource.code;
-                if (status == 1 && code.equals("KLC_SCS_0001")){
+                if (status == 1 && code.equals("DTS_SCS_0001")){
                     dataMapelList = response.body().getData();
                 }
             }
 
             @Override
             public void onFailure(Call<JSONResponse.ListMapel> call, Throwable t) {
-
+                Log.d("onfailure",t.toString());
             }
         });
     }

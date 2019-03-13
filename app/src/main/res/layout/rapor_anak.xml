@@ -14,130 +14,127 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:theme="@style/AppTheme.AppBarOverlay" />
+
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="120dp"
+        android:layout_height="150dp"
         android:orientation="vertical"
-        android:background="@color/colorPrimary">
+        android:background="@color/deepblue">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="4"
+            android:layout_weight="2"
             android:layout_marginLeft="15dp"
             android:layout_marginRight="15dp"
             android:orientation="horizontal">
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:gravity="center_vertical"
-                android:layout_weight="1"
+                android:gravity="center"
                 android:textColor="@color/white"
-                android:id="@+id/tv_walikelas"/>
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center_vertical"
-                android:id="@+id/tv_kelas"
-                android:textColor="@color/white"
-                android:layout_weight="3.5"/>
-
+                android:id="@+id/tv_semester"
+                android:textSize="20sp"
+                tools:ignore="NestedWeights" />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:layout_marginTop="5dp"
             android:orientation="vertical">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:layout_marginRight="15dp"
-                android:layout_marginLeft="15dp"
-                android:text="Pilih Semester"
-                android:textColor="@color/white"/>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="15dp"
                 android:layout_marginRight="15dp"
                 android:layout_marginLeft="15dp"
-                android:orientation="horizontal">
-                <LinearLayout
+                android:orientation="horizontal"
+                tools:ignore="UselessParent">
+                <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:layout_marginRight="10dp"
-                    android:background="@drawable/tab_semester"
-                    android:layout_weight="1">
+                    android:layout_height="wrap_content"
+                    android:layout_weight="3">
 
-                    <com.rey.material.widget.Spinner
-                        style="@style/Material.Widget.Spinner"
-                        android:id="@+id/sp_semester"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:gravity="center"
-                        android:background="@android:color/transparent"
-                        android:spinnerMode="dropdown"
-                        app:rd_style="@style/Material.Drawable.Ripple.Wave"
-                        app:spn_arrowAnimClockwise="true"
-                        app:spn_dividerColor="@color/colorPrimary"
-                        app:spn_dividerHeight="1dp"
-                        app:spn_arrowSwitchMode="true"
-                        app:spn_arrowAnimDuration="300"
-                        app:spn_arrowColor="@color/colorPrimary"/>
-                </LinearLayout>
+                    <ImageView
+                        android:id="@+id/star"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_alignParentStart="true"
+                        android:src="@drawable/ic_star"
+                        android:layout_marginTop="-1dp"
+                        android:layout_marginEnd="0dp"
+                        android:elevation="10dp"
+                        tools:ignore="ContentDescription" />
 
-                <android.support.v7.widget.CardView
-                    android:layout_width="50dp"
-                    android:layout_height="40dp"
-                    app:cardBackgroundColor="@color/white"
-                    android:clickable="true"
-                    android:layout_gravity="center"
-                    android:foreground="?android:attr/selectableItemBackground"
-                    app:cardCornerRadius="5dp"
-                    android:id="@+id/btn_go">
-
-                    <TextView
+                    <android.support.v7.widget.CardView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:gravity="center"
-                        android:textColor="@color/colorPrimary"
-                        android:text="Go"/>
-                </android.support.v7.widget.CardView>
+                        android:id="@+id/cardView"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="5dp"
+                        app:cardCornerRadius="5dp">
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@color/green_600"
+                            android:orientation="vertical">
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_weight="2"
+                                android:text="Peringkat"
+                                android:textColor="@color/white"
+                                android:gravity="center"/>
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:id="@+id/peringkat"
+                                android:textSize="20sp"
+                                android:textColor="@color/yellow_500"
+                                android:gravity="center"/>
+                        </LinearLayout>
+                    </android.support.v7.widget.CardView>
+
+
+                </RelativeLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/white"
+                        android:text="Status"
+                        android:textSize="13sp"/>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/status_raport"
+                        android:textSize="16sp"
+                        android:textColor="@color/yellow_500"/>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Kritik dan Saran"
+                        android:textColor="@color/white"
+                        android:textSize="13sp"/>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/kritik_saran"
+                        android:textColor="@color/white"
+                        android:textSize="13sp"/>
+                </LinearLayout>
 
             </LinearLayout>
         </LinearLayout>
-
-        </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="30dp"
-        android:orientation="horizontal"
-        android:background="@color/NavyColor">
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:textColor="@color/white"
-            android:id="@+id/tv_start"
-            android:gravity="center"/>
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1.4"
-            android:textColor="@color/white"
-            android:text="Sampai"
-            android:gravity="center"/>
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:textColor="@color/white"
-            android:id="@+id/tv_end"
-            android:gravity="center"/>
 
     </LinearLayout>
 
@@ -148,112 +145,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
-            <android.support.v7.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:cardCornerRadius="8dp"
-                android:layout_marginBottom="20dp"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:layout_marginTop="20dp">
-                <TableLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="#ffffff"
-                    android:shrinkColumns="1"
-                    android:id="@+id/table_layout"
-                    android:stretchColumns="1">
-                    <!-- Row 3 with 2 columns -->
-                    <TableRow
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:gravity="center_horizontal"
-                        >
-
-                        <TextView
-                            android:layout_weight="1"
-                            android:background="@drawable/tabel_ujian"
-                            android:padding="5dip"
-                            android:textColor="@color/ic_logo_background" />
-
-                        <TextView
-                            android:layout_weight="1"
-                            android:background="@drawable/tabel_ujian"
-                            android:padding="5dip"
-                            android:textColor="@color/ic_logo_background" />
-                    </TableRow>
-
-                    <TableRow
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_horizontal">
-
-                        <TextView
-                            android:layout_weight="1"
-                            android:background="@drawable/tabel_border"
-                            android:padding="13dip"
-                            android:text="Status"
-                            android:gravity="center"
-                            android:textColor="#000000" />
-
-                        <TextView
-                            android:id="@+id/status_rapor"
-                            android:layout_weight="1"
-                            android:background="@drawable/tabel_border"
-                            android:padding="13dip"
-                            android:text=""
-                            android:gravity="center"
-                            android:textColor="#000000" />
-                    </TableRow>
-
-                    <TableRow
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_horizontal">
-
-                        <TextView
-                            android:layout_weight="1"
-                            android:background="@drawable/tabel_border"
-                            android:padding="13dip"
-                            android:text="Peringkat"
-                            android:gravity="center"
-                            android:textColor="#000000" />
-
-                        <TextView
-                            android:id="@+id/peringkat"
-                            android:layout_weight="1"
-                            android:background="@drawable/tabel_border"
-                            android:padding="13dip"
-                            android:text=""
-                            android:gravity="center"
-                            android:textColor="#000000" />
-                    </TableRow>
-
-                    <TableRow
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_horizontal">
-
-                        <TextView
-                            android:layout_weight="1"
-                            android:background="@drawable/tabel_border"
-                            android:padding="13dip"
-                            android:text="Kritik &amp; Saran"
-                            android:gravity="center"
-                            android:textColor="#000000" />
-
-                        <TextView
-                            android:id="@+id/kritik_saran"
-                            android:layout_weight="1"
-                            android:background="@drawable/tabel_border"
-                            android:padding="13dip"
-                            android:text=""
-                            android:gravity="center"
-                            android:textColor="#000000" />
-                    </TableRow>
-
-                </TableLayout>
-            </android.support.v7.widget.CardView>
 
             <TextView
                 android:layout_width="match_parent"
@@ -265,12 +156,246 @@
                 android:visibility="gone"
                 android:textSize="20sp"/>
 
-            <android.support.v7.widget.RecyclerView
+            <com.dant.centersnapreyclerview.SnappingRecyclerView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:id="@+id/rv_rapor">
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:id="@+id/rv_rapor"
+                app:orientation="horizontal"
+                app:anchor="center"
+                >
 
-            </android.support.v7.widget.RecyclerView>
+            </com.dant.centersnapreyclerview.SnappingRecyclerView>
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="8dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="20dp"
+                android:id="@+id/card"
+                android:layout_marginRight="20dp">
+                <TableLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="#ffffff"
+                    android:shrinkColumns="1"
+                    android:stretchColumns="1">
+
+                    <TableRow
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal"
+                        >
+
+                        <TextView
+                            android:layout_weight="1"
+                            android:background="@drawable/tabel_ujian"
+                            android:padding="13dip"
+                            android:text="Detail"
+                            android:gravity="center"
+                            android:textColor="@color/white" />
+
+                        <TextView
+                            android:layout_weight="1"
+                            android:background="@drawable/tabel_ujian"
+                            android:padding="13dip"
+                            android:text="Nilai"
+                            android:gravity="center"
+                            android:textColor="@color/white" />
+                    </TableRow>
+
+                    <TableRow
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal">
+
+                        <TextView
+                            android:layout_weight="1"
+                            android:background="@drawable/tabel_border"
+                            android:padding="13dip"
+                            android:text="Latihan Teori"
+                            android:gravity="center"
+                            android:textColor="#000000" />
+
+                        <TextView
+                            android:id="@+id/nilai_teori"
+                            android:layout_weight="1"
+                            android:background="@drawable/tabel_border"
+                            android:padding="13dip"
+                            android:text=""
+                            android:gravity="center"
+                            android:textColor="#000000" />
+                    </TableRow>
+
+                    <TableRow
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal">
+
+                        <TextView
+                            android:layout_weight="1"
+                            android:background="@drawable/tabel_border"
+                            android:padding="13dip"
+                            android:text="@string/tv_ulangan_harian"
+                            android:gravity="center"
+                            android:textColor="#000000" />
+
+                        <TextView
+                            android:id="@+id/ulangan_harian"
+                            android:layout_weight="1"
+                            android:background="@drawable/tabel_border"
+                            android:padding="13dip"
+                            android:text=""
+                            android:gravity="center"
+                            android:textColor="#000000" />
+                    </TableRow>
+
+                    <TableRow
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal">
+
+                        <TextView
+                            android:layout_weight="1"
+                            android:background="@drawable/tabel_border"
+                            android:padding="13dip"
+                            android:text="@string/tv_latihan_praktikum"
+                            android:gravity="center"
+                            android:textColor="#000000" />
+
+                        <TextView
+                            android:id="@+id/latihan_praktikum"
+                            android:layout_weight="1"
+                            android:background="@drawable/tabel_border"
+                            android:padding="13dip"
+                            android:text=""
+                            android:gravity="center"
+                            android:textColor="#000000" />
+                    </TableRow>
+
+                    <TableRow
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal">
+
+                        <TextView
+                            android:layout_height="match_parent"
+                            android:layout_width="match_parent"
+                            android:background="@drawable/tabel_border"
+                            android:padding="13dip"
+                            android:text="@string/tv_ekstrakulikuler"
+                            android:gravity="center"
+                            android:layout_weight="1"
+                            android:textColor="#000000" />
+
+                        <TextView
+                            android:id="@+id/eskul"
+                            android:layout_weight="1"
+                            android:background="@drawable/tabel_border"
+                            android:padding="13dip"
+                            android:text=""
+                            android:gravity="center"
+                            android:textColor="#000000" />
+                    </TableRow>
+
+                    <TableRow
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal">
+
+                        <TextView
+                            android:layout_weight="1"
+                            android:background="@drawable/tabel_border"
+                            android:padding="13dip"
+                            android:text="@string/tv_ujian_sekolah"
+                            android:gravity="center"
+                            android:textColor="#000000" />
+
+                        <TextView
+                            android:id="@+id/ujian_sekolah"
+                            android:layout_weight="1"
+                            android:background="@drawable/tabel_border"
+                            android:padding="13dip"
+                            android:gravity="center"
+                            android:text=""
+                            android:textColor="#000000" />
+                    </TableRow>
+
+                    <TableRow
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@drawable/tabel_border"
+                            android:padding="13dip"
+                            android:layout_weight="1"
+                            android:text="@string/tv_ujian_negara"
+                            android:gravity="center"
+                            android:textColor="#000000" />
+
+                        <TextView
+                            android:id="@+id/ujian_negara"
+                            android:layout_weight="1"
+                            android:background="@drawable/tabel_border"
+                            android:padding="13dip"
+                            android:gravity="center"
+                            android:text=""
+                            android:textColor="#000000" />
+                    </TableRow>
+                    <TableRow
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@drawable/tabel_border"
+                            android:padding="13dip"
+                            android:layout_weight="1"
+                            android:text="@string/tv_nilai_akhir"
+                            android:gravity="center"
+                            android:textColor="#000000" />
+
+                        <TextView
+                            android:id="@+id/nilai_akhir"
+                            android:layout_weight="1"
+                            android:background="@drawable/tabel_border"
+                            android:padding="13dip"
+                            android:gravity="center"
+                            android:text=""
+                            android:textColor="#000000" />
+                    </TableRow>
+                    <TableRow
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@drawable/tabel_border"
+                            android:padding="13dip"
+                            android:layout_weight="1"
+                            android:text="@string/tv_rata_rata_kelas"
+                            android:gravity="center"
+                            android:textColor="#000000" />
+
+                        <TextView
+                            android:id="@+id/rata_rata"
+                            android:layout_weight="1"
+                            android:background="@drawable/tabel_border"
+                            android:padding="13dip"
+                            android:gravity="center"
+                            android:text=""
+                            android:textColor="#000000" />
+                    </TableRow>
+                </TableLayout>
+            </android.support.v7.widget.CardView>
+
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>
 </LinearLayout>

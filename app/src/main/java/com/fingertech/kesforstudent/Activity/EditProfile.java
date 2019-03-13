@@ -42,6 +42,7 @@ import com.fingertech.kesforstudent.R;
 import com.fingertech.kesforstudent.Rest.ApiClient;
 import com.fingertech.kesforstudent.Rest.JSONResponse;
 import com.rey.material.widget.Spinner;
+import com.shashank.sony.fancytoastlib.FancyToast;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -337,7 +338,7 @@ public class EditProfile extends AppCompatActivity {
             til_no_hp.setError(getResources().getString(R.string.validate_mobile_phone));
             requestFocus(et_no_hp);
             return false;
-        }else if(et_no_hp.length()<12) {
+        }else if(et_no_hp.length()<10) {
             til_no_hp.setError(getResources().getString(R.string.validate_number_lengh));
             requestFocus(et_no_hp);
             return false;
@@ -384,7 +385,12 @@ public class EditProfile extends AppCompatActivity {
 
                 if (status == 1 && code.equals("UP_SCS_0001")) {
                     Intent intent = new Intent(EditProfile.this, ProfileAnak.class);
-                    startActivity(intent);
+                    intent.putExtra("authorization",authorization);
+                    intent.putExtra("school_code",school_code);
+                    intent.putExtra("member_id",memberid);
+                    setResult(RESULT_OK, intent);
+                    finish();
+                    FancyToast.makeText(getApplicationContext(),"Berhasil Update",FancyToast.LENGTH_LONG,FancyToast.SUCCESS,false).show();
                 } else{
                     if (status == 0 && code.equals("UP_ERR_0001")) {
                         Toast.makeText(getApplicationContext(), "Email tidak boleh kosong", Toast.LENGTH_LONG).show();
@@ -423,4 +429,17 @@ public class EditProfile extends AppCompatActivity {
         dialog.setCancelable(false);
     }
 
+
+    String converDate(String tanggal){
+        SimpleDateFormat calendarDateFormat = new SimpleDateFormat("yyyy-MM-dd",Locale.getDefault());
+
+        SimpleDateFormat newDateFormat = new SimpleDateFormat("dd MMMM yyyy",Locale.getDefault());
+        try {
+            String e = newDateFormat.format(calendarDateFormat.parse(tanggal));
+            return e;
+        } catch (java.text.ParseException e) {
+            e.printStackTrace();
+            return "";
+        }
+    }
 }

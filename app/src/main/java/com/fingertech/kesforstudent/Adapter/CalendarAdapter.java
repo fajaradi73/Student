@@ -1,6 +1,6 @@
 package com.fingertech.kesforstudent.Adapter;
-
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,7 +28,7 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.MyHold
     @Override
     public MyHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
-        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_tester, parent, false);
+        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_calendar, parent, false);
 
         MyHolder myHolder = new MyHolder(itemView,onItemClickListener);
         return myHolder;
@@ -41,7 +41,7 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.MyHold
         // Get car item dto in list.
         CalendarModel viewItem = viewItemList.get(position);
         // Set car item title.
-        holder.tanggal.setText(viewItem.getCalendar_date());;
+        holder.tanggal.setText(viewItem.getCalendar_date());
         holder.jam.setText(viewItem.getCalendar_time());
         holder.mapel.setText(viewItem.getCalendar_title());
         holder.type_id.setText(viewItem.getCalendar_desc());
@@ -58,10 +58,10 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.MyHold
 
         public MyHolder(View itemView,OnItemClickListener onItemClickListener) {
             super(itemView);
-            tanggal = (TextView) itemView.findViewById(R.id.tanggal_ujian);
-            jam     = (TextView) itemView.findViewById(R.id.jam_ujian);
-            mapel   = (TextView) itemView.findViewById(R.id.title_kalender);
-            type_id = (TextView) itemView.findViewById(R.id.desc_kalender);
+            tanggal = itemView.findViewById(R.id.tanggal_kalendar);
+            jam     = itemView.findViewById(R.id.jam_kalendar);
+            mapel   = itemView.findViewById(R.id.title_kalender);
+            type_id = itemView.findViewById(R.id.desc_kalender);
             itemView.setOnClickListener(this);
             this.onItemClickListener = onItemClickListener;
         }
@@ -75,4 +75,6 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.MyHold
 
         void onItemClick(View view, int position);
     }
+
+
 }

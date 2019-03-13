@@ -49,6 +49,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseUser;
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
+import com.shashank.sony.fancytoastlib.FancyToast;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
@@ -202,7 +203,10 @@ public class ProfileAnak extends AppCompatActivity {
                 intent.putExtra("tempat_lahir",tempat);
                 intent.putExtra("agama",agama);
                 intent.putExtra("nohp",no_hp);
-                startActivity(intent);
+                intent.putExtra("authorization",authorization);
+                intent.putExtra("school_code",school_code);
+                intent.putExtra("member_id",memberid);
+                startActivityForResult(intent,1);
             }
         });
     }
@@ -246,11 +250,11 @@ public class ProfileAnak extends AppCompatActivity {
                     no_hp       = response.body().getData().getMobile_phone();
 
                     tv_nama.setText(nama);
-                    tv_nis.setText(nis);
+                    tv_nis.setText("Nomor induk siswa (NIS) : "+nis);
                     tv_email.setText(email);
                     tv_alamat.setText(alamat);
                     tv_gender.setText(gender);
-                    tv_tanggal.setText(tanggal);
+                    tv_tanggal.setText(converDate(tanggal));
                     tv_tempat.setText(tempat);
                     tv_agama.setText(agama);
                     tv_no_hp.setText(no_hp);
@@ -395,6 +399,12 @@ public class ProfileAnak extends AppCompatActivity {
                 File file = FileUtils.getFile(ProfileAnak.this, uri);
                 UploadImage(file);
             }
+            else if (requestCode == 1) {
+                authorization = data.getStringExtra("authorization");
+                school_code   = data.getStringExtra("school_code");
+                memberid      = data.getStringExtra("member_id");
+                get_profile();
+            }
         }
     }
 
@@ -522,12 +532,10 @@ public class ProfileAnak extends AppCompatActivity {
                 code   = resource.code;
 
                 if (status == 1 && code.equals("UPP_SCS_0001")) {
-                    Snackbar.make(constraintLayout, "Foto berhasil diupload", Snackbar.LENGTH_LONG).show();
-//                    Toast.makeText(getApplicationContext(), "Foto berhasil diupload", Toast.LENGTH_LONG).show();
+                    FancyToast.makeText(getApplicationContext(),"Foto berhasil diupload",FancyToast.LENGTH_LONG,FancyToast.SUCCESS,false).show();
                 } else{
                     if (status == 0 && code.equals("UPP_ERR_0001")) {
-                        Snackbar.make(constraintLayout, "Data Tidak Ditemukan", Snackbar.LENGTH_LONG).show();
-//                        Toast.makeText(getApplicationContext(), "Data Tidak Ditemukan", Toast.LENGTH_LONG).show();
+                        FancyToast.makeText(getApplicationContext(),"Data tidak ditemnukan",FancyToast.LENGTH_LONG,FancyToast.ERROR,false).show();
                     }
                 }
 
@@ -540,5 +548,18 @@ public class ProfileAnak extends AppCompatActivity {
             }
 
         });
+    }
+
+    String converDate(String tanggal){
+        SimpleDateFormat calendarDateFormat = new SimpleDateFormat("yyyy-MM-dd",Locale.getDefault());
+
+        SimpleDateFormat newDateFormat = new SimpleDateFormat("dd MMMM yyyy",Locale.getDefault());
+        try {
+            String e = newDateFormat.format(calendarDateFormat.parse(tanggal));
+            return e;
+        } catch (java.text.ParseException e) {
+            e.printStackTrace();
+            return "";
+        }
     }
 }

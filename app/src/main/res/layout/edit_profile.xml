@@ -128,6 +128,7 @@
                     android:textSize="16dp"
                     android:theme="@style/TextLabel" />
             </android.support.design.widget.TextInputLayout>
+
             <TextView
                 android:textColor="@color/textColor_Grey"
                 android:textSize="12dp"
