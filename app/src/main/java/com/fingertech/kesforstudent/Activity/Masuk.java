@@ -171,7 +171,6 @@ public class Masuk extends AppCompatActivity {
                         editor.commit();
                         /// call session
                         if(member_type.toString().equals("4")){
-
                             AlertDialog.Builder builder = new AlertDialog.Builder(Masuk.this,R.style.DialogTheme);
                             builder.setTitle("Change Password");
                             builder.setMessage("Apakah anda ingin mengubah kata sandi anda?");
@@ -207,13 +206,46 @@ public class Masuk extends AppCompatActivity {
                                 }
                             });
                             builder.show();
-
-
+                        }else if (member_type.equals("3")){
+                            AlertDialog.Builder builder = new AlertDialog.Builder(Masuk.this,R.style.DialogTheme);
+                            builder.setTitle("Change Password");
+                            builder.setMessage("Apakah anda ingin mengubah kata sandi anda?");
+                            builder.setIcon(R.drawable.ic_alarm);
+                            builder.setPositiveButton("Ya", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    Intent intent = new Intent(Masuk.this, ChangePassword.class);
+                                    intent.putExtra(TAG_EMAIL, username);
+                                    intent.putExtra(TAG_MEMBER_ID, memberid);
+                                    intent.putExtra(TAG_FULLNAME, fullname);
+                                    intent.putExtra(TAG_MEMBER_TYPE, member_type);
+                                    intent.putExtra(TAG_SCHOOL_CODE,school_code);
+                                    intent.putExtra(TAG_SCHOLL_NAME,school_name);
+                                    intent.putExtra(TAG_TOKEN, token);
+                                    finish();
+                                    startActivity(intent);
+                                }
+                            });
+                            builder.setNegativeButton("Tidak", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    Intent intent = new Intent(Masuk.this, MenuUtama.class);
+                                    intent.putExtra(TAG_EMAIL, username);
+                                    intent.putExtra(TAG_MEMBER_ID, memberid);
+                                    intent.putExtra(TAG_FULLNAME, fullname);
+                                    intent.putExtra(TAG_MEMBER_TYPE, member_type);
+                                    intent.putExtra(TAG_SCHOOL_CODE,school_code);
+                                    intent.putExtra(TAG_SCHOLL_NAME,school_name);
+                                    intent.putExtra(TAG_TOKEN, token);
+                                    finish();
+                                    startActivity(intent);
+                                }
+                            });
+                            builder.show();
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-                } else {
                 }
             }
             @Override

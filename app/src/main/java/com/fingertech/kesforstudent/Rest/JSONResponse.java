@@ -1059,7 +1059,7 @@ public class JSONResponse {
         }
     }
 
-    ////// Response Jadwal Pelajaran
+    //// dapat jadwal pelajaran
     public class JadwalPelajaran{
 
 
@@ -1067,7 +1067,7 @@ public class JSONResponse {
         public String code;
 
         @SerializedName("data")
-        public List<JadwalData> data;
+        public DataJadwal data;
 
         @SerializedName("status")
         public int status;
@@ -1080,12 +1080,12 @@ public class JSONResponse {
             return code;
         }
 
-        public void setData(List<JadwalData> data){
-            this.data = data;
+        public DataJadwal getData() {
+            return data;
         }
 
-        public List<JadwalData> getData(){
-            return data;
+        public void setData(DataJadwal data) {
+            this.data = data;
         }
 
         public void setStatus(int status){
@@ -1095,6 +1095,29 @@ public class JSONResponse {
         public int getStatus(){
             return status;
         }
+    }
+    public class DataJadwal {
+        @SerializedName("class_schedule")
+        public List<JadwalData> class_schedule;
+
+        public List<JadwalData> getClass_schedule() {
+            return class_schedule;
+        }
+
+        public void setClass_schedule(List<JadwalData> class_schedule) {
+            this.class_schedule = class_schedule;
+        }
+
+        public List<AgendaData> getClass_agenda() {
+            return class_agenda;
+        }
+
+        public void setClass_agenda(List<AgendaData> class_agenda) {
+            this.class_agenda = class_agenda;
+        }
+
+        @SerializedName("class_agenda")
+        public List<AgendaData> class_agenda;
     }
     public class JadwalData{
 
@@ -1152,6 +1175,52 @@ public class JSONResponse {
         public String getDayStatus(){
             return dayStatus;
         }
+    }
+
+    public class AgendaData{
+        @SerializedName("desc")
+        private String desc;
+        @SerializedName("type")
+        private String type;
+        @SerializedName("date")
+        private String date;
+        @SerializedName("content")
+        private String content;
+
+        public String getContent() {
+            return content;
+        }
+
+        public void setContent(String content) {
+            this.content = content;
+        }
+
+
+        public String getDesc() {
+            return desc;
+        }
+
+        public void setDesc(String desc) {
+            this.desc = desc;
+        }
+
+        public String getType() {
+            return type;
+        }
+
+        public void setType(String type) {
+            this.type = type;
+        }
+
+        public String getDate() {
+            return date;
+        }
+
+        public void setDate(String date) {
+            this.date = date;
+        }
+
+
     }
     public class ScheduleClassItem{
 

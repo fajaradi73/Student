@@ -22,7 +22,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.fingertech.kesforstudent.Adapter.SearchAdapter;
 import com.fingertech.kesforstudent.Controller.Auth;
 import com.fingertech.kesforstudent.R;
@@ -61,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
     public static final String TAG_MEMBER_TYPE  = "member_type";
     public static final String TAG_TOKEN        = "token";
     String email, memberid, fullname, member_type;
-
+//    SimpleSearchView simpleSearchView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,10 +71,35 @@ public class MainActivity extends AppCompatActivity {
         logo            = findViewById(R.id.logo);
         footer          = findViewById(R.id.footer);
         mApiInterface   = ApiClient.getClient().create(Auth.class);
-
+//        simpleSearchView    = findViewById(R.id.searchView);
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setHasFixedSize(true);
+//
+//        simpleSearchView.setOnQueryTextListener(new SimpleOnQueryTextListener() {
+//            @Override
+//            public boolean onQueryTextSubmit(String query) {
+//                search_school_post(String.valueOf(query));
+//                recyclerView.setVisibility(View.VISIBLE);
+//                logo.setVisibility(View.GONE);
+//                footer.setVisibility(View.GONE);
+//                return super.onQueryTextSubmit(query);
+//            }
+//
+//            @Override
+//            public boolean onQueryTextChange(String newText) {
+//                search_school_post(String.valueOf(newText));
+//                recyclerView.setVisibility(View.VISIBLE);
+//                logo.setVisibility(View.GONE);
+//                footer.setVisibility(View.GONE);
+//                return super.onQueryTextChange(newText);
+//            }
+//
+//            @Override
+//            public boolean onQueryTextCleared() {
+//                return super.onQueryTextCleared();
+//            }
+//        });
 
         et_search.addTextChangedListener(new TextWatcher() {
 

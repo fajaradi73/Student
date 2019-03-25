@@ -174,11 +174,13 @@ public class ChangePassword extends AppCompatActivity {
                 code   = resource.code;
 
                 if (status == 1 && code.equals("CP_SCS_0001")) {
-                    SharedPreferences.Editor editor = changeshared.edit();
-                    editor.putBoolean(session_status, true);
-                    editor.apply();
-                    Intent intent = new Intent(ChangePassword.this,MenuUtama.class);
-                    startActivity(intent);
+                    if (member_type.equals("4")){
+                        Intent intent = new Intent(ChangePassword.this,MenuUtama.class);
+                        startActivity(intent);
+                    }else if (member_type.equals("3")){
+                        Intent intent = new Intent(ChangePassword.this,MenuUtama.class);
+                        startActivity(intent);
+                    }
                 } else{
                     if (status == 0 && code.equals("CP_ERR_0001")) {
                         Toast.makeText(getApplicationContext(), "Kata sandi lama anda salah", Toast.LENGTH_LONG).show();
