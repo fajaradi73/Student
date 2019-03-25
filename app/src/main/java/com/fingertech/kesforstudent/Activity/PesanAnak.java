@@ -1,15 +1,16 @@
 package com.fingertech.kesforstudent.Activity;
 
-import android.app.DatePickerDialog;
+import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.PorterDuff;
 import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -19,7 +20,6 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -30,14 +30,25 @@ import com.fingertech.kesforstudent.Model.PesanModel;
 import com.fingertech.kesforstudent.R;
 import com.fingertech.kesforstudent.Rest.ApiClient;
 import com.fingertech.kesforstudent.Rest.JSONResponse;
+import com.fingertech.kesforstudent.Rest.UtilsApi;
+import com.yarolegovich.lovelydialog.LovelyInfoDialog;
 
-import java.text.DateFormat;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -45,177 +56,166 @@ import retrofit2.Response;
 public class PesanAnak extends AppCompatActivity {
 
     Toolbar toolbar;
-    String authorization,school_code,member_id;
-    EditText date_from,date_to;
-    CardView go;
-    RecyclerView recyclerView;
-    Auth mApiInterface;
+    RecyclerView rv_pesan;
+    Auth mApiInterface,mApi;
+    String authorization,school_code,student_id;
     int status;
     String code;
-    PesanAdapter pesanAdapter;
-    List<PesanModel> pesanModelList;
-    PesanModel pesanModel;
-    DateFormat dateFormat  = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
-    String tanggal,kelas,mapel,pesan,guru;
+    SharedPreferences sharedPreferences;
+    PesanAdapter pesanAnakAdapter;
+    List<PesanModel> pesanAnakModelList = new ArrayList<>();
+    PesanModel pesanAnakModel;
     ProgressDialog dialog;
+    String tanggal,jam,mapel,pesan,guru,classroom_id,message_id,title,read_status,nama_anak;
     TextView no_pesan;
+
+    ArrayList<HashMap<String, String>> contactList;
+    String date_from,date_to;
+    private SimpleDateFormat formattanggal  = new SimpleDateFormat("yyyy-MM-dd",Locale.getDefault());
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.pesan_anak);
-        toolbar         = findViewById(R.id.toolbar_pesan);
-        date_from       = findViewById(R.id.et_dari);
-        date_to         = findViewById(R.id.et_sampai);
-        go              = findViewById(R.id.btn_go);
-        recyclerView    = findViewById(R.id.rv_pesan);
-        no_pesan        = findViewById(R.id.tv_no_pesan);
+        toolbar         = findViewById(R.id.toolbar_pesan_anak);
+        rv_pesan        = findViewById(R.id.rv_pesan_anak);
         mApiInterface   = ApiClient.getClient().create(Auth.class);
+        mApi            = UtilsApi.getAPIService();
+        no_pesan        = findViewById(R.id.tv_no_pesan);
 
-        authorization   = getIntent().getStringExtra("authorization");
-        school_code     = getIntent().getStringExtra("school_code");
-        member_id       = getIntent().getStringExtra("member_id");
+
+        sharedPreferences   = getSharedPreferences(MenuUtama.my_viewpager_preferences, Context.MODE_PRIVATE);
+        authorization       = sharedPreferences.getString("authorization",null);
+        school_code         = sharedPreferences.getString("school_code",null);
+        student_id          = sharedPreferences.getString("member_id",null);
+        classroom_id        = sharedPreferences.getString("classroom_id",null);
+        nama_anak           = sharedPreferences.getString("fullname",null);
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         toolbar.getNavigationIcon().setColorFilter(getResources().getColor(R.color.white), PorterDuff.Mode.SRC_ATOP);
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.MONTH,-3);
+        date_from = formattanggal.format(calendar.getTime());
+        date_to   = formattanggal.format(Calendar.getInstance().getTime());
+        dapat();
 
-        Calendar mcurrentDate = Calendar.getInstance();
-        int mYear = mcurrentDate.get(Calendar.YEAR);
-        int mMonth = mcurrentDate.get(Calendar.MONTH);
-        int mDay = mcurrentDate.get(Calendar.DAY_OF_MONTH);
-
-        final DatePickerDialog mDatePicker;
-        mDatePicker = new DatePickerDialog(this, R.style.DialogTheme,
-                (datepicker, selectedyear, selectedmonth, selectedday) ->
-                        date_from.setText(convertDate(selectedyear, selectedmonth, selectedday)), mYear, mMonth, mDay);
-        date_from.setText(converDate("2018-12-30"));
-        date_from.setOnClickListener(view -> mDatePicker.show());
-
-        date_from.setOnFocusChangeListener((view, b) -> {
-            if (b) {
-                mDatePicker.show();
-            }
-        });
-
-        final DatePickerDialog datePickerDialog;
-        datePickerDialog = new DatePickerDialog(this, R.style.DialogTheme,
-                (datepicker, selectedyear, selectedmonth, selectedday) ->
-                        date_to.setText(convertDate(selectedyear, selectedmonth, selectedday)), mYear, mMonth, mDay);
-
-        date_to.setText(converDate(dateFormat.format(Calendar.getInstance().getTime())));
-
-        date_to.setOnClickListener(view -> datePickerDialog.show());
-
-        date_to.setOnFocusChangeListener((view, b) -> {
-            if (b) {
-                datePickerDialog.show();
-            }
-        });
-
-        go.setOnClickListener(v -> {
-                dapat_pesan();
-        });
-        dapat_pesan();
     }
 
-    //Konversi tanggal dari date dialog ke format yang kita inginkan
-    String convertDate(int year, int month, int day) {
-        Log.d("Tanggal", year + "/" + month + "/" + day);
-        String temp = year + "-" + (month + 1) + "-" + day;
-        SimpleDateFormat calendarDateFormat = new SimpleDateFormat("yyyy-MM-dd",Locale.getDefault());
-        SimpleDateFormat newDateFormat = new SimpleDateFormat("dd MMM yyyy",Locale.getDefault());
-        try {
-            String e = newDateFormat.format(calendarDateFormat.parse(temp));
-            return e;
-        } catch (java.text.ParseException e) {
-            e.printStackTrace();
-            return "";
-        }
-    }
-    String converDate(String tanggal){
-        SimpleDateFormat calendarDateFormat = new SimpleDateFormat("yyyy-MM-dd",Locale.getDefault());
-
-        SimpleDateFormat newDateFormat = new SimpleDateFormat("dd MMM yyyy",Locale.getDefault());
-        try {
-            String e = newDateFormat.format(calendarDateFormat.parse(tanggal));
-            return e;
-        } catch (java.text.ParseException e) {
-            e.printStackTrace();
-            return "";
-        }
-    }
-    String convertTanggal(String tanggal){
-        SimpleDateFormat calendarDateFormat = new SimpleDateFormat("yyyy-MM-dd",Locale.getDefault());
-        SimpleDateFormat newDateFormat = new SimpleDateFormat("dd MMM yyyy",Locale.getDefault());
-        try {
-            String e = calendarDateFormat.format(newDateFormat.parse(tanggal));
-            return e;
-        } catch (java.text.ParseException e) {
-            e.printStackTrace();
-            return "";
-        }
-    }
-
-    public void dapat_pesan(){
+    void dapat(){
         progressBar();
         showDialog();
-        Call<JSONResponse.PesanAnak> call = mApiInterface.kes_message_inbox_get(authorization.toString(),school_code.toLowerCase(),member_id.toString(),convertTanggal(date_from.getText().toString()),convertTanggal(date_to.getText().toString()));
-        call.enqueue(new Callback<JSONResponse.PesanAnak>() {
-            @Override
-            public void onResponse(Call<JSONResponse.PesanAnak> call, final Response<JSONResponse.PesanAnak> response) {
-                Log.d("onRespone",response.code()+"");
-                hideDialog();
-                JSONResponse.PesanAnak resource = response.body();
+        mApi.kes_message_get(authorization,school_code.toLowerCase(),student_id,date_from,date_to)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<JSONResponse.PesanAnak>() {
 
-                status  = resource.status;
-                code    = resource.code;
+                    @Override
+                    public void onSubscribe(Disposable d) {
 
-                if (status == 1 & code.equals("DTS_SCS_0001")){
-                    pesanModelList  = new ArrayList<PesanModel>();
-                    for (int i = 0; i < response.body().getData().size();i++){
-                        tanggal     = response.body().getData().get(i).getDatez_ok();
-                        mapel       = response.body().getData().get(i).getCources_name();
-                        pesan       = response.body().getData().get(i).getMessage_cont();
-                        guru        = response.body().getData().get(i).getSender_name();
-                        kelas       = response.body().getData().get(i).getClassroom_name();
-                        pesanModel = new PesanModel();
-                        pesanModel.setTanggal(tanggal);
-                        pesanModel.setMapel(mapel);
-                        pesanModel.setPesan(pesan);
-                        pesanModel.setKelas(kelas);
-                        pesanModel.setDari(guru);
-                        pesanModelList.add(pesanModel);
                     }
-                    no_pesan.setVisibility(View.GONE);
-                    pesanAdapter = new PesanAdapter(pesanModelList);
-                    pesanAdapter.setOnItemClickListener((view, position) -> {
-                        Intent intent = new Intent(getApplicationContext(),PesanDetail.class);
-                        intent.putExtra("authorization",authorization);
-                        intent.putExtra("school_code",school_code);
-                        intent.putExtra("member_id",member_id);
-                        intent.putExtra("message_id",response.body().getData().get(position).getMessageid());
-                        intent.putExtra("classroom_id",response.body().getData().get(position).getClassroom_id());
-                        startActivity(intent);
-                    });
-                    RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(PesanAnak.this);
-                    recyclerView.setLayoutManager(layoutManager);
-                    recyclerView.setAdapter(pesanAdapter);
 
-                }
-                else if (status == 0 & code.equals("DTS_ERR_0001")){
-                    no_pesan.setVisibility(View.VISIBLE);
-                    recyclerView.setVisibility(View.GONE);
-                }
-            }
+                    @Override
+                    public void onNext(JSONResponse.PesanAnak response) {
+                        status = response.status;
+                        code   = response.code;
+                        if (status == 1 && code.equals("DTS_SCS_0001")){
+                            for (int i = 0; i<response.getData().size();i++){
+                                jam     = response.getData().get(i).getDatez();
+                                tanggal     = response.getData().get(i).getMessage_date();
+                                mapel       = response.getData().get(i).getCources_name();
+                                pesan       = response.getData().get(i).getMessage_cont();
+                                guru        = response.getData().get(i).getSender_name();
+                                title       = response.getData().get(i).getMessage_title();
+                                read_status = response.getData().get(i).getRead_status();
+                                message_id  = response.getData().get(i).getMessageid();
+                                pesanAnakModel = new PesanModel();
+                                pesanAnakModel.setTanggal(tanggal);
+                                pesanAnakModel.setJam(jam);
+                                pesanAnakModel.setTitle(title);
+                                pesanAnakModel.setPesan(pesan);
+                                pesanAnakModel.setDari(guru);
+                                pesanAnakModel.setMessage_id(message_id);
+                                pesanAnakModel.setRead_status(read_status);
+                                pesanAnakModelList.add(pesanAnakModel);
+                            }
+                            no_pesan.setVisibility(View.GONE);
+                        }
+                        else if (status == 0 && code.equals("DTS_ERR_0001")){
+                            no_pesan.setVisibility(View.VISIBLE);
+                            rv_pesan.setVisibility(View.GONE);
+                        }
+                    }
 
-            @Override
-            public void onFailure(Call<JSONResponse.PesanAnak> call, Throwable t) {
-                Log.i("onFailure",t.toString());
-                Toast.makeText(getApplicationContext(),t.toString(),Toast.LENGTH_LONG).show();
-                hideDialog();
+                    @Override
+                    public void onError(Throwable e) {
+                        hideDialog();
+                        Log.d("eror",e.toString());
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        hideDialog();
+                        pesanAnakAdapter = new PesanAdapter(pesanAnakModelList);
+                        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(PesanAnak.this);
+                        rv_pesan.setLayoutManager(layoutManager);
+                        rv_pesan.setAdapter(pesanAnakAdapter);
+                        pesanAnakAdapter.setOnItemClickListener(new PesanAdapter.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(View view, int position) {
+                                message_id = pesanAnakModelList.get(position).getMessage_id();
+                                SharedPreferences.Editor editor = sharedPreferences.edit();
+                                editor.putString("authorization",authorization);
+                                editor.putString("school_code",school_code);
+                                editor.putString("member_id",student_id);
+                                editor.putString("classroom_id",classroom_id);
+                                editor.putString("message_id",message_id);
+                                editor.putString("student_name",nama_anak);
+                                editor.apply();
+                                Intent intent = new Intent(PesanAnak.this, PesanDetail.class);
+                                intent.putExtra("authorization",authorization);
+                                intent.putExtra("school_code",school_code);
+                                intent.putExtra("member_id",student_id);
+                                intent.putExtra("classroom_id",classroom_id);
+                                intent.putExtra("message_id",message_id);
+                                intent.putExtra("student_name",nama_anak);
+                                startActivityForResult(intent,1);
+                            }
+                        });
+                    }
+                });
+    }
+
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+    public boolean onCreateOptionsMenu(Menu menu) {
+        return true;
+    }
+
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1) {
+            if(resultCode == RESULT_OK) {
+                authorization = data.getStringExtra("authorization");
+                school_code   = data.getStringExtra("school_code");
+                student_id    = data.getStringExtra("member_id");
+                Calendar calendar = Calendar.getInstance();
+                calendar.add(Calendar.MONTH,-3);
+                date_from = formattanggal.format(calendar.getTime());
+                date_to=formattanggal.format(Calendar.getInstance().getTime());
+                dapat();
             }
-        });
+        }
     }
     private void showDialog() {
         if (!dialog.isShowing())
@@ -233,20 +233,8 @@ public class PesanAnak extends AppCompatActivity {
         dialog.setIndeterminate(true);
         dialog.setCancelable(false);
     }
+
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                onBackPressed();
-                return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-    public boolean onCreateOptionsMenu(Menu menu) {
-        return true;
-    }
-
     public boolean dispatchTouchEvent(MotionEvent event) {
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
             View v = getCurrentFocus();
@@ -262,5 +250,4 @@ public class PesanAnak extends AppCompatActivity {
         }
         return super.dispatchTouchEvent( event );
     }
-
 }

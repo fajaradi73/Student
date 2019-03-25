@@ -2,6 +2,7 @@ package com.fingertech.kesforstudent.Controller;
 
 import com.fingertech.kesforstudent.Rest.JSONResponse;
 
+import io.reactivex.Observable;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import retrofit2.Call;
@@ -125,7 +126,7 @@ public interface Auth {
 
     ///// Pesan Anak
     @GET("students/kes_message_inbox")
-    Call<JSONResponse.PesanAnak>kes_message_inbox_get(@Header("Authorization") String authorization,
+    Observable<JSONResponse.PesanAnak> kes_message_get(@Header("Authorization") String authorization,
                                                       @Query("school_code") String school_code,
                                                       @Query("student_id") String member_id,
                                                       @Query("date_from") String date_from,

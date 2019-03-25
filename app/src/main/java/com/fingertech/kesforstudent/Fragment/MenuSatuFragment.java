@@ -34,7 +34,7 @@ public class MenuSatuFragment extends Fragment {
 
     CardView btn_jadwal,btn_ujian,btn_absen,btn_tugas,btn_raport,btn_kalendar;
     SharedPreferences sharedPreferences;
-    String authorization,school_code,member_id,classroom_id;
+    String authorization,school_code,member_id,classroom_id,nama_anak;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -53,6 +53,7 @@ public class MenuSatuFragment extends Fragment {
         school_code         = sharedPreferences.getString("school_code",null);
         member_id           = sharedPreferences.getString("member_id",null);
         classroom_id        = sharedPreferences.getString("classroom_id",null);
+        nama_anak           = sharedPreferences.getString("fullname",null);
 
         btn_jadwal.setOnClickListener(v -> {
             if (authorization != null  && school_code != null && member_id != null && classroom_id != null) {

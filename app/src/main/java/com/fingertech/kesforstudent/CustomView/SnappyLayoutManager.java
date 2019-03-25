@@ -1,4 +1,4 @@
-package com.fingertech.kesforstudent.RecycleView;
+package com.fingertech.kesforstudent.CustomView;
 
 public interface SnappyLayoutManager {
     /**

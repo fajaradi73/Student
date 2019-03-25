@@ -28,7 +28,7 @@ public class MenuDuaFragment extends Fragment {
 
     CardView btn_pesan;
     SharedPreferences sharedPreferences;
-    String authorization,school_code,member_id,classroom_id;
+    String authorization,school_code,member_id,classroom_id,nama_anak;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -42,13 +42,23 @@ public class MenuDuaFragment extends Fragment {
         school_code         = sharedPreferences.getString("school_code",null);
         member_id           = sharedPreferences.getString("member_id",null);
         classroom_id        = sharedPreferences.getString("classroom_id",null);
+        nama_anak           = sharedPreferences.getString("fullname",null);
 
         btn_pesan.setOnClickListener(v -> {
             if (authorization != null  && school_code != null && member_id != null) {
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putString("member_id",member_id);
+                editor.putString("school_code",school_code);
+                editor.putString("authorization",authorization);
+                editor.putString("classroom_id",classroom_id);
+                editor.putString("fullname",nama_anak);
+                editor.apply();
                 Intent intent = new Intent(getContext(), PesanAnak.class);
                 intent.putExtra("authorization", authorization);
                 intent.putExtra("school_code", school_code);
                 intent.putExtra("member_id", member_id);
+                intent.putExtra("classroom_id",classroom_id);
+                intent.putExtra("fullname",nama_anak);
                 startActivity(intent);
             }else{
                 Toast.makeText(getContext(),"Harap refresh kembali", Toast.LENGTH_LONG).show();

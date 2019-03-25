@@ -1,7 +1,31 @@
 package com.fingertech.kesforstudent.Model;
 
 public class PesanModel {
-    String tanggal,jam,dari,pesan,mapel,kelas;
+    private String jam;
+    private String dari;
+    private String pesan;
+    private String mapel;
+    private String kelas;
+    private String tanggal;
+    private String message_id;
+
+    public String getMessage_id() {
+        return message_id;
+    }
+
+    public void setMessage_id(String message_id) {
+        this.message_id = message_id;
+    }
+
+    public String getRead_status() {
+        return read_status;
+    }
+
+    public void setRead_status(String read_status) {
+        this.read_status = read_status;
+    }
+
+    private String read_status;
 
     public String getTanggal() {
         return tanggal;
@@ -50,4 +74,14 @@ public class PesanModel {
     public void setKelas(String kelas) {
         this.kelas = kelas;
     }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    String title;
 }

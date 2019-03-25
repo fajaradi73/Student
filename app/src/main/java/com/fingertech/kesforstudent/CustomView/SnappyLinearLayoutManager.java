@@ -1,4 +1,4 @@
-package com.fingertech.kesforstudent.RecycleView;
+package com.fingertech.kesforstudent.CustomView;
 
 import android.content.Context;
 import android.graphics.PointF;

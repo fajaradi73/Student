@@ -7,6 +7,8 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.ColorDrawable;
+import android.support.design.widget.AppBarLayout;
+import android.support.v4.view.ViewCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -53,11 +55,18 @@ import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 import static com.fingertech.kesforstudent.Service.App.getContext;
 
-public class AbsenAnak extends AppCompatActivity {
-    Toolbar toolbar;
+public class AbsenAnak extends AppCompatActivity{
+
+    private AppBarLayout appBarLayout;
+
+    private final SimpleDateFormat dateFormats = new SimpleDateFormat("d MMMM yyyy",new Locale("in","ID"));
+
+    private CompactCalendarView compactCalendarView;
+
+    private boolean isExpanded = false;
+
     Auth mApiInterface;
     String bulan,tahun,tanggal,day,hari;
-    CompactCalendarView compactCalendarView;
 
     private SimpleDateFormat dateFormat     = new SimpleDateFormat("MMMM - yyyy",new Locale("in","ID"));
     private SimpleDateFormat bulanFormat    = new SimpleDateFormat("MM", Locale.getDefault());
@@ -73,7 +82,7 @@ public class AbsenAnak extends AppCompatActivity {
     String authorization,school_code,student_id,classroom_id,calendar_year;
     RecyclerView recyclerView;
     String tanggals;
-    private List<AbsensiModel>absensiModels;
+    private List<AbsensiModel> absensiModels;
     List <AbsenModel> absenModelList = new ArrayList<>();
 
     List<JSONResponse.ScheduleClassItem> scheduleClassItemList = new ArrayList<>();
@@ -94,26 +103,31 @@ public class AbsenAnak extends AppCompatActivity {
     LinearLayout drag;
     ImageView arrow;
     TextView no_absen;
+    RelativeLayout datePickerButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.absen_anak);
+        setContentView(R.layout.absensi_view);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        setTitle("Absensi Anak");
+
+        appBarLayout = findViewById(R.id.app_bar_layout);
+
+        // Set up the CompactCalendarView
         compactCalendarView = findViewById(R.id.compactcalendar_view);
         month_calender      = findViewById(R.id.month_calender);
         left_month          = findViewById(R.id.left_calender);
         right_month         = findViewById(R.id.right_calender);
         mApiInterface       = ApiClient.getClient().create(Auth.class);
         recyclerView        = findViewById(R.id.rv_absen);
-        toolbar             = findViewById(R.id.toolbar_absen);
         tv_absen            = findViewById(R.id.hint_absen);
         hint                = findViewById(R.id.hint);
         no_absen            = findViewById(R.id.no_absen);
-//        slidingUpPanelLayout = findViewById(R.id.sliding_layout);
-//        btn_pilih           = findViewById(R.id.btn_pilih);
-//        drag                = findViewById(R.id.dragView);
-//        arrow               = findViewById(R.id.arrow);
-//        name                = findViewById(R.id.name);
+        arrow               = findViewById(R.id.date_picker_arrow);
+        datePickerButton    = findViewById(R.id.date_picker_button);
 
         sharedPreferences   = getSharedPreferences(MenuUtama.my_viewpager_preferences, Context.MODE_PRIVATE);
         authorization       = sharedPreferences.getString("authorization",null);
@@ -121,9 +135,19 @@ public class AbsenAnak extends AppCompatActivity {
         student_id          = sharedPreferences.getString("member_id",null);
         classroom_id        = sharedPreferences.getString("classroom_id",null);
 
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        toolbar.getNavigationIcon().setColorFilter(getResources().getColor(R.color.white), PorterDuff.Mode.SRC_ATOP);
+        compactCalendarView.setLocale(TimeZone.getDefault(), new Locale("in","ID"));
+
+        compactCalendarView.setShouldDrawDaysHeader(true);
+
+        // Set current date to today
+        setCurrentDate(new Date());
+        datePickerButton.setOnClickListener(v -> {
+            float rotation = isExpanded ? 0 : 180;
+            ViewCompat.animate(arrow).rotation(rotation).start();
+
+            isExpanded = !isExpanded;
+            appBarLayout.setExpanded(isExpanded, true);
+        });
 
         compactCalendarView.setUseThreeLetterAbbreviation(true);
         month_calender.setText(dateFormat.format(compactCalendarView.getFirstDayOfCurrentMonth()));
@@ -154,6 +178,7 @@ public class AbsenAnak extends AppCompatActivity {
         compactCalendarView.setListener(new CompactCalendarView.CompactCalendarViewListener() {
             @Override
             public void onDayClick(Date dateClicked) {
+                setSubtitle(dateFormats.format(dateClicked));
                 hari    = hariFormat.format(dateClicked);
                 day     = tanggalFormat.format(dateClicked);
                 if(day.substring(0,1).equals("0"))
@@ -168,10 +193,12 @@ public class AbsenAnak extends AppCompatActivity {
                     tv_absen.setVisibility(VISIBLE);
                     recyclerView.setVisibility(GONE);
                     hint.setVisibility(GONE);
+                    no_absen.setVisibility(GONE);
                 }else {
                     tv_absen.setVisibility(GONE);
                     recyclerView.setVisibility(VISIBLE);
                     hint.setVisibility(VISIBLE);
+                    no_absen.setVisibility(GONE);
                     if (absensiModels != null) {
                         absensiModels.clear();
                         for (JSONResponse.ScheduleClassItem dataJam : scheduleClassItemList) {
@@ -204,6 +231,7 @@ public class AbsenAnak extends AppCompatActivity {
 
             @Override
             public void onMonthScroll(Date firstDayOfNewMonth) {
+                setSubtitle(dateFormats.format(firstDayOfNewMonth));
                 day = tanggalFormat.format(firstDayOfNewMonth);
                 if(day.substring(0,1).equals("0"))
                 {
@@ -217,7 +245,6 @@ public class AbsenAnak extends AppCompatActivity {
                 month_calender.setText(dateFormat.format(firstDayOfNewMonth));
                 tahun   = tahunFormat.format(firstDayOfNewMonth);
                 hari = hariFormat.format(firstDayOfNewMonth);
-//                name.setText("Rekap presensi bulan "+monthFormat.format(firstDayOfNewMonth));
                 dapat_absen();
             }
         });
@@ -225,48 +252,42 @@ public class AbsenAnak extends AppCompatActivity {
         left_month.setOnClickListener(v -> compactCalendarView.scrollLeft());
         right_month.setOnClickListener(v -> compactCalendarView.scrollRight());
 
-//        btn_pilih.setOnClickListener(v -> {
-//            slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
-//            arrow.setImageResource(R.drawable.ic_up_arrow);
-//            SharedPreferences.Editor editor = sharedPreferences.edit();
-//            editor.putString("authorization",authorization);
-//            editor.putString("school_code",school_code);
-//            editor.putString("classroom_id",classroom_id);
-//            editor.putString("student_id",student_id);
-//            editor.putString("bulan",bulan);
-//            editor.putString("tahun",tahun);
-//            editor.commit();
-//            Intent intent = new Intent(AbsenAnak.this,RekapAbsensi.class);
-//            intent.putExtra("authorization",authorization);
-//            intent.putExtra("school_code",school_code);
-//            intent.putExtra("classroom_id",classroom_id);
-//            intent.putExtra("student_id",student_id);
-//            intent.putExtra("bulan",bulan);
-//            intent.putExtra("tahun",tahun);
-//            startActivity(intent);
-//        });
+    }
 
-//        slidingUpPanelLayout.setFadeOnClickListener(view -> {
-//            slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
-//            arrow.setImageResource(R.drawable.ic_up_arrow);
-//        });
-//
-//        drag.setOnClickListener(v -> {
-//            if (slidingUpPanelLayout.getPanelState().equals(SlidingUpPanelLayout.PanelState.EXPANDED)){
-//                slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
-//                arrow.setImageResource(R.drawable.ic_up_arrow);
-//            }else if (slidingUpPanelLayout.getPanelState().equals(SlidingUpPanelLayout.PanelState.COLLAPSED)){
-//                slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);
-//                arrow.setImageResource(R.drawable.ic_arrow_down);
-//            }
-//        });
+    private void setCurrentDate(Date date) {
+        setSubtitle(dateFormats.format(date));
+        if (compactCalendarView != null) {
+            compactCalendarView.setCurrentDate(date);
+        }
+    }
+
+    @Override
+    public void setTitle(CharSequence title) {
+        TextView tvTitle = findViewById(R.id.title);
+
+        if (tvTitle != null) {
+            tvTitle.setText(title);
+        }
+    }
+
+    private void setSubtitle(String subtitle) {
+        TextView datePickerTextView = findViewById(R.id.date_picker_text_view);
+
+        if (datePickerTextView != null) {
+            datePickerTextView.setText(subtitle);
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                onBackPressed();
+                finish();
                 return true;
         }
 
@@ -276,32 +297,14 @@ public class AbsenAnak extends AppCompatActivity {
         return true;
     }
 
-    private void showDialog() {
-        if (!dialog.isShowing())
-            dialog.show();
-        dialog.setContentView(R.layout.progressbar);
-    }
-    private void hideDialog() {
-        if (dialog.isShowing())
-            dialog.dismiss();
-        dialog.setContentView(R.layout.progressbar);
-    }
-    public void progressBar(){
-        dialog = new ProgressDialog(AbsenAnak.this);
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-        dialog.setIndeterminate(true);
-        dialog.setCancelable(false);
-    }
-
     public void dapat_absen(){
-        progressBar();
-        showDialog();
+
         Call<JSONResponse.AbsenSiswa> call = mApiInterface.kes_class_attendance_get(authorization.toString(),school_code.toLowerCase(),student_id.toString(),classroom_id.toString(),bulan.toString(),tahun.toString());
         call.enqueue(new Callback<JSONResponse.AbsenSiswa>() {
             @Override
             public void onResponse(Call<JSONResponse.AbsenSiswa> call, Response<JSONResponse.AbsenSiswa> response) {
                 Log.i("KES",response.code() + "");
-                hideDialog();
+
                 JSONResponse.AbsenSiswa resource = response.body();
                 status = resource.status;
                 code   = resource.code;
@@ -316,7 +319,7 @@ public class AbsenAnak extends AppCompatActivity {
             @Override
             public void onFailure(Call<JSONResponse.AbsenSiswa> call, Throwable t) {
                 Log.d("Gagal",t.toString());
-                hideDialog();
+
             }
         });
     }

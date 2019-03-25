@@ -3108,8 +3108,8 @@ public class JSONResponse {
         @SerializedName("parent_status")
         public String parent_status;
 
-        @SerializedName("parent_id")
-        public String parent_id;
+        @SerializedName("teacher_id")
+        public String teacher_id;
 
         @SerializedName("datez_ok")
         public String datez_ok;
@@ -3126,8 +3126,22 @@ public class JSONResponse {
         @SerializedName("member_type_text")
         public String member_type_text;
 
+        @SerializedName("parent_message_id")
+        public String parent_message_id;
+
         @SerializedName("reply_status")
         public int reply_status;
+
+        @SerializedName("message_title")
+        public String message_title;
+
+        public String getMessage_title() {
+            return message_title;
+        }
+
+        public void setMessage_title(String message_title) {
+            this.message_title = message_title;
+        }
 
         public String getMessageid() {
             return messageid;
@@ -3266,11 +3280,11 @@ public class JSONResponse {
         }
 
         public String getTeacher_id() {
-            return member_id;
+            return teacher_id;
         }
 
-        public void setTeacher_id(String member_id) {
-            this.member_id = member_id;
+        public void setTeacher_id(String teacher_id) {
+            this.teacher_id = teacher_id;
         }
 
         public String getDatez_ok() {
@@ -3313,6 +3327,14 @@ public class JSONResponse {
             this.member_type_text = member_type_text;
         }
 
+        public String getParent_message_id() {
+            return parent_message_id;
+        }
+
+        public void setParent_message_id(String parent_message_id) {
+            this.parent_message_id = parent_message_id;
+        }
+
         public int getReply_status() {
             return reply_status;
         }
@@ -3322,7 +3344,7 @@ public class JSONResponse {
         }
     }
 
-    //// Response Pesan Detail
+    /// pesan detail
     public class PesanDetail{
         @SerializedName("status")
         public int status;
@@ -3441,7 +3463,7 @@ public class JSONResponse {
         @SerializedName("school_name")
         public String school_name;
 
-        @SerializedName("sender_name")
+        @SerializedName("created_by")
         public String created_by;
 
         @SerializedName("student_name")
@@ -3452,6 +3474,28 @@ public class JSONResponse {
 
         @SerializedName("cources_name")
         public String cources_name;
+
+        @SerializedName("sender_name")
+        public String sender_name;
+
+        public String getSender_name() {
+            return sender_name;
+        }
+
+        public void setSender_name(String sender_name) {
+            this.sender_name = sender_name;
+        }
+
+        public String getMessage_title() {
+            return message_title;
+        }
+
+        public void setMessage_title(String message_title) {
+            this.message_title = message_title;
+        }
+
+        @SerializedName("message_title")
+        public String message_title;
 
         public String getMessageid() {
             return messageid;
@@ -3910,7 +3954,6 @@ public class JSONResponse {
             this.cources_name = cources_name;
         }
     }
-
     //// Response Absen Anak
     public class AbsenSiswa{
         @SerializedName("status")

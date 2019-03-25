@@ -15,7 +15,6 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -29,8 +28,6 @@ import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.fingertech.kesforstudent.Activity.Setting.Setting_Activity;
-import com.fingertech.kesforstudent.Activity.Setting.SettingsActivity;
 import com.fingertech.kesforstudent.Adapter.HariAdapter.JumatAdapter;
 import com.fingertech.kesforstudent.Adapter.HariAdapter.KamisAdapter;
 import com.fingertech.kesforstudent.Adapter.HariAdapter.RabuAdapter;
@@ -47,8 +44,7 @@ import com.fingertech.kesforstudent.Model.HariModel.JadwalSabtu;
 import com.fingertech.kesforstudent.Model.HariModel.JadwalSelasa;
 import com.fingertech.kesforstudent.Model.HariModel.JadwalSenin;
 import com.fingertech.kesforstudent.R;
-import com.fingertech.kesforstudent.RecycleView.SnappyLinearLayoutManager;
-import com.fingertech.kesforstudent.RecycleView.SnappyRecycleView;
+import com.fingertech.kesforstudent.CustomView.SnappyRecycleView;
 import com.fingertech.kesforstudent.Rest.ApiClient;
 import com.fingertech.kesforstudent.Rest.JSONResponse;
 import com.pixelcan.inkpageindicator.InkPageIndicator;
@@ -62,7 +58,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-import java.util.SimpleTimeZone;
 import java.util.TimeZone;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -341,11 +336,13 @@ public class MenuUtama extends AppCompatActivity
             editor.putString("school_code",school_code);
             editor.putString("authorization",authorization);
             editor.putString("classroom_id",classroom_id);
+            editor.putString("fullname",fullname);
             editor.apply();
             bundle.putString("member_id", memberid);
             bundle.putString("school_code", school_code);
             bundle.putString("authorization", authorization);
             bundle.putString("classroom_id", classroom_id);
+            bundle.putString("fullname",fullname);
             MenuSatuFragment menuSatuFragment = new MenuSatuFragment();
             FragmentManager fragmentManager = getSupportFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -370,11 +367,13 @@ public class MenuUtama extends AppCompatActivity
             editor.putString("school_code",school_code);
             editor.putString("authorization",authorization);
             editor.putString("classroom_id",classroom_id);
+            editor.putString("fullname",fullname);
             editor.apply();
             bundle.putString("member_id", memberid);
             bundle.putString("school_code", school_code);
             bundle.putString("authorization", authorization);
             bundle.putString("classroom_id", classroom_id);
+            bundle.putString("fullname",fullname);
             MenuDuaFragment menuSatuFragment = new MenuDuaFragment();
             FragmentManager fragmentManager = getSupportFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -678,15 +677,15 @@ public class MenuUtama extends AppCompatActivity
                                 break;
                             case "Minggu":
                                 if (itemlist.size() == 0) {
-                                    title_jadwal.setText("Jadwal besok");
+                                    title_jadwal.setText("Jadwal selasa");
                                     Snackbar.make(coordinatorLayout, "Tidak ada jadwal hari ini", Snackbar.LENGTH_LONG).show();
                                     rv_selasa.setVisibility(View.VISIBLE);
                                 } else {
                                     if (times_now > times_start) {
-                                        title_jadwal.setText("Jadwal besok");
+                                        title_jadwal.setText("Jadwal selasa");
                                         rv_selasa.setVisibility(View.VISIBLE);
                                     } else {
-                                        title_jadwal.setText("Jadwal hari ini");
+                                        title_jadwal.setText("Jadwal besok");
                                         rv_senin.setVisibility(View.VISIBLE);
                                     }
                                 }

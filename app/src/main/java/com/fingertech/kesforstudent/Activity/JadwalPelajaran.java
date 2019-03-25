@@ -15,7 +15,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.fingertech.kesforstudent.Adapter.HariAdapter.JumatAdapter;
 import com.fingertech.kesforstudent.Adapter.HariAdapter.KamisAdapter;
@@ -31,7 +30,6 @@ import com.fingertech.kesforstudent.Model.HariModel.JadwalSabtu;
 import com.fingertech.kesforstudent.Model.HariModel.JadwalSelasa;
 import com.fingertech.kesforstudent.Model.HariModel.JadwalSenin;
 import com.fingertech.kesforstudent.R;
-import com.fingertech.kesforstudent.RecycleView.SnappyRecycleView;
 import com.fingertech.kesforstudent.Rest.ApiClient;
 import com.fingertech.kesforstudent.Rest.JSONResponse;
 
