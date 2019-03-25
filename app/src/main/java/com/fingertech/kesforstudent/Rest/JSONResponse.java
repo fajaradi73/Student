@@ -3948,11 +3948,13 @@ public class JSONResponse {
     }
     public class DataJam{
         @SerializedName("schedule_time")
-        public String schedule_time;
+        String schedule_time;
 
         @SerializedName("timez_start")
         public String timez_start;
 
+        @SerializedName("timez_ok")
+        public String timez_ok;
 
         @SerializedName("timez_finish")
         public String timez_finish;
@@ -3975,7 +3977,6 @@ public class JSONResponse {
         public void setTimez_start(String timez_start) {
             this.timez_start = timez_start;
         }
-
 
         public String getSchedule_time() {
             return schedule_time;

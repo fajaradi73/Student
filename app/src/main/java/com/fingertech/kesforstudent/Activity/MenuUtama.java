@@ -413,7 +413,7 @@ public class MenuUtama extends AppCompatActivity
                             day_status = jadwalData.getDayStatus();
                             daysid = jadwalData.getDayid();
                             day_type = jadwalData.getDayType();
-                            switch (days_name.toString()) {
+                            switch (days_name) {
                                 case "Senin": {
                                     for (int o = 0; o < response.body().getData().getClass_schedule().get(i).getScheduleClass().size(); o++) {
                                         mapel = response.body().getData().getClass_schedule().get(i).getScheduleClass().get(o).getCourcesName();
@@ -433,7 +433,8 @@ public class MenuUtama extends AppCompatActivity
                                         itemlist.add(jadwalSenin);
                                     }
                                     seninAdapter = new SeninAdapter(itemlist);
-                                    RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(MenuUtama.this);
+                                    LinearLayoutManager layoutManager = new LinearLayoutManager(MenuUtama.this);
+                                    layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
                                     rv_senin.setLayoutManager(layoutManager);
                                     rv_senin.setAdapter(seninAdapter);
 
@@ -457,7 +458,8 @@ public class MenuUtama extends AppCompatActivity
                                         itemselasa.add(jadwalSelasa);
                                     }
                                     selasaAdapter = new SelasaAdapter(itemselasa);
-                                    RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(MenuUtama.this);
+                                    LinearLayoutManager layoutManager = new LinearLayoutManager(MenuUtama.this);
+                                    layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
                                     rv_selasa.setLayoutManager(layoutManager);
                                     rv_selasa.setAdapter(selasaAdapter);
                                     break;
@@ -480,7 +482,8 @@ public class MenuUtama extends AppCompatActivity
                                         itemRabu.add(jadwalRabu);
                                     }
                                     rabuAdapter = new RabuAdapter(itemRabu);
-                                    RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(MenuUtama.this);
+                                    LinearLayoutManager layoutManager = new LinearLayoutManager(MenuUtama.this);
+                                    layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
                                     rv_rabu.setLayoutManager(layoutManager);
                                     rv_rabu.setAdapter(rabuAdapter);
                                     break;
@@ -503,7 +506,8 @@ public class MenuUtama extends AppCompatActivity
                                         itemKamis.add(jadwalKamis);
                                     }
                                     kamisAdapter = new KamisAdapter(itemKamis);
-                                    RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(MenuUtama.this);
+                                    LinearLayoutManager layoutManager = new LinearLayoutManager(MenuUtama.this);
+                                    layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
                                     rv_kamis.setLayoutManager(layoutManager);
                                     rv_kamis.setAdapter(kamisAdapter);
 
@@ -527,7 +531,8 @@ public class MenuUtama extends AppCompatActivity
                                         itemJumat.add(jadwalJumat);
                                     }
                                     jumatAdapter = new JumatAdapter(itemJumat);
-                                    RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(MenuUtama.this);
+                                    LinearLayoutManager layoutManager = new LinearLayoutManager(MenuUtama.this);
+                                    layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
                                     rv_jumat.setLayoutManager(layoutManager);
                                     rv_jumat.setAdapter(jumatAdapter);
 
@@ -551,7 +556,8 @@ public class MenuUtama extends AppCompatActivity
                                         itemSabtu.add(jadwalSabtu);
                                     }
                                     sabtuAdapter = new SabtuAdapter(itemSabtu);
-                                    RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(MenuUtama.this);
+                                    LinearLayoutManager layoutManager = new LinearLayoutManager(MenuUtama.this);
+                                    layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
                                     rv_sabtu.setLayoutManager(layoutManager);
                                     rv_sabtu.setAdapter(sabtuAdapter);
                                     break;
