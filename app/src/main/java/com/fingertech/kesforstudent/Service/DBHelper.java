@@ -6,7 +6,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-import com.fingertech.kesforstudent.Model.Data;
+import com.fingertech.kesforstudent.Student.Model.Data;
 import com.fingertech.kesforstudent.Rest.BookmarkTabel;
 
 import java.util.ArrayList;

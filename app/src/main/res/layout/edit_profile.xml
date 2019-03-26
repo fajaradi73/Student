@@ -7,7 +7,7 @@
     android:orientation="vertical"
     android:focusable="true"
     android:focusableInTouchMode="true"
-    tools:context=".Activity.EditProfile">
+    tools:context=".Student.Activity.EditProfile">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbarprofil"

@@ -4,9 +4,8 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
-import android.widget.Toast;
 
-import com.fingertech.kesforstudent.Model.Data;
+import com.fingertech.kesforstudent.Student.Model.Data;
 import com.fingertech.kesforstudent.Service.DatabaseManager;
 
 import java.util.ArrayList;

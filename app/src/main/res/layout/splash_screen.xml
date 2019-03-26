@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
     android:gravity="center"
-    tools:context=".Activity.SplashScreen">
+    tools:context=".Student.Activity.SplashScreen">
 
     <ImageView
         android:layout_width="200dp"
