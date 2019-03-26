@@ -505,7 +505,7 @@ public class JadwalPelajaran extends AppCompatActivity {
                                 }
                             }
                             switch (day) {
-                                case "Monday":
+                                case "Senin":
                                     if (itemlist.size() == 0) {
                                         hint_senin.setVisibility(View.VISIBLE);
                                     } else {
@@ -514,7 +514,7 @@ public class JadwalPelajaran extends AppCompatActivity {
                                         hint_senin.setVisibility(View.GONE);
                                     }
                                     break;
-                                case "Tuesday":
+                                case "Selasa":
                                     if (itemselasa.size() == 0) {
                                         hint_selasa.setVisibility(View.VISIBLE);
                                     } else {
@@ -523,7 +523,7 @@ public class JadwalPelajaran extends AppCompatActivity {
                                         hint_selasa.setVisibility(View.GONE);
                                     }
                                     break;
-                                case "Wednesday":
+                                case "Rabu":
                                     if (itemRabu.size() == 0) {
                                         hint_rabu.setVisibility(View.VISIBLE);
                                     } else {
@@ -532,7 +532,7 @@ public class JadwalPelajaran extends AppCompatActivity {
                                         hint_rabu.setVisibility(View.GONE);
                                     }
                                     break;
-                                case "Thursday":
+                                case "Kamis":
                                     if (itemKamis.size() == 0) {
                                         hint_kamis.setVisibility(View.VISIBLE);
                                     } else {
@@ -541,7 +541,7 @@ public class JadwalPelajaran extends AppCompatActivity {
                                         hint_kamis.setVisibility(View.GONE);
                                     }
                                     break;
-                                case "Friday":
+                                case "Jumat":
                                     if (itemJumat.size() == 0) {
                                         hint_jumat.setVisibility(View.VISIBLE);
                                     } else {
@@ -550,7 +550,7 @@ public class JadwalPelajaran extends AppCompatActivity {
                                         hint_jumat.setVisibility(View.GONE);
                                     }
                                     break;
-                                case "Saturday":
+                                case "Sabtu":
                                     if (itemSabtu.size() == 0) {
                                         hint_sabtu.setVisibility(View.VISIBLE);
                                     } else {
@@ -559,7 +559,7 @@ public class JadwalPelajaran extends AppCompatActivity {
                                         hint_sabtu.setVisibility(View.GONE);
                                     }
                                     break;
-                                case "Sunday":
+                                case "Minggu":
                                     if (itemlist.size() == 0) {
                                         hint_senin.setVisibility(View.VISIBLE);
                                     } else {
