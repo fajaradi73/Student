@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.fingertech.kesforstudent">
+
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -124,6 +125,10 @@
             android:label="Rapor Anak"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".Activity.Menu_guru.Menu_Utama_Guru"
+            android:label=""
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".Activity.PesanAnak"
             android:label="Pesan Anak"
@@ -132,7 +137,7 @@
         <activity
             android:name=".Activity.Setting.Setting_Activity"
             android:label="Pengaturan"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".Activity.PesanDetail"
             android:label="Pesan Detail"
@@ -148,10 +153,11 @@
             android:label="Kalendar Kelas"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".Activity.AbsenAnak"
+        <activity
+            android:name=".Activity.AbsenAnak"
             android:label="Absen Anak"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>

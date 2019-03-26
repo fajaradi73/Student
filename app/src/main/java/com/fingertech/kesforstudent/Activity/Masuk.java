@@ -20,6 +20,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.fingertech.kesforstudent.Activity.Menu_guru.Menu_Utama_Guru;
 import com.fingertech.kesforstudent.Controller.Auth;
 import com.fingertech.kesforstudent.R;
 import com.fingertech.kesforstudent.Rest.ApiClient;
@@ -229,7 +230,7 @@ public class Masuk extends AppCompatActivity {
                             builder.setNegativeButton("Tidak", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    Intent intent = new Intent(Masuk.this, MenuUtama.class);
+                                    Intent intent = new Intent(Masuk.this, Menu_Utama_Guru.class);
                                     intent.putExtra(TAG_EMAIL, username);
                                     intent.putExtra(TAG_MEMBER_ID, memberid);
                                     intent.putExtra(TAG_FULLNAME, fullname);
