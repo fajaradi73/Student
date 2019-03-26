@@ -71,36 +71,9 @@ public class MainActivity extends AppCompatActivity {
         logo            = findViewById(R.id.logo);
         footer          = findViewById(R.id.footer);
         mApiInterface   = ApiClient.getClient().create(Auth.class);
-//        simpleSearchView    = findViewById(R.id.searchView);
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setHasFixedSize(true);
-//
-//        simpleSearchView.setOnQueryTextListener(new SimpleOnQueryTextListener() {
-//            @Override
-//            public boolean onQueryTextSubmit(String query) {
-//                search_school_post(String.valueOf(query));
-//                recyclerView.setVisibility(View.VISIBLE);
-//                logo.setVisibility(View.GONE);
-//                footer.setVisibility(View.GONE);
-//                return super.onQueryTextSubmit(query);
-//            }
-//
-//            @Override
-//            public boolean onQueryTextChange(String newText) {
-//                search_school_post(String.valueOf(newText));
-//                recyclerView.setVisibility(View.VISIBLE);
-//                logo.setVisibility(View.GONE);
-//                footer.setVisibility(View.GONE);
-//                return super.onQueryTextChange(newText);
-//            }
-//
-//            @Override
-//            public boolean onQueryTextCleared() {
-//                return super.onQueryTextCleared();
-//            }
-//        });
-
         et_search.addTextChangedListener(new TextWatcher() {
 
             @Override
@@ -126,6 +99,7 @@ public class MainActivity extends AppCompatActivity {
             intent.putExtra("school_name",school_name);
             startActivity(intent);
         });
+
         sharedpreferences = getSharedPreferences(my_shared_preferences, Context.MODE_PRIVATE);
         session     = sharedpreferences.getBoolean(session_status, false);
         email       = sharedpreferences.getString(TAG_EMAIL, null);
@@ -134,13 +108,24 @@ public class MainActivity extends AppCompatActivity {
         member_type = sharedpreferences.getString(TAG_MEMBER_TYPE, null);
 
         if (session) {
-            Intent intent = new Intent(MainActivity.this, MenuUtama.class);
-            intent.putExtra(TAG_EMAIL, email);
-            intent.putExtra(TAG_MEMBER_ID, memberid);
-            intent.putExtra(TAG_FULLNAME, fullname);
-            intent.putExtra(TAG_MEMBER_TYPE, member_type);
-            finish();
-            startActivity(intent);
+            if (member_type.equals("3")){
+                Intent intent = new Intent(MainActivity.this, MenuUtama.class);
+                intent.putExtra(TAG_EMAIL, email);
+                intent.putExtra(TAG_MEMBER_ID, memberid);
+                intent.putExtra(TAG_FULLNAME, fullname);
+                intent.putExtra(TAG_MEMBER_TYPE, member_type);
+                finish();
+                startActivity(intent);
+            }else if (member_type.equals("4")){
+                Intent intent = new Intent(MainActivity.this, MenuUtama.class);
+                intent.putExtra(TAG_EMAIL, email);
+                intent.putExtra(TAG_MEMBER_ID, memberid);
+                intent.putExtra(TAG_FULLNAME, fullname);
+                intent.putExtra(TAG_MEMBER_TYPE, member_type);
+                finish();
+                startActivity(intent);
+            }
+
         }
     }
 

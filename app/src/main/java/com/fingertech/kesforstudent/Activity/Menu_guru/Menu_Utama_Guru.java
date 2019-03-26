@@ -10,6 +10,6 @@ public class Menu_Utama_Guru extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.menu__utama__guru);
+        setContentView(R.layout.menu_utama_view);
     }
 }
