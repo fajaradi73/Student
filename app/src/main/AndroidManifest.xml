@@ -32,7 +32,6 @@
         android:theme="@style/AppTheme"
         tools:ignore="AllowBackup,GoogleAppIndexingWarning,InnerclassSeparator">
 
-
         <uses-library
             android:name="org.apache.http.legacy"
             android:required="false" />
@@ -159,10 +158,16 @@
             android:label="Absen Anak"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".Guru.ActivityGuru.JadwalGuru"
+        <activity
+            android:name=".Guru.ActivityGuru.JadwalGuru"
             android:label="Jadwal Mengajar"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".Guru.ActivityGuru.ProfileGuru"
+            android:label=""
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"/>
+
     </application>
 
 </manifest>

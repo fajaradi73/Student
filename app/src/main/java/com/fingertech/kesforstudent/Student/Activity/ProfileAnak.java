@@ -109,7 +109,7 @@ public class ProfileAnak extends AppCompatActivity {
         tv_nama                 = findViewById(R.id.namaanak);
         tv_nis                  = findViewById(R.id.nis);
         tv_email                = findViewById(R.id.email);
-        tv_no_hp              = findViewById(R.id.no_hp);
+        tv_no_hp                = findViewById(R.id.no_hp);
         tv_alamat               = findViewById(R.id.alamat_profile);
         tv_gender               = findViewById(R.id.gender_profile);
         tv_tanggal              = findViewById(R.id.tanggal_lahir);
@@ -125,7 +125,6 @@ public class ProfileAnak extends AppCompatActivity {
         constraintLayout        = findViewById(R.id.content_profile);
         Base_anak               = "http://www.kes.co.id/schoolc/assets/images/profile/mm_";
 
-
         sharedpreferences = getSharedPreferences(Masuk.my_shared_preferences, Context.MODE_PRIVATE);
         authorization     = sharedpreferences.getString(TAG_TOKEN,"");
         memberid          = sharedpreferences.getString(TAG_MEMBER_ID,"");
@@ -134,7 +133,6 @@ public class ProfileAnak extends AppCompatActivity {
         member_type       = sharedpreferences.getString(TAG_MEMBER_TYPE,"");
         school_code       = sharedpreferences.getString(TAG_SCHOOL_CODE,"");
         school_name       = sharedpreferences.getString("school_name","");
-
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);

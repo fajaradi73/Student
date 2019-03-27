@@ -9,7 +9,6 @@ public class JadwalSenin {
     public String jam_mulai;
     public String jam_selesai;
 
-
     public String getJam_mulai() {
         return jam_mulai;
     }

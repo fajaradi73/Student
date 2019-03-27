@@ -27,9 +27,9 @@
             <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:cardCornerRadius="8dp"
                 android:layout_marginTop="40dp"
                 android:layout_marginLeft="20dp"
+                app:cardBackgroundColor="@color/grey_300"
                 android:layout_marginRight="20dp">
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -72,7 +72,7 @@
                             <TextView
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
-                                android:text="0 mata pelajaran"
+                                tools:text="0 mata pelajaran"
                                 android:id="@+id/jumlah_senin"
                                 android:background="@color/colorPrimary"
                                 android:textColor="@color/white"
@@ -106,9 +106,9 @@
             <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:cardCornerRadius="8dp"
                 android:layout_marginTop="20dp"
                 android:layout_marginLeft="20dp"
+                app:cardBackgroundColor="@color/grey_300"
                 android:layout_marginRight="20dp">
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -152,7 +152,7 @@
                             <TextView
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
-                                android:text="0 mata pelajaran"
+                                tools:text="0 mata pelajaran"
                                 android:background="@color/colorPrimary"
                                 android:textColor="@color/white"
                                 android:textSize="16sp"
@@ -185,9 +185,9 @@
             <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:cardCornerRadius="8dp"
                 android:layout_marginTop="20dp"
                 android:layout_marginLeft="20dp"
+                app:cardBackgroundColor="@color/grey_300"
                 android:layout_marginRight="20dp">
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -228,7 +228,7 @@
                             <TextView
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
-                                android:text="0 mata pelajaran"
+                                tools:text="0 mata pelajaran"
                                 android:background="@color/colorPrimary"
                                 android:textColor="@color/white"
                                 android:textSize="16sp"
@@ -261,9 +261,9 @@
             <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:cardCornerRadius="8dp"
                 android:layout_marginTop="20dp"
                 android:layout_marginLeft="20dp"
+                app:cardBackgroundColor="@color/grey_300"
                 android:layout_marginRight="20dp">
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -304,7 +304,7 @@
                             <TextView
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
-                                android:text="0 mata pelajaran"
+                                tools:text="0 mata pelajaran"
                                 android:background="@color/colorPrimary"
                                 android:textColor="@color/white"
                                 android:id="@+id/jumlah_kamis"
@@ -337,9 +337,9 @@
             <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:cardCornerRadius="8dp"
                 android:layout_marginTop="20dp"
                 android:layout_marginLeft="20dp"
+                app:cardBackgroundColor="@color/grey_300"
                 android:layout_marginRight="20dp">
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -381,7 +381,7 @@
                             <TextView
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
-                                android:text="0 mata pelajaran"
+                                tools:text="0 mata pelajaran"
                                 android:background="@color/colorPrimary"
                                 android:textColor="@color/white"
                                 android:textSize="16sp"
@@ -416,10 +416,10 @@
             <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:cardCornerRadius="8dp"
                 android:layout_marginTop="20dp"
                 android:layout_marginLeft="20dp"
                 android:layout_marginBottom="40dp"
+                app:cardBackgroundColor="@color/grey_300"
                 android:layout_marginRight="20dp">
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -461,7 +461,7 @@
                             <TextView
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
-                                android:text="0 mata pelajaran"
+                                tools:text="0 mata pelajaran"
                                 android:background="@color/colorPrimary"
                                 android:textColor="@color/white"
                                 android:textSize="16sp"

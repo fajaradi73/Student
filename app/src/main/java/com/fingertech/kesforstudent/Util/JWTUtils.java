@@ -1,7 +1,6 @@
 package com.fingertech.kesforstudent.Util;
 
 import android.util.Base64;
-import android.util.Log;
 
 import java.io.UnsupportedEncodingException;
 

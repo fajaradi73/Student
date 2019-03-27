@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">KES for Student</string>
+    <string name="app_name">KES for School</string>
     <string name="default_notification_channel_id" translatable="false">fcm_default_channel</string>
     <string name="facebook_app_id">287281171956441</string>
     <string name="fb_login_protocol_scheme">fb287281171956441</string>

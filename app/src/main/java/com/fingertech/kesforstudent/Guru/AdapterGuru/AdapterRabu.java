@@ -1,23 +1,24 @@
-package com.fingertech.kesforstudent.Student.Adapter.HariAdapter;
+package com.fingertech.kesforstudent.Guru.AdapterGuru;
 
+import android.annotation.SuppressLint;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.fingertech.kesforstudent.Student.Model.HariModel.JadwalSenin;
+import com.fingertech.kesforstudent.Guru.ModelGuru.ModelHari.ModelRabu;
 import com.fingertech.kesforstudent.R;
 
 import java.util.List;
 
-public class SeninAdapter extends RecyclerView.Adapter<SeninAdapter.MyHolder> {
+public class AdapterRabu extends RecyclerView.Adapter<AdapterRabu.MyHolder> {
 
-    private List<JadwalSenin> viewItemList;
+    private List<ModelRabu> viewItemList;
 
     private OnItemClickListener onItemClickListener;
     public int row_index = 0;
-    public SeninAdapter(List<JadwalSenin> viewItemList) {
+    public AdapterRabu(List<ModelRabu> viewItemList) {
         this.viewItemList = viewItemList;
     }
 
@@ -35,16 +36,16 @@ public class SeninAdapter extends RecyclerView.Adapter<SeninAdapter.MyHolder> {
     }
 
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(MyHolder holder, int position) {
 
         // Get car item dto in list.
-        JadwalSenin viewItem = viewItemList.get(position);
-        // Set car item title.
-        holder.mapel.setText(viewItem.getCources_name());
-        holder.lambel.setText(viewItem.getDuration() + " Menit");
+        ModelRabu viewItem = viewItemList.get(position);
+        holder.mapel.setText(viewItem.getMapel());
+        holder.lambel.setText(viewItem.getLama_ngajar() + " Menit");
         holder.jambel.setText(viewItem.getJam_mulai() +" - "+ viewItem.getJam_selesai());
-        holder.guru.setText(viewItem.getFullname());
+        holder.guru.setText("Kelas "+viewItem.getKelas());
     }
 
     @Override

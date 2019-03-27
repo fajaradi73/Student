@@ -896,13 +896,13 @@ public class JSONResponse {
         @SerializedName("picture")
         public String picture;
 
-        @SerializedName("last_login")
+        @SerializedName("lastlogin")
         public String last_login;
 
         @SerializedName("member_type")
         public String member_type;
 
-        @SerializedName("last_update")
+        @SerializedName("lastupdate")
         public String last_update;
 
         @SerializedName("member_code")
@@ -1176,7 +1176,6 @@ public class JSONResponse {
             return dayStatus;
         }
     }
-
     public class AgendaData{
         @SerializedName("desc")
         private String desc;
@@ -4510,6 +4509,250 @@ public class JSONResponse {
         }
     }
 
+    //// Response Jadwal Guru
+    public class JadwalGuru{
+        @SerializedName("status")
+        public int status;
 
+        @SerializedName("code")
+        public String code;
+
+        @SerializedName("data")
+        public DataJadwalGuru data;
+
+        public int getStatus() {
+            return status;
+        }
+
+        public void setStatus(int status) {
+            this.status = status;
+        }
+
+        public String getCode() {
+            return code;
+        }
+
+        public void setCode(String code) {
+            this.code = code;
+        }
+
+        public DataJadwalGuru getData() {
+            return data;
+        }
+
+        public void setData(DataJadwalGuru data) {
+            this.data = data;
+        }
+    }
+    public class DataJadwalGuru{
+
+        @SerializedName("schedule_class")
+        List<JadwalDataGuru> schedule_class;
+
+        @SerializedName("substitute_class")
+        List<JadwalPenggantiGuru> substitute_class;
+
+        @SerializedName("schedule_religion_class")
+        List<JadwalAgamaKelas> schedule_religion_class;
+        public List<JadwalDataGuru> getSchedule_class() {
+            return schedule_class;
+        }
+
+        public void setSchedule_class(List<JadwalDataGuru> schedule_class) {
+            this.schedule_class = schedule_class;
+        }
+
+        public List<JadwalPenggantiGuru> getSubstitute_class() {
+            return substitute_class;
+        }
+
+        public void setSubstitute_class(List<JadwalPenggantiGuru> substitute_class) {
+            this.substitute_class = substitute_class;
+        }
+
+        public List<JadwalAgamaKelas> getSchedule_religion_class() {
+            return schedule_religion_class;
+        }
+
+        public void setSchedule_religion_class(List<JadwalAgamaKelas> schedule_religion_class) {
+            this.schedule_religion_class = schedule_religion_class;
+        }
+
+
+    }
+
+    public class JadwalDataGuru {
+
+        @SerializedName("dayid")
+        String dayid;
+        @SerializedName("day_name")
+        String day_name;
+        @SerializedName("day_status")
+        String day_status;
+        @SerializedName("day_type")
+        String day_type;
+        @SerializedName("schedule_class")
+        List<JadwalKelasGuru> schedule_class;
+
+        public String getDayid() {
+            return dayid;
+        }
+
+        public void setDayid(String dayid) {
+            this.dayid = dayid;
+        }
+
+        public String getDay_name() {
+            return day_name;
+        }
+
+        public void setDay_name(String day_name) {
+            this.day_name = day_name;
+        }
+
+        public String getDay_status() {
+            return day_status;
+        }
+
+        public void setDay_status(String day_status) {
+            this.day_status = day_status;
+        }
+
+        public String getDay_type() {
+            return day_type;
+        }
+
+        public void setDay_type(String day_type) {
+            this.day_type = day_type;
+        }
+
+        public List<JadwalKelasGuru> getSchedule_class() {
+            return schedule_class;
+        }
+
+        public void setSchedule_class(List<JadwalKelasGuru> schedule_class) {
+            this.schedule_class = schedule_class;
+        }
+    }
+
+    public class JadwalPenggantiGuru {
+
+    }
+
+    public class JadwalAgamaKelas {
+    }
+
+    public class JadwalKelasGuru {
+        @SerializedName("schedule_time")
+        String schedule_time;
+        @SerializedName("teacher_id")
+        String teacher_id;
+        @SerializedName("cources_id")
+        String cources_id;
+        @SerializedName("classroom_id")
+        String classroom_id;
+        @SerializedName("timez_start")
+        String timez_start;
+        @SerializedName("teacher_name")
+        String teacher_name;
+        @SerializedName("cources_name")
+        String cources_name;
+        @SerializedName("cources_colour")
+        String cources_colour;
+        @SerializedName("classroom_name")
+        String classroom_name;
+        @SerializedName("lesson_duration")
+        String lesson_duration;
+        @SerializedName("timez_finish")
+        String timez_finish;
+
+        public String getSchedule_time() {
+            return schedule_time;
+        }
+
+        public void setSchedule_time(String schedule_time) {
+            this.schedule_time = schedule_time;
+        }
+
+        public String getTeacher_id() {
+            return teacher_id;
+        }
+
+        public void setTeacher_id(String teacher_id) {
+            this.teacher_id = teacher_id;
+        }
+
+        public String getCources_id() {
+            return cources_id;
+        }
+
+        public void setCources_id(String cources_id) {
+            this.cources_id = cources_id;
+        }
+
+        public String getClassroom_id() {
+            return classroom_id;
+        }
+
+        public void setClassroom_id(String classroom_id) {
+            this.classroom_id = classroom_id;
+        }
+
+        public String getTimez_start() {
+            return timez_start;
+        }
+
+        public void setTimez_start(String timez_start) {
+            this.timez_start = timez_start;
+        }
+
+        public String getTeacher_name() {
+            return teacher_name;
+        }
+
+        public void setTeacher_name(String teacher_name) {
+            this.teacher_name = teacher_name;
+        }
+
+        public String getCources_name() {
+            return cources_name;
+        }
+
+        public void setCources_name(String cources_name) {
+            this.cources_name = cources_name;
+        }
+
+        public String getCources_colour() {
+            return cources_colour;
+        }
+
+        public void setCources_colour(String cources_colour) {
+            this.cources_colour = cources_colour;
+        }
+
+        public String getClassroom_name() {
+            return classroom_name;
+        }
+
+        public void setClassroom_name(String classroom_name) {
+            this.classroom_name = classroom_name;
+        }
+
+        public String getLesson_duration() {
+            return lesson_duration;
+        }
+
+        public void setLesson_duration(String lesson_duration) {
+            this.lesson_duration = lesson_duration;
+        }
+
+        public String getTimez_finish() {
+            return timez_finish;
+        }
+
+        public void setTimez_finish(String timez_finish) {
+            this.timez_finish = timez_finish;
+        }
+    }
 }
 

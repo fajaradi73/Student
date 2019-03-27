@@ -162,4 +162,12 @@ public interface Auth {
     Call<JSONResponse.CalendarDetail>kes_calendar_detail_get(@Header("Authorization") String authorization,
                                                              @Query("school_code") String school_code,
                                                              @Query("calendar_id") String calendar_id);
+
+    ///// Jadwal Guru
+    ////// Jadwal Pelajaran
+    @GET("teachers/kes_class_schedule")
+    Call<JSONResponse.JadwalGuru>kes_class_schedule_teacher_get(@Header("Authorization") String authorization,
+                                                             @Query("school_code") String school_code,
+                                                             @Query("teacher_id") String teacher_id,
+                                                             @Query("scyear_id") String scyear_id);
 }

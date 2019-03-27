@@ -2,9 +2,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/action_search"
-        android:title="Search"
-        android:icon="@drawable/ic_search"
+        android:id="@+id/action_edit"
+        android:title="Edit"
+        android:icon="@drawable/ic_pencil"
         app:showAsAction="always"
         />
 </menu>

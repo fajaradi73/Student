@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.ImageView;
 
 import com.fingertech.kesforstudent.Student.Activity.Masuk;
 import com.fingertech.kesforstudent.Controller.Auth;
@@ -30,7 +31,7 @@ public class MenuUtamaGuru extends AppCompatActivity {
     public static final String my_viewpager_preferences = "my_viewpager_preferences";
     CardView btn_absensi,btn_penilaian,btn_silabus,btn_pesan,btn_jadwal,btn_kalendar;
     Toolbar toolbar;
-
+    ImageView image_guru;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,6 +43,7 @@ public class MenuUtamaGuru extends AppCompatActivity {
         btn_silabus     = findViewById(R.id.btn_silabus);
         btn_pesan       = findViewById(R.id.btn_pesan);
         btn_kalendar    = findViewById(R.id.btn_kalender);
+        image_guru      = findViewById(R.id.image_guru);
         sharedpreferences = getSharedPreferences(Masuk.my_shared_preferences, Context.MODE_PRIVATE);
         authorization   = sharedpreferences.getString(TAG_TOKEN, "");
         memberid        = sharedpreferences.getString(TAG_MEMBER_ID, "");
@@ -54,7 +56,34 @@ public class MenuUtamaGuru extends AppCompatActivity {
         btn_jadwal.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                SharedPreferences.Editor editor = sharedpreferences.edit();
+                editor.putString("authorization",authorization);
+                editor.putString("member_id",memberid);
+                editor.putString("school_code",school_code);
+                editor.putString("scyear_id",scyear_id);
+                editor.apply();
                 Intent intent = new Intent(MenuUtamaGuru.this,JadwalGuru.class);
+                intent.putExtra("authorization",authorization);
+                intent.putExtra("school_code",school_code);
+                intent.putExtra("member_id",memberid);
+                intent.putExtra("scyear_id",scyear_id);
+                startActivity(intent);
+            }
+        });
+        image_guru.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SharedPreferences.Editor editor = sharedpreferences.edit();
+                editor.putString("authorization",authorization);
+                editor.putString("member_id",memberid);
+                editor.putString("school_code",school_code);
+                editor.putString("scyear_id",scyear_id);
+                editor.apply();
+                Intent intent = new Intent(MenuUtamaGuru.this,ProfileGuru.class);
+                intent.putExtra("authorization",authorization);
+                intent.putExtra("school_code",school_code);
+                intent.putExtra("member_id",memberid);
+                intent.putExtra("scyear_id",scyear_id);
                 startActivity(intent);
             }
         });
