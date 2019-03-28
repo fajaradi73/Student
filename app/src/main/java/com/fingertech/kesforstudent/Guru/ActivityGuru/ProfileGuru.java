@@ -1,16 +1,26 @@
 package com.fingertech.kesforstudent.Guru.ActivityGuru;
 
+import android.Manifest;
+import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Build;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.content.FileProvider;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -24,19 +34,34 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.fingertech.kesforstudent.BuildConfig;
 import com.fingertech.kesforstudent.Controller.Auth;
 import com.fingertech.kesforstudent.R;
 import com.fingertech.kesforstudent.Rest.ApiClient;
 import com.fingertech.kesforstudent.Rest.JSONResponse;
+import com.fingertech.kesforstudent.Student.Activity.MainActivity;
 import com.fingertech.kesforstudent.Student.Activity.Masuk;
 import com.fingertech.kesforstudent.Student.Activity.ProfileAnak;
+import com.fingertech.kesforstudent.Util.FileUtils;
+import com.gun0912.tedpermission.PermissionListener;
+import com.gun0912.tedpermission.TedPermission;
+import com.shashank.sony.fancytoastlib.FancyToast;
 import com.squareup.picasso.Picasso;
 
+import java.io.File;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
 import java.util.Locale;
+import java.util.logging.Logger;
 
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -65,6 +90,23 @@ public class ProfileGuru extends AppCompatActivity {
     ImageView imageView;
     ProgressDialog dialog;
     int status;
+    String code;
+
+    public final int SELECT_FILE = 1;
+    private static final int CAMERA_PIC_REQUEST = 1111;
+
+    private static final String TAG = ProfileAnak.class.getSimpleName();
+
+    public static final int MEDIA_TYPE_IMAGE = 1;
+
+    public static final String IMAGE_DIRECTORY_NAME = "Android File Upload";
+    ProgressDialog pDialog;
+    private String postPath;
+
+    Uri fileUri,uri;
+    File image;
+    Intent intent;
+    String mCurrentPhotoPath,school_name;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,7 +137,7 @@ public class ProfileGuru extends AppCompatActivity {
         fullname          = sharedpreferences.getString(TAG_FULLNAME,"");
         member_type       = sharedpreferences.getString(TAG_MEMBER_TYPE,"");
         school_code       = sharedpreferences.getString(TAG_SCHOOL_CODE,"");
-
+        Base_anak               = "http://www.kes.co.id/schoolc/assets/images/profile/mm_";
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         toolbar.getNavigationIcon().setColorFilter(getResources().getColor(R.color.white), PorterDuff.Mode.SRC_ATOP);
@@ -110,9 +152,10 @@ public class ProfileGuru extends AppCompatActivity {
         fab_picture.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Snackbar.make(v,"Tester",Snackbar.LENGTH_LONG).show();
+                selectImage();
             }
         });
+
         get_profile();
         appBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
             boolean isShow = true;
@@ -226,6 +269,269 @@ public class ProfileGuru extends AppCompatActivity {
             e.printStackTrace();
             return "";
         }
+    }
+    private void pilihan() {
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(ProfileGuru.this,R.style.DialogTheme);
+        builder.setTitle("Log out");
+        builder.setMessage("Apakah anda ingin keluar?");
+        builder.setIcon(R.drawable.ic_alarm);
+        builder.setPositiveButton("Ya", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                SharedPreferences.Editor editor = sharedpreferences.edit();
+                editor.putBoolean(Masuk.session_status, false);
+                editor.putString(TAG_EMAIL, null);
+                editor.putString(TAG_MEMBER_ID, null);
+                editor.putString(TAG_FULLNAME, null);
+                editor.putString(TAG_MEMBER_TYPE, null);
+                editor.putString(TAG_TOKEN, null);
+                editor.commit();
+
+                Intent intent = new Intent(ProfileGuru.this, MainActivity.class);
+                finish();
+                startActivity(intent);
+            }
+        });
+        builder.setNegativeButton("Tidak", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        builder.show();
+    }
+
+    private void selectImage() {
+        final CharSequence[] items = {"Buka kamera", "Pilih foto",
+                "Batal"};
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(ProfileGuru.this);
+        builder.setTitle("Ganti foto profile!");
+        builder.setIcon(R.drawable.ic_kamera);
+        builder.setItems(items, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int item) {
+                if (items[item].equals("Buka kamera")) {
+                    PermissionListener permissionlistener = new PermissionListener() {
+                        @Override
+                        public void onPermissionGranted() {
+                            captureImage();
+                        }
+
+                        @Override
+                        public void onPermissionDenied(List<String> deniedPermissions) {
+                            Toast.makeText(ProfileGuru.this, "Permission Denied\n" + deniedPermissions.toString(), Toast.LENGTH_SHORT).show();
+                        }
+                    };
+                    //check all needed permissions together
+                    TedPermission.with(ProfileGuru.this)
+                            .setPermissionListener(permissionlistener)
+                            .setDeniedMessage("Jika Anda menolak izin, Anda tidak dapat menggunakan layanan ini\n\nSilakan aktifkan izin di [Pengaturan] > [Izin]")
+                            .setPermissions(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.READ_EXTERNAL_STORAGE)
+                            .check();
+
+                } else if (items[item].equals("Pilih foto")) {
+                    PermissionListener permissionlistener = new PermissionListener() {
+                        @Override
+                        public void onPermissionGranted() {
+                            intent = new Intent();
+                            intent.setType("image/*");
+                            intent.setAction(Intent.ACTION_GET_CONTENT);
+                            startActivityForResult(Intent.createChooser(intent, "Select Picture"), SELECT_FILE);
+                        }
+
+                        @Override
+                        public void onPermissionDenied(List<String> deniedPermissions) {
+                            Toast.makeText(ProfileGuru.this, "Permission Denied\n" + deniedPermissions.toString(), Toast.LENGTH_SHORT).show();
+                        }
+                    };
+                    //check all needed permissions together
+                    TedPermission.with(ProfileGuru.this)
+                            .setPermissionListener(permissionlistener)
+                            .setDeniedMessage("Jika Anda menolak izin, Anda tidak dapat menggunakan layanan ini\n\nSilakan aktifkan izin di [Pengaturan] > [Izin]")
+                            .setPermissions(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                            .check();
+
+                } else if (items[item].equals("Batal")) {
+                    dialog.dismiss();
+                }
+            }
+        });
+        builder.show();
+    }
+
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        Log.e("onActivityResult", "requestCode " + requestCode + ", resultCode " + resultCode);
+
+        if (resultCode == Activity.RESULT_OK) {
+            if (requestCode == CAMERA_PIC_REQUEST){
+                if (Build.VERSION.SDK_INT > 21) {
+
+                    Glide.with(ProfileGuru.this).load(mCurrentPhotoPath).into(imageView);
+                    File files = new File(mCurrentPhotoPath);
+                    UploadImage(files);
+                }else{
+                    Glide.with(ProfileGuru.this).load(fileUri).into(imageView);
+                    File files = FileUtils.getFile(ProfileGuru.this, fileUri);
+                    UploadImage(files);
+
+                }
+            } else if (requestCode == SELECT_FILE && data != null && data.getData() != null) {
+                uri = data.getData();
+                Glide.with(ProfileGuru.this).load(uri).into(imageView);
+                File file = FileUtils.getFile(ProfileGuru.this, uri);
+                UploadImage(file);
+            }
+            else if (requestCode == 1) {
+                authorization = data.getStringExtra("authorization");
+                school_code   = data.getStringExtra("school_code");
+                memberid      = data.getStringExtra("member_id");
+                get_profile();
+            }
+        }
+    }
+
+    private void captureImage() {
+        if (Build.VERSION.SDK_INT > 21) { //use this if Lollipop_Mr1 (API 22) or above
+            Intent callCameraApplicationIntent = new Intent();
+            callCameraApplicationIntent.setAction(MediaStore.ACTION_IMAGE_CAPTURE);
+
+            // We give some instruction to the intent to save the image
+            File photoFile = null;
+
+            try {
+                // If the createImageFile will be successful, the photo file will have the address of the file
+                photoFile = createImageFile();
+                // Here we call the function that will try to catch the exception made by the throw function
+            } catch (IOException e) {
+                Logger.getAnonymousLogger().info("Exception error in generating the file");
+                e.printStackTrace();
+            }
+            // Here we add an extra file to the intent to put the address on to. For this purpose we use the FileProvider, declared in the AndroidManifest.
+            Uri outputUri = FileProvider.getUriForFile(
+                    this,
+                    BuildConfig.APPLICATION_ID + ".provider",
+                    photoFile);
+            callCameraApplicationIntent.putExtra(MediaStore.EXTRA_OUTPUT, outputUri);
+
+            // The following is a new line with a trying attempt
+            callCameraApplicationIntent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
+
+            Logger.getAnonymousLogger().info("Calling the camera App by intent");
+
+            // The following strings calls the camera app and wait for his file in return.
+            startActivityForResult(callCameraApplicationIntent, CAMERA_PIC_REQUEST);
+        } else {
+            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+
+            fileUri = getOutputMediaFileUri(MEDIA_TYPE_IMAGE);
+
+            intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
+
+            // start the image capture Intent
+            startActivityForResult(intent, CAMERA_PIC_REQUEST);
+        }
+
+
+    }
+
+    public Uri getOutputMediaFileUri(int type) {
+        return Uri.fromFile(getOutputMediaFile(type));
+    }
+
+    private static File getOutputMediaFile(int type) {
+
+        // External sdcard location
+        File mediaStorageDir = new File(
+                Environment
+                        .getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),
+                IMAGE_DIRECTORY_NAME);
+
+        // Create the storage directory if it does not exist
+        if (!mediaStorageDir.exists()) {
+            if (!mediaStorageDir.mkdirs()) {
+                Log.d(TAG, "Oops! Failed create "
+                        + IMAGE_DIRECTORY_NAME + " directory");
+                return null;
+            }
+        }
+
+        // Create a media file name
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss",
+                Locale.getDefault()).format(new Date());
+        File mediaFile;
+        if (type == MEDIA_TYPE_IMAGE) {
+            mediaFile = new File(mediaStorageDir.getPath() + File.separator
+                    + "IMG_" + ".jpg");
+        }  else {
+            return null;
+        }
+
+        return mediaFile;
+    }
+
+    @SuppressLint("SimpleDateFormat")
+    private File createImageFile() throws IOException {
+        // Create an image file name
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String imageFileName = "JPEG_" + timeStamp + "_";
+        File storageDir = new File(Environment.getExternalStoragePublicDirectory(
+                Environment.DIRECTORY_DCIM), "Camera");
+        image = File.createTempFile(
+                imageFileName,  /* prefix */
+                ".jpg",         /* suffix */
+                storageDir      /* directory */
+        );
+
+        // Save a file: path for use with ACTION_VIEW intents
+        mCurrentPhotoPath =  image.getAbsolutePath();
+
+        return image;
+    }
+
+    private void UploadImage(File file){
+        progressBar();
+        showDialog();
+        String pic_type = "png";
+        RequestBody photoBody = RequestBody.create(MediaType.parse("multipart/form-data"), file);
+        MultipartBody.Part photoPart = MultipartBody.Part.createFormData("picture",
+                file.getName(), photoBody);
+        RequestBody ids = RequestBody.create(MediaType.parse("multipart/form-data"), memberid);
+        RequestBody picss = RequestBody.create(MediaType.parse("multipart/form-data"), pic_type);
+        RequestBody schoolcode= RequestBody.create(MediaType.parse("multipart/form-data"), school_code);
+
+        Call<JSONResponse.UpdatePicture> call = mApiInterface.kes_update_picture_post(authorization.toString(),schoolcode,ids,photoPart,picss);
+
+        call.enqueue(new Callback<JSONResponse.UpdatePicture>() {
+
+            @Override
+            public void onResponse(retrofit2.Call<JSONResponse.UpdatePicture> call, final Response<JSONResponse.UpdatePicture> response) {
+                hideDialog();
+                Log.i("KES", response.code() + "");
+
+                JSONResponse.UpdatePicture resource = response.body();
+
+                status = resource.status;
+                code   = resource.code;
+
+                if (status == 1 && code.equals("UPP_SCS_0001")) {
+                    FancyToast.makeText(getApplicationContext(),"Foto berhasil diupload",FancyToast.LENGTH_LONG,FancyToast.SUCCESS,false).show();
+                } else{
+                    if (status == 0 && code.equals("UPP_ERR_0001")) {
+                        FancyToast.makeText(getApplicationContext(),"Data tidak ditemnukan",FancyToast.LENGTH_LONG,FancyToast.ERROR,false).show();
+                    }
+                }
+
+            }
+
+            @Override
+            public void onFailure(retrofit2.Call<JSONResponse.UpdatePicture> call, Throwable t) {
+                hideDialog();
+                Log.d("onFailure", t.toString());
+            }
+
+        });
     }
 
 }
