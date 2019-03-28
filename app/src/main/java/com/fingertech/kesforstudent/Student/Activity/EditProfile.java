@@ -54,8 +54,8 @@ public class EditProfile extends AppCompatActivity {
 
     String nama,nis,email,alamat,gender,tanggal,tempat,agama,nohp,picture;
     Toolbar toolbar;
-    TextInputLayout til_nama,til_email,til_tanggal_lahir,til_tempat_lahir,til_no_hp,til_alamat;
-    EditText et_nama,et_email,et_tanggal_lahir,et_tempat_lahir,et_no_hp,et_alamat;
+    TextInputLayout til_nama,til_email,til_tanggal_lahir,til_tempat_lahir,til_no_hp;
+    EditText et_nama,et_email,et_tanggal_lahir,et_tempat_lahir,et_no_hp;
     RadioButton rb_pria,rb_wanita;
     Spinner sp_religion;
     private String[] religion = {
@@ -85,12 +85,10 @@ public class EditProfile extends AppCompatActivity {
         til_email           = findViewById(R.id.til_email_profile);
         til_tanggal_lahir   = findViewById(R.id.til_tanggal);
         til_no_hp           = findViewById(R.id.til_mobile_phone);
-        til_alamat          = findViewById(R.id.til_alamat);
         et_nama             = findViewById(R.id.et_nama_profile);
         et_email            = findViewById(R.id.et_email_profile);
         et_tanggal_lahir    = findViewById(R.id.et_tanggal);
         et_no_hp            = findViewById(R.id.et_mobile_phone);
-        et_alamat           = findViewById(R.id.et_alamat);
         rb_pria             = findViewById(R.id.rb_pria);
         rb_wanita           = findViewById(R.id.rb_wanita);
         sp_religion         = findViewById(R.id.sp_religion);
@@ -109,7 +107,6 @@ public class EditProfile extends AppCompatActivity {
         nama    = getIntent().getStringExtra("nama");
         nis     = getIntent().getStringExtra("nis");
         email   = getIntent().getStringExtra("email");
-        alamat  = getIntent().getStringExtra("alamat");
         gender  = getIntent().getStringExtra("gender");
         tanggal = getIntent().getStringExtra("tanggal_lahir");
         agama   = getIntent().getStringExtra("agama");
@@ -119,7 +116,6 @@ public class EditProfile extends AppCompatActivity {
         et_email.setText(email);
         et_tanggal_lahir.setText(tanggal);
         et_no_hp.setText(nohp);
-        et_alamat.setText(alamat);
         if (gender.equals("Pria")){
             rb_pria.setChecked(true);
             rb_wanita.setChecked(false);
@@ -283,9 +279,6 @@ public class EditProfile extends AppCompatActivity {
             return;
         }
         if (!validateNumberPhone()) {
-            return;
-        }
-        if (!validateAlamat()){
             return;
         }
         else {

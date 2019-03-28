@@ -42,6 +42,8 @@ import com.fingertech.kesforstudent.Controller.Auth;
 import com.fingertech.kesforstudent.R;
 import com.fingertech.kesforstudent.Rest.ApiClient;
 import com.fingertech.kesforstudent.Rest.JSONResponse;
+import com.fingertech.kesforstudent.Student.Activity.ChangePassword;
+import com.fingertech.kesforstudent.Student.Activity.EditProfile;
 import com.fingertech.kesforstudent.Student.Activity.MainActivity;
 import com.fingertech.kesforstudent.Student.Activity.Masuk;
 import com.fingertech.kesforstudent.Student.Activity.ProfileAnak;
@@ -92,7 +94,7 @@ public class ProfileGuru extends AppCompatActivity {
     int status;
     String code;
 
-    public final int SELECT_FILE = 1;
+    public final int SELECT_FILE = 12;
     private static final int CAMERA_PIC_REQUEST = 1111;
 
     private static final String TAG = ProfileAnak.class.getSimpleName();
@@ -148,6 +150,7 @@ public class ProfileGuru extends AppCompatActivity {
             getWindow().setFlags(WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_SHORT_EDGES,WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_SHORT_EDGES);
             getWindow().getDecorView().setSystemUiVisibility( View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
         }
+        get_profile();
 
         fab_picture.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -155,8 +158,62 @@ public class ProfileGuru extends AppCompatActivity {
                 selectImage();
             }
         });
+        imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ProfileGuru.this,FullPicture.class);
+                intent.putExtra("authorization",authorization);
+                intent.putExtra("school_code",school_code);
+                intent.putExtra("member_id",memberid);
+                intent.putExtra("picture",Base_anak+picture);
+                startActivityForResult(intent,2);
+                overridePendingTransition(android.R.anim.fade_in,android.R.anim.fade_out);
+            }
+        });
+        btn_logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                pilihan();
+            }
+        });
+        btn_katasandi.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SharedPreferences.Editor editor = sharedpreferences.edit();
+                editor.putString("authorization",authorization);
+                editor.putString("member_id",memberid);
+                editor.putString("school_code",school_code);
+                editor.putString("change","1");
+                editor.apply();
+                Intent intent = new Intent(ProfileGuru.this, ChangePassword.class);
+                intent.putExtra("authorization",authorization);
+                intent.putExtra("school_code",school_code);
+                intent.putExtra("member_id",memberid);
+                intent.putExtra("change","1");
+                startActivityForResult(intent,1);
+            }
+        });
 
-        get_profile();
+        btn_edit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ProfileGuru.this, EditProfile.class);
+                intent.putExtra("nama",fullname);
+                intent.putExtra("nis",nis);
+                intent.putExtra("email",email);
+                intent.putExtra("alamat",alamat);
+                intent.putExtra("gender",gender);
+                intent.putExtra("tanggal_lahir",tanggal);
+                intent.putExtra("tempat_lahir",tempat);
+                intent.putExtra("agama",agama);
+                intent.putExtra("nohp",no_hp);
+                intent.putExtra("authorization",authorization);
+                intent.putExtra("school_code",school_code);
+                intent.putExtra("member_id",memberid);
+                startActivityForResult(intent,1);
+            }
+        });
+
         appBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
             boolean isShow = true;
             int scrollRange = -1;
@@ -362,12 +419,9 @@ public class ProfileGuru extends AppCompatActivity {
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        Log.e("onActivityResult", "requestCode " + requestCode + ", resultCode " + resultCode);
-
         if (resultCode == Activity.RESULT_OK) {
             if (requestCode == CAMERA_PIC_REQUEST){
                 if (Build.VERSION.SDK_INT > 21) {
-
                     Glide.with(ProfileGuru.this).load(mCurrentPhotoPath).into(imageView);
                     File files = new File(mCurrentPhotoPath);
                     UploadImage(files);
@@ -375,7 +429,6 @@ public class ProfileGuru extends AppCompatActivity {
                     Glide.with(ProfileGuru.this).load(fileUri).into(imageView);
                     File files = FileUtils.getFile(ProfileGuru.this, fileUri);
                     UploadImage(files);
-
                 }
             } else if (requestCode == SELECT_FILE && data != null && data.getData() != null) {
                 uri = data.getData();
@@ -388,6 +441,14 @@ public class ProfileGuru extends AppCompatActivity {
                 school_code   = data.getStringExtra("school_code");
                 memberid      = data.getStringExtra("member_id");
                 get_profile();
+            }else if (requestCode == 2){
+                authorization = data.getStringExtra("authorization");
+                school_code   = data.getStringExtra("school_code");
+                memberid      = data.getStringExtra("member_id");
+                mCurrentPhotoPath = data.getStringExtra("picture");
+                File file = new File(mCurrentPhotoPath);
+                Glide.with(ProfileGuru.this).load(mCurrentPhotoPath).into(imageView);
+                UploadImage(file);
             }
         }
     }

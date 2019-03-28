@@ -164,10 +164,36 @@ public interface Auth {
                                                              @Query("calendar_id") String calendar_id);
 
     ///// Jadwal Guru
-    ////// Jadwal Pelajaran
     @GET("teachers/kes_class_schedule")
     Call<JSONResponse.JadwalGuru>kes_class_schedule_teacher_get(@Header("Authorization") String authorization,
                                                              @Query("school_code") String school_code,
                                                              @Query("teacher_id") String teacher_id,
                                                              @Query("scyear_id") String scyear_id);
+
+    ///// Jadwal Guru
+    @GET("teachers/kes_get_edulevel")
+    Call<JSONResponse.ListEdulevel>kes_get_edulevel_get(@Header("Authorization") String authorization,
+                                                        @Query("school_code") String school_code,
+                                                        @Query("teacher_id") String teacher_id,
+                                                        @Query("scyear_id") String scyear_id);
+
+    ///// List Mapel
+    @GET("teachers/kes_get_edulevel_cources")
+    Call<JSONResponse.ListMapelEdu>kes_get_edulevel_cources_get(@Header("Authorization") String authorization,
+                                                                @Query("school_code") String school_code,
+                                                                @Query("teacher_id") String teacher_id,
+                                                                @Query("edulevel_id") String edulevel_id,
+                                                                @Query("scyear_id") String scyear_id);
+
+    //// List Silabus
+    @GET("teachers/kes_get_edulevel_cources")
+    Call<JSONResponse.ListSilabus>kes_silabus_get(@Header("Authorization") String authorization,
+                                                   @Query("school_code") String school_code,
+                                                   @Query("teacher_id") String teacher_id,
+                                                   @Query("edulevel_id") String edulevel_id,
+                                                   @Query("cources_id") String cources_id,
+                                                   @Query("scyear_id") String scyear_id);
+
+
+
 }

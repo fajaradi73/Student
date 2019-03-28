@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Guru.ActivityGuru.FullPicture"
+    android:orientation="vertical">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:background="@color/grey_300"
+        tools:ignore="UselessParent">
+        <ImageView
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_margin="10dp"
+            android:id="@+id/btn_exit"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:background="@drawable/bs_ic_clear_light"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="end"
+            android:layout_margin="10dp"
+            android:padding="5dp"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:text="UBAH"
+            android:id="@+id/btn_ubah"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:gravity="center"/>
+    </FrameLayout>
+    <com.github.florent37.shapeofview.shapes.RoundRectView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:background="@color/grey_400"
+            android:id="@+id/full_image"
+            android:scaleType="fitCenter"/>
+    </com.github.florent37.shapeofview.shapes.RoundRectView>
+</LinearLayout>

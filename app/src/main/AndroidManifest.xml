@@ -163,10 +163,21 @@
             android:label="Jadwal Mengajar"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".Guru.ActivityGuru.ProfileGuru"
+        <activity
+            android:name=".Guru.ActivityGuru.ProfileGuru"
             android:label=""
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".Guru.ActivityGuru.FullPicture"
+            android:label=""
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".Guru.ActivityGuru.Silabus"
+            android:label="Silabus"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"
+            />
 
     </application>
 

@@ -21,9 +21,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.fingertech.kesforstudent.Controller.Auth;
+import com.fingertech.kesforstudent.Guru.ActivityGuru.MenuUtamaGuru;
+import com.fingertech.kesforstudent.Guru.ActivityGuru.ProfileGuru;
 import com.fingertech.kesforstudent.R;
 import com.fingertech.kesforstudent.Rest.ApiClient;
 import com.fingertech.kesforstudent.Rest.JSONResponse;
+import com.shashank.sony.fancytoastlib.FancyToast;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -50,7 +53,7 @@ public class ChangePassword extends AppCompatActivity {
     public static final String my_change_shared = "my_change_shared";
 
     SharedPreferences sharedpreferences,changeshared;
-    String authorization,memberid,username,member_type,fullname,school_code;
+    String authorization,memberid,username,member_type,fullname,school_code,change;
     TextInputLayout til_password_lama,til_password_baru,til_konfirmasi;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,7 +71,7 @@ public class ChangePassword extends AppCompatActivity {
         final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_change);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        toolbar.getNavigationIcon().setColorFilter(getResources().getColor(R.color.ic_logo_background), PorterDuff.Mode.SRC_ATOP);
+        toolbar.getNavigationIcon().setColorFilter(getResources().getColor(R.color.white), PorterDuff.Mode.SRC_ATOP);
 
         sharedpreferences = getSharedPreferences(Masuk.my_shared_preferences, Context.MODE_PRIVATE);
         authorization     = sharedpreferences.getString(TAG_TOKEN,"");
@@ -77,6 +80,7 @@ public class ChangePassword extends AppCompatActivity {
         fullname          = sharedpreferences.getString(TAG_FULLNAME,"");
         member_type       = sharedpreferences.getString(TAG_MEMBER_TYPE,"");
         school_code       = sharedpreferences.getString(TAG_SCHOOL_CODE,"");
+        change            = sharedpreferences.getString("change",null);
 
         changeshared    = getSharedPreferences(my_change_shared,Context.MODE_PRIVATE);
         btn_ganti_password.setOnClickListener(new View.OnClickListener() {
@@ -170,12 +174,36 @@ public class ChangePassword extends AppCompatActivity {
                 code   = resource.code;
 
                 if (status == 1 && code.equals("CP_SCS_0001")) {
-                    if (member_type.equals("4")){
-                        Intent intent = new Intent(ChangePassword.this,MenuUtama.class);
-                        startActivity(intent);
-                    }else if (member_type.equals("3")){
-                        Intent intent = new Intent(ChangePassword.this,MenuUtama.class);
-                        startActivity(intent);
+                    if (change !=null) {
+                        if (member_type.equals("4")) {
+                            FancyToast.makeText(getApplicationContext(), "Kata sandi telah berubah", Toast.LENGTH_LONG, FancyToast.INFO, false).show();
+                            Intent intent = new Intent(ChangePassword.this, ProfileGuru.class);
+                            intent.putExtra("authorization",authorization);
+                            intent.putExtra("school_code",school_code);
+                            intent.putExtra("member_id",memberid);
+                            setResult(RESULT_OK, intent);
+                            finish();
+                        } else if (member_type.equals("3")) {
+                            FancyToast.makeText(getApplicationContext(), "Kata sandi telah berubah", Toast.LENGTH_LONG, FancyToast.INFO, false).show();
+                            Intent intent = new Intent(ChangePassword.this, ProfileAnak.class);
+                            intent.putExtra("authorization",authorization);
+                            intent.putExtra("school_code",school_code);
+                            intent.putExtra("member_id",memberid);
+                            setResult(RESULT_OK, intent);
+                            finish();
+                        }
+                    }else {
+                        if (member_type.equals("4")) {
+                            FancyToast.makeText(getApplicationContext(), "Kata sandi telah berubah", Toast.LENGTH_LONG, FancyToast.INFO, false).show();
+                            Intent intent = new Intent(ChangePassword.this, MenuUtamaGuru.class);
+                            startActivity(intent);
+                            finish();
+                        } else if (member_type.equals("3")) {
+                            FancyToast.makeText(getApplicationContext(), "Kata sandi telah berubah", Toast.LENGTH_LONG, FancyToast.INFO, false).show();
+                            Intent intent = new Intent(ChangePassword.this, MenuUtama.class);
+                            startActivity(intent);
+                            finish();
+                        }
                     }
                 } else{
                     if (status == 0 && code.equals("CP_ERR_0001")) {

@@ -45,13 +45,13 @@
                 android:layout_gravity="center"
                 android:layout_height="match_parent"
                 android:layout_width="match_parent"
-                app:srcCompat="@drawable/guru"
+                android:background="@color/white"
+                app:srcCompat="@drawable/ic_logo"
                 tools:ignore="ContentDescription" />
         </com.github.florent37.shapeofview.shapes.CircleView>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-
             android:orientation="vertical">
 
             <LinearLayout
@@ -64,7 +64,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Maemunah"
+                        tools:text="Maemunah"
                         android:textSize="25sp"
                         android:textColor="#000"
                         android:id="@+id/tv_nama_profil_guru"

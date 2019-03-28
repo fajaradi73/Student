@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Guru.ActivityGuru.Silabus"
+    android:orientation="vertical">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbarSilabus"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorPrimary"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@color/mint_color">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Pilih Tingkatan Kelas"
+                    android:layout_marginTop="20dp"
+                    android:textColor="@color/white"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginBottom="-10dp"/>
+                <com.rey.material.widget.Spinner
+                    android:id="@+id/sp_tingkatan_kelas"
+                    style="@style/Material.Widget.Spinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center"
+                    android:layout_margin="10dp"
+                    android:background="@android:color/transparent"
+                    android:gravity="center"
+                    android:spinnerMode="dropdown"
+                    app:rd_style="@style/Material.Drawable.Ripple.Wave"
+                    app:spn_arrowAnimClockwise="true"
+                    app:spn_arrowAnimDuration="300"
+                    app:spn_arrowColor="@color/white"
+                    app:spn_arrowSwitchMode="true"
+                    app:spn_dividerColor="@color/white"
+                    app:spn_dividerHeight="1dp"
+                    app:spn_labelTextColor="@color/colorPrimary" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Pilih Mata Pelajaran"
+                    android:layout_marginTop="10dp"
+                    android:id="@+id/hint_mapel"
+                    android:textColor="@color/white"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginBottom="-10dp"/>
+                <com.rey.material.widget.Spinner
+                    android:id="@+id/sp_mapel"
+                    style="@style/Material.Widget.Spinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center"
+                    android:layout_margin="10dp"
+                    android:background="@android:color/transparent"
+                    android:gravity="center"
+                    android:spinnerMode="dropdown"
+                    app:rd_style="@style/Material.Drawable.Ripple.Wave"
+                    app:spn_arrowAnimClockwise="true"
+                    app:spn_arrowAnimDuration="300"
+                    app:spn_arrowColor="@color/white"
+                    app:spn_arrowSwitchMode="true"
+                    app:spn_dividerColor="@color/white"
+                    app:spn_dividerHeight="1dp"
+                    app:spn_labelTextColor="@color/colorPrimary" />
+
+                <android.support.v7.widget.CardView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:id="@+id/btn_go"
+                    android:layout_gravity="center">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@color/colorPrimary"
+                        android:textColor="@color/white"
+                        android:text="Go"
+                        android:paddingTop="10dp"
+                        android:paddingBottom="10dp"
+                        android:paddingStart="20dp"
+                        android:paddingEnd="20dp"/>
+                </android.support.v7.widget.CardView>
+            </LinearLayout>
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv_silabus"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+            </android.support.v7.widget.RecyclerView>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/hint_silabus"
+                android:visibility="gone"
+                android:text="Silabus Belum dibuat"/>
+        </LinearLayout>
+
+</LinearLayout>
