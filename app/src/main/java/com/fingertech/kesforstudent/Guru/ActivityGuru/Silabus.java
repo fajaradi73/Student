@@ -96,7 +96,12 @@ public class Silabus extends AppCompatActivity {
                 dapat_mapel();
             }
         });
-        Log.d("edulevel",sp_edulevel.getSelectedItem().toString()+"/"+sp_edulevel.getSelectedItemPosition());
+
+        if (sp_edulevel.getSelectedItemPosition() == 0){
+            edulevel_id = "-1";
+            cources_id  = "-1";
+            sp_mapel.setEnabled(false);
+        }
 
         final ArrayAdapter<String> adapterMapel = new ArrayAdapter<String>(Silabus.this,R.layout.spinner_white,listMapel);
         adapterMapel.setDropDownViewResource(R.layout.simple_spinner_dropdown);
@@ -143,11 +148,14 @@ public class Silabus extends AppCompatActivity {
     }
 
     private void dapat_mapel(){
+        progressBar();
+        showDialog();
         Call<JSONResponse.ListMapelEdu> call = mApiInterface.kes_get_edulevel_cources_get(authorization,school_code.toLowerCase(),member_id,edulevel_id,scyear_id);
         call.enqueue(new Callback<JSONResponse.ListMapelEdu>() {
             @Override
             public void onResponse(Call<JSONResponse.ListMapelEdu> call, Response<JSONResponse.ListMapelEdu> response) {
                 Log.d("Sukses",response.code()+"");
+                hideDialog();
                 JSONResponse.ListMapelEdu resource = response.body();
                 status  = resource.status;
                 code    = resource.code;
@@ -167,6 +175,7 @@ public class Silabus extends AppCompatActivity {
             @Override
             public void onFailure(Call<JSONResponse.ListMapelEdu> call, Throwable t) {
                 Log.d("Gagal",t.toString());
+                hideDialog();
             }
         });
     }
