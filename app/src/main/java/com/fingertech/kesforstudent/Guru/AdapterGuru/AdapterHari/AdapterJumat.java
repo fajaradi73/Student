@@ -1,4 +1,4 @@
-package com.fingertech.kesforstudent.Guru.AdapterGuru;
+package com.fingertech.kesforstudent.Guru.AdapterGuru.AdapterHari;
 
 import android.annotation.SuppressLint;
 import android.support.v7.widget.RecyclerView;

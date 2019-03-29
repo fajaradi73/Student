@@ -86,4 +86,6 @@
     <string name="Tv_english">english</string>
     <string name="Key_SW_Language">Key_SW_Language</string>
     <string name="title_activity_setting_">Setting</string>
+    <string name="write_file">This app needs access to your file storage so that it can write files.</string>
+
 </resources>

@@ -1,4 +1,4 @@
-package com.fingertech.kesforstudent.Guru.AdapterGuru;
+package com.fingertech.kesforstudent.Guru.AdapterGuru.AdapterHari;
 
 import android.annotation.SuppressLint;
 import android.support.v7.widget.RecyclerView;
@@ -7,18 +7,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.fingertech.kesforstudent.Guru.ModelGuru.ModelHari.ModelSenin;
+import com.fingertech.kesforstudent.Guru.ModelGuru.ModelHari.ModelSelasa;
 import com.fingertech.kesforstudent.R;
 
 import java.util.List;
 
-public class AdapterSenin extends RecyclerView.Adapter<AdapterSenin.MyHolder> {
+public class AdapterSelasa extends RecyclerView.Adapter<AdapterSelasa.MyHolder> {
 
-    private List<ModelSenin> viewItemList;
+    private List<ModelSelasa> viewItemList;
 
     private OnItemClickListener onItemClickListener;
     public int row_index = 0;
-    public AdapterSenin(List<ModelSenin> viewItemList) {
+    public AdapterSelasa(List<ModelSelasa> viewItemList) {
         this.viewItemList = viewItemList;
     }
 
@@ -41,7 +41,7 @@ public class AdapterSenin extends RecyclerView.Adapter<AdapterSenin.MyHolder> {
     public void onBindViewHolder(MyHolder holder, int position) {
 
         // Get car item dto in list.
-        ModelSenin viewItem = viewItemList.get(position);
+        ModelSelasa viewItem = viewItemList.get(position);
         holder.mapel.setText(viewItem.getMapel());
         holder.lambel.setText(viewItem.getLama_ngajar() + " Menit");
         holder.jambel.setText(viewItem.getJam_mulai() +" - "+ viewItem.getJam_selesai());

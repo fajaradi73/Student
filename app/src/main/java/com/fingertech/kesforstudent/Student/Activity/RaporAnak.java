@@ -1,11 +1,21 @@
 package com.fingertech.kesforstudent.Student.Activity;
 
+import android.app.AlertDialog;
+import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.ColorDrawable;
+import android.media.RingtoneManager;
+import android.net.Uri;
+import android.os.Environment;
+import android.os.SystemClock;
+import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.NotificationManagerCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
@@ -23,11 +33,13 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TableLayout;
+import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
 
 import com.dant.centersnapreyclerview.SnappingRecyclerView;
+import com.fingertech.kesforstudent.CustomView.CustomLayoutManager;
 import com.fingertech.kesforstudent.Student.Adapter.RaporAdapter;
 import com.fingertech.kesforstudent.Controller.Auth;
 import com.fingertech.kesforstudent.Student.Model.RaportModel;
@@ -35,8 +47,12 @@ import com.fingertech.kesforstudent.R;
 import com.fingertech.kesforstudent.Rest.ApiClient;
 import com.fingertech.kesforstudent.Rest.JSONResponse;
 import com.rey.material.widget.Spinner;
+import com.shashank.sony.fancytoastlib.FancyToast;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -44,11 +60,16 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static com.fingertech.kesforstudent.Service.App.CHANNEL_2_ID;
+
 public class RaporAnak extends AppCompatActivity {
+
+    private NotificationManagerCompat notificationManager;
 
     TextView tv_semester,no_rapor,nama_kelas;
     Button btn_download,btn_go;
@@ -61,28 +82,39 @@ public class RaporAnak extends AppCompatActivity {
     String authorization,school_code,classroom_id,student_id,semester_id;
     TextView tv_teori,tv_ulangan_harian,tv_praktikum,tv_eskul,tv_ujian_sekolah,tv_ujian_negara,tv_nilai_akhir,tv_rata_rata;
 
+    LinearSnapHelper snapHelper;
     RaporAdapter raporAdapter;
     RaportModel raportModel;
     List<RaportModel> raportModelList;
-    SnappingRecyclerView snappyRecycleView;
+    RecyclerView snappyRecycleView;
     String teori,ulangan_harian,praktikum,eskul,ujian_sekolah,ujian_negara,mapel,nilai_akhir,rata_rata;
     CardView cardView;
     String semester_nama;
     private List<JSONResponse.DataSemester> dataSemesters;
+    private List<JSONResponse.DetailScoreItem> detailScoreItemList = new ArrayList<>();
 
-    Spinner sp_semester;
+    Spinner sp_semester,sp_mapel,sp_tipe_nilai;
     TextView status_rapor,tv_peringkat,tv_kritik;
     TableLayout tableLayout;
 
     String date,namakelas,walikelas;
-    String guru,tanggal,type,nilai,deskripsi,start_date,end_date,semester,start_year,start_end;
+    String guru,tanggal,type,nilai,deskripsi,start_date,end_date,start_year,start_end;
     SharedPreferences sharedPreferences;
     SlidingUpPanelLayout slidingUpPanelLayout;
     ImageView star;
-    private boolean loading = true;
-    int pastVisiblesItems, visibleItemCount, totalItemCount;
     ImageView arrow;
     LinearLayout drag;
+    private String[] list_tipe = {
+            "Semua",
+            "Latihan Teori",
+            "Ulangan Harian",
+            "Latihan Praktikum",
+            "Ekstrakulikuler",
+            "Ujian Sekolah",
+            "Ujian Negara"
+    };
+    TableRow tr_teori,tr_harian,tr_praktikum,tr_eskul,tr_ujian_sekolah,tr_ujian_negara,tr_nilai_akhir,tr_rata;
+    File file = new File("Your_File_path/name");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,12 +124,13 @@ public class RaporAnak extends AppCompatActivity {
         snappyRecycleView    = findViewById(R.id.rv_rapor);
         mApiInterface   = ApiClient.getClient().create(Auth.class);
         sp_semester     = findViewById(R.id.sp_semester);
+        sp_mapel        = findViewById(R.id.sp_mapel);
+        sp_tipe_nilai   = findViewById(R.id.sp_tipe_nilai);
         tv_semester     = findViewById(R.id.tv_semester);
         no_rapor        = findViewById(R.id.tv_no_rapor);
         status_rapor    = findViewById(R.id.status_raport);
         tv_peringkat    = findViewById(R.id.peringkat);
         tv_kritik       = findViewById(R.id.kritik_saran);
-        btn_go          = findViewById(R.id.btn_pilih);
         star            = findViewById(R.id.star);
         slidingUpPanelLayout    = findViewById(R.id.sliding_layout);
         tv_teori           = findViewById(R.id.nilai_teori);
@@ -108,9 +141,22 @@ public class RaporAnak extends AppCompatActivity {
         tv_ujian_negara    = findViewById(R.id.ujian_negara);
         tv_rata_rata       = findViewById(R.id.rata_rata);
         tv_nilai_akhir     = findViewById(R.id.nilai_akhir);
+        tr_teori           = findViewById(R.id.table1);
+        tr_eskul           = findViewById(R.id.table4);
+        tr_harian          = findViewById(R.id.table2);
+        tr_praktikum       = findViewById(R.id.table3);
+        tr_ujian_negara    = findViewById(R.id.table5);
+        tr_ujian_sekolah   = findViewById(R.id.table6);
+        tr_nilai_akhir     = findViewById(R.id.table7);
+        tr_rata            = findViewById(R.id.table8);
+
         cardView           = findViewById(R.id.card);
         arrow              = findViewById(R.id.arrow);
         drag               = findViewById(R.id.dragView);
+
+
+        notificationManager = NotificationManagerCompat.from(this);
+
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -146,13 +192,6 @@ public class RaporAnak extends AppCompatActivity {
                     arrow.setImageResource(R.drawable.ic_arrow_down);
                 }
             }
-        });
-
-        btn_go.setOnClickListener(v -> {
-            RaportAnak();
-            dapat_semester();
-            slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
-            arrow.setImageResource(R.drawable.ic_up_arrow);
         });
 
         drag.setOnClickListener(v -> {
@@ -219,8 +258,6 @@ public class RaporAnak extends AppCompatActivity {
                             semester_nama    = response.body().getData().get(i).getSemester_name();
                             start_date  = response.body().getData().get(i).getStart_date();
                             end_date    = response.body().getData().get(i).getEnd_date();
-                            start_year  = response.body().getData().get(0).getStart_date();
-                            start_end   = response.body().getData().get(1).getEnd_date();
 
                             final ArrayAdapter<String> adapterRaport = new ArrayAdapter<String>(
                                     RaporAnak.this,R.layout.spinner_full,listSpinner){
@@ -256,10 +293,20 @@ public class RaporAnak extends AppCompatActivity {
                             int spinnerPosition = adapterRaport.getPosition(semester_nama);
                             adapterRaport.setDropDownViewResource(R.layout.simple_spinner_dropdown);
                             sp_semester.setAdapter(adapterRaport);
-                            sp_semester.setOnItemSelectedListener((parent, view, position, id) ->
-                                    semester_id = dataSemesters.get(position-1).getSemester_id());
+                            sp_semester.setOnItemSelectedListener((parent, view, position, id) -> {
+                                if (position > 0) {
+                                    semester_id = dataSemesters.get(position - 1).getSemester_id();
+                                }
+                            });
+
                             sp_semester.setSelection(spinnerPosition);
                         }
+                        if (response.body().getData().get(i).getSemester_name().equals("Ganjil")){
+                            start_year  = converTahun(response.body().getData().get(i).getStart_date());
+                        } else if (response.body().getData().get(i).getSemester_name().equals("Genap")) {
+                            start_end   = converTahun(response.body().getData().get(i).getEnd_date());
+                        }
+                        tv_semester.setText("Semester "+semester_nama+" ("+start_year+"/"+start_end+")");
                     }
                     final ArrayAdapter<String> adapterRaport = new ArrayAdapter<String>(
                             RaporAnak.this,R.layout.spinner_full,listSpinner){
@@ -295,10 +342,15 @@ public class RaporAnak extends AppCompatActivity {
                     int spinnerPosition = adapterRaport.getPosition(semester_nama);
                     adapterRaport.setDropDownViewResource(R.layout.simple_spinner_dropdown);
                     sp_semester.setAdapter(adapterRaport);
-                    sp_semester.setOnItemSelectedListener((parent, view, position, id) ->
-                            semester_id = dataSemesters.get(position-1).getSemester_id());
+                    sp_semester.setOnItemSelectedListener((parent, view, position, id) ->{
+                        if (position>0) {
+                            semester_id = dataSemesters.get(position - 1).getSemester_id();
+                            RaportAnak();
+                            slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
+                            arrow.setImageResource(R.drawable.ic_up_arrow);
+                        }
+                    });
                     sp_semester.setSelection(spinnerPosition);
-                    tv_semester.setText("Semester "+semester_nama+" "+converTahun(start_year)+"/"+converTahun(start_end));
                 }
             }
 
@@ -309,19 +361,6 @@ public class RaporAnak extends AppCompatActivity {
             }
 
         });
-    }
-
-    String converDate(String tanggal){
-        SimpleDateFormat calendarDateFormat = new SimpleDateFormat("yyyy-MM-dd",Locale.getDefault());
-
-        SimpleDateFormat newDateFormat = new SimpleDateFormat("dd MMMM yyyy",Locale.getDefault());
-        try {
-            String e = newDateFormat.format(calendarDateFormat.parse(tanggal));
-            return e;
-        } catch (java.text.ParseException e) {
-            e.printStackTrace();
-            return "";
-        }
     }
 
     private void showDialog() {
@@ -345,14 +384,24 @@ public class RaporAnak extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                onBackPressed();
+                finish();
+                return true;
+            case R.id.item_download:
+                if (detailScoreItemList != null){
+                    download_rapor();
+                }else {
+                    FancyToast.makeText(getApplicationContext(),"Rapor Belum diterbitkan oleh guru",Toast.LENGTH_LONG,FancyToast.ERROR,false).show();
+                }
                 return true;
         }
 
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_rapor, menu);
         return true;
     }
 
@@ -373,10 +422,14 @@ public class RaporAnak extends AppCompatActivity {
                 RaportModel raportModel = null;
                 if (status == 1 && code.equals("DTS_SCS_0001")) {
                     raportModelList = new ArrayList<RaportModel>();
+                    detailScoreItemList = response.body().getData().getDetailScore();
+                    List<String> listSpinner = new ArrayList<String>();
                     if(response.body().getData().getDetailScore() != null) {
+                        snapHelper  = new LinearSnapHelper();
                         statusrapor = response.body().getData().getClassroom().getPromoteText();
                         peringkat   = response.body().getData().getClassroom().getPromoteRanking();
                         kritik      = response.body().getData().getClassroom().getDescriptionText();
+
                         status_rapor.setText(statusrapor);
                         tv_peringkat.setText(peringkat);
                         tv_kritik.setText(kritik);
@@ -386,27 +439,119 @@ public class RaporAnak extends AppCompatActivity {
                             star.setVisibility(View.GONE);
                         }
                         for (int i = 0; i < response.body().getData().getDetailScore().size(); i++) {
-                            mapel           = response.body().getData().getDetailScore().get(i).getCourcesName();
 
+                            listSpinner.add(response.body().getData().getDetailScore().get(i).getCourcesName());
+                            mapel           = response.body().getData().getDetailScore().get(i).getCourcesName();
                             raportModel = new RaportModel();
                             raportModel.setMapel(mapel);
                             raportModelList.add(raportModel);
 
                         }
 
+                        final CustomLayoutManager layoutManager = new CustomLayoutManager(RaporAnak.this);
+                        layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+
+                        final ArrayAdapter<String> adapterRaport = new ArrayAdapter<String>(RaporAnak.this,R.layout.spinner_full,listSpinner);
+                        adapterRaport.setDropDownViewResource(R.layout.simple_spinner_dropdown);
+                        sp_mapel.setAdapter(adapterRaport);
+                        sp_mapel.setOnItemSelectedListener((parent, view, position, id) ->{
+                            snappyRecycleView.smoothScrollToPosition(position);
+                            slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
+                            arrow.setImageResource(R.drawable.ic_up_arrow);
+                        });
+                        final ArrayAdapter<String> adapter = new ArrayAdapter<String>(RaporAnak.this,R.layout.spinner_full,list_tipe);
+                        adapter.setDropDownViewResource(R.layout.simple_spinner_dropdown);
+                        sp_tipe_nilai.setAdapter(adapter);
+                        sp_tipe_nilai.setOnItemSelectedListener((parent, view, position, id) -> {
+                            if (position == 1){
+                                tr_teori.setVisibility(View.VISIBLE);
+                                tr_harian.setVisibility(View.GONE);
+                                tr_praktikum.setVisibility(View.GONE);
+                                tr_eskul.setVisibility(View.GONE);
+                                tr_ujian_sekolah.setVisibility(View.GONE);
+                                tr_ujian_negara.setVisibility(View.GONE);
+                                tr_nilai_akhir.setVisibility(View.GONE);
+                                tr_rata.setVisibility(View.GONE);
+                                slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
+                                arrow.setImageResource(R.drawable.ic_up_arrow);
+                            }else if (position == 2){
+                                tr_teori.setVisibility(View.GONE);
+                                tr_harian.setVisibility(View.VISIBLE);
+                                tr_praktikum.setVisibility(View.GONE);
+                                tr_eskul.setVisibility(View.GONE);
+                                tr_ujian_sekolah.setVisibility(View.GONE);
+                                tr_ujian_negara.setVisibility(View.GONE);
+                                tr_nilai_akhir.setVisibility(View.GONE);
+                                tr_rata.setVisibility(View.GONE);
+                                slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
+                                arrow.setImageResource(R.drawable.ic_up_arrow);
+                            }else if (position == 3){
+                                tr_teori.setVisibility(View.GONE);
+                                tr_harian.setVisibility(View.GONE);
+                                tr_praktikum.setVisibility(View.VISIBLE);
+                                tr_eskul.setVisibility(View.GONE);
+                                tr_ujian_sekolah.setVisibility(View.GONE);
+                                tr_ujian_negara.setVisibility(View.GONE);
+                                tr_nilai_akhir.setVisibility(View.GONE);
+                                tr_rata.setVisibility(View.GONE);
+                                slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
+                                arrow.setImageResource(R.drawable.ic_up_arrow);
+                            }else if (position == 4){
+                                tr_teori.setVisibility(View.GONE);
+                                tr_harian.setVisibility(View.GONE);
+                                tr_praktikum.setVisibility(View.GONE);
+                                tr_eskul.setVisibility(View.VISIBLE);
+                                tr_ujian_sekolah.setVisibility(View.GONE);
+                                tr_ujian_negara.setVisibility(View.GONE);
+                                tr_nilai_akhir.setVisibility(View.GONE);
+                                tr_rata.setVisibility(View.GONE);
+                                slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
+                                arrow.setImageResource(R.drawable.ic_up_arrow);
+                            }else if (position == 5){
+                                tr_teori.setVisibility(View.GONE);
+                                tr_harian.setVisibility(View.GONE);
+                                tr_praktikum.setVisibility(View.GONE);
+                                tr_eskul.setVisibility(View.GONE);
+                                tr_ujian_sekolah.setVisibility(View.VISIBLE);
+                                tr_ujian_negara.setVisibility(View.GONE);
+                                tr_nilai_akhir.setVisibility(View.GONE);
+                                tr_rata.setVisibility(View.GONE);
+                                slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
+                                arrow.setImageResource(R.drawable.ic_up_arrow);
+                            }else if (position == 6){
+                                tr_teori.setVisibility(View.GONE);
+                                tr_harian.setVisibility(View.GONE);
+                                tr_praktikum.setVisibility(View.GONE);
+                                tr_eskul.setVisibility(View.GONE);
+                                tr_ujian_sekolah.setVisibility(View.GONE);
+                                tr_ujian_negara.setVisibility(View.VISIBLE);
+                                tr_nilai_akhir.setVisibility(View.GONE);
+                                tr_rata.setVisibility(View.GONE);
+                                slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
+                                arrow.setImageResource(R.drawable.ic_up_arrow);
+                            }else if (position == 0){
+                                tr_teori.setVisibility(View.VISIBLE);
+                                tr_harian.setVisibility(View.VISIBLE);
+                                tr_praktikum.setVisibility(View.VISIBLE);
+                                tr_eskul.setVisibility(View.VISIBLE);
+                                tr_ujian_sekolah.setVisibility(View.VISIBLE);
+                                tr_ujian_negara.setVisibility(View.VISIBLE);
+                                tr_nilai_akhir.setVisibility(View.VISIBLE);
+                                tr_rata.setVisibility(View.VISIBLE);
+                                slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
+                                arrow.setImageResource(R.drawable.ic_up_arrow);
+                            }
+                        });
+
                         no_rapor.setVisibility(View.GONE);
                         snappyRecycleView.setVisibility(View.VISIBLE);
                         cardView.setVisibility(View.VISIBLE);
                         raporAdapter = new RaporAdapter(raportModelList);
-                        final LinearLayoutManager layoutManager = new LinearLayoutManager(RaporAnak.this);
-                        layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
-                        LinearSnapHelper snapHelper  = new LinearSnapHelper();
                         snappyRecycleView.setOnFlingListener(null);
                         snapHelper.attachToRecyclerView(snappyRecycleView);
-//                        snappyRecycleView.setLayoutManager(new SnappyLinearLayoutManager(RaporAnak.this));
-//                        snappyRecycleView.addItemDecoration(new ExampleDatePaddingItemDecoration(snappyRecycleView.getOrientation()));
                         snappyRecycleView.setLayoutManager(layoutManager);
                         snappyRecycleView.setAdapter(raporAdapter);
+
                         snappyRecycleView.addOnScrollListener(new RecyclerView.OnScrollListener() {
                             @Override
                             public void onScrolled( RecyclerView recyclerView, int dx, int dy) {
@@ -473,6 +618,8 @@ public class RaporAnak extends AppCompatActivity {
         return data;
     }
 
+
+
     private void Classroom_detail(){
 
         Call<JSONResponse.ClassroomDetail> call = mApiInterface.kes_classroom_detail_get(authorization.toString(),school_code.toString().toLowerCase(),classroom_id.toString());
@@ -518,4 +665,101 @@ public class RaporAnak extends AppCompatActivity {
             return "";
         }
     }
+
+
+    public void download_rapor(){
+        Call<ResponseBody> call = mApiInterface.kes_rapor_pdf(authorization,school_code.toLowerCase(),student_id,classroom_id,semester_id);
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                Log.d("KES",response.code()+"");
+                try {
+                    File path = Environment.getExternalStorageDirectory();
+                    File file = new File(path, "KES Documents");
+                    file.mkdir();
+                    File pdfFile = new File(file, "Nilai Rapor.pdf");
+                    FileOutputStream fileOutputStream = new FileOutputStream(pdfFile);
+                    if (response.body() != null) {
+                        final int progressMax = 100;
+                        Intent intent = new Intent(RaporAnak.this, LihatPdf.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        PendingIntent pendingIntent = PendingIntent.getActivity(RaporAnak.this, 2, intent,
+                                PendingIntent.FLAG_ONE_SHOT);
+
+                        final NotificationCompat.Builder notification = new NotificationCompat.Builder(RaporAnak.this, CHANNEL_2_ID)
+                                .setSmallIcon(R.drawable.ic_logo_grey)
+                                .setContentTitle("Download")
+                                .setContentText("Download in progress")
+                                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                                .setOngoing(true)
+                                .setOnlyAlertOnce(true)
+                                .setProgress(progressMax, 0, true);
+
+                        notificationManager.notify(2, notification.build());
+
+                        new Thread(() -> {
+
+                            SystemClock.sleep(2000);
+                            Uri soundUri1 = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+                            for (int progress = 0; progress <= progressMax; progress += 50) {
+                                notification.setContentText(progress+" %")
+                                        .setProgress(progressMax, progress, false);
+                                notificationManager.notify(2, notification.build());
+                                SystemClock.sleep(1000);
+                            }
+                            notification.setContentText("Download selesai")
+                                    .setProgress(0, 0, false)
+                                    .setOngoing(false)
+                                    .setContentIntent(pendingIntent)
+                                    .setSound(soundUri1);
+                            try {
+                                fileOutputStream.write(response.body().bytes());
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    // Your dialog code.
+                                    pilihan();
+                                }
+                            });
+                        }).start();
+                    }
+                }
+                catch (Exception ex){
+                    ex.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Log.d("gagal",t.toString());
+
+            }
+        });
+    }
+
+    private void pilihan(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(RaporAnak.this,R.style.DialogTheme);
+        builder.setTitle("Download Selesai");
+        builder.setMessage("Apakah anda ingin melihat file yang sudah didownload?");
+        builder.setIcon(R.drawable.ic_pdf);
+        builder.setPositiveButton("Ya", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Intent intent = new Intent(RaporAnak.this, LihatPdf.class);
+                startActivity(intent);
+            }
+        });
+        builder.setNegativeButton("Tidak", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        builder.show();
+    }
 }
+
+

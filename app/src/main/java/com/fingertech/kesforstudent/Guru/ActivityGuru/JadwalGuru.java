@@ -21,12 +21,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.fingertech.kesforstudent.Controller.Auth;
-import com.fingertech.kesforstudent.Guru.AdapterGuru.AdapterJumat;
-import com.fingertech.kesforstudent.Guru.AdapterGuru.AdapterKamis;
-import com.fingertech.kesforstudent.Guru.AdapterGuru.AdapterRabu;
-import com.fingertech.kesforstudent.Guru.AdapterGuru.AdapterSabtu;
-import com.fingertech.kesforstudent.Guru.AdapterGuru.AdapterSelasa;
-import com.fingertech.kesforstudent.Guru.AdapterGuru.AdapterSenin;
+import com.fingertech.kesforstudent.Guru.AdapterGuru.AdapterHari.AdapterJumat;
+import com.fingertech.kesforstudent.Guru.AdapterGuru.AdapterHari.AdapterKamis;
+import com.fingertech.kesforstudent.Guru.AdapterGuru.AdapterHari.AdapterRabu;
+import com.fingertech.kesforstudent.Guru.AdapterGuru.AdapterHari.AdapterSabtu;
+import com.fingertech.kesforstudent.Guru.AdapterGuru.AdapterHari.AdapterSelasa;
+import com.fingertech.kesforstudent.Guru.AdapterGuru.AdapterHari.AdapterSenin;
 import com.fingertech.kesforstudent.Guru.ModelGuru.ModelHari.ModelJumat;
 import com.fingertech.kesforstudent.Guru.ModelGuru.ModelHari.ModelKamis;
 import com.fingertech.kesforstudent.Guru.ModelGuru.ModelHari.ModelRabu;
@@ -36,7 +36,6 @@ import com.fingertech.kesforstudent.Guru.ModelGuru.ModelHari.ModelSenin;
 import com.fingertech.kesforstudent.R;
 import com.fingertech.kesforstudent.Rest.ApiClient;
 import com.fingertech.kesforstudent.Rest.JSONResponse;
-import com.fingertech.kesforstudent.Student.Activity.JadwalPelajaran;
 import com.fingertech.kesforstudent.Student.Activity.Masuk;
 
 import java.text.SimpleDateFormat;

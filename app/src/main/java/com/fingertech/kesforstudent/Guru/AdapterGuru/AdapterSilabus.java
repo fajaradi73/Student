@@ -1,24 +1,30 @@
 package com.fingertech.kesforstudent.Guru.AdapterGuru;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.Intent;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.fingertech.kesforstudent.Guru.ModelGuru.ModelHari.ModelSelasa;
+import com.fingertech.kesforstudent.Guru.ActivityGuru.LihatFile;
+import com.fingertech.kesforstudent.Guru.ModelGuru.ModelSilabus;
 import com.fingertech.kesforstudent.R;
 
 import java.util.List;
 
-public class AdapterSelasa extends RecyclerView.Adapter<AdapterSelasa.MyHolder> {
+public class AdapterSilabus extends RecyclerView.Adapter<AdapterSilabus.MyHolder> {
 
-    private List<ModelSelasa> viewItemList;
+    private List<ModelSilabus> viewItemList;
 
+    Context context;
     private OnItemClickListener onItemClickListener;
     public int row_index = 0;
-    public AdapterSelasa(List<ModelSelasa> viewItemList) {
+    public AdapterSilabus(Context context,List<ModelSilabus> viewItemList) {
+        this.context = context;
         this.viewItemList = viewItemList;
     }
 
@@ -29,7 +35,7 @@ public class AdapterSelasa extends RecyclerView.Adapter<AdapterSelasa.MyHolder> 
     @Override
     public MyHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
-        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_jadwal, parent, false);
+        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_silabus, parent, false);
 
         MyHolder myHolder = new MyHolder(itemView,onItemClickListener);
         return myHolder;
@@ -40,12 +46,18 @@ public class AdapterSelasa extends RecyclerView.Adapter<AdapterSelasa.MyHolder> 
     @Override
     public void onBindViewHolder(MyHolder holder, int position) {
 
-        // Get car item dto in list.
-        ModelSelasa viewItem = viewItemList.get(position);
-        holder.mapel.setText(viewItem.getMapel());
-        holder.lambel.setText(viewItem.getLama_ngajar() + " Menit");
-        holder.jambel.setText(viewItem.getJam_mulai() +" - "+ viewItem.getJam_selesai());
-        holder.guru.setText("Kelas "+viewItem.getKelas());
+        ModelSilabus viewItem = viewItemList.get(position);
+        holder.mapel.setText("Mata Pelajaran "+ viewItem.getMapel());
+        holder.kelas.setText(viewItem.getKelas());
+        holder.dates.setText(viewItem.getTanggal());
+        holder.cv_unduh.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent  intent = new Intent(context, LihatFile.class);
+                intent.putExtra("file",viewItem.getFile());
+                context.startActivity(intent);
+            }
+        });
     }
 
     @Override
@@ -54,15 +66,15 @@ public class AdapterSelasa extends RecyclerView.Adapter<AdapterSelasa.MyHolder> 
     }
 
     class MyHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        TextView mapel, lambel,jambel,guru;
+        TextView mapel,kelas,dates;
         OnItemClickListener onItemClickListener;
-
+        CardView cv_unduh;
         public MyHolder(View itemView,OnItemClickListener onItemClickListener) {
             super(itemView);
-            mapel    = itemView.findViewById(R.id.mapel);
-            lambel   = itemView.findViewById(R.id.lamber);
-            jambel   = itemView.findViewById(R.id.jam);
-            guru     = itemView.findViewById(R.id.guru);
+            mapel       = itemView.findViewById(R.id.mapel);
+            kelas       = itemView.findViewById(R.id.kelas_upload);
+            dates       = itemView.findViewById(R.id.tanggal_upload);
+            cv_unduh    = itemView.findViewById(R.id.btn_unduh);
 //            itemView.setOnClickListener(this);
 //            this.onItemClickListener = onItemClickListener;
         }

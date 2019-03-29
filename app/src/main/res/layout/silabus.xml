@@ -24,14 +24,13 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:background="@color/mint_color">
+                android:orientation="vertical">
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Pilih Tingkatan Kelas"
-                    android:layout_marginTop="20dp"
-                    android:textColor="@color/white"
+                    android:layout_marginTop="15dp"
+                    android:textColor="@color/black"
                     android:layout_marginStart="10dp"
                     android:layout_marginBottom="-10dp"/>
                 <com.rey.material.widget.Spinner
@@ -41,16 +40,16 @@
                     android:layout_height="30dp"
                     android:layout_gravity="center"
                     android:layout_margin="10dp"
-                    android:background="@android:color/transparent"
+                    android:background="@drawable/tab_semester"
                     android:gravity="center"
                     android:spinnerMode="dropdown"
                     app:rd_style="@style/Material.Drawable.Ripple.Wave"
                     app:spn_arrowAnimClockwise="true"
                     app:spn_arrowAnimDuration="300"
-                    app:spn_arrowColor="@color/white"
+                    app:spn_arrowColor="@color/black"
                     app:spn_arrowSwitchMode="true"
-                    app:spn_dividerColor="@color/white"
-                    app:spn_dividerHeight="1dp"
+                    app:spn_dividerColor="@color/black"
+                    app:spn_dividerHeight="0dp"
                     app:spn_labelTextColor="@color/colorPrimary" />
 
                 <TextView
@@ -59,7 +58,7 @@
                     android:text="Pilih Mata Pelajaran"
                     android:layout_marginTop="10dp"
                     android:id="@+id/hint_mapel"
-                    android:textColor="@color/white"
+                    android:textColor="@color/black"
                     android:layout_marginStart="10dp"
                     android:layout_marginBottom="-10dp"/>
                 <com.rey.material.widget.Spinner
@@ -69,39 +68,49 @@
                     android:layout_height="30dp"
                     android:layout_gravity="center"
                     android:layout_margin="10dp"
-                    android:background="@android:color/transparent"
+                    android:background="@drawable/tab_semester"
                     android:gravity="center"
                     android:spinnerMode="dropdown"
                     app:rd_style="@style/Material.Drawable.Ripple.Wave"
                     app:spn_arrowAnimClockwise="true"
                     app:spn_arrowAnimDuration="300"
-                    app:spn_arrowColor="@color/white"
+                    app:spn_arrowColor="@color/black"
                     app:spn_arrowSwitchMode="true"
-                    app:spn_dividerColor="@color/white"
-                    app:spn_dividerHeight="1dp"
+                    app:spn_dividerColor="@color/black"
+                    app:spn_dividerHeight="0dp"
                     app:spn_labelTextColor="@color/colorPrimary" />
 
                 <android.support.v7.widget.CardView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginStart="100dp"
+                    android:layout_marginEnd="100dp"
                     android:id="@+id/btn_go"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?android:attr/selectableItemBackground"
                     android:layout_gravity="center">
                     <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
                         android:background="@color/colorPrimary"
                         android:textColor="@color/white"
-                        android:text="Go"
-                        android:paddingTop="10dp"
-                        android:paddingBottom="10dp"
-                        android:paddingStart="20dp"
-                        android:paddingEnd="20dp"/>
+                        android:gravity="center"
+                        android:text="Tampilkan"/>
                 </android.support.v7.widget.CardView>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/black"
+                    android:visibility="gone"
+                    android:layout_margin="5dp"/>
             </LinearLayout>
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/rv_silabus"
                 android:layout_width="match_parent"
+                android:layout_marginTop="10dp"
                 android:layout_height="match_parent">
 
             </android.support.v7.widget.RecyclerView>
@@ -110,6 +119,8 @@
                 android:layout_height="match_parent"
                 android:id="@+id/hint_silabus"
                 android:visibility="gone"
+                android:layout_gravity="center"
+                android:gravity="center"
                 android:text="Silabus Belum dibuat"/>
         </LinearLayout>
 

@@ -5,6 +5,7 @@ import com.fingertech.kesforstudent.Rest.JSONResponse;
 import io.reactivex.Observable;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
@@ -186,7 +187,7 @@ public interface Auth {
                                                                 @Query("scyear_id") String scyear_id);
 
     //// List Silabus
-    @GET("teachers/kes_get_edulevel_cources")
+    @GET("teachers/kes_silabus")
     Call<JSONResponse.ListSilabus>kes_silabus_get(@Header("Authorization") String authorization,
                                                    @Query("school_code") String school_code,
                                                    @Query("teacher_id") String teacher_id,
@@ -194,6 +195,13 @@ public interface Auth {
                                                    @Query("cources_id") String cources_id,
                                                    @Query("scyear_id") String scyear_id);
 
+    //// download rapor
+    @GET("students/kes_rapor_pdf")
+    Call<ResponseBody>kes_rapor_pdf(@Header("Authorization") String authorization,
+                                    @Query("school_code") String school_code,
+                                    @Query("student_id") String student_id,
+                                    @Query("classroom_id") String classroom_id,
+                                    @Query("semester_id") String semester_id);
 
 
 }
