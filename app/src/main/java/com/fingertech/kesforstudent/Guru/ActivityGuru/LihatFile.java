@@ -6,6 +6,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Environment;
+import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.NotificationCompat;
@@ -244,6 +245,8 @@ public class LihatFile extends AppCompatActivity implements EasyPermissions.Perm
             notification.setContentText(Integer.parseInt(progress[0])+" %")
                     .setProgress(progressMax, Integer.parseInt(progress[0]), false);
             notificationManager.notify(2, notification.build());
+//            SystemClock.sleep(1000);
+            Log.d("Loading",progress[0]+"%");
         }
 
 

@@ -1059,6 +1059,17 @@ public class JSONResponse {
         }
     }
 
+    public class UploadSilabus{
+        @SerializedName("status")
+        public Integer status;
+
+        @SerializedName("code")
+        public String code;
+        @SerializedName("data")
+        public String data;
+
+    }
+
     //// dapat jadwal pelajaran
     public class JadwalPelajaran{
 

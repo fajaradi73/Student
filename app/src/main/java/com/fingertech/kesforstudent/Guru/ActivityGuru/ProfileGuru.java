@@ -249,6 +249,7 @@ public class ProfileGuru extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         return true;
     }
+
     private void get_profile(){
         progressBar();
         showDialog();

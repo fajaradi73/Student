@@ -56,6 +56,17 @@ public interface Auth {
                                                              @Part("member_id") RequestBody memberid,
                                                              @Part MultipartBody.Part picture_old,
                                                              @Part("pic_type") RequestBody pic_type);
+    ///// Ganti Foto
+    @Multipart
+    @POST("teachers/kes_add_silabus")
+    Call<JSONResponse.UploadSilabus> kes_add_silabus_post(@Header("Authorization") String authorization,
+                                                          @Part ("school_code") RequestBody school_code,
+                                                          @Part("teacher_id") RequestBody teacher_id,
+                                                          @Part ("cources_id") RequestBody cources_id,
+                                                          @Part("edulevel_id") RequestBody edulevel_id,
+                                                          @Part MultipartBody.Part filename,
+                                                          @Part("title") RequestBody title,
+                                                          @Part("scyear_id") RequestBody scyear_id);
 
     ///// Update Profile
     @FormUrlEncoded

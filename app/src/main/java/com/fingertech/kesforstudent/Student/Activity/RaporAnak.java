@@ -189,7 +189,7 @@ public class RaporAnak extends AppCompatActivity {
                 if (panelState.equals(SlidingUpPanelLayout.PanelState.EXPANDED)){
                     arrow.setImageResource(R.drawable.ic_up_arrow);
                 }else if (panelState.equals(SlidingUpPanelLayout.PanelState.COLLAPSED)){
-                    arrow.setImageResource(R.drawable.ic_arrow_down);
+                    arrow.setImageResource(R.drawable.ic_down_arrow);
                 }
             }
         });
@@ -200,7 +200,7 @@ public class RaporAnak extends AppCompatActivity {
                 arrow.setImageResource(R.drawable.ic_up_arrow);
             }else if (slidingUpPanelLayout.getPanelState().equals(SlidingUpPanelLayout.PanelState.COLLAPSED)){
                 slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);
-                arrow.setImageResource(R.drawable.ic_arrow_down);
+                arrow.setImageResource(R.drawable.ic_down_arrow);
             }
         });
 
