@@ -22,7 +22,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center"
-                android:text="09"
+                tools:text="09"
                 android:textColor="@color/colorPrimary"
                 android:layout_marginTop="25dp"
                 android:textSize="45sp"
@@ -45,7 +45,7 @@
                     android:layout_weight="1"
                     android:padding="10dp"
                     android:textStyle="bold"
-                    android:text="Tahun baru imlek"
+                    tools:text="Tahun baru imlek"
                     android:id="@+id/title_kalender"
                     android:textColor="@color/black" />
                 <TextView
@@ -53,7 +53,7 @@
                     android:layout_height="match_parent"
                     android:gravity="center"
                     android:layout_weight="2"
-                    android:text="09.00 - 10.00"
+                    tools:text="09.00 - 10.00"
                     android:id="@+id/jam_kalendar"
                     android:textColor="@color/black" />
             </LinearLayout>

@@ -1,6 +1,9 @@
 package com.fingertech.kesforstudent.Controller;
 
 import com.fingertech.kesforstudent.Rest.JSONResponse;
+import com.google.gson.JsonElement;
+
+import org.json.JSONObject;
 
 import io.reactivex.Observable;
 import okhttp3.MultipartBody;
@@ -216,10 +219,21 @@ public interface Auth {
                                                           @Part("scyear_id") RequestBody scyear_id);
 
     ///// Kalendar Guru
-    @GET("teachers/kes_dashboard")
-    Call<JSONResponse.Dashboard>kes_dashboard_get(@Header("Authorization") String authorization,
+    @GET("teachers/kes_dashboard_calendar")
+    Call<JSONResponse.DashboardCalendar>kes_dashboard_get(@Header("Authorization") String authorization,
                                                   @Query("school_code") String school_code,
                                                   @Query("teacher_id") String teacher_id,
+                                                  @Query("calendar_month") String calendar_month,
+                                                  @Query("calendar_year") String calendar_year,
                                                   @Query("scyear_id") String scyear_id);
+
+    ///// Kalendar Guru
+    @GET("teachers/kes_dashboard_calendar")
+    Call<JsonElement>kes_dashboard_calendar_get(@Header("Authorization") String authorization,
+                                                @Query("school_code") String school_code,
+                                                @Query("teacher_id") String teacher_id,
+                                                @Query("calendar_month") String calendar_month,
+                                                @Query("calendar_year") String calendar_year,
+                                                @Query("scyear_id") String scyear_id);
 
 }

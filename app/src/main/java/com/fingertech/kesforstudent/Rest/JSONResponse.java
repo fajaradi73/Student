@@ -5222,6 +5222,40 @@ public class JSONResponse {
         }
     }
 
+    public class DashboardCalendar{
+        @SerializedName("status")
+        public int status;
+
+        @SerializedName("code")
+        public String code;
+
+        @SerializedName("data")
+        public DataCalendar data;
+
+        public int getStatus() {
+            return status;
+        }
+
+        public void setStatus(int status) {
+            this.status = status;
+        }
+
+        public String getCode() {
+            return code;
+        }
+
+        public void setCode(String code) {
+            this.code = code;
+        }
+
+        public DataCalendar getData() {
+            return data;
+        }
+
+        public void setData(DataCalendar data) {
+            this.data = data;
+        }
+    }
     public class DataDashboard {
         @SerializedName("calendars")
         public List<DataCalendar> calendars;
