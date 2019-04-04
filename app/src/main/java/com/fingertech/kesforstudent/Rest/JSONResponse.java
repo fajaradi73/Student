@@ -5043,7 +5043,6 @@ public class JSONResponse {
             this.data = data;
         }
     }
-
     public class DataSilabus {
         @SerializedName("silabusid")
         public String silabusid;
@@ -5186,5 +5185,99 @@ public class JSONResponse {
             this.del_stat = del_stat;
         }
     }
+
+    //// Response List Dashboard
+    public class Dashboard{
+        @SerializedName("status")
+        public int status;
+
+        @SerializedName("code")
+        public String code;
+
+        @SerializedName("data")
+        public DataDashboard data;
+
+        public int getStatus() {
+            return status;
+        }
+
+        public void setStatus(int status) {
+            this.status = status;
+        }
+
+        public String getCode() {
+            return code;
+        }
+
+        public void setCode(String code) {
+            this.code = code;
+        }
+
+        public DataDashboard getData() {
+            return data;
+        }
+
+        public void setData(DataDashboard data) {
+            this.data = data;
+        }
+    }
+
+    public class DataDashboard {
+        @SerializedName("calendars")
+        public List<DataCalendar> calendars;
+
+        @SerializedName("schedule_class")
+        public List<DataJadwalGuru> schedule_class;
+
+        @SerializedName("substitute_class")
+        public List<DataSilabus> substitute_class;
+
+        @SerializedName("test_not_score")
+        public List<DataSilabus> test_not_score;
+
+        @SerializedName("cources_score_not_completed")
+        public List<DataSilabus> cources_score_not_completed;
+
+        public List<DataCalendar> getCalendars() {
+            return calendars;
+        }
+
+        public void setCalendars(List<DataCalendar> calendars) {
+            this.calendars = calendars;
+        }
+
+        public List<DataJadwalGuru> getSchedule_class() {
+            return schedule_class;
+        }
+
+        public void setSchedule_class(List<DataJadwalGuru> schedule_class) {
+            this.schedule_class = schedule_class;
+        }
+
+        public List<DataSilabus> getSubstitute_class() {
+            return substitute_class;
+        }
+
+        public void setSubstitute_class(List<DataSilabus> substitute_class) {
+            this.substitute_class = substitute_class;
+        }
+
+        public List<DataSilabus> getTest_not_score() {
+            return test_not_score;
+        }
+
+        public void setTest_not_score(List<DataSilabus> test_not_score) {
+            this.test_not_score = test_not_score;
+        }
+
+        public List<DataSilabus> getCources_score_not_completed() {
+            return cources_score_not_completed;
+        }
+
+        public void setCources_score_not_completed(List<DataSilabus> cources_score_not_completed) {
+            this.cources_score_not_completed = cources_score_not_completed;
+        }
+    }
+
 }
 

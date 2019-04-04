@@ -1,16 +1,21 @@
 package com.fingertech.kesforstudent.Student.Activity;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Rect;
+import android.speech.RecognizerIntent;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -21,7 +26,9 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.arlib.floatingsearchview.FloatingSearchView;
 import com.fingertech.kesforstudent.Guru.ActivityGuru.MenuUtamaGuru;
 import com.fingertech.kesforstudent.Student.Adapter.SearchAdapter;
 import com.fingertech.kesforstudent.Controller.Auth;
@@ -29,6 +36,7 @@ import com.fingertech.kesforstudent.R;
 import com.fingertech.kesforstudent.Rest.ApiClient;
 import com.fingertech.kesforstudent.Rest.JSONResponse;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -38,7 +46,6 @@ import retrofit2.Response;
 public class MainActivity extends AppCompatActivity {
 
     Auth mApiInterface;
-    EditText et_search;
     SearchAdapter searchAdapter;
     String code;
     int status;
@@ -49,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
     String sekolah_kode,school_name,school_id;
     CardView btn_selanjutnya;
     ImageView logo;
-    TextView footer;
+    TextView footer,tv_sekolah;
     SharedPreferences sharedpreferences;
     Boolean session = false;
     public static final String my_shared_preferences = "my_shared_preferences";
@@ -61,44 +68,65 @@ public class MainActivity extends AppCompatActivity {
     public static final String TAG_MEMBER_TYPE  = "member_type";
     public static final String TAG_TOKEN        = "token";
     String email, memberid, fullname, member_type;
-//    SimpleSearchView simpleSearchView;
+    FloatingSearchView floatingSearchView;
+    LinearLayout layou_main;
+
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        et_search       = findViewById(R.id.et_search_sekolah);
         recyclerView    = findViewById(R.id.rv_sekolah);
         btn_selanjutnya = findViewById(R.id.btn_selanjutnya);
         logo            = findViewById(R.id.logo);
         footer          = findViewById(R.id.footer);
+        layou_main      = findViewById(R.id.layout_main);
+        tv_sekolah      = findViewById(R.id.temukansekolah);
+        floatingSearchView  = findViewById(R.id.floating_search_view);
         mApiInterface   = ApiClient.getClient().create(Auth.class);
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setHasFixedSize(true);
-        et_search.addTextChangedListener(new TextWatcher() {
 
+        floatingSearchView.setSearchHint("Pilih Sekolah anda");
+
+        floatingSearchView.setOnQueryChangeListener(new FloatingSearchView.OnQueryChangeListener() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
+            public void onSearchTextChanged(String oldQuery, String newQuery) {
+                Log.d("katakata",oldQuery+"/"+newQuery);
+                if (newQuery.equals("")){
+                    Log.d("query","sekolah harus diisi");
+                }else {
+                    search_school_post(newQuery);
+                    recyclerView.setVisibility(View.VISIBLE);
+                    logo.setVisibility(View.GONE);
+                    footer.setVisibility(View.GONE);
+                    tv_sekolah.setVisibility(View.GONE);
+                }
             }
+        });
 
+        floatingSearchView.setOnClearSearchActionListener(new FloatingSearchView.OnClearSearchActionListener() {
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                search_school_post(String.valueOf(s));
+            public void onClearSearchClicked() {
+                search_school_post("");
                 recyclerView.setVisibility(View.VISIBLE);
                 logo.setVisibility(View.GONE);
                 footer.setVisibility(View.GONE);
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
+                tv_sekolah.setVisibility(View.GONE);
             }
         });
+
         btn_selanjutnya.setOnClickListener(v -> {
-            Intent intent = new Intent(MainActivity.this,Masuk.class);
-            intent.putExtra("school_code",sekolah_kode.toLowerCase());
-            intent.putExtra("school_name",school_name);
-            startActivity(intent);
+            if (sekolah_kode!=null) {
+                Intent intent = new Intent(MainActivity.this, Masuk.class);
+                intent.putExtra("school_code", sekolah_kode.toLowerCase());
+                intent.putExtra("school_name", school_name);
+                startActivity(intent);
+            }else {
+                Toast.makeText(getApplicationContext(),"Harap Diisi terlebih dahulu sekolah anda",Toast.LENGTH_LONG).show();
+                floatingSearchView.setSearchFocused(true);
+            }
         });
 
         sharedpreferences = getSharedPreferences(my_shared_preferences, Context.MODE_PRIVATE);
@@ -126,35 +154,37 @@ public class MainActivity extends AppCompatActivity {
                 finish();
                 startActivity(intent);
             }
-
         }
-    }
 
-    public boolean dispatchTouchEvent(MotionEvent event) {
-        if (event.getAction() == MotionEvent.ACTION_DOWN) {
-            View v = getCurrentFocus();
-            if ( v instanceof EditText) {
-                Rect outRect = new Rect();
-                v.getGlobalVisibleRect(outRect);
-                if (!outRect.contains((int)event.getRawX(), (int)event.getRawY())) {
-                    v.clearFocus();
-                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                    imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+        layou_main.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    floatingSearchView.clearSearchFocus();
+                    recyclerView.setVisibility(View.GONE);
+                    logo.setVisibility(View.VISIBLE);
+                    footer.setVisibility(View.VISIBLE);
+                    tv_sekolah.setVisibility(View.VISIBLE);
                 }
+                return false;
             }
-        }
-        return super.dispatchTouchEvent( event );
+        });
+    }
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        hideKeyboard(this);
     }
 
     public void search_school_post(final String key){
-
+        floatingSearchView.showProgress();
         Call<JSONResponse.School> postCall = mApiInterface.search_school_post(key);
         postCall.enqueue(new Callback<JSONResponse.School>() {
             @Override
             public void onResponse(Call<JSONResponse.School> call, final Response<JSONResponse.School> response) {
 
                 Log.d("TAG",response.code()+"");
-
+                floatingSearchView.hideProgress();
                 JSONResponse.School resource = response.body();
                 status = resource.status;
                 code = resource.code;
@@ -166,26 +196,29 @@ public class MainActivity extends AppCompatActivity {
                     searchAdapter.notifyDataSetChanged();
                     searchAdapter.getFilter(key).filter(key);
                     searchAdapter.setOnItemClickListener((view, position) -> {
-                        school_name         = response.body().getData().get(position).getSchool_name();
-                        sekolah_kode        = response.body().getData().get(position).getSchool_code();
-                        school_id           = response.body().getData().get(position).getSchool_id();
+                        school_name         = arraylist.get(position).getSchool_name();
+                        sekolah_kode        = arraylist.get(position).getSchool_code();
+                        school_id           = arraylist.get(position).getSchool_id();
                         sekolah_kode        = sekolah_kode.toLowerCase();
-
-                        et_search.setText(school_name);
+                        floatingSearchView.setSearchText(school_name);
+                        Log.d("sekolah",school_name+"/"+school_id+"/"+sekolah_kode);
+                        floatingSearchView.clearSearchFocus();
                         recyclerView.setVisibility(View.GONE);
                         logo.setVisibility(View.VISIBLE);
                         footer.setVisibility(View.VISIBLE);
+                        tv_sekolah.setVisibility(View.VISIBLE);
                         hideKeyboard(MainActivity.this);
-                        et_search.clearFocus();
                     });
 
                 } else {
                     if(status == 0 && code.equals("SS_ERR_0001")){
+
                     }
                 }
             }
             @Override
             public void onFailure(Call<JSONResponse.School> call, Throwable t) {
+                floatingSearchView.hideProgress();
                 Log.i("onFailure",t.toString());
             }
         });

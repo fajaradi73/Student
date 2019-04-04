@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.ColorDrawable;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
@@ -20,6 +22,8 @@ import com.fingertech.kesforstudent.Rest.JSONResponse;
 import com.fingertech.kesforstudent.Student.Activity.Masuk;
 import com.fingertech.kesforstudent.Controller.Auth;
 import com.fingertech.kesforstudent.R;
+import com.shashank.sony.fancygifdialoglib.FancyGifDialog;
+import com.shashank.sony.fancygifdialoglib.FancyGifDialogListener;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -123,6 +127,23 @@ public class MenuUtamaGuru extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        btn_kalendar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SharedPreferences.Editor editor = sharedpreferences.edit();
+                editor.putString("authorization",authorization);
+                editor.putString("member_id",memberid);
+                editor.putString("school_code",school_code);
+                editor.putString("scyear_id",scyear_id);
+                editor.apply();
+                Intent intent = new Intent(MenuUtamaGuru.this,KalendarGuru.class);
+                intent.putExtra("authorization",authorization);
+                intent.putExtra("school_code",school_code);
+                intent.putExtra("member_id",memberid);
+                intent.putExtra("scyear_id",scyear_id);
+                startActivity(intent);
+            }
+        });
     }
     private void get_profile(){
         progressBar();
@@ -180,4 +201,37 @@ public class MenuUtamaGuru extends AppCompatActivity {
         dialog.setIndeterminate(true);
         dialog.setCancelable(false);
     }
+
+    @Override
+    public void onBackPressed() {
+        new FancyGifDialog.Builder(this)
+                .setTitle("Keluar")
+                .setMessage("Apakah anda ingin keluar dari aplikasi.")
+                .setNegativeBtnText("Tidak")
+                .setNegativeBtnBackground("#40bfe8")
+                .setPositiveBtnBackground("#ff0000")
+                .setPositiveBtnText("Ya")
+                .setGifResource(R.drawable.home)   //Pass your Gif here
+                .isCancellable(true)
+                .OnPositiveClicked(new FancyGifDialogListener() {
+                    @Override
+                    public void OnClick() {
+//                        moveTaskToBack(true);
+//                        Intent homeIntent = new Intent(Intent.ACTION_MAIN);
+//                        homeIntent.addCategory( Intent.CATEGORY_HOME );
+//                        homeIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//                        startActivity(homeIntent);
+                        android.os.Process.killProcess(android.os.Process.myPid());
+                        System.exit(0);
+                    }
+                })
+                .OnNegativeClicked(new FancyGifDialogListener() {
+                    @Override
+                    public void OnClick() {
+                        }
+                })
+                .build();
+
+    }
+
 }

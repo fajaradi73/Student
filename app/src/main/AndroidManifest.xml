@@ -30,8 +30,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        tools:ignore="AllowBackup,GoogleAppIndexingWarning,InnerclassSeparator">
-
+        android:networkSecurityConfig="@xml/network_security_config"
+        tools:ignore="AllowBackup,GoogleAppIndexingWarning,InnerclassSeparator"
+        tools:targetApi="n">
 
         <uses-library
             android:name="org.apache.http.legacy"
@@ -183,11 +184,15 @@
             android:name=".Guru.ActivityGuru.LihatFile"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
-
-        <activity android:name=".Student.Activity.LihatPdf"
+        <activity
+            android:name=".Student.Activity.LihatPdf"
             android:label=""
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".Guru.ActivityGuru.KalendarGuru"
+            android:label="Kalendar Guru"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>

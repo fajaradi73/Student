@@ -15,6 +15,8 @@ import android.widget.TextView;
 import com.fingertech.kesforstudent.R;
 import com.fingertech.kesforstudent.Rest.JSONResponse;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -46,12 +48,8 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.MyHolder> 
 
 
     @Override
-    public void onBindViewHolder(final MyHolder holder, final int position) {
-
-        // Get car item dto in list.
-        if (position == 0) {
-
-        } else {
+    public void onBindViewHolder(@NotNull final MyHolder holder, final int position) {
+        if (viewItemList!=null) {
             JSONResponse.SData viewItem = viewItemList.get(position);
             holder.name.setText(viewItem.getSchool_name());
             String nama = viewItem.getSchool_name().toLowerCase(Locale.getDefault());
