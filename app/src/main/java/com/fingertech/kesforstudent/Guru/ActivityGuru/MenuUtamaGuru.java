@@ -144,6 +144,23 @@ public class MenuUtamaGuru extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        btn_penilaian.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SharedPreferences.Editor editor = sharedpreferences.edit();
+                editor.putString("authorization",authorization);
+                editor.putString("member_id",memberid);
+                editor.putString("school_code",school_code);
+                editor.putString("scyear_id",scyear_id);
+                editor.apply();
+                Intent intent = new Intent(MenuUtamaGuru.this,PenilaianGuru.class);
+                intent.putExtra("authorization",authorization);
+                intent.putExtra("school_code",school_code);
+                intent.putExtra("member_id",memberid);
+                intent.putExtra("scyear_id",scyear_id);
+                startActivity(intent);
+            }
+        });
     }
     private void get_profile(){
         progressBar();
