@@ -33,7 +33,8 @@
         android:theme="@style/AppTheme"
         tools:ignore="AllowBackup,GoogleAppIndexingWarning,InnerclassSeparator"
         tools:targetApi="n">
-        <activity android:name=".Guru.ActivityGuru.PenilaianGuru"></activity>
+        <activity android:name=".Guru.ActivityGuru.PesanGuru"></activity>
+        <activity android:name=".Guru.ActivityGuru.PenilaianGuru" />
 
         <uses-library
             android:name="org.apache.http.legacy"
