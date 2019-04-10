@@ -198,6 +198,12 @@
         <activity android:name=".Guru.ActivityGuru.PenilaianGuru"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"/>
+        <activity android:name=".Guru.ActivityGuru.PesanGuru"
+            android:label="Pesan"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"
+            />
+
     </application>
 
 </manifest>
