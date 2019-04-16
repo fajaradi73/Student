@@ -34,7 +34,6 @@
         tools:ignore="AllowBackup,GoogleAppIndexingWarning,InnerclassSeparator"
         tools:targetApi="n">
 
-
         <uses-library
             android:name="org.apache.http.legacy"
             android:required="false" />
@@ -195,15 +194,19 @@
             android:label="Kalendar Guru"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".Guru.ActivityGuru.PenilaianGuru"
+        <activity
+            android:name=".Guru.ActivityGuru.PenilaianGuru"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"/>
-        <activity android:name=".Guru.ActivityGuru.PesanGuru"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".Guru.ActivityGuru.PesanGuru"
             android:label="Pesan"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"
-            />
-
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".Guru.ActivityGuru.PenilaianDetail"
+            android:label="Penilaian"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"/>
     </application>
 
 </manifest>

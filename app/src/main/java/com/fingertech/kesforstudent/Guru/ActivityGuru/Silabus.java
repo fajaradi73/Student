@@ -126,7 +126,6 @@ public class Silabus extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         toolbar.getNavigationIcon().setColorFilter(getResources().getColor(R.color.white), PorterDuff.Mode.SRC_ATOP);
         sharedpreferences = getSharedPreferences(Masuk.my_shared_preferences, Context.MODE_PRIVATE);
-
         authorization       = sharedpreferences.getString(TAG_TOKEN,"");
         member_id           = sharedpreferences.getString(TAG_MEMBER_ID,"");
         scyear_id           = sharedpreferences.getString("scyear_id","");

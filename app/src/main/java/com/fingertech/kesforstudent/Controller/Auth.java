@@ -181,12 +181,19 @@ public interface Auth {
                                                         @Query("teacher_id") String teacher_id,
                                                         @Query("scyear_id") String scyear_id);
 
+    @GET("teachers/kes_get_classroom")
+    Call<JSONResponse.ListKelas>kes_get_classroom_get(@Header("Authorization") String authorization,
+                                                        @Query("school_code") String school_code,
+                                                        @Query("teacher_id") String teacher_id,
+                                                        @Query("scyear_id") String scyear_id);
+
+
     ///// List Mapel
-    @GET("teachers/kes_get_edulevel_cources")
+    @GET("teachers/kes_get_cources")
     Call<JSONResponse.ListMapelEdu>kes_get_edulevel_cources_get(@Header("Authorization") String authorization,
                                                                 @Query("school_code") String school_code,
                                                                 @Query("teacher_id") String teacher_id,
-                                                                @Query("edulevel_id") String edulevel_id,
+                                                                @Query("classroom_id") String classroom_id,
                                                                 @Query("scyear_id") String scyear_id);
 
     //// List Silabus
@@ -235,5 +242,20 @@ public interface Auth {
                                                 @Query("calendar_month") String calendar_month,
                                                 @Query("calendar_year") String calendar_year,
                                                 @Query("scyear_id") String scyear_id);
+
+    ///// List Exam
+    @GET("teachers/kes_exam_type")
+    Call<JSONResponse.ListExam> kes_exam_type_get(@Header("Authorization") String authorization,
+                                         @Query("school_code") String school_code,
+                                         @Query("teacher_id") String teacher_id);
+
+    @GET("teachers/kes_score")
+    Call<JsonElement>kes_score_get(@Header("Authorization") String authorization,
+                                   @Query("school_code") String school_code,
+                                   @Query("teacher_id") String teacher_id,
+                                   @Query("scyear_id") String scyear_id,
+                                   @Query("classroom_id") String classroom_id,
+                                   @Query("semester_id") String semester_id,
+                                   @Query("cources_id") String cources_id);
 
 }

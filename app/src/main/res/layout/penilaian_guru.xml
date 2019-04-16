@@ -16,7 +16,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
-            android:background="@drawable/bs_ic_clear"
+            android:background="@drawable/ic_back"
+            android:id="@+id/iv_close"
             android:layout_gravity="start"/>
 
         <LinearLayout
@@ -30,6 +31,7 @@
                 android:layout_height="150dp"
                 android:background="@drawable/ic_penilaian_icon"
                 android:layout_gravity="center"/>
+
             <com.rey.material.widget.Spinner
                 android:id="@+id/sp_tingkatan_kelas"
                 style="@style/Material.Widget.Spinner"
@@ -74,6 +76,7 @@
                 android:layout_margin="10dp"
                 android:foreground="?android:attr/selectableItemBackground"
                 app:cardBackgroundColor="@color/colorPrimary"
+                android:id="@+id/btn_lihat"
                 app:cardCornerRadius="5dp">
                 <TextView
                     android:layout_width="match_parent"
