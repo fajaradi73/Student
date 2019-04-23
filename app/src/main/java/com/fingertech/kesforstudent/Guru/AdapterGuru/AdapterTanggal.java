@@ -1,7 +1,7 @@
-package com.fingertech.kesforstudent.Guru.AdapterGuru.AdapterHari;
+package com.fingertech.kesforstudent.Guru.AdapterGuru;
 
 import android.annotation.SuppressLint;
-import android.graphics.Color;
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,18 +9,20 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.fingertech.kesforstudent.Guru.ModelGuru.ModelHari.ModelRabu;
+import com.fingertech.kesforstudent.Guru.ModelGuru.ModelTanggal;
 import com.fingertech.kesforstudent.R;
 
 import java.util.List;
 
-public class AdapterRabu extends RecyclerView.Adapter<AdapterRabu.MyHolder> {
+public class AdapterTanggal extends RecyclerView.Adapter<AdapterTanggal.MyHolder> {
 
-    private List<ModelRabu> viewItemList;
+    private List<ModelTanggal> viewItemList;
 
+    Context context;
     private OnItemClickListener onItemClickListener;
     public int row_index = 0;
-    public AdapterRabu(List<ModelRabu> viewItemList) {
+    public AdapterTanggal(Context context,List<ModelTanggal> viewItemList) {
+        this.context = context;
         this.viewItemList = viewItemList;
     }
 
@@ -31,7 +33,7 @@ public class AdapterRabu extends RecyclerView.Adapter<AdapterRabu.MyHolder> {
     @Override
     public MyHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
-        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_jadwal, parent, false);
+        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_tanggal_penilaian, parent, false);
 
         MyHolder myHolder = new MyHolder(itemView,onItemClickListener);
         return myHolder;
@@ -42,12 +44,13 @@ public class AdapterRabu extends RecyclerView.Adapter<AdapterRabu.MyHolder> {
     @Override
     public void onBindViewHolder(MyHolder holder, int position) {
 
-        // Get car item dto in list.
-        ModelRabu viewItem = viewItemList.get(position);
-        holder.mapel.setText(viewItem.getMapel());
-        holder.jambel.setText(viewItem.getJam_mulai() +" - "+ viewItem.getJam_selesai());
-        holder.ll_jadwal.setBackgroundColor(Color.parseColor(viewItem.getWarna_mapel()));
-        holder.guru.setText("Kelas "+viewItem.getKelas());
+        ModelTanggal viewItem = viewItemList.get(position);
+        holder.nilai.setText(viewItem.getTanggal());
+        if (row_index == position){
+            holder.linearLayout.setBackgroundResource(R.drawable.rectang_line_yellow);
+        }else {
+            holder.linearLayout.setBackgroundResource(R.drawable.rectang_line_grey);
+        }
     }
 
     @Override
@@ -56,27 +59,29 @@ public class AdapterRabu extends RecyclerView.Adapter<AdapterRabu.MyHolder> {
     }
 
     class MyHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        TextView mapel,jambel,guru;
-        LinearLayout ll_jadwal;
+        TextView nilai;
+        LinearLayout linearLayout;
         OnItemClickListener onItemClickListener;
-
         public MyHolder(View itemView,OnItemClickListener onItemClickListener) {
             super(itemView);
-            mapel       = itemView.findViewById(R.id.mapel);
-            jambel      = itemView.findViewById(R.id.jam);
-            guru        = itemView.findViewById(R.id.guru);
-            ll_jadwal   = itemView.findViewById(R.id.ll_jadwal);
-//            itemView.setOnClickListener(this);
-//            this.onItemClickListener = onItemClickListener;
+            nilai       = itemView.findViewById(R.id.tanggal);
+            linearLayout    = itemView.findViewById(R.id.ll_tanggal);
+            itemView.setOnClickListener(this);
+            this.onItemClickListener = onItemClickListener;
         }
 
         @Override
         public void onClick(View v) {
-//            onItemClickListener.onItemClick(v, getAdapterPosition());
+            onItemClickListener.onItemClick(v, getAdapterPosition());
         }
     }
     public interface OnItemClickListener {
 
         void onItemClick(View view, int position);
+    }
+
+    public void select_row(int index){
+        row_index = index;
+        notifyDataSetChanged();
     }
 }

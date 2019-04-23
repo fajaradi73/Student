@@ -112,35 +112,37 @@ public class PenilaianGuru extends AppCompatActivity {
             @Override
             public void onResponse(Call<JSONResponse.ListKelas> call, Response<JSONResponse.ListKelas> response) {
                 Log.d("Sukses",response.code()+"");
-                JSONResponse.ListKelas resource = response.body();
-                status  = resource.status;
-                code    = resource.code;
-                if (status  == 1   &&  code.equals("DTS_SCS_0001")){
-                    dataEdulevelList    = response.body().getData();
-                    listEdulevel.add("Pilih Kelas");
-                    for (int i = 0; i < dataEdulevelList.size();i++){
-                        edulevel_name   = dataEdulevelList.get(i).getClassroom_name();
-                        listEdulevel.add(edulevel_name);
-                        final ArrayAdapter<String> adapterRaport = new ArrayAdapter<String>(PenilaianGuru.this,R.layout.spinner_full,listEdulevel);
-                        adapterRaport.setDropDownViewResource(R.layout.simple_spinner_dropdown);
-                        sp_edulevel.setAdapter(adapterRaport);
-                        sp_edulevel.setOnItemSelectedListener((parent, view, position, id) ->{
-                            if (position == 0){
-                                edulevel_id = null;
-                                sp_mapel.setEnabled(false);
-                            }else {
-                                edulevel_id = dataEdulevelList.get(position - 1).getClassroomid();
-                                sp_mapel.setEnabled(true);
-                                dapat_mapel();
-                            }
-                        });
+                if (response.isSuccessful()) {
+                    JSONResponse.ListKelas resource = response.body();
+                    status = resource.status;
+                    code = resource.code;
+                    if (status == 1 && code.equals("DTS_SCS_0001")) {
+                        dataEdulevelList = response.body().getData();
+                        listEdulevel.add("Pilih Kelas");
+                        for (int i = 0; i < dataEdulevelList.size(); i++) {
+                            edulevel_name = dataEdulevelList.get(i).getClassroom_name();
+                            listEdulevel.add(edulevel_name);
+                            final ArrayAdapter<String> adapterRaport = new ArrayAdapter<String>(PenilaianGuru.this, R.layout.spinner_full, listEdulevel);
+                            adapterRaport.setDropDownViewResource(R.layout.simple_spinner_dropdown);
+                            sp_edulevel.setAdapter(adapterRaport);
+                            sp_edulevel.setOnItemSelectedListener((parent, view, position, id) -> {
+                                if (position == 0) {
+                                    edulevel_id = null;
+                                    sp_mapel.setEnabled(false);
+                                } else {
+                                    edulevel_id = dataEdulevelList.get(position - 1).getClassroomid();
+                                    sp_mapel.setEnabled(true);
+                                    dapat_mapel();
+                                }
+                            });
+                        }
                     }
                 }
             }
 
             @Override
             public void onFailure(Call<JSONResponse.ListKelas> call, Throwable t) {
-                Log.d("Gagal",t.toString());
+                Log.d("GagalClass",t.toString());
             }
         });
     }
@@ -154,27 +156,29 @@ public class PenilaianGuru extends AppCompatActivity {
             public void onResponse(Call<JSONResponse.ListMapelEdu> call, Response<JSONResponse.ListMapelEdu> response) {
                 Log.d("MataPelajaran",response.code()+"");
                 hideDialog();
-                JSONResponse.ListMapelEdu resource = response.body();
-                status  = resource.status;
-                code    = resource.code;
-                if (status==1 && code.equals("DTS_SCS_0001")){
-                    dataMapelEduList    = response.body().getData();
-                    if (listMapel!=null) {
-                        listMapel.clear();
-                        listMapel.add("Pilih Mata Pelajaran");
-                        for (int i = 0; i < response.body().getData().size(); i++) {
-                            cources_name = response.body().getData().get(i).getCources_name();
-                            listMapel.add(cources_name);
-                            final ArrayAdapter<String> adapterMapel = new ArrayAdapter<String>(PenilaianGuru.this,R.layout.spinner_full,listMapel);
-                            adapterMapel.setDropDownViewResource(R.layout.simple_spinner_dropdown);
-                            sp_mapel.setAdapter(adapterMapel);
-                            sp_mapel.setOnItemSelectedListener((parent, view, position, id) ->{
-                                if (position == 0){
-                                    cources_id = null;
-                                }else {
-                                    cources_id = dataMapelEduList.get(position - 1).getCourcesid();
-                                }
-                            });
+                if (response.isSuccessful()) {
+                    JSONResponse.ListMapelEdu resource = response.body();
+                    status = resource.status;
+                    code = resource.code;
+                    if (status == 1 && code.equals("DTS_SCS_0001")) {
+                        dataMapelEduList = response.body().getData();
+                        if (listMapel != null) {
+                            listMapel.clear();
+                            listMapel.add("Pilih Mata Pelajaran");
+                            for (int i = 0; i < response.body().getData().size(); i++) {
+                                cources_name = response.body().getData().get(i).getCources_name();
+                                listMapel.add(cources_name);
+                                final ArrayAdapter<String> adapterMapel = new ArrayAdapter<String>(PenilaianGuru.this, R.layout.spinner_full, listMapel);
+                                adapterMapel.setDropDownViewResource(R.layout.simple_spinner_dropdown);
+                                sp_mapel.setAdapter(adapterMapel);
+                                sp_mapel.setOnItemSelectedListener((parent, view, position, id) -> {
+                                    if (position == 0) {
+                                        cources_id = null;
+                                    } else {
+                                        cources_id = dataMapelEduList.get(position - 1).getCourcesid();
+                                    }
+                                });
+                            }
                         }
                     }
                 }
@@ -182,7 +186,7 @@ public class PenilaianGuru extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<JSONResponse.ListMapelEdu> call, Throwable t) {
-                Log.d("Gagal",t.toString());
+                Log.d("GagalMapel",t.toString());
                 hideDialog();
             }
         });

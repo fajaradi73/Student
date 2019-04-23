@@ -201,7 +201,6 @@ public class MainActivity extends AppCompatActivity {
                         school_id           = arraylist.get(position).getSchool_id();
                         sekolah_kode        = sekolah_kode.toLowerCase();
                         floatingSearchView.setSearchText(school_name);
-                        Log.d("sekolah",school_name+"/"+school_id+"/"+sekolah_kode);
                         floatingSearchView.clearSearchFocus();
                         recyclerView.setVisibility(View.GONE);
                         logo.setVisibility(View.VISIBLE);

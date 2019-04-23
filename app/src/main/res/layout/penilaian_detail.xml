@@ -41,54 +41,75 @@
             app:spn_dividerHeight="0dp"
             app:spn_labelTextColor="@color/colorPrimary" />
     </LinearLayout>
-
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:text="Penilaian belum diberikan di website"
+        android:textColor="@color/black"
+        android:id="@+id/hint_penilaian"
+        android:visibility="gone"
+        android:textSize="15sp"/>
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:orientation="horizontal"
-        android:layout_marginTop="10dp"
-        android:background="@drawable/ic_kotak_penilaian">
-        <TextView
+        android:layout_height="match_parent"
+        android:id="@+id/ll_penilaian"
+        android:orientation="vertical">
+        <android.support.v7.widget.RecyclerView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_margin="10dp"
-            android:text="NIS"
-            android:layout_gravity="center"
-            android:textColor="@color/white"
-            android:gravity="center"
-            android:layout_weight="1"/>
-        <View
-            android:layout_width="1dp"
-            android:layout_height="match_parent"
-            android:background="@color/grey_400"/>
-        <TextView
+            android:layout_height="55dp"
+            android:id="@+id/rv_tanggal">
+        </android.support.v7.widget.RecyclerView>
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="Nama"
-            android:textColor="@color/white"
-            android:layout_gravity="center"
-            android:layout_margin="10dp"
-            android:gravity="center"
-            android:layout_weight="1"/>
-        <View
-            android:layout_width="1dp"
-            android:layout_height="match_parent"
-            android:background="@color/grey_400"/>
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:textColor="@color/white"
-            android:text="Nilai"
-            android:layout_gravity="center"
-            android:layout_margin="10dp"
-            android:gravity="center"
-            android:layout_weight="1"/>
+            android:layout_height="40dp"
+            android:orientation="horizontal"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/ic_kotak_penilaian">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="10dp"
+                android:text="NIS"
+                android:layout_gravity="center"
+                android:textColor="@color/white"
+                android:gravity="center"
+                android:layout_weight="1"/>
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:background="@color/grey_400"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Nama"
+                android:textColor="@color/white"
+                android:layout_gravity="center"
+                android:layout_margin="10dp"
+                android:gravity="center"
+                android:layout_weight="1"/>
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:background="@color/grey_400"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textColor="@color/white"
+                android:text="Nilai"
+                android:layout_gravity="center"
+                android:layout_margin="10dp"
+                android:gravity="center"
+                android:layout_weight="1"/>
+        </LinearLayout>
+
+        <android.support.v7.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/rv_penilaian">
+
+        </android.support.v7.widget.RecyclerView>
     </LinearLayout>
 
-    <android.support.v7.widget.RecyclerView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/rv_penilaian">
-
-    </android.support.v7.widget.RecyclerView>
 </LinearLayout>

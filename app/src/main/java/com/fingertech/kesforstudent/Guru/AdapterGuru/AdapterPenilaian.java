@@ -1,7 +1,10 @@
-package com.fingertech.kesforstudent.Guru.AdapterGuru.AdapterHari;
+package com.fingertech.kesforstudent.Guru.AdapterGuru;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,18 +12,20 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.fingertech.kesforstudent.Guru.ModelGuru.ModelHari.ModelRabu;
+import com.fingertech.kesforstudent.Guru.ModelGuru.ModelPenilaian;
 import com.fingertech.kesforstudent.R;
 
 import java.util.List;
 
-public class AdapterRabu extends RecyclerView.Adapter<AdapterRabu.MyHolder> {
+public class AdapterPenilaian extends RecyclerView.Adapter<AdapterPenilaian.MyHolder> {
 
-    private List<ModelRabu> viewItemList;
+    private List<ModelPenilaian> viewItemList;
 
+    Context context;
     private OnItemClickListener onItemClickListener;
     public int row_index = 0;
-    public AdapterRabu(List<ModelRabu> viewItemList) {
+    public AdapterPenilaian(Context context,List<ModelPenilaian> viewItemList) {
+        this.context = context;
         this.viewItemList = viewItemList;
     }
 
@@ -31,7 +36,7 @@ public class AdapterRabu extends RecyclerView.Adapter<AdapterRabu.MyHolder> {
     @Override
     public MyHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
-        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_jadwal, parent, false);
+        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_penilaian, parent, false);
 
         MyHolder myHolder = new MyHolder(itemView,onItemClickListener);
         return myHolder;
@@ -42,12 +47,15 @@ public class AdapterRabu extends RecyclerView.Adapter<AdapterRabu.MyHolder> {
     @Override
     public void onBindViewHolder(MyHolder holder, int position) {
 
-        // Get car item dto in list.
-        ModelRabu viewItem = viewItemList.get(position);
-        holder.mapel.setText(viewItem.getMapel());
-        holder.jambel.setText(viewItem.getJam_mulai() +" - "+ viewItem.getJam_selesai());
-        holder.ll_jadwal.setBackgroundColor(Color.parseColor(viewItem.getWarna_mapel()));
-        holder.guru.setText("Kelas "+viewItem.getKelas());
+        ModelPenilaian viewItem = viewItemList.get(position);
+        holder.nama.setText(viewItem.getNama());
+        holder.nis.setText(viewItem.getNis());
+        holder.nilai.setText(viewItem.getNilai());
+        if ((position % 2) == 0){
+            holder.linearLayout.setBackgroundColor(Color.parseColor("#f0f0f0"));
+        }else {
+            holder.linearLayout.setBackgroundColor(Color.parseColor("#ffffff"));
+        }
     }
 
     @Override
@@ -56,16 +64,15 @@ public class AdapterRabu extends RecyclerView.Adapter<AdapterRabu.MyHolder> {
     }
 
     class MyHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        TextView mapel,jambel,guru;
-        LinearLayout ll_jadwal;
+        TextView nama,nis,nilai;
         OnItemClickListener onItemClickListener;
-
+        LinearLayout linearLayout;
         public MyHolder(View itemView,OnItemClickListener onItemClickListener) {
             super(itemView);
-            mapel       = itemView.findViewById(R.id.mapel);
-            jambel      = itemView.findViewById(R.id.jam);
-            guru        = itemView.findViewById(R.id.guru);
-            ll_jadwal   = itemView.findViewById(R.id.ll_jadwal);
+            nama       = itemView.findViewById(R.id.nama);
+            nis       = itemView.findViewById(R.id.nis);
+            nilai       = itemView.findViewById(R.id.nilai);
+            linearLayout    = itemView.findViewById(R.id.ll_penilaian);
 //            itemView.setOnClickListener(this);
 //            this.onItemClickListener = onItemClickListener;
         }
