@@ -88,4 +88,13 @@
     <string name="title_activity_setting_">Setting</string>
     <string name="write_file">This app needs access to your file storage so that it can write files.</string>
 
+    <string-array name="kirim_kepada">
+        <item>Kirim Kepada</item>
+        <item>Orang Tua</item>
+        <item>Siswa dan Orang Tua</item>
+        <item>Kepala Sekolah</item>
+        <item>Wakil Kepala Sekolah</item>
+        <item>Guru</item>
+        <item>Admin</item>
+    </string-array>
 </resources>
