@@ -203,8 +203,18 @@
             android:label="Pesan"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".Guru.ActivityGuru.PenilaianDetail"
+        <activity
+            android:name=".Guru.ActivityGuru.PenilaianDetail"
             android:label="Penilaian"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".Guru.ActivityGuru.AgendaGuru"
+            android:label="Agenda"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".Guru.ActivityGuru.AgendaDetail"
+            android:label="Agenda"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"/>
     </application>

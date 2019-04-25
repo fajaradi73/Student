@@ -4,11 +4,15 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.PorterDuff;
 import android.graphics.drawable.ColorDrawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
@@ -23,17 +27,15 @@ import com.rey.material.widget.Spinner;
 import com.shashank.sony.fancytoastlib.FancyToast;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
-import devs.mulham.horizontalcalendar.HorizontalCalendar;
-import devs.mulham.horizontalcalendar.utils.HorizontalCalendarListener;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class PenilaianGuru extends AppCompatActivity {
+public class AgendaGuru extends AppCompatActivity {
 
+    Toolbar toolbar;
     ImageView iv_close;
     CardView btn_lihat;
     Spinner sp_edulevel,sp_mapel;
@@ -57,12 +59,16 @@ public class PenilaianGuru extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.penilaian_guru);
-        iv_close        = findViewById(R.id.iv_close);
-        btn_lihat       = findViewById(R.id.btn_lihat);
+        setContentView(R.layout.agenda_guru);
+        toolbar     = findViewById(R.id.toolbar_agenda);
         sp_edulevel     = findViewById(R.id.sp_tingkatan_kelas);
         sp_mapel        = findViewById(R.id.sp_mapel);
         mApiInterface   = ApiClient.getClient().create(Auth.class);
+        btn_lihat       = findViewById(R.id.btn_lihat);
+
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        toolbar.getNavigationIcon().setColorFilter(getResources().getColor(R.color.white), PorterDuff.Mode.SRC_ATOP);
 
         sharedpreferences   = getSharedPreferences(Masuk.my_shared_preferences, Context.MODE_PRIVATE);
         authorization       = sharedpreferences.getString(TAG_TOKEN,"");
@@ -86,7 +92,7 @@ public class PenilaianGuru extends AppCompatActivity {
                     editor.putString("cources_id",cources_id);
                     editor.putString("edulevel_id",edulevel_id);
                     editor.apply();
-                    Intent intent = new Intent(PenilaianGuru.this,PenilaianDetail.class);
+                    Intent intent = new Intent(AgendaGuru.this,AgendaDetail.class);
                     intent.putExtra("authorization",authorization);
                     intent.putExtra("member_id",member_id);
                     intent.putExtra("school_code",school_code);
@@ -97,13 +103,21 @@ public class PenilaianGuru extends AppCompatActivity {
                 }
             }
         });
-        iv_close.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
     }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+    public boolean onCreateOptionsMenu(Menu menu) {
+        return true;
+    }
+
     private void dapat_edulevel(){
         Call<JSONResponse.ListKelas> call = mApiInterface.kes_get_classroom_get(authorization,school_code.toLowerCase(),member_id,scyear_id);
         call.enqueue(new Callback<JSONResponse.ListKelas>() {
@@ -120,7 +134,7 @@ public class PenilaianGuru extends AppCompatActivity {
                         for (int i = 0; i < dataEdulevelList.size(); i++) {
                             edulevel_name = dataEdulevelList.get(i).getClassroom_name();
                             listEdulevel.add(edulevel_name);
-                            final ArrayAdapter<String> adapterRaport = new ArrayAdapter<String>(PenilaianGuru.this, R.layout.spinner_full, listEdulevel);
+                            final ArrayAdapter<String> adapterRaport = new ArrayAdapter<String>(AgendaGuru.this, R.layout.spinner_full, listEdulevel);
                             adapterRaport.setDropDownViewResource(R.layout.simple_spinner_dropdown);
                             sp_edulevel.setAdapter(adapterRaport);
                             sp_edulevel.setOnItemSelectedListener((parent, view, position, id) -> {
@@ -166,7 +180,7 @@ public class PenilaianGuru extends AppCompatActivity {
                             for (int i = 0; i < response.body().getData().size(); i++) {
                                 cources_name = response.body().getData().get(i).getCources_name();
                                 listMapel.add(cources_name);
-                                final ArrayAdapter<String> adapterMapel = new ArrayAdapter<String>(PenilaianGuru.this, R.layout.spinner_full, listMapel);
+                                final ArrayAdapter<String> adapterMapel = new ArrayAdapter<String>(AgendaGuru.this, R.layout.spinner_full, listMapel);
                                 adapterMapel.setDropDownViewResource(R.layout.simple_spinner_dropdown);
                                 sp_mapel.setAdapter(adapterMapel);
                                 sp_mapel.setOnItemSelectedListener((parent, view, position, id) -> {
@@ -200,7 +214,7 @@ public class PenilaianGuru extends AppCompatActivity {
         dialog.setContentView(R.layout.progressbar);
     }
     public void progressBar(){
-        dialog = new ProgressDialog(PenilaianGuru.this);
+        dialog = new ProgressDialog(AgendaGuru.this);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
         dialog.setIndeterminate(true);
         dialog.setCancelable(false);

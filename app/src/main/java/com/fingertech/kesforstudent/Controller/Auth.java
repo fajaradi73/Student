@@ -249,6 +249,7 @@ public interface Auth {
                                          @Query("school_code") String school_code,
                                          @Query("teacher_id") String teacher_id);
 
+    //// Penilaian
     @GET("teachers/kes_score")
     Call<JsonElement>kes_score_get(@Header("Authorization") String authorization,
                                    @Query("school_code") String school_code,
@@ -257,5 +258,15 @@ public interface Auth {
                                    @Query("classroom_id") String classroom_id,
                                    @Query("semester_id") String semester_id,
                                    @Query("cources_id") String cources_id);
+
+    ///// Agenda Guru
+    @GET("teachers/kes_class_agenda_teacher")
+    Call<JSONResponse.ListAgenda> kes_class_agenda_teacher_get(@Header("Authorization") String authorization,
+                                                               @Query("school_code") String school_code,
+                                                               @Query("teacher_id") String teacher_id,
+                                                               @Query("classroom_id") String classroom_id,
+                                                               @Query("year_month") String year_month,
+                                                               @Query("day_now") String day_now);
+
 
 }
