@@ -203,7 +203,6 @@ public class RaporAnak extends AppCompatActivity {
                 arrow.setImageResource(R.drawable.ic_down_arrow);
             }
         });
-
     }
     private void Check_Semester(){
 
