@@ -13,5 +13,4 @@ public interface SnappyLayoutManager {
      * views are not snapped to grid.
      */
     int getFixScrollPos();
-
 }

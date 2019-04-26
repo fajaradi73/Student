@@ -923,6 +923,17 @@ public class JSONResponse {
         @SerializedName("classroom_id")
         public String classroom_id;
 
+        @SerializedName("edulevel_id")
+        public String edulevel_id;
+
+        public String getEdulevel_id() {
+            return edulevel_id;
+        }
+
+        public void setEdulevel_id(String edulevel_id) {
+            this.edulevel_id = edulevel_id;
+        }
+
         public String getClassroom_id() {
             return classroom_id;
         }
@@ -1258,6 +1269,16 @@ public class JSONResponse {
 
         @SerializedName("timez_finish")
         private String timezFinish;
+        @SerializedName("cources_colour")
+        private String cources_colour;
+
+        public String getCources_colour() {
+            return cources_colour;
+        }
+
+        public void setCources_colour(String cources_colour) {
+            this.cources_colour = cources_colour;
+        }
 
         public void setTimezOk(String timezOk){
             this.timezOk = timezOk;
@@ -2324,13 +2345,13 @@ public class JSONResponse {
         private String courcesSpec;
 
         @SerializedName("class_average_score")
-        private double classAverageScore;
+        private String classAverageScore;
 
         @SerializedName("cources_type")
         private String courcesType;
 
         @SerializedName("final_score")
-        private double finalScore;
+        private String finalScore;
 
         @SerializedName("cources_code")
         private String courcesCode;
@@ -2338,11 +2359,33 @@ public class JSONResponse {
         @SerializedName("cources_name")
         private String courcesName;
 
+        @SerializedName("cources_kkm")
+        private String cources_kkm;
+
+        public String getCources_kkm() {
+            return cources_kkm;
+        }
+
+        public void setCources_kkm(String cources_kkm) {
+            this.cources_kkm = cources_kkm;
+        }
+
         @SerializedName("lastupdate")
         private String lastupdate;
 
         @SerializedName("courcesid")
         private String courcesid;
+
+        public String getClass_average_edu() {
+            return class_average_edu;
+        }
+
+        public void setClass_average_edu(String class_average_edu) {
+            this.class_average_edu = class_average_edu;
+        }
+
+        @SerializedName("class_average_edu")
+        private String class_average_edu;
 
         public void setMemberId(String memberId){
             this.memberId = memberId;
@@ -2408,11 +2451,11 @@ public class JSONResponse {
             return courcesSpec;
         }
 
-        public void setClassAverageScore(double classAverageScore){
+        public void setClassAverageScore(String classAverageScore){
             this.classAverageScore = classAverageScore;
         }
 
-        public double getClassAverageScore(){
+        public String getClassAverageScore(){
             return classAverageScore;
         }
 
@@ -2424,11 +2467,11 @@ public class JSONResponse {
             return courcesType;
         }
 
-        public void setFinalScore(double finalScore){
+        public void setFinalScore(String finalScore){
             this.finalScore = finalScore;
         }
 
-        public double getFinalScore(){
+        public String getFinalScore(){
             return finalScore;
         }
 
@@ -5673,6 +5716,104 @@ public class JSONResponse {
 
         public void setAgenda_time(String agenda_time) {
             this.agenda_time = agenda_time;
+        }
+    }
+
+    //// Response Detail Raport
+    public class ListDetailRapor{
+        @SerializedName("status")
+        public int status;
+
+        @SerializedName("code")
+        public String code;
+
+        @SerializedName("data")
+        public List<DataDetailRapor> data;
+
+        public int getStatus() {
+            return status;
+        }
+
+        public void setStatus(int status) {
+            this.status = status;
+        }
+
+        public String getCode() {
+            return code;
+        }
+
+        public void setCode(String code) {
+            this.code = code;
+        }
+
+        public List<DataDetailRapor> getData() {
+            return data;
+        }
+
+        public void setData(List<DataDetailRapor> data) {
+            this.data = data;
+        }
+    }
+    public class DataDetailRapor{
+        @SerializedName("examid")
+        public String examid;
+        @SerializedName("exam_date")
+        public String exam_date;
+        @SerializedName("exam_date_ok")
+        public String exam_date_ok;
+        @SerializedName("exam_desc")
+        public String exam_desc;
+        @SerializedName("exam_type")
+        public String exam_type;
+        @SerializedName("score_value")
+        public String score_value;
+
+        public String getExamid() {
+            return examid;
+        }
+
+        public void setExamid(String examid) {
+            this.examid = examid;
+        }
+
+        public String getExam_date() {
+            return exam_date;
+        }
+
+        public void setExam_date(String exam_date) {
+            this.exam_date = exam_date;
+        }
+
+        public String getExam_date_ok() {
+            return exam_date_ok;
+        }
+
+        public void setExam_date_ok(String exam_date_ok) {
+            this.exam_date_ok = exam_date_ok;
+        }
+
+        public String getExam_desc() {
+            return exam_desc;
+        }
+
+        public void setExam_desc(String exam_desc) {
+            this.exam_desc = exam_desc;
+        }
+
+        public String getExam_type() {
+            return exam_type;
+        }
+
+        public void setExam_type(String exam_type) {
+            this.exam_type = exam_type;
+        }
+
+        public String getScore_value() {
+            return score_value;
+        }
+
+        public void setScore_value(String score_value) {
+            this.score_value = score_value;
         }
     }
 }

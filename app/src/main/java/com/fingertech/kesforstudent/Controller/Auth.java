@@ -268,5 +268,31 @@ public interface Auth {
                                                                @Query("year_month") String year_month,
                                                                @Query("day_now") String day_now);
 
+    ///// agenda Anak
+    @GET("students/kes_class_agenda_student")
+    Call<JSONResponse.ListAgenda> kes_class_agenda_student_get(@Header("Authorization") String authorization,
+                                                               @Query("school_code") String school_code,
+                                                               @Query("student_id") String student_id,
+                                                               @Query("classroom_id") String classroom_id,
+                                                               @Query("year_month") String year_month,
+                                                               @Query("day_now") String day_now);
+
+    ///// Raport Anak
+    @GET("students/kes_rapor_score")
+    Call<JsonElement>kes_rapor_get(@Header("Authorization") String authorization,
+                                   @Query("school_code") String school_code,
+                                   @Query("student_id") String student_id,
+                                   @Query("classroom_id") String classroom_id,
+                                   @Query("semester_id") String semester_id);
+    //// detail rapor
+    @GET("students/kes_cources_score_detail")
+    Call<JSONResponse.ListDetailRapor> kes_cources_score_detail_get(@Header("Authorization") String authorization,
+                                                                    @Query("school_code") String school_code,
+                                                                    @Query("student_id") String student_id,
+                                                                    @Query("classroom_id") String classroom_id,
+                                                                    @Query("cources_id") String cources_id,
+                                                                    @Query("semester_id") String semester_id,
+                                                                    @Query("exam_type") String exam_type);
+
 
 }

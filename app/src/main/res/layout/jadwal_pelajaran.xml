@@ -54,11 +54,11 @@
                                 android:layout_height="match_parent"
                                 android:layout_weight="0.5"
                                 android:id="@+id/arrow_senin"
-                                android:layout_marginLeft="15dp"
-                                android:layout_marginRight="15dp"
+                                android:layout_marginLeft="5dp"
+                                android:layout_marginRight="5dp"
                                 android:layout_marginTop="10dp"
                                 android:layout_marginBottom="10dp"
-                                android:background="@drawable/ic_right"/>
+                                android:background="@drawable/ic_arrow_kanan"/>
                             <TextView
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
@@ -76,9 +76,9 @@
                                 android:id="@+id/jumlah_senin"
                                 android:background="@color/colorPrimary"
                                 android:textColor="@color/white"
-                                android:textSize="16sp"
+                                android:textSize="13sp"
                                 android:layout_weight="4"
-                                android:gravity="center_vertical"/>
+                                android:gravity="center"/>
 
                         </LinearLayout>
 
@@ -133,11 +133,11 @@
                                 android:layout_height="match_parent"
                                 android:layout_weight="0.5"
                                 android:id="@+id/arrow_selasa"
-                                android:layout_marginLeft="15dp"
-                                android:layout_marginRight="15dp"
+                                android:layout_marginLeft="5dp"
+                                android:layout_marginRight="5dp"
                                 android:layout_marginTop="10dp"
                                 android:layout_marginBottom="10dp"
-                                android:background="@drawable/ic_right"/>
+                                android:background="@drawable/ic_arrow_kanan"/>
 
                             <TextView
                                 android:layout_width="match_parent"
@@ -155,10 +155,10 @@
                                 android:text="0 mata pelajaran"
                                 android:background="@color/colorPrimary"
                                 android:textColor="@color/white"
-                                android:textSize="16sp"
+                                android:textSize="13sp"
                                 android:layout_weight="4"
                                 android:id="@+id/jumlah_selasa"
-                                android:gravity="center_vertical"/>
+                                android:gravity="center"/>
 
                         </LinearLayout>
 
@@ -212,11 +212,11 @@
                                 android:layout_height="match_parent"
                                 android:layout_weight="0.5"
                                 android:id="@+id/arrow_rabu"
-                                android:layout_marginLeft="15dp"
-                                android:layout_marginRight="15dp"
+                                android:layout_marginLeft="5dp"
+                                android:layout_marginRight="5dp"
                                 android:layout_marginTop="10dp"
                                 android:layout_marginBottom="10dp"
-                                android:background="@drawable/ic_right"/>
+                                android:background="@drawable/ic_arrow_kanan"/>
 
                             <TextView
                                 android:layout_width="match_parent"
@@ -234,10 +234,10 @@
                                 android:text="0 mata pelajaran"
                                 android:background="@color/colorPrimary"
                                 android:textColor="@color/white"
-                                android:textSize="16sp"
+                                android:textSize="13sp"
                                 android:id="@+id/jumlah_rabu"
                                 android:layout_weight="4"
-                                android:gravity="center_vertical"/>
+                                android:gravity="center"/>
 
                         </LinearLayout>
 
@@ -291,11 +291,11 @@
                                 android:layout_height="match_parent"
                                 android:layout_weight="0.5"
                                 android:id="@+id/arrow_kamis"
-                                android:layout_marginLeft="15dp"
-                                android:layout_marginRight="15dp"
+                                android:layout_marginLeft="5dp"
+                                android:layout_marginRight="5dp"
                                 android:layout_marginTop="10dp"
                                 android:layout_marginBottom="10dp"
-                                android:background="@drawable/ic_right"/>
+                                android:background="@drawable/ic_arrow_kanan"/>
 
                             <TextView
                                 android:layout_width="match_parent"
@@ -314,9 +314,9 @@
                                 android:background="@color/colorPrimary"
                                 android:textColor="@color/white"
                                 android:id="@+id/jumlah_kamis"
-                                android:textSize="16sp"
+                                android:textSize="13sp"
                                 android:layout_weight="4"
-                                android:gravity="center_vertical"/>
+                                android:gravity="center"/>
 
                         </LinearLayout>
 
@@ -371,11 +371,11 @@
                                 android:layout_height="match_parent"
                                 android:layout_weight="0.5"
                                 android:id="@+id/arrow_jumat"
-                                android:layout_marginLeft="15dp"
-                                android:layout_marginRight="15dp"
+                                android:layout_marginLeft="5dp"
+                                android:layout_marginRight="5dp"
                                 android:layout_marginTop="10dp"
                                 android:layout_marginBottom="10dp"
-                                android:background="@drawable/ic_right"/>
+                                android:background="@drawable/ic_arrow_kanan"/>
 
                             <TextView
                                 android:layout_width="match_parent"
@@ -393,10 +393,10 @@
                                 android:text="0 mata pelajaran"
                                 android:background="@color/colorPrimary"
                                 android:textColor="@color/white"
-                                android:textSize="16sp"
+                                android:textSize="13sp"
                                 android:layout_weight="4"
                                 android:id="@+id/jumlah_jumat"
-                                android:gravity="center_vertical"/>
+                                android:gravity="center"/>
 
                         </LinearLayout>
 
@@ -453,11 +453,11 @@
                                 android:layout_height="match_parent"
                                 android:layout_weight="0.5"
                                 android:id="@+id/arrow_sabtu"
-                                android:layout_marginLeft="15dp"
-                                android:layout_marginRight="15dp"
+                                android:layout_marginLeft="5dp"
+                                android:layout_marginRight="5dp"
                                 android:layout_marginTop="10dp"
                                 android:layout_marginBottom="10dp"
-                                android:background="@drawable/ic_right"/>
+                                android:background="@drawable/ic_arrow_kanan"/>
 
                             <TextView
                                 android:layout_width="match_parent"
@@ -476,10 +476,10 @@
                                 android:text="0 mata pelajaran"
                                 android:background="@color/colorPrimary"
                                 android:textColor="@color/white"
-                                android:textSize="16sp"
+                                android:textSize="13sp"
                                 android:id="@+id/jumlah_sabtu"
                                 android:layout_weight="4"
-                                android:gravity="center_vertical"/>
+                                android:gravity="center"/>
 
                         </LinearLayout>
 

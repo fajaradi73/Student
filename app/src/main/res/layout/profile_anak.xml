@@ -65,10 +65,10 @@
         app:cardCornerRadius="8dp"
         app:layout_collapseMode="pin">
 
-        <de.hdodenhof.circleimageview.CircleImageView
+        <ImageView
             xmlns:app="http://schemas.android.com/apk/res-auto"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_gravity="center"
             android:scaleType="centerCrop"
             android:id="@+id/image_profil_anak"

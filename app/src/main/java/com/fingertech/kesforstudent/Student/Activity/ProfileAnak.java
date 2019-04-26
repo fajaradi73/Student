@@ -29,15 +29,18 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.fingertech.kesforstudent.BuildConfig;
 import com.fingertech.kesforstudent.Controller.Auth;
+import com.fingertech.kesforstudent.MainActivity;
 import com.fingertech.kesforstudent.R;
 import com.fingertech.kesforstudent.Rest.ApiClient;
 import com.fingertech.kesforstudent.Rest.JSONResponse;
+import com.fingertech.kesforstudent.Service.GlideApp;
 import com.fingertech.kesforstudent.Util.FileUtils;
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
@@ -74,7 +77,7 @@ public class ProfileAnak extends AppCompatActivity {
     String authorization,memberid,username,member_type,fullname,school_code;
     TextView tv_nama,tv_nis,tv_email,tv_no_hp,tv_alamat,tv_gender,tv_tanggal,tv_tempat,tv_agama;
     String nama,nis,email,alamat,gender,tanggal,tempat,agama,Base_anak,picture,no_hp;
-    CircleImageView image_profile;
+    ImageView image_profile;
     int status;
     Toolbar toolbar;
     CardView cv_profile;
@@ -142,7 +145,7 @@ public class ProfileAnak extends AppCompatActivity {
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
             getWindow().setStatusBarColor(Color.parseColor("#00FFFFFF"));
             getWindow().setFlags(WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_SHORT_EDGES,WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_SHORT_EDGES);
-            getWindow().getDecorView().setSystemUiVisibility( View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
+            getWindow().getDecorView().setSystemUiVisibility( View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
         }
 
         appBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
@@ -246,7 +249,7 @@ public class ProfileAnak extends AppCompatActivity {
                     tv_tempat.setText(tempat);
                     tv_agama.setText(agama);
                     tv_no_hp.setText(no_hp);
-                    Picasso.with(ProfileAnak.this).load(Base_anak + picture).into(image_profile);
+                    Glide.with(ProfileAnak.this).load(Base_anak + picture).into(image_profile);
                 }
             }
 
