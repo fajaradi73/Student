@@ -294,5 +294,17 @@ public interface Auth {
                                                                     @Query("semester_id") String semester_id,
                                                                     @Query("exam_type") String exam_type);
 
+    ///Tambah Agenda
+    @FormUrlEncoded
+    @POST("teachers/kes_add_agenda")
+    Call<JSONResponse.AddAgenda>kes_add_agenda_post(@Header("Authorization") String authorization,
+                                                      @Field("school_code") String school_code,
+                                                      @Field("teacher_id") String teacher_id,
+                                                      @Field("classroom_id") String classroom_id,
+                                                      @Field("agenda_date") String agenda_date,
+                                                      @Field("cources_id") String cources_id,
+                                                      @Field("agenda_desc") String agenda_desc,
+                                                      @Field("scyear_id") String scyear_id);
+
 
 }

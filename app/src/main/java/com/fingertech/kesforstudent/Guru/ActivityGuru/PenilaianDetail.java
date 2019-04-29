@@ -112,7 +112,7 @@ public class PenilaianDetail extends AppCompatActivity {
         member_id           = sharedpreferences.getString(TAG_MEMBER_ID,"");
         scyear_id           = sharedpreferences.getString("scyear_id","");
         school_code         = sharedpreferences.getString(TAG_SCHOOL_CODE,"");
-        edulevel_id         = sharedpreferences.getString("edulevel_id","");
+        edulevel_id         = sharedpreferences.getString("classroom_id","");
         cources_id          = sharedpreferences.getString("cources_id","");
 
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());

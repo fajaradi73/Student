@@ -229,10 +229,15 @@
             android:label="Agenda Anak"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".Guru.ActivityGuru.KegiatanGuru"
+        <activity
+            android:name=".Guru.ActivityGuru.KegiatanGuru"
             android:label="Daftar Kegiatan"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".Guru.ActivityGuru.TambahAgenda"
+            android:label="Tambah Agenda"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>
