@@ -2,6 +2,8 @@ package com.fingertech.kesforstudent.Student.Activity;
 
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.ColorDrawable;
 import android.support.v4.view.ViewCompat;
@@ -93,6 +95,8 @@ public class JadwalPelajaran extends AppCompatActivity {
     private boolean isExpandedJumat     = false;
     private boolean isExpandedSabtu     = false;
     private boolean isExpandedSenin     = false;
+    String cources_id,warna_mapel;
+    SharedPreferences sharedPreferences;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -130,10 +134,11 @@ public class JadwalPelajaran extends AppCompatActivity {
         hint_sabtu      = findViewById(R.id.hint_sabtu);
         mApiInterface   = ApiClient.getClient().create(Auth.class);
 
-        authorization   = getIntent().getStringExtra("authorization");
-        school_code     = getIntent().getStringExtra("school_code");
-        memberid        = getIntent().getStringExtra("member_id");
-        classroom_id    = getIntent().getStringExtra("classroom_id");
+        sharedPreferences   = getSharedPreferences(MenuUtama.my_viewpager_preferences, Context.MODE_PRIVATE);
+        authorization       = sharedPreferences.getString("authorization",null);
+        school_code         = sharedPreferences.getString("school_code",null);
+        memberid            = sharedPreferences.getString("member_id",null);
+        classroom_id        = sharedPreferences.getString("classroom_id",null);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         toolbar.getNavigationIcon().setColorFilter(getResources().getColor(R.color.white), PorterDuff.Mode.SRC_ATOP);
@@ -152,6 +157,7 @@ public class JadwalPelajaran extends AppCompatActivity {
         SimpleDateFormat outFormat = new SimpleDateFormat("EEEE", Locale.getDefault());
         day = outFormat.format(dater);
         Jadwal_pelajaran();
+        Log.d("hari",day+"");
 
         itemlist    = new ArrayList<JadwalSenin>();
         itemselasa  = new ArrayList<JadwalSelasa>();
@@ -180,7 +186,7 @@ public class JadwalPelajaran extends AppCompatActivity {
                 btn_sabtu.callOnClick();
                 break;
             case "Minggu":
-
+                btn_senin.callOnClick();
                 break;
         }
         btn_senin.setOnClickListener(new View.OnClickListener() {
@@ -334,6 +340,23 @@ public class JadwalPelajaran extends AppCompatActivity {
             }
         });
 
+        DateFormat format = new SimpleDateFormat("dd MMMM yyyy",new Locale("in","ID"));
+        Calendar calendar = Calendar.getInstance();
+        calendar.setFirstDayOfWeek(Calendar.MONDAY);
+        calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
+
+        String[] days = new String[7];
+        for (int i = 0; i < 7; i++)
+        {
+            days[i] = format.format(calendar.getTime());
+            calendar.add(Calendar.DAY_OF_MONTH, 1);
+            tv_senin .setText(days[0]);
+            tv_selasa.setText(days[1]);
+            tv_rabu  .setText(days[2]);
+            tv_kamis .setText(days[3]);
+            tv_jumat .setText(days[4]);
+            tv_sabtu .setText(days[5]);
+        }
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -349,6 +372,7 @@ public class JadwalPelajaran extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         return true;
     }
+
     private void Jadwal_pelajaran(){
         progressBar();
         showDialog();
@@ -359,175 +383,193 @@ public class JadwalPelajaran extends AppCompatActivity {
                 @SuppressLint("SetTextI18n")
                 @Override
                 public void onResponse(Call<JSONResponse.JadwalPelajaran> call, final Response<JSONResponse.JadwalPelajaran> response) {
-                    Log.i("KES", response.code() + "");
+                    Log.i("jadwal kes", response.code() + "");
                     hideDialog();
+                    if (response.isSuccessful()) {
+                        JSONResponse.JadwalPelajaran resource = response.body();
 
-                    JSONResponse.JadwalPelajaran resource = response.body();
+                        status = resource.status;
+                        code = resource.code;
 
-                    status = resource.status;
-                    code = resource.code;
+                        JadwalSenin jadwalSenin = null;
+                        JadwalSelasa jadwalSelasa = null;
+                        JadwalRabu jadwalRabu = null;
+                        JadwalKamis jadwalKamis = null;
+                        JadwalJumat jadwalJumat = null;
+                        JadwalSabtu jadwalSabtu = null;
+                        if (status == 1 && code.equals("CSCH_SCS_0001")) {
+                            for (int i = 0; i < response.body().getData().getClass_schedule().size(); i++) {
+                                JSONResponse.JadwalData jadwalData = resource.data.getClass_schedule().get(i);
+                                days_name = jadwalData.getDayName();
+                                day_status = jadwalData.getDayStatus();
+                                daysid = jadwalData.getDayid();
+                                day_type = jadwalData.getDayType();
+                                switch (days_name.toString()) {
+                                    case "Senin": {
+                                        for (int o = 0; o < response.body().getData().getClass_schedule().get(i).getScheduleClass().size(); o++) {
+                                            mapel = response.body().getData().getClass_schedule().get(i).getScheduleClass().get(o).getCourcesName();
+                                            jam_mulai = response.body().getData().getClass_schedule().get(i).getScheduleClass().get(o).getTimezOk();
+                                            jam_selesai = response.body().getData().getClass_schedule().get(i).getScheduleClass().get(o).getTimezFinish();
+                                            jamber = response.body().getData().getClass_schedule().get(i).getScheduleClass().get(o).getScheduleTime();
+                                            lamber = response.body().getData().getClass_schedule().get(i).getScheduleClass().get(o).getLessonDuration();
+                                            guru = response.body().getData().getClass_schedule().get(i).getScheduleClass().get(o).getTeacherName();
+                                            warna_mapel = response.body().getData().getClass_schedule().get(i).getScheduleClass().get(o).getCources_colour();
+                                            cources_id = response.body().getData().getClass_schedule().get(i).getScheduleClass().get(o).getCourcesId();
 
-                    JadwalSenin jadwalSenin = null;
-                    JadwalSelasa jadwalSelasa = null;
-                    JadwalRabu jadwalRabu = null;
-                    JadwalKamis jadwalKamis = null;
-                    JadwalJumat jadwalJumat = null;
-                    JadwalSabtu jadwalSabtu = null;
-                    if (status == 1 && code.equals("CSCH_SCS_0001")) {
-                        for (int i = 0; i < response.body().getData().getClass_schedule().size(); i++) {
-                            JSONResponse.JadwalData jadwalData = resource.data.getClass_schedule().get(i);
-                            days_name = jadwalData.getDayName();
-                            day_status = jadwalData.getDayStatus();
-                            daysid = jadwalData.getDayid();
-                            day_type = jadwalData.getDayType();
-                            switch (days_name.toString()) {
-                                case "Senin": {
-                                    tv_senin.setText(String.valueOf(response.body().getData().getClass_schedule().get(i).getScheduleClass().size()) + " Mata Pelajaran");
-                                    for (int o = 0; o < response.body().getData().getClass_schedule().get(i).getScheduleClass().size(); o++) {
-                                        mapel = response.body().getData().getClass_schedule().get(i).getScheduleClass().get(o).getCourcesName();
-                                        jam_mulai = response.body().getData().getClass_schedule().get(i).getScheduleClass().get(o).getTimezOk();
-                                        jam_selesai = response.body().getData().getClass_schedule().get(i).getScheduleClass().get(o).getTimezFinish();
-                                        jamber = response.body().getData().getClass_schedule().get(i).getScheduleClass().get(o).getScheduleTime();
-                                        lamber = response.body().getData().getClass_schedule().get(i).getScheduleClass().get(o).getLessonDuration();
-                                        guru = response.body().getData().getClass_schedule().get(i).getScheduleClass().get(o).getTeacherName();
+                                            jadwalSenin = new JadwalSenin();
+                                            jadwalSenin.setDay_name(days_name);
+                                            jadwalSenin.setFullname(guru);
+                                            jadwalSenin.setCources_color(warna_mapel);
+                                            jadwalSenin.setCources_name(mapel);
+                                            jadwalSenin.setDuration(String.valueOf(lamber));
+                                            jadwalSenin.setJam_mulai(jam_mulai);
+                                            jadwalSenin.setJam_selesai(jam_selesai);
+                                            itemlist.add(jadwalSenin);
+                                        }
+                                        seninAdapter = new SeninAdapter(itemlist);
+                                        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(JadwalPelajaran.this);
+                                        rv_senin.setLayoutManager(layoutManager);
+                                        rv_senin.setAdapter(seninAdapter);
 
-                                        jadwalSenin = new JadwalSenin();
-                                        jadwalSenin.setDay_name(days_name);
-                                        jadwalSenin.setFullname(guru);
-                                        jadwalSenin.setCources_name(mapel);
-                                        jadwalSenin.setDuration(String.valueOf(lamber));
-                                        jadwalSenin.setJam_mulai(jam_mulai);
-                                        jadwalSenin.setJam_selesai(jam_selesai);
-                                        itemlist.add(jadwalSenin);
+                                        break;
                                     }
-                                    seninAdapter = new SeninAdapter(itemlist);
-                                    RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(JadwalPelajaran.this);
-                                    rv_senin.setLayoutManager(layoutManager);
-                                    rv_senin.setAdapter(seninAdapter);
+                                    case "Selasa": {
+                                        for (int o = 0; o < response.body().getData().getClass_schedule().get(i).getScheduleClass().size(); o++) {
+                                            mapel = response.body().getData().getClass_schedule().get(i).getScheduleClass().get(o).getCourcesName();
+                                            jam_mulai = response.body().getData().getClass_schedule().get(i).getScheduleClass().get(o).getTimezOk();
+                                            jam_selesai = response.body().getData().getClass_schedule().get(i).getScheduleClass().get(o).getTimezFinish();
+                                            jamber = response.body().getData().getClass_schedule().get(i).getScheduleClass().get(o).getScheduleTime();
+                                            lamber = response.body().getData().getClass_schedule().get(i).getScheduleClass().get(o).getLessonDuration();
+                                            guru = response.body().getData().getClass_schedule().get(i).getScheduleClass().get(o).getTeacherName();
+                                            warna_mapel = response.body().getData().getClass_schedule().get(i).getScheduleClass().get(o).getCources_colour();
+                                            cources_id = response.body().getData().getClass_schedule().get(i).getScheduleClass().get(o).getCourcesId();
 
-                                    break;
-                                }
-                                case "Selasa": {
-                                    tv_selasa.setText(String.valueOf(response.body().getData().getClass_schedule().get(i).getScheduleClass().size()) + " Mata Pelajaran");
-                                    for (int o = 0; o < response.body().getData().getClass_schedule().get(i).getScheduleClass().size(); o++) {
-                                        mapel = response.body().getData().getClass_schedule().get(i).getScheduleClass().get(o).getCourcesName();
-                                        jam_mulai = response.body().getData().getClass_schedule().get(i).getScheduleClass().get(o).getTimezOk();
-                                        jam_selesai = response.body().getData().getClass_schedule().get(i).getScheduleClass().get(o).getTimezFinish();
-                                        jamber = response.body().getData().getClass_schedule().get(i).getScheduleClass().get(o).getScheduleTime();
-                                        lamber = response.body().getData().getClass_schedule().get(i).getScheduleClass().get(o).getLessonDuration();
-                                        guru = response.body().getData().getClass_schedule().get(i).getScheduleClass().get(o).getTeacherName();
-                                        jadwalSelasa = new JadwalSelasa();
-                                        jadwalSelasa.setFullname(guru);
-                                        jadwalSelasa.setDay_name(days_name);
-                                        jadwalSelasa.setCources_name(mapel);
-                                        jadwalSelasa.setDuration(String.valueOf(lamber));
-                                        jadwalSelasa.setJam_mulai(jam_mulai);
-                                        jadwalSelasa.setJam_selesai(jam_selesai);
-                                        itemselasa.add(jadwalSelasa);
+                                            jadwalSelasa = new JadwalSelasa();
+                                            jadwalSelasa.setFullname(guru);
+                                            jadwalSelasa.setDay_name(days_name);
+                                            jadwalSelasa.setCources_name(mapel);
+                                            jadwalSelasa.setCources_color(warna_mapel);
+                                            jadwalSelasa.setDuration(String.valueOf(lamber));
+                                            jadwalSelasa.setJam_mulai(jam_mulai);
+                                            jadwalSelasa.setJam_selesai(jam_selesai);
+                                            itemselasa.add(jadwalSelasa);
+                                        }
+                                        selasaAdapter = new SelasaAdapter(itemselasa);
+                                        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(JadwalPelajaran.this);
+                                        rv_selasa.setLayoutManager(layoutManager);
+                                        rv_selasa.setAdapter(selasaAdapter);
+                                        break;
                                     }
-                                    selasaAdapter = new SelasaAdapter(itemselasa);
-                                    RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(JadwalPelajaran.this);
-                                    rv_selasa.setLayoutManager(layoutManager);
-                                    rv_selasa.setAdapter(selasaAdapter);
-                                    break;
-                                }
-                                case "Rabu": {
-                                    tv_rabu.setText(String.valueOf(response.body().getData().getClass_schedule().get(i).getScheduleClass().size()) + " Mata Pelajaran");
-                                    for (int o = 0; o < response.body().getData().getClass_schedule().get(i).getScheduleClass().size(); o++) {
-                                        mapel = response.body().getData().getClass_schedule().get(i).getScheduleClass().get(o).getCourcesName();
-                                        jam_mulai = response.body().getData().getClass_schedule().get(i).getScheduleClass().get(o).getTimezOk();
-                                        jam_selesai = response.body().getData().getClass_schedule().get(i).getScheduleClass().get(o).getTimezFinish();
-                                        jamber = response.body().getData().getClass_schedule().get(i).getScheduleClass().get(o).getScheduleTime();
-                                        lamber = response.body().getData().getClass_schedule().get(i).getScheduleClass().get(o).getLessonDuration();
-                                        guru = response.body().getData().getClass_schedule().get(i).getScheduleClass().get(o).getTeacherName();
-                                        jadwalRabu = new JadwalRabu();
-                                        jadwalRabu.setFullname(guru);
-                                        jadwalRabu.setDay_name(days_name);
-                                        jadwalRabu.setCources_name(mapel);
-                                        jadwalRabu.setDuration(String.valueOf(lamber));
-                                        jadwalRabu.setJam_mulai(jam_mulai);
-                                        jadwalRabu.setJam_selesai(jam_selesai);
-                                        itemRabu.add(jadwalRabu);
-                                    }
-                                    rabuAdapter = new RabuAdapter(itemRabu);
-                                    RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(JadwalPelajaran.this);
-                                    rv_rabu.setLayoutManager(layoutManager);
-                                    rv_rabu.setAdapter(rabuAdapter);
-                                    break;
-                                }
-                                case "Kamis": {
-                                    tv_kamis.setText(String.valueOf(response.body().getData().getClass_schedule().get(i).getScheduleClass().size()) + " Mata Pelajaran");
-                                    for (int o = 0; o < response.body().getData().getClass_schedule().get(i).getScheduleClass().size(); o++) {
-                                        mapel = response.body().getData().getClass_schedule().get(i).getScheduleClass().get(o).getCourcesName();
-                                        jam_mulai = response.body().getData().getClass_schedule().get(i).getScheduleClass().get(o).getTimezOk();
-                                        jam_selesai = response.body().getData().getClass_schedule().get(i).getScheduleClass().get(o).getTimezFinish();
-                                        jamber = response.body().getData().getClass_schedule().get(i).getScheduleClass().get(o).getScheduleTime();
-                                        lamber = response.body().getData().getClass_schedule().get(i).getScheduleClass().get(o).getLessonDuration();
-                                        guru = response.body().getData().getClass_schedule().get(i).getScheduleClass().get(o).getTeacherName();
-                                        jadwalKamis = new JadwalKamis();
-                                        jadwalKamis.setFullname(guru);
-                                        jadwalKamis.setDay_name(days_name);
-                                        jadwalKamis.setCources_name(mapel);
-                                        jadwalKamis.setDuration(String.valueOf(lamber));
-                                        jadwalKamis.setJam_mulai(jam_mulai);
-                                        jadwalKamis.setJam_selesai(jam_selesai);
-                                        itemKamis.add(jadwalKamis);
-                                    }
-                                    kamisAdapter = new KamisAdapter(itemKamis);
-                                    RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(JadwalPelajaran.this);
-                                    rv_kamis.setLayoutManager(layoutManager);
-                                    rv_kamis.setAdapter(kamisAdapter);
+                                    case "Rabu": {
+                                        for (int o = 0; o < response.body().getData().getClass_schedule().get(i).getScheduleClass().size(); o++) {
+                                            mapel = response.body().getData().getClass_schedule().get(i).getScheduleClass().get(o).getCourcesName();
+                                            jam_mulai = response.body().getData().getClass_schedule().get(i).getScheduleClass().get(o).getTimezOk();
+                                            jam_selesai = response.body().getData().getClass_schedule().get(i).getScheduleClass().get(o).getTimezFinish();
+                                            jamber = response.body().getData().getClass_schedule().get(i).getScheduleClass().get(o).getScheduleTime();
+                                            lamber = response.body().getData().getClass_schedule().get(i).getScheduleClass().get(o).getLessonDuration();
+                                            guru = response.body().getData().getClass_schedule().get(i).getScheduleClass().get(o).getTeacherName();
+                                            warna_mapel = response.body().getData().getClass_schedule().get(i).getScheduleClass().get(o).getCources_colour();
+                                            cources_id = response.body().getData().getClass_schedule().get(i).getScheduleClass().get(o).getCourcesId();
 
-                                    break;
-                                }
-                                case "Jumat": {
-                                    tv_jumat.setText(String.valueOf(response.body().getData().getClass_schedule().get(i).getScheduleClass().size()) + " Mata Pelajaran");
-                                    for (int o = 0; o < response.body().getData().getClass_schedule().get(i).getScheduleClass().size(); o++) {
-                                        mapel = response.body().getData().getClass_schedule().get(i).getScheduleClass().get(o).getCourcesName();
-                                        jam_mulai = response.body().getData().getClass_schedule().get(i).getScheduleClass().get(o).getTimezOk();
-                                        jam_selesai = response.body().getData().getClass_schedule().get(i).getScheduleClass().get(o).getTimezFinish();
-                                        jamber = response.body().getData().getClass_schedule().get(i).getScheduleClass().get(o).getScheduleTime();
-                                        lamber = response.body().getData().getClass_schedule().get(i).getScheduleClass().get(o).getLessonDuration();
-                                        guru = response.body().getData().getClass_schedule().get(i).getScheduleClass().get(o).getTeacherName();
-                                        jadwalJumat = new JadwalJumat();
-                                        jadwalJumat.setFullname(guru);
-                                        jadwalJumat.setDay_name(days_name);
-                                        jadwalJumat.setCources_name(mapel);
-                                        jadwalJumat.setDuration(String.valueOf(lamber));
-                                        jadwalJumat.setJam_mulai(jam_mulai);
-                                        jadwalJumat.setJam_selesai(jam_selesai);
-                                        itemJumat.add(jadwalJumat);
+                                            jadwalRabu = new JadwalRabu();
+                                            jadwalRabu.setFullname(guru);
+                                            jadwalRabu.setDay_name(days_name);
+                                            jadwalRabu.setCources_name(mapel);
+                                            jadwalRabu.setCources_color(warna_mapel);
+                                            jadwalRabu.setDuration(String.valueOf(lamber));
+                                            jadwalRabu.setJam_mulai(jam_mulai);
+                                            jadwalRabu.setJam_selesai(jam_selesai);
+                                            itemRabu.add(jadwalRabu);
+                                        }
+                                        rabuAdapter = new RabuAdapter(itemRabu);
+                                        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(JadwalPelajaran.this);
+                                        rv_rabu.setLayoutManager(layoutManager);
+                                        rv_rabu.setAdapter(rabuAdapter);
+                                        break;
                                     }
-                                    jumatAdapter = new JumatAdapter(itemJumat);
-                                    RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(JadwalPelajaran.this);
-                                    rv_jumat.setLayoutManager(layoutManager);
-                                    rv_jumat.setAdapter(jumatAdapter);
+                                    case "Kamis": {
+                                        for (int o = 0; o < response.body().getData().getClass_schedule().get(i).getScheduleClass().size(); o++) {
+                                            mapel = response.body().getData().getClass_schedule().get(i).getScheduleClass().get(o).getCourcesName();
+                                            jam_mulai = response.body().getData().getClass_schedule().get(i).getScheduleClass().get(o).getTimezOk();
+                                            jam_selesai = response.body().getData().getClass_schedule().get(i).getScheduleClass().get(o).getTimezFinish();
+                                            jamber = response.body().getData().getClass_schedule().get(i).getScheduleClass().get(o).getScheduleTime();
+                                            lamber = response.body().getData().getClass_schedule().get(i).getScheduleClass().get(o).getLessonDuration();
+                                            guru = response.body().getData().getClass_schedule().get(i).getScheduleClass().get(o).getTeacherName();
+                                            warna_mapel = response.body().getData().getClass_schedule().get(i).getScheduleClass().get(o).getCources_colour();
+                                            cources_id = response.body().getData().getClass_schedule().get(i).getScheduleClass().get(o).getCourcesId();
 
-                                    break;
-                                }
-                                case "Sabtu": {
-                                    tv_sabtu.setText(String.valueOf(response.body().getData().getClass_schedule().get(i).getScheduleClass().size()) + " Mata Pelajaran");
-                                    for (int o = 0; o < response.body().getData().getClass_schedule().get(i).getScheduleClass().size(); o++) {
-                                        mapel = response.body().getData().getClass_schedule().get(i).getScheduleClass().get(o).getCourcesName();
-                                        jam_mulai = response.body().getData().getClass_schedule().get(i).getScheduleClass().get(o).getTimezOk();
-                                        jam_selesai = response.body().getData().getClass_schedule().get(i).getScheduleClass().get(o).getTimezFinish();
-                                        jamber = response.body().getData().getClass_schedule().get(i).getScheduleClass().get(o).getScheduleTime();
-                                        lamber = response.body().getData().getClass_schedule().get(i).getScheduleClass().get(o).getLessonDuration();
-                                        guru = response.body().getData().getClass_schedule().get(i).getScheduleClass().get(o).getTeacherName();
-                                        jadwalSabtu = new JadwalSabtu();
-                                        jadwalSabtu.setFullname(guru);
-                                        jadwalSabtu.setDay_name(days_name);
-                                        jadwalSabtu.setCources_name(mapel);
-                                        jadwalSabtu.setDuration(String.valueOf(lamber));
-                                        jadwalSabtu.setJam_mulai(jam_mulai);
-                                        jadwalSabtu.setJam_selesai(jam_selesai);
-                                        itemSabtu.add(jadwalSabtu);
+                                            jadwalKamis = new JadwalKamis();
+                                            jadwalKamis.setFullname(guru);
+                                            jadwalKamis.setDay_name(days_name);
+                                            jadwalKamis.setCources_name(mapel);
+                                            jadwalKamis.setCources_color(warna_mapel);
+                                            jadwalKamis.setDuration(String.valueOf(lamber));
+                                            jadwalKamis.setJam_mulai(jam_mulai);
+                                            jadwalKamis.setJam_selesai(jam_selesai);
+                                            itemKamis.add(jadwalKamis);
+                                        }
+                                        kamisAdapter = new KamisAdapter(itemKamis);
+                                        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(JadwalPelajaran.this);
+                                        rv_kamis.setLayoutManager(layoutManager);
+                                        rv_kamis.setAdapter(kamisAdapter);
+
+                                        break;
                                     }
-                                    sabtuAdapter = new SabtuAdapter(itemSabtu);
-                                    RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(JadwalPelajaran.this);
-                                    rv_sabtu.setLayoutManager(layoutManager);
-                                    rv_sabtu.setAdapter(sabtuAdapter);
-                                    break;
+                                    case "Jumat": {
+                                        for (int o = 0; o < response.body().getData().getClass_schedule().get(i).getScheduleClass().size(); o++) {
+                                            mapel = response.body().getData().getClass_schedule().get(i).getScheduleClass().get(o).getCourcesName();
+                                            jam_mulai = response.body().getData().getClass_schedule().get(i).getScheduleClass().get(o).getTimezOk();
+                                            jam_selesai = response.body().getData().getClass_schedule().get(i).getScheduleClass().get(o).getTimezFinish();
+                                            jamber = response.body().getData().getClass_schedule().get(i).getScheduleClass().get(o).getScheduleTime();
+                                            lamber = response.body().getData().getClass_schedule().get(i).getScheduleClass().get(o).getLessonDuration();
+                                            guru = response.body().getData().getClass_schedule().get(i).getScheduleClass().get(o).getTeacherName();
+                                            warna_mapel = response.body().getData().getClass_schedule().get(i).getScheduleClass().get(o).getCources_colour();
+                                            cources_id = response.body().getData().getClass_schedule().get(i).getScheduleClass().get(o).getCourcesId();
+
+                                            jadwalJumat = new JadwalJumat();
+                                            jadwalJumat.setFullname(guru);
+                                            jadwalJumat.setDay_name(days_name);
+                                            jadwalJumat.setCources_name(mapel);
+                                            jadwalJumat.setCources_color(warna_mapel);
+                                            jadwalJumat.setDuration(String.valueOf(lamber));
+                                            jadwalJumat.setJam_mulai(jam_mulai);
+                                            jadwalJumat.setJam_selesai(jam_selesai);
+                                            itemJumat.add(jadwalJumat);
+                                        }
+                                        jumatAdapter = new JumatAdapter(itemJumat);
+                                        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(JadwalPelajaran.this);
+                                        rv_jumat.setLayoutManager(layoutManager);
+                                        rv_jumat.setAdapter(jumatAdapter);
+
+                                        break;
+                                    }
+                                    case "Sabtu": {
+                                        for (int o = 0; o < response.body().getData().getClass_schedule().get(i).getScheduleClass().size(); o++) {
+                                            mapel = response.body().getData().getClass_schedule().get(i).getScheduleClass().get(o).getCourcesName();
+                                            jam_mulai = response.body().getData().getClass_schedule().get(i).getScheduleClass().get(o).getTimezOk();
+                                            jam_selesai = response.body().getData().getClass_schedule().get(i).getScheduleClass().get(o).getTimezFinish();
+                                            jamber = response.body().getData().getClass_schedule().get(i).getScheduleClass().get(o).getScheduleTime();
+                                            lamber = response.body().getData().getClass_schedule().get(i).getScheduleClass().get(o).getLessonDuration();
+                                            guru = response.body().getData().getClass_schedule().get(i).getScheduleClass().get(o).getTeacherName();
+                                            warna_mapel = response.body().getData().getClass_schedule().get(i).getScheduleClass().get(o).getCources_colour();
+                                            cources_id = response.body().getData().getClass_schedule().get(i).getScheduleClass().get(o).getCourcesId();
+
+                                            jadwalSabtu = new JadwalSabtu();
+                                            jadwalSabtu.setFullname(guru);
+                                            jadwalSabtu.setDay_name(days_name);
+                                            jadwalSabtu.setCources_name(mapel);
+                                            jadwalSabtu.setCources_color(warna_mapel);
+                                            jadwalSabtu.setDuration(String.valueOf(lamber));
+                                            jadwalSabtu.setJam_mulai(jam_mulai);
+                                            jadwalSabtu.setJam_selesai(jam_selesai);
+                                            itemSabtu.add(jadwalSabtu);
+                                        }
+                                        sabtuAdapter = new SabtuAdapter(itemSabtu);
+                                        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(JadwalPelajaran.this);
+                                        rv_sabtu.setLayoutManager(layoutManager);
+                                        rv_sabtu.setAdapter(sabtuAdapter);
+                                        break;
+                                    }
                                 }
                             }
                             switch (day) {
@@ -550,7 +592,7 @@ public class JadwalPelajaran extends AppCompatActivity {
                                     btn_sabtu.performClick();
                                     break;
                                 case "Minggu":
-
+                                    btn_senin.performClick();
                                     break;
                             }
                         }

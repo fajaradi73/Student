@@ -182,7 +182,6 @@ public class AgendaDetail extends AppCompatActivity {
                 arrow.setImageResource(R.drawable.ic_down_arrow);
             }
         });
-
         Calendar calendars = Calendar.getInstance();
         calendar.setTimeInMillis(System.currentTimeMillis());
         datePicker.init(calendars.get(Calendar.YEAR), calendars.get(Calendar.MONTH), calendars.get(Calendar.DAY_OF_MONTH), new DatePicker.OnDateChangedListener() {
@@ -201,31 +200,28 @@ public class AgendaDetail extends AppCompatActivity {
                 times_picker   = bulanpicker.getTime();
             }
         });
-        CustomLayoutManager layoutManager = new CustomLayoutManager(AgendaDetail.this);
-        layoutManager.setOrientation(CustomLayoutManager.HORIZONTAL);
         btn_pilih.setOnClickListener(v -> {
             if (times_sekarang.equals(times_picker)){
                 rvtanggal.smoothScrollToPosition(Integer.parseInt(tanggal)-1);
             }else {
+                datatanggal(Integer.parseInt(tahun),Integer.parseInt(bulan));
                 if (Integer.parseInt(tanggal)-5 < 0){
-                    rvtanggal.scrollToPosition(0);
+                    rvtanggal.smoothScrollToPosition(0);
                 }else {
-                    rvtanggal.scrollToPosition(Integer.parseInt(tanggal)-5);
+                    rvtanggal.smoothScrollToPosition(Integer.parseInt(tanggal)-5);
                 }
                 bulan_sekarang = convertDate(Integer.parseInt(tahun),Integer.parseInt(bulan)-1);
                 dapat_Agenda();
             }
-            rvtanggal.getRecycledViewPool().clear();
-            adapterDataTanggal.notifyDataSetChanged();
             slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
             arrow.setImageResource(R.drawable.ic_up_arrow);
         });
 
-        LinearSnapHelper snapHelper = new LinearSnapHelper();
-        adapterDataTanggal = new AdapterDataTanggal(agendaModelTanggalList);
         datatanggal(Integer.parseInt(tahun),Integer.parseInt(bulan));
 
-
+        LinearSnapHelper snapHelper = new LinearSnapHelper();
+        adapterDataTanggal = new AdapterDataTanggal(agendaModelTanggalList);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(AgendaDetail.this, LinearLayoutManager.HORIZONTAL, false);
         indefinitePagerIndicator.attachToRecyclerView(rvtanggal);
         rvtanggal.setOnFlingListener(new SnappyRecycleView(AgendaDetail.this).getOnFlingListener());
         snapHelper.attachToRecyclerView(rvtanggal);
@@ -247,8 +243,8 @@ public class AgendaDetail extends AppCompatActivity {
                 currentItem = (currentItem >= agendaModelTanggalList.size()) ? agendaModelTanggalList.size() - 1 : currentItem;
                 tanggals = agendaModelTanggalList.get(currentItem).getDate();
                 if (dataAgendaList!=null) {
-                    if (agendaModelTanggalList != null) {
-                        agendaModelTanggalList.clear();
+                    if (modelAgendaList != null) {
+                        modelAgendaList.clear();
                         if (contains(dataAgendaList, convertTanggal(tanggals))) {
                             for (JSONResponse.DataAgenda dataAgenda : dataAgendaList) {
                                 if (dataAgenda.getDate().equals(convertTanggal(tanggals))) {
@@ -271,6 +267,7 @@ public class AgendaDetail extends AppCompatActivity {
                             rv_agenda.setOnFlingListener(null);
                             rv_agenda.setLayoutManager(new VegaLayoutManager());
                             rv_agenda.setAdapter(adapterAgenda);
+                            adapterAgenda.notifyDataSetChanged();
                             adapterAgenda.setOnItemClickListener(new AdapterAgenda.OnItemClickListener() {
                                 @Override
                                 public void onItemClick(View view, int position) {

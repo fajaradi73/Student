@@ -87,14 +87,10 @@
     <string name="Key_SW_Language">Key_SW_Language</string>
     <string name="title_activity_setting_">Setting</string>
     <string name="write_file">This app needs access to your file storage so that it can write files.</string>
-
-    <string-array name="kirim_kepada">
-        <item>Kirim Kepada</item>
-        <item>Orang Tua</item>
-        <item>Siswa dan Orang Tua</item>
-        <item>Kepala Sekolah</item>
-        <item>Wakil Kepala Sekolah</item>
-        <item>Guru</item>
-        <item>Admin</item>
-    </string-array>
+    <string name="btn_profil_anak">Profil Anak</string>
+    <string name="btn_jadwal">Jadwal Pelajaran</string>
+    <string name="btn_jadwal_ujian">Jadwal Ujian</string>
+    <string name="btn_absensi_anak">Presensi</string>
+    <string name="btn_tugas_anak">Tugas</string>
+    <string name="btn_raport_anak">Rapor</string>
 </resources>

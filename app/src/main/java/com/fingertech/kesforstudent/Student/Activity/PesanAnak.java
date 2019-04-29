@@ -83,7 +83,7 @@ public class PesanAnak extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         toolbar.getNavigationIcon().setColorFilter(getResources().getColor(R.color.white), PorterDuff.Mode.SRC_ATOP);
         Calendar calendar = Calendar.getInstance();
-        calendar.add(Calendar.MONTH,-3);
+        calendar.add(Calendar.MONTH,-2);
         date_from = formattanggal.format(calendar.getTime());
         date_to   = formattanggal.format(Calendar.getInstance().getTime());
         dapat();
@@ -144,32 +144,34 @@ public class PesanAnak extends AppCompatActivity {
                     @Override
                     public void onComplete() {
                         hideDialog();
-                        pesanAnakAdapter = new PesanAdapter(pesanAnakModelList);
-                        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(PesanAnak.this);
-                        rv_pesan.setLayoutManager(layoutManager);
-                        rv_pesan.setAdapter(pesanAnakAdapter);
-                        pesanAnakAdapter.setOnItemClickListener(new PesanAdapter.OnItemClickListener() {
-                            @Override
-                            public void onItemClick(View view, int position) {
-                                message_id = pesanAnakModelList.get(position).getMessage_id();
-                                SharedPreferences.Editor editor = sharedPreferences.edit();
-                                editor.putString("authorization",authorization);
-                                editor.putString("school_code",school_code);
-                                editor.putString("member_id",student_id);
-                                editor.putString("classroom_id",classroom_id);
-                                editor.putString("message_id",message_id);
-                                editor.putString("student_name",nama_anak);
-                                editor.apply();
-                                Intent intent = new Intent(PesanAnak.this, PesanDetail.class);
-                                intent.putExtra("authorization",authorization);
-                                intent.putExtra("school_code",school_code);
-                                intent.putExtra("member_id",student_id);
-                                intent.putExtra("classroom_id",classroom_id);
-                                intent.putExtra("message_id",message_id);
-                                intent.putExtra("student_name",nama_anak);
-                                startActivityForResult(intent,1);
-                            }
-                        });
+                        if (pesanAnakModelList!=null) {
+                            pesanAnakAdapter = new PesanAdapter(pesanAnakModelList);
+                            RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(PesanAnak.this);
+                            rv_pesan.setLayoutManager(layoutManager);
+                            rv_pesan.setAdapter(pesanAnakAdapter);
+                            pesanAnakAdapter.setOnItemClickListener(new PesanAdapter.OnItemClickListener() {
+                                @Override
+                                public void onItemClick(View view, int position) {
+                                    message_id = pesanAnakModelList.get(position).getMessage_id();
+                                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                                    editor.putString("authorization", authorization);
+                                    editor.putString("school_code", school_code);
+                                    editor.putString("member_id", student_id);
+                                    editor.putString("classroom_id", classroom_id);
+                                    editor.putString("message_id", message_id);
+                                    editor.putString("student_name", nama_anak);
+                                    editor.apply();
+                                    Intent intent = new Intent(PesanAnak.this, PesanDetail.class);
+                                    intent.putExtra("authorization", authorization);
+                                    intent.putExtra("school_code", school_code);
+                                    intent.putExtra("member_id", student_id);
+                                    intent.putExtra("classroom_id", classroom_id);
+                                    intent.putExtra("message_id", message_id);
+                                    intent.putExtra("student_name", nama_anak);
+                                    startActivityForResult(intent, 1);
+                                }
+                            });
+                        }
                     }
                 });
     }
@@ -198,9 +200,9 @@ public class PesanAnak extends AppCompatActivity {
                 school_code   = data.getStringExtra("school_code");
                 student_id    = data.getStringExtra("member_id");
                 Calendar calendar = Calendar.getInstance();
-                calendar.add(Calendar.MONTH,-3);
-                date_from = formattanggal.format(calendar.getTime());
-                date_to=formattanggal.format(Calendar.getInstance().getTime());
+                calendar.add(Calendar.MONTH,-2);
+                date_from   = formattanggal.format(calendar.getTime());
+                date_to     =formattanggal.format(Calendar.getInstance().getTime());
                 dapat();
             }
         }

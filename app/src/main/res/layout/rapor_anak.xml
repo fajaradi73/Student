@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Student.Activity.RaporAnak"
     android:orientation="vertical">
 
     <android.support.v7.widget.Toolbar
@@ -17,56 +16,73 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="150dp"
+        android:layout_height="200dp"
         android:orientation="vertical"
-        android:background="@color/deepblue">
+        android:background="@color/birurapor">
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="2"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"
-            android:orientation="horizontal">
-            <TextView
+            android:layout_height="wrap_content"
+            android:background="@color/bluerapor"
+            android:orientation="vertical">
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="2"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal">
+                <com.rey.material.widget.Spinner
+                    style="@style/Material.Widget.Spinner"
+                    android:id="@+id/sp_semester"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:background="@android:color/transparent"
+                    android:spinnerMode="dropdown"
+                    app:rd_style="@style/Material.Drawable.Ripple.Wave"
+                    app:spn_arrowAnimClockwise="true"
+                    app:spn_dividerColor="@color/white"
+                    app:spn_dividerHeight="1dp"
+                    app:spn_arrowColor="@color/white"
+                    app:spn_arrowSwitchMode="true"
+                    app:spn_arrowAnimDuration="3"/>
+            </LinearLayout>
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:gravity="center"
-                android:textColor="@color/ic_logo_background"
-                android:id="@+id/tv_semester"
-                android:textSize="20sp"
-                tools:ignore="NestedWeights" />
+                android:layout_weight="2.2"
+                android:layout_margin="5dp"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    tools:text="mulai"
+                    android:gravity="center"
+                    android:id="@+id/tv_tanggal_semester"
+                    android:textColor="@color/white"/>
+            </LinearLayout>
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:layout_marginTop="5dp"
+            android:layout_height="115dp"
+            android:background="@color/fourty_eight_transparency_white"
+            android:elevation="50dp"
             android:orientation="vertical">
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="15dp"
-                android:layout_marginRight="15dp"
-                android:layout_marginLeft="15dp"
+                android:layout_margin="10dp"
                 android:orientation="horizontal"
                 tools:ignore="DisableBaselineAlignment,UselessParent">
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="3">
-
-                    <ImageView
-                        android:id="@+id/star"
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:layout_alignParentStart="true"
-                        android:src="@drawable/ic_star"
-                        android:layout_marginTop="-1dp"
-                        android:layout_marginEnd="0dp"
-                        android:elevation="5dp"
-                        tools:ignore="ContentDescription" />
-
+                    android:layout_weight="3.1">
                     <android.support.v7.widget.CardView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
@@ -79,328 +95,241 @@
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:background="@color/green_600"
+                            android:background="@drawable/ic_background"
                             android:orientation="vertical">
-                            <TextView
+                            <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
-                                android:layout_weight="2"
-                                android:text="Peringkat"
-                                android:textColor="@color/white"
-                                android:gravity="center"/>
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:layout_weight="1"
-                                android:id="@+id/peringkat"
-                                android:textSize="20sp"
-                                android:textColor="@color/yellow_500"
-                                android:gravity="center"/>
+                                android:background="@drawable/ic_piala">
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    tools:text="10"
+                                    android:layout_marginTop="-10dp"
+                                    android:textColor="@color/black"
+                                    android:id="@+id/peringkat"
+                                    android:textSize="16sp"
+                                    android:layout_gravity="center"
+                                    android:gravity="center"/>
+                            </LinearLayout>
                         </LinearLayout>
                     </android.support.v7.widget.CardView>
-
-
                 </RelativeLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_weight="1"
+                    android:layout_weight="2"
+                    android:layout_marginTop="5dp"
                     android:orientation="vertical">
-                    <TextView
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textColor="@color/white"
-                        android:text="Status"
-                        android:textSize="13sp"/>
-                    <TextView
+                        android:id="@+id/ll_status"
+                        android:orientation="vertical">
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/black"
+                            android:text="Status"
+                            android:textSize="13sp"/>
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/status_raport"
+                            tools:text="Naik kelas"
+                            android:textSize="16sp"
+                            android:singleLine="true"
+                            android:textColor="@color/sixty_percent_transparency_green"/>
+                    </LinearLayout>
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:id="@+id/status_raport"
-                        android:textSize="16sp"
-                        android:textColor="@color/yellow_500"/>
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Kritik dan Saran"
-                        android:textColor="@color/white"
-                        android:textSize="13sp"/>
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/kritik_saran"
-                        android:textColor="@color/white"
-                        android:textSize="13sp"/>
+                        android:id="@+id/ll_kritik"
+                        android:layout_marginTop="5dp"
+                        android:orientation="vertical">
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Kritik &amp; Saran"
+                            android:textColor="@color/black"
+                            android:textSize="13sp"/>
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            tools:text="Naik kelas"
+                            android:id="@+id/kritik_saran"
+                            android:textColor="@color/sixty_percent_transparency_bluerapor"
+                            android:singleLine="true"
+                            android:textSize="13sp"/>
+                    </LinearLayout>
                 </LinearLayout>
-
-            </LinearLayout>
-        </LinearLayout>
-
-    </LinearLayout>
-
-    <android.support.v4.widget.NestedScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="30dp"
-                android:text="Rapor belum diterbitkan oleh walikelas"
-                android:gravity="center"
-                android:id="@+id/tv_no_rapor"
-                android:visibility="gone"
-                android:textSize="20sp"/>
-
-            <android.support.v7.widget.RecyclerView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:id="@+id/rv_rapor"
-                >
-            </android.support.v7.widget.RecyclerView>
-            <android.support.v7.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:cardCornerRadius="8dp"
-                android:layout_marginBottom="10dp"
-                android:layout_marginLeft="20dp"
-                android:id="@+id/card"
-                android:layout_marginRight="20dp">
-                <TableLayout
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="#ffffff"
-                    android:shrinkColumns="1"
-                    android:stretchColumns="1">
-
-                    <TableRow
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_horizontal"
-                        >
-
-                        <TextView
-                            android:layout_weight="1"
-                            android:background="@drawable/tabel_ujian"
-                            android:padding="13dip"
-                            android:text="Detail"
-                            android:gravity="center"
-                            android:textColor="@color/white" />
-
-                        <TextView
-                            android:layout_weight="1"
-                            android:background="@drawable/tabel_ujian"
-                            android:padding="13dip"
-                            android:text="Nilai"
-                            android:gravity="center"
-                            android:textColor="@color/white" />
-                    </TableRow>
-
-                    <TableRow
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/table1"
-                        android:gravity="center_horizontal">
-
-                        <TextView
-                            android:layout_weight="1"
-                            android:background="@drawable/tabel_border"
-                            android:padding="13dip"
-                            android:text="@string/tv_latihan_teori"
-                            android:gravity="center"
-                            android:textColor="#000000" />
-
-                        <TextView
-                            android:id="@+id/nilai_teori"
-                            android:layout_weight="1"
-                            android:background="@drawable/tabel_border"
-                            android:padding="13dip"
-                            android:text=""
-                            android:gravity="center"
-                            android:textColor="#000000" />
-                    </TableRow>
-
-                    <TableRow
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/table2"
-                        android:gravity="center_horizontal">
-
-                        <TextView
-                            android:layout_weight="1"
-                            android:background="@drawable/tabel_border"
-                            android:padding="13dip"
-                            android:text="@string/tv_ulangan_harian"
-                            android:gravity="center"
-                            android:textColor="#000000" />
-
-                        <TextView
-                            android:id="@+id/ulangan_harian"
-                            android:layout_weight="1"
-                            android:background="@drawable/tabel_border"
-                            android:padding="13dip"
-                            android:text=""
-                            android:gravity="center"
-                            android:textColor="#000000" />
-                    </TableRow>
-
-                    <TableRow
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/table3"
-                        android:gravity="center_horizontal">
-
-                        <TextView
-                            android:layout_weight="1"
-                            android:background="@drawable/tabel_border"
-                            android:padding="13dip"
-                            android:text="@string/tv_latihan_praktikum"
-                            android:gravity="center"
-                            android:textColor="#000000" />
-
-                        <TextView
-                            android:id="@+id/latihan_praktikum"
-                            android:layout_weight="1"
-                            android:background="@drawable/tabel_border"
-                            android:padding="13dip"
-                            android:text=""
-                            android:gravity="center"
-                            android:textColor="#000000" />
-                    </TableRow>
-
-                    <TableRow
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/table4"
-                        android:gravity="center_horizontal">
-
-                        <TextView
-                            android:layout_height="match_parent"
-                            android:layout_width="match_parent"
-                            android:background="@drawable/tabel_border"
-                            android:padding="13dip"
-                            android:text="@string/tv_ekstrakulikuler"
-                            android:gravity="center"
-                            android:layout_weight="1"
-                            android:textColor="#000000" />
-
-                        <TextView
-                            android:id="@+id/eskul"
-                            android:layout_weight="1"
-                            android:background="@drawable/tabel_border"
-                            android:padding="13dip"
-                            android:text=""
-                            android:gravity="center"
-                            android:textColor="#000000" />
-                    </TableRow>
-
-                    <TableRow
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/table5"
-                        android:gravity="center_horizontal">
-
-                        <TextView
-                            android:layout_weight="1"
-                            android:background="@drawable/tabel_border"
-                            android:padding="13dip"
-                            android:text="@string/tv_ujian_sekolah"
-                            android:gravity="center"
-                            android:textColor="#000000" />
-
-                        <TextView
-                            android:id="@+id/ujian_sekolah"
-                            android:layout_weight="1"
-                            android:background="@drawable/tabel_border"
-                            android:padding="13dip"
-                            android:gravity="center"
-                            android:text=""
-                            android:textColor="#000000" />
-                    </TableRow>
-
-                    <TableRow
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/table6"
-                        android:gravity="center_horizontal">
-
+                    android:layout_weight="3.2"
+                    android:layout_marginTop="5dp"
+                    android:orientation="vertical">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1.6"
+                        android:orientation="horizontal"
+                        tools:ignore="NestedWeights">
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:background="@drawable/tabel_border"
-                            android:padding="13dip"
-                            android:layout_weight="1"
-                            android:text="@string/tv_ujian_negara"
+                            tools:text="SD 2"
+                            android:textColor="@color/white"
                             android:gravity="center"
-                            android:textColor="#000000" />
-
-                        <TextView
-                            android:id="@+id/ujian_negara"
-                            android:layout_weight="1"
-                            android:background="@drawable/tabel_border"
-                            android:padding="13dip"
+                            android:id="@+id/tv_naik"
+                            android:layout_weight="1"/>
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
                             android:gravity="center"
-                            android:text=""
-                            android:textColor="#000000" />
-                    </TableRow>
-                    <TableRow
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/table7"
-                        android:gravity="center_horizontal">
-
+                            android:background="@drawable/ic_circle_green"
+                            android:layout_margin="4dp"
+                            android:layout_weight="3"/>
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal"
+                        android:layout_weight="1">
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:background="@drawable/tabel_border"
-                            android:padding="13dip"
-                            android:layout_weight="1"
-                            android:text="@string/tv_nilai_akhir"
-                            android:gravity="center"
-                            android:textColor="#000000" />
+                            android:layout_weight="1"/>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_weight="3"
+                            android:layout_height="match_parent"
+                            android:gravity="center">
+                            <LinearLayout
+                                android:layout_width="1dp"
+                                android:layout_height="match_parent"
+                                android:background="@color/grey_300"/>
+                        </LinearLayout>
+                    </LinearLayout>
 
-                        <TextView
-                            android:id="@+id/nilai_akhir"
-                            android:layout_weight="1"
-                            android:background="@drawable/tabel_border"
-                            android:padding="13dip"
-                            android:gravity="center"
-                            android:text=""
-                            android:textColor="#000000" />
-                    </TableRow>
-                    <TableRow
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/table8"
-                        android:gravity="center_horizontal">
-
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1.6"
+                        android:orientation="horizontal">
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:background="@drawable/tabel_border"
-                            android:padding="13dip"
-                            android:layout_weight="1"
-                            android:text="@string/tv_rata_rata_kelas"
+                            tools:text="SD 2"
+                            android:textColor="@color/white"
                             android:gravity="center"
-                            android:textColor="#000000" />
-
-                        <TextView
-                            android:id="@+id/rata_rata"
-                            android:layout_weight="1"
-                            android:background="@drawable/tabel_border"
-                            android:padding="13dip"
+                            android:id="@+id/tv_kelas"
+                            android:layout_weight="1"/>
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
                             android:gravity="center"
-                            android:text=""
-                            android:textColor="#000000" />
-                    </TableRow>
-                </TableLayout>
-            </android.support.v7.widget.CardView>
-
+                            android:background="@drawable/ic_circle_red"
+                            android:layout_margin="4dp"
+                            android:layout_weight="3"/>
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
         </LinearLayout>
-    </android.support.v4.widget.NestedScrollView>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/blues"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Mata Pelajaran"
+            android:gravity="center"
+            android:layout_margin="6.5dp"
+            android:layout_gravity="center"
+            android:textColor="@color/white"
+            android:textSize="12sp"
+            android:layout_weight="2.5"/>
+        <View
+            android:layout_width="0.7dp"
+            android:background="@color/black"
+            android:layout_height="match_parent"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="KKM"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:layout_margin="6.5dp"
+            android:textSize="12sp"
+            android:layout_gravity="center"
+            android:layout_weight="3.2"/>
+        <View
+            android:layout_width="0.7dp"
+            android:background="@color/black"
+            android:layout_height="match_parent"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Nilai Akhir"
+            android:textColor="@color/white"
+            android:layout_gravity="center"
+            android:layout_margin="6.5dp"
+            android:textSize="12sp"
+            android:gravity="center"
+            android:layout_weight="3.2"/>
+        <View
+            android:layout_width="0.7dp"
+            android:background="@color/black"
+            android:layout_height="match_parent"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="6.5dp"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:textColor="@color/white"
+            android:text="Rata-rata Kelas"
+            android:textSize="12sp"
+            android:layout_weight="3.1"/>
+        <View
+            android:layout_width="0.7dp"
+            android:background="@color/black"
+            android:layout_height="match_parent"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="6.5dp"
+            android:layout_weight="3.1"
+            android:gravity="center"
+            android:text="Rata-rata Angkatan"
+            android:textColor="@color/white"
+            android:textSize="12sp" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/hint_raport"
+            android:text="Rapor belum diterbitkan oleh wali kelas"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:textSize="20sp"
+            android:visibility="gone"/>
+        <android.support.v7.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/rv_raport">
+        </android.support.v7.widget.RecyclerView>
+    </LinearLayout>
 </LinearLayout>
