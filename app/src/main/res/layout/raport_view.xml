@@ -8,7 +8,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-        <include layout="@layout/rapor_anak"/>
+        <include layout="@layout/detail_raport"/>
     </RelativeLayout>
 
     <RelativeLayout
@@ -16,9 +16,7 @@
         android:layout_height="300dp"
         android:clickable="true"
         android:focusable="true">
-
-        <include layout="@layout/bottom_raport"/>
-
+        <include layout="@layout/bottom_detail"/>
     </RelativeLayout>
 
 </com.sothree.slidinguppanel.SlidingUpPanelLayout>

@@ -86,7 +86,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".Student.Activity.MainActivity"
+            android:name=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".Student.Activity.Masuk"
@@ -102,9 +102,6 @@
             android:name=".Student.Activity.ProfileAnak"
             android:label=""
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".Guru.ActivityGuru.AbsenMurid"
-            android:label="Absensi"
-            android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".Student.Activity.EditProfile"
             android:label="Edit Profile"
@@ -212,6 +209,24 @@
             android:label="Penilaian"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".Guru.ActivityGuru.AgendaGuru"
+            android:label="Agenda"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".Guru.ActivityGuru.AgendaDetail"
+            android:label="Agenda"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".Student.Activity.DetailRaport"
+            android:label="Detail Raport"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity android:name=".Student.Activity.AgendaAnak"
+            android:label="Agenda Anak"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"/>
     </application>
 
 </manifest>

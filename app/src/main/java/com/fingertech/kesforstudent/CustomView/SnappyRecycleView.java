@@ -28,6 +28,10 @@ public class SnappyRecycleView extends RecyclerView {
             return true;
         }
         return super.fling(velocityX, velocityY);
+//        velocityY *= 0;
+//        // velocityX *= 0.7; for Horizontal recycler view. comment velocityY line not require for Horizontal Mode.
+//
+//        return super.fling(velocityX, velocityY);
     }
 
     @Override

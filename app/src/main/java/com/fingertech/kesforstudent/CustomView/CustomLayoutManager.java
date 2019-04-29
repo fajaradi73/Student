@@ -18,6 +18,11 @@ public class CustomLayoutManager extends LinearLayoutManager {
     }
 
     @Override
+    public boolean supportsPredictiveItemAnimations() {
+        return false;
+    }
+
+    @Override
     public void smoothScrollToPosition(RecyclerView recyclerView,
                                        RecyclerView.State state, final int position) {
 

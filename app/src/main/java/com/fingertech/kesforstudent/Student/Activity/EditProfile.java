@@ -44,6 +44,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -124,6 +125,7 @@ public class EditProfile extends AppCompatActivity {
             rb_pria.setChecked(false);
         }
 
+
         rb_pria.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -143,11 +145,14 @@ public class EditProfile extends AppCompatActivity {
         int mDay = mcurrentDate.get(Calendar.DAY_OF_MONTH);
 
         final DatePickerDialog mDatePicker;
+
         mDatePicker = new DatePickerDialog(this, R.style.DialogTheme, new DatePickerDialog.OnDateSetListener() {
             public void onDateSet(DatePicker datepicker, int selectedyear, int selectedmonth, int selectedday) {
                 et_tanggal_lahir.setText(convertDate(selectedyear, selectedmonth, selectedday));
             }
         }, mYear, mMonth, mDay);
+        mDatePicker.getDatePicker().setMaxDate(new Date().getTime());
+        mDatePicker.updateDate(Integer.parseInt(convertTahun(tanggal)),Integer.parseInt(convertBulan(tanggal))-1,Integer.parseInt(convertDate(tanggal)));
 
 
         et_tanggal_lahir.setOnClickListener(new View.OnClickListener() {
@@ -226,7 +231,7 @@ public class EditProfile extends AppCompatActivity {
         Log.d("Tanggal", year + "/" + month + "/" + day);
         String temp = year + "-" + (month + 1) + "-" + day;
         SimpleDateFormat calendarDateFormat = new SimpleDateFormat("yyyy-MM-dd",Locale.getDefault());
-        SimpleDateFormat newDateFormat = new SimpleDateFormat("yyyy-MM-dd",Locale.getDefault());
+        SimpleDateFormat newDateFormat = new SimpleDateFormat("dd MMMM yyyy",Locale.getDefault());
         try {
             String e = newDateFormat.format(calendarDateFormat.parse(temp));
             return e;
@@ -356,7 +361,7 @@ public class EditProfile extends AppCompatActivity {
     public void update_profile(){
         progressBar();
         showDialog();
-        retrofit2.Call<JSONResponse> call = mApiInterface.kes_update_put(authorization.toString(),memberid.toString(),school_code.toLowerCase(),et_nama.getText().toString(),et_no_hp.getText().toString(),last_update.toString(),gender.toString(),sp_religion.getSelectedItem().toString(),et_tanggal_lahir.getText().toString());
+        retrofit2.Call<JSONResponse> call = mApiInterface.kes_update_put(authorization.toString(),memberid.toString(),school_code.toLowerCase(),et_nama.getText().toString(),et_no_hp.getText().toString(),last_update.toString(),gender.toString(),sp_religion.getSelectedItem().toString(),converttanggal(et_tanggal_lahir.getText().toString()));
 
         call.enqueue(new Callback<JSONResponse>() {
 
@@ -416,12 +421,45 @@ public class EditProfile extends AppCompatActivity {
     }
 
 
-    String converDate(String tanggal){
+    String convertDate(String date) {
+        SimpleDateFormat calendarDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+        SimpleDateFormat newDateFormat = new SimpleDateFormat("dd",Locale.getDefault());
+        try {
+            String e = newDateFormat.format(calendarDateFormat.parse(date));
+            return e;
+        } catch (java.text.ParseException e) {
+            e.printStackTrace();
+            return "";
+        }
+    }
+    String convertBulan(String date) {
+        SimpleDateFormat calendarDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+        SimpleDateFormat newDateFormat = new SimpleDateFormat("MM",Locale.getDefault());
+        try {
+            String e = newDateFormat.format(calendarDateFormat.parse(date));
+            return e;
+        } catch (java.text.ParseException e) {
+            e.printStackTrace();
+            return "";
+        }
+    }
+    String convertTahun(String date) {
+        SimpleDateFormat calendarDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+        SimpleDateFormat newDateFormat = new SimpleDateFormat("yyyy",Locale.getDefault());
+        try {
+            String e = newDateFormat.format(calendarDateFormat.parse(date));
+            return e;
+        } catch (java.text.ParseException e) {
+            e.printStackTrace();
+            return "";
+        }
+    }
+    String converttanggal(String tahun){
         SimpleDateFormat calendarDateFormat = new SimpleDateFormat("yyyy-MM-dd",Locale.getDefault());
 
         SimpleDateFormat newDateFormat = new SimpleDateFormat("dd MMMM yyyy",Locale.getDefault());
         try {
-            String e = newDateFormat.format(calendarDateFormat.parse(tanggal));
+            String e = calendarDateFormat.format(newDateFormat .parse(tahun));
             return e;
         } catch (java.text.ParseException e) {
             e.printStackTrace();

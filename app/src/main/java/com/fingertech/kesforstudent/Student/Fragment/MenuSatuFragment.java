@@ -13,10 +13,12 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.fingertech.kesforstudent.Student.Activity.AbsenAnak;
+import com.fingertech.kesforstudent.Student.Activity.AgendaAnak;
 import com.fingertech.kesforstudent.Student.Activity.JadwalPelajaran;
 import com.fingertech.kesforstudent.Student.Activity.JadwalUjian;
 import com.fingertech.kesforstudent.Student.Activity.KalendarKelas;
 import com.fingertech.kesforstudent.Student.Activity.MenuUtama;
+import com.fingertech.kesforstudent.Student.Activity.PesanAnak;
 import com.fingertech.kesforstudent.Student.Activity.RaporAnak;
 import com.fingertech.kesforstudent.Student.Activity.TugasAnak;
 import com.fingertech.kesforstudent.R;
@@ -32,22 +34,13 @@ public class MenuSatuFragment extends Fragment {
     }
 
 
-    CardView btn_jadwal,btn_ujian,btn_absen,btn_tugas,btn_raport,btn_kalendar;
+    CardView btn_jadwal, btn_pesan,btn_absen, btn_agenda,btn_raport,btn_kalendar;
     SharedPreferences sharedPreferences;
     String authorization,school_code,member_id,classroom_id,nama_anak;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_menu_satu, container, false);
-        btn_jadwal      = view.findViewById(R.id.btn_jadwal);
-        btn_ujian       = view.findViewById(R.id.btn_jadwal_ujian);
-        btn_absen       = view.findViewById(R.id.btn_absen);
-        btn_tugas       = view.findViewById(R.id.btn_tugas);
-        btn_raport      = view.findViewById(R.id.btn_raport);
-        btn_kalendar    = view.findViewById(R.id.btn_kalender);
-
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         sharedPreferences   = getActivity().getSharedPreferences(MenuUtama.my_viewpager_preferences, Context.MODE_PRIVATE);
         authorization       = sharedPreferences.getString("authorization",null);
         school_code         = sharedPreferences.getString("school_code",null);
@@ -55,79 +48,109 @@ public class MenuSatuFragment extends Fragment {
         classroom_id        = sharedPreferences.getString("classroom_id",null);
         nama_anak           = sharedPreferences.getString("fullname",null);
 
+    }
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        View view = inflater.inflate(R.layout.fragment_menu_satu, container, false);
+        btn_jadwal      = view.findViewById(R.id.btn_jadwal);
+        btn_pesan       = view.findViewById(R.id.btn_pesan_anak);
+        btn_absen       = view.findViewById(R.id.btn_absen);
+        btn_agenda      = view.findViewById(R.id.btn_agenda);
+        btn_raport      = view.findViewById(R.id.btn_raport);
+        btn_kalendar    = view.findViewById(R.id.btn_kalendar);
+
         btn_jadwal.setOnClickListener(v -> {
-            if (authorization != null  && school_code != null && member_id != null && classroom_id != null) {
-                Intent intent = new Intent(getContext(), JadwalPelajaran.class);
-                intent.putExtra("authorization", authorization);
-                intent.putExtra("school_code", school_code);
-                intent.putExtra("member_id", member_id);
-                intent.putExtra("classroom_id", classroom_id);
-                startActivity(intent);
-            }else{
-                Toast.makeText(getContext(),"Harap refresh kembali",Toast.LENGTH_LONG).show();
-            }
-        });
-        btn_ujian.setOnClickListener(v -> {
-            if (authorization != null  && school_code != null && member_id != null && classroom_id != null) {
-                Intent intent = new Intent(getContext(), JadwalUjian.class);
-                intent.putExtra("authorization", authorization);
-                intent.putExtra("school_code", school_code);
-                intent.putExtra("member_id", member_id);
-                intent.putExtra("classroom_id", classroom_id);
-                startActivity(intent);
-            }else{
-                Toast.makeText(getContext(),"Harap refresh kembali",Toast.LENGTH_LONG).show();
-            }
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putString("school_code",school_code);
+            editor.putString("authorization",authorization);
+            editor.putString("classroom_id",classroom_id);
+            editor.putString("member_id",member_id);
+            editor.apply();
+            Intent intent = new Intent(getContext(), JadwalPelajaran.class);
+            intent.putExtra("authorization", authorization);
+            intent.putExtra("school_code", school_code.toLowerCase());
+            intent.putExtra("member_id", member_id);
+            intent.putExtra("classroom_id", classroom_id);
+            startActivity(intent);
         });
 
-        btn_tugas.setOnClickListener(v -> {
-            if (authorization != null  && school_code != null && member_id != null && classroom_id != null) {
-                Intent intent = new Intent(getContext(), TugasAnak.class);
-                intent.putExtra("authorization", authorization);
-                intent.putExtra("school_code", school_code);
-                intent.putExtra("member_id", member_id);
-                intent.putExtra("classroom_id", classroom_id);
-                startActivity(intent);
-            }else{
-                Toast.makeText(getContext(),"Harap refresh kembali",Toast.LENGTH_LONG).show();
-            }
+        btn_pesan.setOnClickListener(v -> {
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putString("member_id",member_id);
+            editor.putString("school_code",school_code);
+            editor.putString("authorization",authorization);
+            editor.putString("classroom_id",classroom_id);
+            editor.putString("fullname",nama_anak);
+            editor.apply();
+            Intent intent = new Intent(getContext(), PesanAnak.class);
+            intent.putExtra("authorization", authorization);
+            intent.putExtra("school_code", school_code);
+            intent.putExtra("member_id", member_id);
+            intent.putExtra("classroom_id",classroom_id);
+            intent.putExtra("fullname",nama_anak);
+            startActivity(intent);
+        });
+
+        btn_agenda.setOnClickListener(v -> {
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putString("school_code",school_code);
+            editor.putString("authorization",authorization);
+            editor.putString("classroom_id",classroom_id);
+            editor.putString("member_id",member_id);
+            editor.apply();
+            Intent intent = new Intent(getContext(), AgendaAnak.class);
+            intent.putExtra("authorization", authorization);
+            intent.putExtra("school_code", school_code.toLowerCase());
+            intent.putExtra("member_id", member_id);
+            intent.putExtra("classroom_id", classroom_id);
+            startActivity(intent);
         });
 
         btn_raport.setOnClickListener(v -> {
-            if (authorization != null  && school_code != null && member_id != null && classroom_id != null) {
-                Intent intent = new Intent(getContext(), RaporAnak.class);
-                intent.putExtra("authorization", authorization);
-                intent.putExtra("school_code", school_code);
-                intent.putExtra("member_id", member_id);
-                intent.putExtra("classroom_id", classroom_id);
-                startActivity(intent);
-            }else{
-                Toast.makeText(getContext(),"Harap refresh kembali",Toast.LENGTH_LONG).show();
-            }
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putString("school_code",school_code);
+            editor.putString("authorization",authorization);
+            editor.putString("classroom_id",classroom_id);
+            editor.putString("member_id",member_id);
+            editor.putString("student_name",nama_anak);
+            editor.apply();
+            Intent intent = new Intent(getContext(), RaporAnak.class);
+            intent.putExtra("authorization", authorization);
+            intent.putExtra("school_code", school_code.toLowerCase());
+            intent.putExtra("member_id", member_id);
+            intent.putExtra("classroom_id", classroom_id);
+            intent.putExtra("student_name",nama_anak);
+            startActivity(intent);
         });
         btn_kalendar.setOnClickListener(v -> {
-            if (authorization != null  && school_code != null && member_id != null && classroom_id != null) {
-                Intent intent = new Intent(getContext(), KalendarKelas.class);
-                intent.putExtra("authorization", authorization);
-                intent.putExtra("school_code", school_code);
-                intent.putExtra("member_id", member_id);
-                intent.putExtra("classroom_id", classroom_id);
-                startActivity(intent);
-            }else{
-                Toast.makeText(getContext(),"Harap refresh kembali",Toast.LENGTH_LONG).show();
-            }
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putString("school_code",school_code);
+            editor.putString("authorization",authorization);
+            editor.putString("classroom_id",classroom_id);
+            editor.putString("member_id",member_id);
+            editor.apply();
+            Intent intent = new Intent(getContext(), KalendarKelas.class);
+            intent.putExtra("authorization", authorization);
+            intent.putExtra("school_code", school_code.toLowerCase());
+            intent.putExtra("member_id", member_id);
+            intent.putExtra("classroom_id", classroom_id);
+            startActivity(intent);
         });
         btn_absen.setOnClickListener(v -> {
-            if (authorization != null  && school_code != null && member_id != null && classroom_id != null) {
-                Intent intent = new Intent(getContext(), AbsenAnak.class);
-                intent.putExtra("authorization", authorization);
-                intent.putExtra("school_code", school_code);
-                intent.putExtra("member_id", member_id);
-                intent.putExtra("classroom_id", classroom_id);
-                startActivity(intent);
-            }else{
-                Toast.makeText(getContext(),"Harap refresh kembali",Toast.LENGTH_LONG).show();
-            }
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putString("school_code",school_code);
+            editor.putString("authorization",authorization);
+            editor.putString("classroom_id",classroom_id);
+            editor.putString("member_id",member_id);
+            editor.apply();
+            Intent intent = new Intent(getContext(), AbsenAnak.class);
+            intent.putExtra("authorization", authorization);
+            intent.putExtra("school_code", school_code.toLowerCase());
+            intent.putExtra("member_id", member_id);
+            intent.putExtra("classroom_id", classroom_id);
+            startActivity(intent);
         });
         return view;
     }

@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -26,6 +27,7 @@ import com.fingertech.kesforstudent.R;
 import com.fingertech.kesforstudent.Rest.ApiClient;
 import com.fingertech.kesforstudent.Rest.JSONResponse;
 import com.fingertech.kesforstudent.Util.JWTUtils;
+import com.shashank.sony.fancytoastlib.FancyToast;
 
 import org.json.JSONObject;
 
@@ -54,6 +56,8 @@ public class Masuk extends AppCompatActivity {
     public static final String TAG_SCHOOL_CODE  = "school_code";
     public static final String TAG_SCHOLL_NAME  = "school_name";
     String username, memberid, fullname, member_type,scyear_id;
+    TextInputLayout til_email,til_password;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +66,8 @@ public class Masuk extends AppCompatActivity {
         et_username     = findViewById(R.id.et_username);
         et_password     = findViewById(R.id.et_kata_sandi);
         btn_masuk       = findViewById(R.id.btn_Masuk);
+        til_email       = findViewById(R.id.til_email);
+        til_password    = findViewById(R.id.til_kata_sandi);
         mApiInterface   = ApiClient.getClient().create(Auth.class);
         school_code     = getIntent().getStringExtra("school_code");
         school_name     = getIntent().getStringExtra("school_name");
@@ -89,23 +95,25 @@ public class Masuk extends AppCompatActivity {
     private boolean validateEmail() {
         String email = et_username.getText().toString().trim();
         if (email.isEmpty() || !isValidEmail(email)) {
-            Toast.makeText(getApplicationContext(),"Email Tidak sesuai",Toast.LENGTH_LONG).show();
+            til_email.setError("* Username yang anda masukan salah");
             requestFocus(et_username);
             return false;
         } else {
+            til_email.setErrorEnabled(false);
         }
         return true;
     }
     private boolean validatePassword() {
         if (et_password.getText().toString().trim().isEmpty()) {
-            Toast.makeText(getApplicationContext(),"Masukan kata sandi anda",Toast.LENGTH_LONG).show();
+            til_password.setError("* Masukkan kata sandi anda");
             requestFocus(et_password);
             return false;
         }else if(et_password.length()<6) {
-            Toast.makeText(getApplicationContext(),"Minimal 6 karakter",Toast.LENGTH_LONG).show();
+            til_password.setError("* Minimal 6 karakter");
             requestFocus(et_password);
             return false;
         } else {
+            til_password.setErrorEnabled(false);
         }
         return true;
     }
@@ -144,113 +152,124 @@ public class Masuk extends AppCompatActivity {
             public void onResponse(Call<JSONResponse> call, Response<JSONResponse> response) {
                 hideDialog();
                 Log.d("TAG",response.code()+"");
-                JSONResponse resource = response.body();
-                status = resource.status;
-                code = resource.code;
+                if (response.isSuccessful()) {
+                    JSONResponse resource = response.body();
+                    status = resource.status;
+                    code = resource.code;
 
-                if (status == 1 && code.equals("LP_SCS_0001")){
-                    JSONResponse.Login_Data data = resource.login_data;
-                    JSONObject jsonObject = null;
-                    try {
-                        token = data.token;
-                        jsonObject = new JSONObject(JWTUtils.decoded(token));
-                        /// save session
-                        username    = String.valueOf(jsonObject.get("username"));
-                        memberid    = String.valueOf(jsonObject.get("member_id"));
-                        fullname    = String.valueOf(jsonObject.get("fullname"));
-                        member_type = String.valueOf(jsonObject.get("member_type"));
-                        scyear_id   = String.valueOf(jsonObject.get("scyear_id"));
-                        SharedPreferences.Editor editor = sharedpreferences.edit();
-                        editor.putBoolean(session_status, true);
-                        editor.putString(TAG_EMAIL, username);
-                        editor.putString(TAG_MEMBER_ID, memberid);
-                        editor.putString(TAG_FULLNAME, fullname);
-                        editor.putString(TAG_MEMBER_TYPE, member_type);
-                        editor.putString(TAG_SCHOOL_CODE,school_code);
-                        editor.putString(TAG_SCHOLL_NAME,school_name);
-                        editor.putString(TAG_TOKEN, token);
-                        editor.putString("scyear_id",scyear_id);
-                        editor.commit();
-                        /// call session
-                        if(member_type.toString().equals("4")){
-                            AlertDialog.Builder builder = new AlertDialog.Builder(Masuk.this,R.style.DialogTheme);
-                            builder.setTitle("Change Password");
-                            builder.setMessage("Apakah anda ingin mengubah kata sandi anda?");
-                            builder.setIcon(R.drawable.ic_alarm);
-                            builder.setPositiveButton("Ya", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    Intent intent = new Intent(Masuk.this, ChangePassword.class);
-                                    intent.putExtra(TAG_EMAIL, username);
-                                    intent.putExtra(TAG_MEMBER_ID, memberid);
-                                    intent.putExtra(TAG_FULLNAME, fullname);
-                                    intent.putExtra(TAG_MEMBER_TYPE, member_type);
-                                    intent.putExtra(TAG_SCHOOL_CODE,school_code);
-                                    intent.putExtra(TAG_SCHOLL_NAME,school_name);
-                                    intent.putExtra(TAG_TOKEN, token);
-                                    intent.putExtra("scyear_id",scyear_id);
-                                    finish();
-                                    startActivity(intent);
-                                }
-                            });
-                            builder.setNegativeButton("Tidak", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    Intent intent = new Intent(Masuk.this, MenuUtama.class);
-                                    intent.putExtra(TAG_EMAIL, username);
-                                    intent.putExtra(TAG_MEMBER_ID, memberid);
-                                    intent.putExtra(TAG_FULLNAME, fullname);
-                                    intent.putExtra(TAG_MEMBER_TYPE, member_type);
-                                    intent.putExtra(TAG_SCHOOL_CODE,school_code);
-                                    intent.putExtra(TAG_SCHOLL_NAME,school_name);
-                                    intent.putExtra(TAG_TOKEN, token);
-                                    intent.putExtra("scyear_id",scyear_id);
-                                    finish();
-                                    startActivity(intent);
-                                }
-                            });
-                            builder.show();
-                        }else if (member_type.equals("3")){
-                            AlertDialog.Builder builder = new AlertDialog.Builder(Masuk.this,R.style.DialogTheme);
-                            builder.setTitle("Change Password");
-                            builder.setMessage("Apakah anda ingin mengubah kata sandi anda?");
-                            builder.setIcon(R.drawable.ic_alarm);
-                            builder.setPositiveButton("Ya", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    Intent intent = new Intent(Masuk.this, ChangePassword.class);
-                                    intent.putExtra(TAG_EMAIL, username);
-                                    intent.putExtra(TAG_MEMBER_ID, memberid);
-                                    intent.putExtra(TAG_FULLNAME, fullname);
-                                    intent.putExtra(TAG_MEMBER_TYPE, member_type);
-                                    intent.putExtra(TAG_SCHOOL_CODE,school_code);
-                                    intent.putExtra(TAG_SCHOLL_NAME,school_name);
-                                    intent.putExtra(TAG_TOKEN, token);
-                                    intent.putExtra("scyear_id",scyear_id);
-                                    finish();
-                                    startActivity(intent);
-                                }
-                            });
-                            builder.setNegativeButton("Tidak", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    Intent intent = new Intent(Masuk.this, MenuUtamaGuru.class);
-                                    intent.putExtra(TAG_EMAIL, username);
-                                    intent.putExtra(TAG_MEMBER_ID, memberid);
-                                    intent.putExtra(TAG_FULLNAME, fullname);
-                                    intent.putExtra(TAG_MEMBER_TYPE, member_type);
-                                    intent.putExtra(TAG_SCHOOL_CODE,school_code);
-                                    intent.putExtra(TAG_SCHOLL_NAME,school_name);
-                                    intent.putExtra(TAG_TOKEN, token);
-                                    intent.putExtra("scyear_id",scyear_id);
-                                    finish();
-                                    startActivity(intent);
-                                }
-                            });
-                            builder.show();
+                    if (status == 1 && code.equals("LP_SCS_0001")) {
+                        JSONResponse.Login_Data data = resource.login_data;
+                        JSONObject jsonObject = null;
+                        try {
+                            token = data.token;
+                            jsonObject = new JSONObject(JWTUtils.decoded(token));
+                            /// save session
+                            username = String.valueOf(jsonObject.get("username"));
+                            memberid = String.valueOf(jsonObject.get("member_id"));
+                            fullname = String.valueOf(jsonObject.get("fullname"));
+                            member_type = String.valueOf(jsonObject.get("member_type"));
+                            scyear_id = String.valueOf(jsonObject.get("scyear_id"));
+                            SharedPreferences.Editor editor = sharedpreferences.edit();
+                            editor.putBoolean(session_status, true);
+                            editor.putString(TAG_EMAIL, username);
+                            editor.putString(TAG_MEMBER_ID, memberid);
+                            editor.putString(TAG_FULLNAME, fullname);
+                            editor.putString(TAG_MEMBER_TYPE, member_type);
+                            editor.putString(TAG_SCHOOL_CODE, school_code);
+                            editor.putString(TAG_SCHOLL_NAME, school_name);
+                            editor.putString(TAG_TOKEN, token);
+                            editor.putString("scyear_id", scyear_id);
+                            editor.apply();
+                            /// call session
+                            if (member_type.toString().equals("4")) {
+                                AlertDialog.Builder builder = new AlertDialog.Builder(Masuk.this, R.style.DialogTheme);
+                                builder.setTitle("Change Password");
+                                builder.setMessage("Apakah anda ingin mengubah kata sandi anda?");
+                                builder.setIcon(R.drawable.ic_alarm);
+                                builder.setPositiveButton("Ya", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        Intent intent = new Intent(Masuk.this, ChangePassword.class);
+                                        intent.putExtra(TAG_EMAIL, username);
+                                        intent.putExtra(TAG_MEMBER_ID, memberid);
+                                        intent.putExtra(TAG_FULLNAME, fullname);
+                                        intent.putExtra(TAG_MEMBER_TYPE, member_type);
+                                        intent.putExtra(TAG_SCHOOL_CODE, school_code);
+                                        intent.putExtra(TAG_SCHOLL_NAME, school_name);
+                                        intent.putExtra(TAG_TOKEN, token);
+                                        intent.putExtra("scyear_id", scyear_id);
+                                        finish();
+                                        startActivity(intent);
+                                    }
+                                });
+                                builder.setNegativeButton("Tidak", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        Intent intent = new Intent(Masuk.this, MenuUtama.class);
+                                        intent.putExtra(TAG_EMAIL, username);
+                                        intent.putExtra(TAG_MEMBER_ID, memberid);
+                                        intent.putExtra(TAG_FULLNAME, fullname);
+                                        intent.putExtra(TAG_MEMBER_TYPE, member_type);
+                                        intent.putExtra(TAG_SCHOOL_CODE, school_code);
+                                        intent.putExtra(TAG_SCHOLL_NAME, school_name);
+                                        intent.putExtra(TAG_TOKEN, token);
+                                        intent.putExtra("scyear_id", scyear_id);
+                                        finish();
+                                        startActivity(intent);
+                                    }
+                                });
+                                builder.show();
+                            } else if (member_type.equals("3")) {
+                                AlertDialog.Builder builder = new AlertDialog.Builder(Masuk.this, R.style.DialogTheme);
+                                builder.setTitle("Change Password");
+                                builder.setMessage("Apakah anda ingin mengubah kata sandi anda?");
+                                builder.setIcon(R.drawable.ic_alarm);
+                                builder.setPositiveButton("Ya", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        Intent intent = new Intent(Masuk.this, ChangePassword.class);
+                                        intent.putExtra(TAG_EMAIL, username);
+                                        intent.putExtra(TAG_MEMBER_ID, memberid);
+                                        intent.putExtra(TAG_FULLNAME, fullname);
+                                        intent.putExtra(TAG_MEMBER_TYPE, member_type);
+                                        intent.putExtra(TAG_SCHOOL_CODE, school_code);
+                                        intent.putExtra(TAG_SCHOLL_NAME, school_name);
+                                        intent.putExtra(TAG_TOKEN, token);
+                                        intent.putExtra("scyear_id", scyear_id);
+                                        finish();
+                                        startActivity(intent);
+                                    }
+                                });
+                                builder.setNegativeButton("Tidak", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        Intent intent = new Intent(Masuk.this, MenuUtamaGuru.class);
+                                        intent.putExtra(TAG_EMAIL, username);
+                                        intent.putExtra(TAG_MEMBER_ID, memberid);
+                                        intent.putExtra(TAG_FULLNAME, fullname);
+                                        intent.putExtra(TAG_MEMBER_TYPE, member_type);
+                                        intent.putExtra(TAG_SCHOOL_CODE, school_code);
+                                        intent.putExtra(TAG_SCHOLL_NAME, school_name);
+                                        intent.putExtra(TAG_TOKEN, token);
+                                        intent.putExtra("scyear_id", scyear_id);
+                                        finish();
+                                        startActivity(intent);
+                                    }
+                                });
+                                builder.show();
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
                         }
-                    } catch (Exception e) {
-                        e.printStackTrace();
+                    }else if (status == 0 && code.equals("LP_ERR_0004")){
+                        FancyToast.makeText(getApplicationContext(),"Sekolah tidak ditemukan",Toast.LENGTH_LONG,FancyToast.INFO,false).show();
+                        finish();
+                    }else if (status == 0 && code.equals("LP_ERR_0006")){
+                        til_email.setError("* Username yang anda masukan salah");
+                        requestFocus(et_username);
+                    }else if (status == 0 && code.equals("LP_ERR_0005")){
+                        til_password.setError("* Kata sandi yang ada masukkan salah");
+                        requestFocus(et_password);
                     }
                 }
             }

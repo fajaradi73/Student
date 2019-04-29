@@ -51,8 +51,6 @@ public class PenilaianGuru extends AppCompatActivity {
     int status;
     List<String> listEdulevel           = new ArrayList<String>();
     List<String> listMapel              = new ArrayList<String>();
-    List<String> listKelas              = new ArrayList<String>();
-    List<String> listMatapelajaran      = new ArrayList<String>();
     private List<JSONResponse.DataKelas> dataEdulevelList;
     private List<JSONResponse.DataMapelEdu> dataMapelEduList;
 

@@ -54,7 +54,6 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.MyHolder> 
             holder.name.setText(viewItem.getSchool_name());
             String nama = viewItem.getSchool_name().toLowerCase(Locale.getDefault());
             if (nama.contains(searchString)) {
-                Log.e("test", nama + " contains: " + searchString);
                 int startPos = nama.indexOf(searchString);
                 int endPos = startPos + searchString.length();
                 Spannable spanText = Spannable.Factory.getInstance().newSpannable(holder.name.getText());

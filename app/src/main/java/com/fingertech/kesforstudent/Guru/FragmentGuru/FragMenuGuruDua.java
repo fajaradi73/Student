@@ -2,6 +2,7 @@ package com.fingertech.kesforstudent.Guru.FragmentGuru;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -12,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
 import com.fingertech.kesforstudent.Controller.Auth;
+import com.fingertech.kesforstudent.Guru.ActivityGuru.KalendarGuru;
 import com.fingertech.kesforstudent.R;
 import com.fingertech.kesforstudent.Student.Activity.Masuk;
 
@@ -38,7 +40,7 @@ public class FragMenuGuruDua extends Fragment {
     public static final String TAG_TOKEN = "token";
     public static final String TAG_SCHOOL_CODE = "school_code";
     public static final String my_viewpager_preferences = "my_viewpager_preferences";
-
+    CardView btn_kalendar;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,7 +62,26 @@ public class FragMenuGuruDua extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.frag_menu_guru_dua, container, false);
         frameLayout = view.findViewById(R.id.fragment6);
-        btn_agenda  = view.findViewById(R.id.btn_agenda);
+        btn_kalendar    = view.findViewById(R.id.btn_kalender);
+
+        btn_kalendar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SharedPreferences.Editor editor = sharedpreferences.edit();
+                editor.putString("authorization",authorization);
+                editor.putString("member_id",memberid);
+                editor.putString("school_code",school_code);
+                editor.putString("scyear_id",scyear_id);
+                editor.apply();
+                Intent intent = new Intent(getContext(), KalendarGuru.class);
+                intent.putExtra("authorization",authorization);
+                intent.putExtra("school_code",school_code);
+                intent.putExtra("member_id",memberid);
+                intent.putExtra("scyear_id",scyear_id);
+                startActivity(intent);
+            }
+        });
+
         return view;
     }
 

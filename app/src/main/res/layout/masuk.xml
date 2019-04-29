@@ -13,15 +13,12 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <LinearLayout
-            android:layout_marginLeft="50dp"
-            android:layout_marginRight="50dp"
             android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_gravity="center"
             android:layout_height="wrap_content"
             tools:ignore="UselessParent">
             <ImageView
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="100dp"
                 android:layout_width="160dp"
                 android:layout_height="200dp"
                 android:layout_gravity="center"
@@ -34,7 +31,9 @@
                 android:textColorHint="@color/default_textHint"
                 android:layout_width="match_parent"
                 android:theme="@style/LoginTextInputLayoutStyle"
-                android:layout_height="50dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
                 style="@style/LoginTextInputLayoutStyle"
                 android:paddingStart="10dp">
 
@@ -42,7 +41,9 @@
                     android:theme="@style/TextLabel"
                     android:id="@+id/et_username"
                     android:hint="Username"
-                    android:textSize="16dp"
+                    android:textSize="16sp"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
                     android:inputType="textEmailAddress"
                     android:background="@drawable/edt_bg_selector"
                     android:textColor="@color/default_textColor"
@@ -60,19 +61,20 @@
                 app:passwordToggleDrawable="@drawable/show_password_selector"
                 android:id="@+id/til_kata_sandi"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
+                android:layout_height="wrap_content"
                 android:paddingStart="10dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
                 style="@style/LoginTextInputLayoutStyle">
 
                 <EditText
                     android:theme="@style/TextLabel"
                     android:id="@+id/et_kata_sandi"
                     android:hint="Kata Sandi"
-                    android:textSize="16dp"
+                    android:textSize="16sp"
                     android:inputType="textPassword"
                     android:background="@drawable/edt_bg_selector"
                     android:textColor="@color/default_textColor"
-
                     android:gravity="center_vertical"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" />
@@ -83,6 +85,8 @@
                 android:text="Masuk"
                 android:textSize="17sp"
                 android:layout_marginTop="20dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
                 android:textAllCaps="false"
                 android:background="@drawable/rectangle"
                 android:backgroundTint="@color/colorPrimary"

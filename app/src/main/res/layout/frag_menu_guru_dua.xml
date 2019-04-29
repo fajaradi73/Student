@@ -17,7 +17,7 @@
         <android.support.v7.widget.CardView
             android:foreground="?android:attr/selectableItemBackground"
             android:clickable="true"
-            android:id="@+id/btn_agenda"
+            android:id="@+id/btn_kalender"
             android:layout_width="90dp"
             android:layout_height="110dp"
             app:cardCornerRadius="5dp"
@@ -32,7 +32,7 @@
                 <ImageView
                     android:layout_width="50dp"
                     android:layout_height="50dp"
-                    android:background="@drawable/ic_agenda"
+                    android:background="@drawable/ic_kalender_guru"
                     android:padding="10dp"/>
                 <TextView
                     android:layout_width="wrap_content"
@@ -41,7 +41,7 @@
                     android:layout_margin="10dp"
                     android:singleLine="true"
                     android:textSize="12sp"
-                    android:text="Agenda"/>
+                    android:text="Kalender"/>
             </LinearLayout>
         </android.support.v7.widget.CardView>
         <!--<android.support.v7.widget.CardView-->

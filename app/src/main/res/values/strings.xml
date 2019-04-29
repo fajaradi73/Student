@@ -87,5 +87,10 @@
     <string name="Key_SW_Language">Key_SW_Language</string>
     <string name="title_activity_setting_">Setting</string>
     <string name="write_file">This app needs access to your file storage so that it can write files.</string>
-
+    <string name="btn_profil_anak">Profil Anak</string>
+    <string name="btn_jadwal">Jadwal Pelajaran</string>
+    <string name="btn_jadwal_ujian">Jadwal Ujian</string>
+    <string name="btn_absensi_anak">Presensi</string>
+    <string name="btn_tugas_anak">Tugas</string>
+    <string name="btn_raport_anak">Rapor</string>
 </resources>

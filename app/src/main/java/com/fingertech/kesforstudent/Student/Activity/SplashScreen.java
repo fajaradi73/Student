@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
 
+import com.fingertech.kesforstudent.MainActivity;
 import com.fingertech.kesforstudent.R;
 
 public class SplashScreen extends AppCompatActivity {
@@ -18,8 +19,6 @@ public class SplashScreen extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.splash_screen);
-
-
 
         hideSystemUI();
         final Handler handler = new Handler();

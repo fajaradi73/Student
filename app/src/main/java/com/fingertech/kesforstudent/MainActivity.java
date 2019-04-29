@@ -1,42 +1,37 @@
-package com.fingertech.kesforstudent.Student.Activity;
+package com.fingertech.kesforstudent;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Rect;
-import android.speech.RecognizerIntent;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.Editable;
-import android.text.TextUtils;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.arlib.floatingsearchview.FloatingSearchView;
 import com.fingertech.kesforstudent.Guru.ActivityGuru.MenuUtamaGuru;
+import com.fingertech.kesforstudent.Student.Activity.Masuk;
+import com.fingertech.kesforstudent.Student.Activity.MenuUtama;
 import com.fingertech.kesforstudent.Student.Adapter.SearchAdapter;
 import com.fingertech.kesforstudent.Controller.Auth;
-import com.fingertech.kesforstudent.R;
 import com.fingertech.kesforstudent.Rest.ApiClient;
 import com.fingertech.kesforstudent.Rest.JSONResponse;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -71,6 +66,7 @@ public class MainActivity extends AppCompatActivity {
     FloatingSearchView floatingSearchView;
     LinearLayout layou_main;
 
+    NestedScrollView scrollView;
     @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,6 +78,7 @@ public class MainActivity extends AppCompatActivity {
         footer          = findViewById(R.id.footer);
         layou_main      = findViewById(R.id.layout_main);
         tv_sekolah      = findViewById(R.id.temukansekolah);
+        scrollView      = findViewById(R.id.scroll);
         floatingSearchView  = findViewById(R.id.floating_search_view);
         mApiInterface   = ApiClient.getClient().create(Auth.class);
         layoutManager = new LinearLayoutManager(this);
@@ -93,11 +90,16 @@ public class MainActivity extends AppCompatActivity {
         floatingSearchView.setOnQueryChangeListener(new FloatingSearchView.OnQueryChangeListener() {
             @Override
             public void onSearchTextChanged(String oldQuery, String newQuery) {
-                Log.d("katakata",oldQuery+"/"+newQuery);
                 if (newQuery.equals("")){
                     Log.d("query","sekolah harus diisi");
                 }else {
                     search_school_post(newQuery);
+                    LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                            ViewGroup.LayoutParams.WRAP_CONTENT,
+                            ViewGroup.LayoutParams.WRAP_CONTENT
+                    );
+                    params.setMargins(0,40,0,0);
+                    floatingSearchView.setLayoutParams(params);
                     recyclerView.setVisibility(View.VISIBLE);
                     logo.setVisibility(View.GONE);
                     footer.setVisibility(View.GONE);
@@ -110,6 +112,12 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClearSearchClicked() {
                 search_school_post("");
+                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                        ViewGroup.LayoutParams.WRAP_CONTENT,
+                        ViewGroup.LayoutParams.WRAP_CONTENT
+                );
+                params.setMargins(0,40,0,0);
+                floatingSearchView.setLayoutParams(params);
                 recyclerView.setVisibility(View.VISIBLE);
                 logo.setVisibility(View.GONE);
                 footer.setVisibility(View.GONE);
@@ -161,10 +169,11 @@ public class MainActivity extends AppCompatActivity {
             public boolean onTouch(View v, MotionEvent event) {
                 if (event.getAction() == MotionEvent.ACTION_DOWN) {
                     floatingSearchView.clearSearchFocus();
-                    recyclerView.setVisibility(View.GONE);
-                    logo.setVisibility(View.VISIBLE);
-                    footer.setVisibility(View.VISIBLE);
-                    tv_sekolah.setVisibility(View.VISIBLE);
+                    hideKeyboard(MainActivity.this);
+//                    recyclerView.setVisibility(View.GONE);
+//                    logo.setVisibility(View.VISIBLE);
+//                    footer.setVisibility(View.VISIBLE);
+//                    tv_sekolah.setVisibility(View.VISIBLE);
                 }
                 return false;
             }
@@ -174,15 +183,22 @@ public class MainActivity extends AppCompatActivity {
     public void onBackPressed() {
         super.onBackPressed();
         hideKeyboard(this);
+        if (recyclerView.getVisibility() == View.VISIBLE){
+            recyclerView.setVisibility(View.GONE);
+            logo.setVisibility(View.VISIBLE);
+            footer.setVisibility(View.VISIBLE);
+            tv_sekolah.setVisibility(View.VISIBLE);
+        }else {
+            moveTaskToBack(true);
+        }
     }
 
     public void search_school_post(final String key){
         floatingSearchView.showProgress();
-        Call<JSONResponse.School> postCall = mApiInterface.search_school_post(key);
+        Call<JSONResponse.School> postCall = mApiInterface.search_school_post(key.toLowerCase());
         postCall.enqueue(new Callback<JSONResponse.School>() {
             @Override
             public void onResponse(Call<JSONResponse.School> call, final Response<JSONResponse.School> response) {
-
                 Log.d("TAG",response.code()+"");
                 floatingSearchView.hideProgress();
                 JSONResponse.School resource = response.body();
