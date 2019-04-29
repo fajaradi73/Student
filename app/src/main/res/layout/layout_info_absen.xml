@@ -91,7 +91,7 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@color/color_dikeluarkan_kelas"
+            android:background="@color/color_ket_dikeluarkan_kelas"
            android:layout_marginTop="40dp"
             >
 
@@ -138,7 +138,7 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@color/color_telat"
+            android:background="@color/telat"
             android:layout_marginTop="10dp"
             >
 
@@ -185,7 +185,7 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@color/color_sakit"
+            android:background="@color/color_ket_sakit"
             android:layout_marginTop="10dp"
             >
 
@@ -232,7 +232,7 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@color/color_ijin"
+            android:background="@color/color_ket_ijin"
             android:layout_marginTop="10dp"
             >
 
@@ -280,7 +280,7 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@color/color_alpa"
+            android:background="@color/color_ket_alpa"
             android:layout_marginTop="10dp"
             >
 

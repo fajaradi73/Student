@@ -16,6 +16,7 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.GridLayout;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.fingertech.kesforstudent.Guru.AdapterGuru.AdapterAbsen;
 import com.fingertech.kesforstudent.Guru.ModelGuru.ModelAbsenGuru;
@@ -78,7 +79,7 @@ public class AbsenMurid extends AppCompatActivity {
             public void onClick(View v) {
 
                 AlertDialog.Builder showdialog = new AlertDialog.Builder(AbsenMurid.this);
-                Button btnclose;
+                TextView btnclose;
                 View view = getLayoutInflater().inflate(R.layout.layout_info_absen,null);
                 btnclose = view.findViewById(R.id.btnclose);
 

@@ -102,6 +102,7 @@
             android:name=".Student.Activity.ProfileAnak"
             android:label=""
             android:theme="@style/AppTheme.NoActionBar" />
+
         <activity
             android:name=".Student.Activity.EditProfile"
             android:label="Edit Profile"
@@ -179,6 +180,12 @@
         <activity
             android:name=".Guru.ActivityGuru.Silabus"
             android:label="Silabus"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <activity
+            android:name=".Guru.ActivityGuru.AbsenMurid"
+            android:label="Absen Murid"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
