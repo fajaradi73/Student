@@ -28,6 +28,17 @@ public class TulisPesan extends AppCompatActivity {
     EditText kt_judul, kt_pesan;
     Toolbar toolbar;
 
+    SharedPreferences sharedpreferences,sharedViewpager;
+    String authorization, memberid, username, member_type, fullname, school_code,scyear_id;
+
+    public static final String TAG_EMAIL = "email";
+    public static final String TAG_MEMBER_ID = "member_id";
+    public static final String TAG_FULLNAME = "fullname";
+    public static final String TAG_MEMBER_TYPE = "member_type";
+    public static final String TAG_TOKEN = "token";
+    public static final String TAG_SCHOOL_CODE = "school_code";
+    public static final String my_viewpager_preferences = "my_viewpager_preferences";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,6 +47,15 @@ public class TulisPesan extends AppCompatActivity {
         spinner = findViewById(R.id.sp_kirim_kepada);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.kirim_kepada, android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
+
+        sharedpreferences = this.getSharedPreferences(Masuk.my_shared_preferences, Context.MODE_PRIVATE);
+        authorization   = sharedpreferences.getString(TAG_TOKEN, "");
+        memberid        = sharedpreferences.getString(TAG_MEMBER_ID, "");
+        username        = sharedpreferences.getString(TAG_EMAIL, "");
+        fullname        = sharedpreferences.getString(TAG_FULLNAME, "");
+        member_type     = sharedpreferences.getString(TAG_MEMBER_TYPE, "");
+        school_code     = sharedpreferences.getString(TAG_SCHOOL_CODE, "");
+        scyear_id       = sharedpreferences.getString("scyear_id","");
 
         spn_kepada = findViewById(R.id.sp_kirim_kepada);
         spn_kelas = findViewById(R.id.sp_kelas);

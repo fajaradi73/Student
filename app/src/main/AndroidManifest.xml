@@ -34,7 +34,6 @@
         tools:ignore="AllowBackup,GoogleAppIndexingWarning,InnerclassSeparator"
         tools:targetApi="n">
 
-
         <uses-library
             android:name="org.apache.http.legacy"
             android:required="false" />
@@ -234,8 +233,24 @@
             android:label="Daftar Kegiatan"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".Guru.ActivityGuru.TambahAgenda"
+        <activity
+            android:name=".Guru.ActivityGuru.TambahAgenda"
             android:label="Tambah Agenda"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".Guru.ActivityGuru.TulisPesan"
+            android:label="Tulis Pesan"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".Guru.ActivityGuru.Pesan_Terkirim"
+            android:label="Pesan Terkirim"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".Guru.ActivityGuru.PesanMasukGuru"
+            android:label="Pesan Masuk"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
     </application>

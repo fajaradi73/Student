@@ -15,7 +15,7 @@ import com.fingertech.kesforstudent.Student.Activity.Masuk;
 public class PesanGuru extends AppCompatActivity {
 
     Toolbar toolbar;
-    CardView cv_pesanmasuk, cv_kirimpesan, cv_pesanterkirim;
+    CardView cv_pesanmasukguru, cv_kirimpesan, cv_pesanterkirim;
     SharedPreferences sharedpreferences,sharedViewpager;
     String authorization, memberid, username, member_type, fullname, school_code,scyear_id;
 
@@ -43,14 +43,24 @@ public class PesanGuru extends AppCompatActivity {
         scyear_id       = sharedpreferences.getString("scyear_id","");
 
         toolbar = findViewById(R.id.toolbarTulisPesan);
-        cv_pesanmasuk = findViewById(R.id.btn_pesan_masuk);
+        cv_pesanmasukguru = findViewById(R.id.btn_pesan_masuk);
         cv_kirimpesan = findViewById(R.id.btn_kirim_pesan);
         cv_pesanterkirim = findViewById(R.id.btn_pesan_terkirim);
 
         cv_kirimpesan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                SharedPreferences.Editor editor = sharedpreferences.edit();
+                editor.putString("authorization",authorization);
+                editor.putString("member_id",memberid);
+                editor.putString("school_code",school_code);
+                editor.putString("scyear_id",scyear_id);
+                editor.apply();
                 Intent intent = new Intent(PesanGuru.this, TulisPesan.class);
+                intent.putExtra("authorization",authorization);
+                intent.putExtra("school_code",school_code);
+                intent.putExtra("member_id",memberid);
+                intent.putExtra("scyear_id",scyear_id);
                 startActivity(intent);
 
             }
@@ -58,11 +68,37 @@ public class PesanGuru extends AppCompatActivity {
         cv_pesanterkirim.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                SharedPreferences.Editor editor = sharedpreferences.edit();
+                editor.putString("authorization",authorization);
+                editor.putString("member_id",memberid);
+                editor.putString("school_code",school_code);
+                editor.putString("scyear_id",scyear_id);
+                editor.apply();
                 Intent intent = new Intent(PesanGuru.this, Pesan_Terkirim.class);
+                intent.putExtra("authorization",authorization);
+                intent.putExtra("school_code",school_code);
+                intent.putExtra("member_id",memberid);
+                intent.putExtra("scyear_id",scyear_id);
                 startActivity(intent);
 
             }
         });
-
+        cv_pesanmasukguru.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                SharedPreferences.Editor editor = sharedpreferences.edit();
+                editor.putString("authorization",authorization);
+                editor.putString("member_id",memberid);
+                editor.putString("school_code",school_code);
+                editor.putString("scyear_id",scyear_id);
+                editor.apply();
+                Intent intent = new Intent(PesanGuru.this, PesanMasukGuru.class);
+                intent.putExtra("authorization",authorization);
+                intent.putExtra("school_code",school_code);
+                intent.putExtra("member_id",memberid);
+                intent.putExtra("scyear_id",scyear_id);
+                startActivity(intent);
+            }
+        });
     }
 }
