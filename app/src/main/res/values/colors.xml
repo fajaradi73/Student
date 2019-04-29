@@ -29,4 +29,19 @@
     <color name="bluepesan">#3C758D</color>
     <color name="background_color">#D2F0FC</color>
     <color name="bay_wharf">#747d8c</color>
+    <color name="color_absen_hadir">#A2FB5E</color>
+    <color name="color_absen_spiritual">#6EC32D</color>
+    <color name="color_absen_jujur">#DC901C</color>
+    <color name="color_absen_disiplin">#1FA3DE</color>
+    <color name="color_absen_tanggungjawab">#CB1FDE</color>
+    <color name="color_absen_toleransi">#632A10</color>
+    <color name="color_absen_gotongroyong">#DC1C36</color>
+    <color name="color_santun">#0F288F</color>
+    <color name="color_background_keterangan">#F1C97B</color>
+    <color name="color_ket_dikeluarkan_kelas">#529FBF</color>
+    <color name="telat">#2C3039</color>
+    <color name="color_ket_sakit">#36B2E9</color>
+    <color name="color_ket_ijin">#EFE138</color>
+    <color name="color_ket_alpa">#CF2138</color>
+    <color name="color_ket_penilaian_sikap">#6ACF1D</color>
 </resources>

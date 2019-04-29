@@ -34,6 +34,7 @@
         tools:ignore="AllowBackup,GoogleAppIndexingWarning,InnerclassSeparator"
         tools:targetApi="n">
 
+
         <uses-library
             android:name="org.apache.http.legacy"
             android:required="false" />
@@ -101,6 +102,9 @@
             android:name=".Student.Activity.ProfileAnak"
             android:label=""
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".Guru.ActivityGuru.AbsenMurid"
+            android:label="Absensi"
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".Student.Activity.EditProfile"
             android:label="Edit Profile"
@@ -203,10 +207,11 @@
             android:label="Pesan"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".Guru.ActivityGuru.PenilaianDetail"
+        <activity
+            android:name=".Guru.ActivityGuru.PenilaianDetail"
             android:label="Penilaian"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>
