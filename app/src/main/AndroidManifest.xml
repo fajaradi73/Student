@@ -234,18 +234,29 @@
             android:label="Daftar Kegiatan"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".Guru.ActivityGuru.TambahAgenda"
+        <activity
+            android:name=".Guru.ActivityGuru.TambahAgenda"
             android:label="Tambah Agenda"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".Guru.ActivityGuru.TulisPesan"
+        <activity
+            android:name=".Guru.ActivityGuru.TulisPesan"
             android:label="Tulis"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"/>
-        <activity android:name=".Guru.ActivityGuru.Pesan_Terkirim"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".Guru.ActivityGuru.Pesan_Terkirim"
             android:label="Terkirim"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".Student.Activity.ForgotPassword"
+            android:label="Lupa kata sandi"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.fingertech.kesforstudent.Student.Activity.Masuk" />
+        </activity>
     </application>
 
 </manifest>

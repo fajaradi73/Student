@@ -14,8 +14,8 @@ import java.util.List;
 
 public class DBHelper extends SQLiteOpenHelper{
 
-    private static final String db_name ="school";
-    private static final int db_version=2;
+    private static final String db_name ="kes_school";
+    private static final int db_version = 5;
     public static final String TABLE_SQLite = "sqlite";
 
     public static final String COLUMN_ID = "id";
@@ -290,12 +290,16 @@ public class DBHelper extends SQLiteOpenHelper{
 
         db.execSQL(BookmarkTabel.createTable());
         db.execSQL(sql);
+        db.execSQL(PositionTable.createTable());
     }
 
     // dijalankan apabila ingin mengupgrade database
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        db.execSQL("DROP TABLE IF EXISTS " + "country");
         db.execSQL("DROP TABLE IF EXISTS " + Data.TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + "kodetable");
+        db.execSQL("DROP TABLE IF EXISTS " + Position.TABLE);
         onCreate(db);
     }
 

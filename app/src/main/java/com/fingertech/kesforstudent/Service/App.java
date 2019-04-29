@@ -18,7 +18,8 @@ public class  App extends Application {
     {
         super.onCreate();
         context = this.getApplicationContext();
-
+        dbHelper = new DBHelper(this);
+        DatabaseManager.initializeInstance(dbHelper);
         createNotificationChannels();
 
     }
