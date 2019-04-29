@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import com.fingertech.kesforstudent.Controller.Auth;
 import com.fingertech.kesforstudent.Guru.ActivityGuru.AgendaGuru;
 import com.fingertech.kesforstudent.Guru.ActivityGuru.JadwalGuru;
+import com.fingertech.kesforstudent.Guru.ActivityGuru.KegiatanGuru;
 import com.fingertech.kesforstudent.Guru.ActivityGuru.PenilaianGuru;
 import com.fingertech.kesforstudent.Guru.ActivityGuru.PesanGuru;
 import com.fingertech.kesforstudent.Guru.ActivityGuru.Silabus;
@@ -29,7 +30,7 @@ public class FragMenuGuruSatu extends Fragment {
         // Required empty public constructor
     }
 
-    CardView btn_absensi,btn_penilaian,btn_silabus,btn_pesan,btn_jadwal, btn_agenda;
+    CardView btn_absensi,btn_penilaian, btn_kegiatan,btn_pesan,btn_jadwal, btn_agenda;
     SharedPreferences sharedpreferences,sharedViewpager;
     String picture, Base_anak;
     String authorization, memberid, username, member_type, fullname, school_code,scyear_id;
@@ -65,7 +66,7 @@ public class FragMenuGuruSatu extends Fragment {
         btn_absensi     = view.findViewById(R.id.btn_absensi);
         btn_penilaian   = view.findViewById(R.id.btn_penilaian);
         btn_jadwal      = view.findViewById(R.id.btn_jadwal_mengajar);
-        btn_silabus     = view.findViewById(R.id.btn_silabus);
+        btn_kegiatan    = view.findViewById(R.id.btn_kegiatan);
         btn_pesan       = view.findViewById(R.id.btn_pesan);
         btn_agenda = view.findViewById(R.id.btn_agenda);
         btn_jadwal.setOnClickListener(new View.OnClickListener() {
@@ -85,7 +86,7 @@ public class FragMenuGuruSatu extends Fragment {
                 startActivity(intent);
             }
         });
-        btn_silabus.setOnClickListener(new View.OnClickListener() {
+        btn_kegiatan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 SharedPreferences.Editor editor = sharedpreferences.edit();
@@ -94,7 +95,7 @@ public class FragMenuGuruSatu extends Fragment {
                 editor.putString("school_code",school_code);
                 editor.putString("scyear_id",scyear_id);
                 editor.apply();
-                Intent intent = new Intent(getContext(), Silabus.class);
+                Intent intent = new Intent(getContext(), KegiatanGuru.class);
                 intent.putExtra("authorization",authorization);
                 intent.putExtra("school_code",school_code);
                 intent.putExtra("member_id",memberid);

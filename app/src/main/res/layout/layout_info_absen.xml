@@ -1,0 +1,649 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_background_keterangan"
+    >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:background="@drawable/corner"
+        android:orientation="horizontal"
+        >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_weight="30"
+            >
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="20dp"
+                >
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Keterangan"
+                android:textSize="35sp"
+                android:textColor="@color/grey_white_1000"
+                />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="20dp"
+                >
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Absensi dan Penilaian Sikap"
+                android:textColor="@color/grey_white_1000"
+                />
+            </LinearLayout>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="20dp"
+            android:layout_marginBottom="20dp"
+            android:layout_weight="1"
+            >
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_absen_guru_tanpabg"
+                />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            >
+          <Button
+              android:layout_width="40dp"
+              android:layout_height="40dp"
+              android:layout_marginTop="-3dp"
+              android:layout_marginRight="3dp"
+              android:text="x"
+              android:id="@+id/btnclose"
+
+              />
+        </LinearLayout>
+
+    </LinearLayout>
+<LinearLayout
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    android:layout_gravity="center"
+    android:orientation="vertical"
+    >
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_gravity="center"
+        >
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/color_dikeluarkan_kelas"
+           android:layout_marginTop="40dp"
+            >
+
+            <com.github.florent37.shapeofview.shapes.RoundRectView
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                >
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="D"
+                    android:textAlignment="center"
+                    android:id="@+id/e"
+                    android:textColor="@color/background"
+                    android:textSize="17sp"
+                    />
+            </com.github.florent37.shapeofview.shapes.RoundRectView>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="200dp"
+            android:layout_height="25dp"
+            android:background="@color/grey_white_1000"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="40dp"
+            >
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Dikeluarkan kelas"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="3dp"
+                />
+        </LinearLayout>
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_gravity="center"
+        >
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/color_telat"
+            android:layout_marginTop="10dp"
+            >
+
+            <com.github.florent37.shapeofview.shapes.RoundRectView
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                >
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="T"
+                    android:textAlignment="center"
+                    android:id="@+id/tv_Telat"
+                    android:textColor="@color/background"
+                    android:textSize="17sp"
+                    />
+            </com.github.florent37.shapeofview.shapes.RoundRectView>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="200dp"
+            android:layout_height="25dp"
+            android:background="@color/grey_white_1000"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="10dp"
+            >
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Telat"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="3dp"
+                />
+
+        </LinearLayout>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_gravity="center"
+        >
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/color_sakit"
+            android:layout_marginTop="10dp"
+            >
+
+            <com.github.florent37.shapeofview.shapes.RoundRectView
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                >
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="S"
+                    android:textAlignment="center"
+                    android:id="@+id/tv_f"
+                    android:textColor="@color/background"
+                    android:textSize="17sp"
+                    />
+            </com.github.florent37.shapeofview.shapes.RoundRectView>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="200dp"
+            android:layout_height="25dp"
+            android:background="@color/grey_white_1000"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="10dp"
+            >
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Sakit"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="3dp"
+                />
+
+        </LinearLayout>
+</LinearLayout>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_gravity="center"
+        >
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/color_ijin"
+            android:layout_marginTop="10dp"
+            >
+
+            <com.github.florent37.shapeofview.shapes.RoundRectView
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                >
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="I"
+                    android:textAlignment="center"
+                    android:id="@+id/tv_g"
+                    android:textColor="@color/background"
+                    android:textSize="17sp"
+                    />
+            </com.github.florent37.shapeofview.shapes.RoundRectView>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="200dp"
+            android:layout_height="25dp"
+            android:background="@color/grey_white_1000"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="10dp"
+            >
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Izin"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="3dp"
+                />
+
+        </LinearLayout>
+
+</LinearLayout>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_gravity="center"
+        >
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/color_alpa"
+            android:layout_marginTop="10dp"
+            >
+
+            <com.github.florent37.shapeofview.shapes.RoundRectView
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                >
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="A"
+                    android:textAlignment="center"
+                    android:id="@+id/h"
+                    android:textColor="@color/background"
+                    android:textSize="17sp"
+                    />
+            </com.github.florent37.shapeofview.shapes.RoundRectView>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="200dp"
+            android:layout_height="25dp"
+            android:background="@color/grey_white_1000"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="10dp"
+            >
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Alpa"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="3dp"
+                />
+
+        </LinearLayout>
+
+</LinearLayout>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_gravity="center"
+        >
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/color_absen_hadir"
+            android:layout_marginTop="10dp"
+            >
+
+            <com.github.florent37.shapeofview.shapes.RoundRectView
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                >
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="H"
+                    android:textAlignment="center"
+                    android:id="@+id/j"
+                    android:textColor="@color/background"
+                    android:textSize="17sp"
+                    />
+            </com.github.florent37.shapeofview.shapes.RoundRectView>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="200dp"
+            android:layout_height="25dp"
+            android:background="@color/grey_white_1000"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="10dp"
+            >
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Hadir"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="3dp"
+                />
+
+        </LinearLayout>
+</LinearLayout>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_gravity="center"
+        >
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/color_ket_penilaian_sikap"
+            android:layout_marginTop="30dp"
+            >
+
+            <com.github.florent37.shapeofview.shapes.RoundRectView
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                >
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="A"
+                    android:textAlignment="center"
+                    android:textColor="@color/background"
+                    android:textSize="17sp"
+                    />
+            </com.github.florent37.shapeofview.shapes.RoundRectView>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="200dp"
+            android:layout_height="25dp"
+            android:background="@color/grey_white_1000"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="30dp"
+            >
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Sangat Baik"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="3dp"
+                />
+        </LinearLayout>
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_gravity="center"
+        >
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/color_ket_penilaian_sikap"
+            android:layout_marginTop="10dp"
+            >
+
+            <com.github.florent37.shapeofview.shapes.RoundRectView
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                >
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="B"
+                    android:textAlignment="center"
+                    android:textColor="@color/background"
+                    android:textSize="17sp"
+                    />
+            </com.github.florent37.shapeofview.shapes.RoundRectView>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="200dp"
+            android:layout_height="25dp"
+            android:background="@color/grey_white_1000"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="10dp"
+            >
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Baik"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="3dp"
+                />
+
+        </LinearLayout>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_gravity="center"
+        >
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/color_ket_penilaian_sikap"
+            android:layout_marginTop="10dp"
+            >
+            <com.github.florent37.shapeofview.shapes.RoundRectView
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                >
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="C"
+                    android:textAlignment="center"
+                    android:id="@+id/tv_d"
+                    android:textColor="@color/background"
+                    android:textSize="17sp"
+                    />
+            </com.github.florent37.shapeofview.shapes.RoundRectView>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="200dp"
+            android:layout_height="25dp"
+            android:background="@color/grey_white_1000"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="10dp"
+            >
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Cukup"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="3dp"
+                />
+
+        </LinearLayout>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_gravity="center"
+        >
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/color_ket_penilaian_sikap"
+            android:layout_marginTop="10dp"
+            >
+            <com.github.florent37.shapeofview.shapes.RoundRectView
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                >
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="D"
+                    android:textAlignment="center"
+                    android:id="@+id/tv_b"
+                    android:textColor="@color/background"
+                    android:textSize="17sp"
+                    />
+            </com.github.florent37.shapeofview.shapes.RoundRectView>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="200dp"
+            android:layout_height="25dp"
+            android:background="@color/grey_white_1000"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="10dp"
+            >
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Tidak Baik"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="3dp"
+                />
+
+        </LinearLayout>
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_gravity="center"
+        >
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/color_ket_penilaian_sikap"
+            android:layout_marginTop="10dp"
+            >
+
+            <com.github.florent37.shapeofview.shapes.RoundRectView
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                >
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="E"
+                    android:textAlignment="center"
+                    android:id="@+id/c"
+                    android:textColor="@color/background"
+                    android:textSize="17sp"
+                    />
+            </com.github.florent37.shapeofview.shapes.RoundRectView>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="200dp"
+            android:layout_height="25dp"
+            android:background="@color/grey_white_1000"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="10dp"
+            >
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Sangat Tidak baik"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="3dp"
+                />
+
+        </LinearLayout>
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_gravity="center"
+        >
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:layout_marginTop="20dp"
+            >
+
+            <com.github.florent37.shapeofview.shapes.RoundRectView
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                >
+                <!--<TextView-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="match_parent"-->
+                    <!--android:text="S"-->
+                    <!--android:textAlignment="center"-->
+                    <!--android:id="@+id/tv_sakit"-->
+                    <!--android:textColor="@color/background"-->
+                    <!--android:textSize="17sp"-->
+                    <!--/>-->
+            </com.github.florent37.shapeofview.shapes.RoundRectView>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="200dp"
+            android:layout_height="25dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="20dp"
+            >
+
+            <!--<TextView-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="match_parent"-->
+                <!--android:text="Sakit"-->
+                <!--android:layout_marginLeft="10dp"-->
+                <!--android:layout_marginTop="3dp"-->
+                <!--/>-->
+
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>
+
+</LinearLayout>

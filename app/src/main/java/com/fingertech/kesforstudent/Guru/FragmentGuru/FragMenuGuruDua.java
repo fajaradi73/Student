@@ -14,6 +14,7 @@ import android.widget.FrameLayout;
 
 import com.fingertech.kesforstudent.Controller.Auth;
 import com.fingertech.kesforstudent.Guru.ActivityGuru.KalendarGuru;
+import com.fingertech.kesforstudent.Guru.ActivityGuru.Silabus;
 import com.fingertech.kesforstudent.R;
 import com.fingertech.kesforstudent.Student.Activity.Masuk;
 
@@ -40,7 +41,7 @@ public class FragMenuGuruDua extends Fragment {
     public static final String TAG_TOKEN = "token";
     public static final String TAG_SCHOOL_CODE = "school_code";
     public static final String my_viewpager_preferences = "my_viewpager_preferences";
-    CardView btn_kalendar;
+    CardView btn_kalendar,btn_silabus;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,8 +62,9 @@ public class FragMenuGuruDua extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.frag_menu_guru_dua, container, false);
-        frameLayout = view.findViewById(R.id.fragment6);
+        frameLayout     = view.findViewById(R.id.fragment6);
         btn_kalendar    = view.findViewById(R.id.btn_kalender);
+        btn_silabus     = view.findViewById(R.id.btn_silabus);
 
         btn_kalendar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -74,6 +76,23 @@ public class FragMenuGuruDua extends Fragment {
                 editor.putString("scyear_id",scyear_id);
                 editor.apply();
                 Intent intent = new Intent(getContext(), KalendarGuru.class);
+                intent.putExtra("authorization",authorization);
+                intent.putExtra("school_code",school_code);
+                intent.putExtra("member_id",memberid);
+                intent.putExtra("scyear_id",scyear_id);
+                startActivity(intent);
+            }
+        });
+        btn_silabus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SharedPreferences.Editor editor = sharedpreferences.edit();
+                editor.putString("authorization",authorization);
+                editor.putString("member_id",memberid);
+                editor.putString("school_code",school_code);
+                editor.putString("scyear_id",scyear_id);
+                editor.apply();
+                Intent intent = new Intent(getContext(), Silabus.class);
                 intent.putExtra("authorization",authorization);
                 intent.putExtra("school_code",school_code);
                 intent.putExtra("member_id",memberid);
