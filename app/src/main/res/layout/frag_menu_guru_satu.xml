@@ -71,8 +71,11 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textStyle="bold"
+                            android:layout_gravity="center"
+                            android:layout_marginBottom="-12dp"
+                            android:layout_marginTop="5dp"
                             android:text="Jadwal Mengajar"
-                            android:textSize="13sp"
+                            android:textSize="12sp"
                             android:gravity="center"
                             />
                     </LinearLayout>
@@ -116,7 +119,7 @@
                 <android.support.v7.widget.CardView
                     android:foreground="?android:attr/selectableItemBackground"
                     android:clickable="true"
-                    android:id="@+id/btn_silabus"
+                    android:id="@+id/btn_kegiatan"
                     android:layout_width="90dp"
                     android:layout_height="110dp"
                     app:cardCornerRadius="5dp"
@@ -130,15 +133,17 @@
                         <ImageView
                             android:layout_width="50dp"
                             android:layout_height="50dp"
-                            android:src="@drawable/ic_silabus"
+                            android:src="@drawable/ic_todolist"
                             />
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textStyle="bold"
+                            android:textSize="12sp"
                             android:layout_marginTop="10dp"
-                            android:textSize="13sp"
-                            android:text="Silabus"/>
+                            android:text="Daftar Kegiatan"
+                            android:layout_gravity="center"
+                            android:gravity="center"/>
                     </LinearLayout>
                 </android.support.v7.widget.CardView>
                 <android.support.v7.widget.CardView

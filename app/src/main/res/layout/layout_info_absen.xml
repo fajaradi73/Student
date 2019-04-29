@@ -64,14 +64,11 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             >
-          <TextView
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-             android:textAlignment="center"
-              android:layout_marginTop="2dp"
-              android:layout_marginRight="9dp"
-              android:textColor="#ffff"
-              android:textSize="25dp"
+          <Button
+              android:layout_width="40dp"
+              android:layout_height="40dp"
+              android:layout_marginTop="-3dp"
+              android:layout_marginRight="3dp"
               android:text="x"
               android:id="@+id/btnclose"
 
@@ -94,7 +91,7 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@color/color_dieluarkan_kelas"
+            android:background="@color/color_ket_dikeluarkan_kelas"
            android:layout_marginTop="40dp"
             >
 
@@ -141,7 +138,7 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@color/color_telat"
+            android:background="@color/telat"
             android:layout_marginTop="10dp"
             >
 
@@ -188,7 +185,7 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@color/color_sakit"
+            android:background="@color/color_ket_sakit"
             android:layout_marginTop="10dp"
             >
 
@@ -235,7 +232,7 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@color/color_ijin"
+            android:background="@color/color_ket_ijin"
             android:layout_marginTop="10dp"
             >
 
@@ -283,7 +280,7 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@color/color_alpa"
+            android:background="@color/color_ket_alpa"
             android:layout_marginTop="10dp"
             >
 

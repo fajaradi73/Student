@@ -124,6 +124,5 @@
         <item name="android:windowExitAnimation">@anim/popup_hide</item>
     </style>
 
-
 </resources>
 

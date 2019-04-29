@@ -84,7 +84,7 @@ public class PenilaianGuru extends AppCompatActivity {
                     editor.putString("school_code",school_code);
                     editor.putString("scyear_id",scyear_id);
                     editor.putString("cources_id",cources_id);
-                    editor.putString("edulevel_id",edulevel_id);
+                    editor.putString("classroom_id",edulevel_id);
                     editor.apply();
                     Intent intent = new Intent(PenilaianGuru.this,PenilaianDetail.class);
                     intent.putExtra("authorization",authorization);
@@ -92,7 +92,7 @@ public class PenilaianGuru extends AppCompatActivity {
                     intent.putExtra("school_code",school_code);
                     intent.putExtra("scyear_id",scyear_id);
                     intent.putExtra("cources_id",cources_id);
-                    intent.putExtra("edulevel_id",edulevel_id);
+                    intent.putExtra("classroom_id",edulevel_id);
                     startActivity(intent);
                 }
             }

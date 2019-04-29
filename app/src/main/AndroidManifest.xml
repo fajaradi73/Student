@@ -226,12 +226,31 @@
             android:label="Agenda"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".Student.Activity.DetailRaport"
+        <activity
+            android:name=".Student.Activity.DetailRaport"
             android:label="Detail Raport"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"/>
-        <activity android:name=".Student.Activity.AgendaAnak"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".Student.Activity.AgendaAnak"
             android:label="Agenda Anak"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".Guru.ActivityGuru.KegiatanGuru"
+            android:label="Daftar Kegiatan"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".Guru.ActivityGuru.TambahAgenda"
+            android:label="Tambah Agenda"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".Guru.ActivityGuru.TulisPesan"
+            android:label="Tulis"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity android:name=".Guru.ActivityGuru.Pesan_Terkirim"
+            android:label="Terkirim"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"/>
     </application>

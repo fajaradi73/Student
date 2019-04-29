@@ -1,0 +1,271 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".Guru.ActivityGuru.TulisPesan">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbarTulisPesan"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorPrimary"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
+
+    <ScrollView
+        android:id="@+id/scroll_pesan"
+        android:layout_width="match_parent"
+        android:layout_height="0sp"
+        android:layout_weight="5" >
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.rey.material.widget.Spinner
+            android:id="@+id/sp_kirim_kepada"
+            style="@style/Material.Widget.Spinner"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:layout_gravity="center"
+            android:layout_margin="10dp"
+            android:entries="@array/kirim_kepada"
+            android:background="@drawable/tab_semester"
+            android:gravity="center"
+            android:spinnerMode="dropdown"
+            app:rd_style="@style/Material.Drawable.Ripple.Wave"
+            app:spn_arrowAnimClockwise="true"
+            app:spn_arrowAnimDuration="300"
+            app:spn_arrowColor="@color/black"
+            app:spn_arrowSwitchMode="true"
+            app:spn_dividerColor="@color/black"
+            app:spn_dividerHeight="0dp"
+            app:spn_labelTextColor="@color/colorPrimary" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Kelas"
+            android:visibility="gone"
+            android:layout_marginTop="10dp"
+            android:id="@+id/hint_sp_kelas"
+            android:textColor="@color/black"
+            android:layout_marginStart="10dp"
+            android:layout_marginBottom="-10dp"/>
+
+        <com.rey.material.widget.Spinner
+            android:id="@+id/sp_kelas"
+            style="@style/Material.Widget.Spinner"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:layout_gravity="center"
+            android:layout_margin="10dp"
+            android:background="@drawable/tab_semester"
+            android:gravity="center"
+            android:spinnerMode="dropdown"
+            android:visibility="gone"
+            app:rd_style="@style/Material.Drawable.Ripple.Wave"
+            app:spn_arrowAnimClockwise="true"
+            app:spn_arrowAnimDuration="300"
+            app:spn_arrowColor="@color/black"
+            app:spn_arrowSwitchMode="true"
+            app:spn_dividerColor="@color/black"
+            app:spn_dividerHeight="0dp"
+            app:spn_labelTextColor="@color/colorPrimary" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Siswa"
+            android:visibility="gone"
+            android:layout_marginTop="10dp"
+            android:id="@+id/hint_sp_siswa"
+            android:textColor="@color/black"
+            android:layout_marginStart="10dp"
+            android:layout_marginBottom="-10dp"/>
+
+        <com.rey.material.widget.Spinner
+            android:id="@+id/sp_siswa"
+            style="@style/Material.Widget.Spinner"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:layout_gravity="center"
+            android:layout_margin="10dp"
+            android:background="@drawable/tab_semester"
+            android:gravity="center"
+            android:spinnerMode="dropdown"
+            android:visibility="gone"
+            app:rd_style="@style/Material.Drawable.Ripple.Wave"
+            app:spn_arrowAnimClockwise="true"
+            app:spn_arrowAnimDuration="300"
+            app:spn_arrowColor="@color/black"
+            app:spn_arrowSwitchMode="true"
+            app:spn_dividerColor="@color/black"
+            app:spn_dividerHeight="0dp"
+            app:spn_labelTextColor="@color/colorPrimary" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Mata Pelajaran"
+            android:visibility="gone"
+            android:layout_marginTop="10dp"
+            android:id="@+id/hint_sp_mapel"
+            android:textColor="@color/black"
+            android:layout_marginStart="10dp"
+            android:layout_marginBottom="-10dp"/>
+
+        <com.rey.material.widget.Spinner
+            android:id="@+id/sp_mapel"
+            style="@style/Material.Widget.Spinner"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:layout_gravity="center"
+            android:layout_margin="10dp"
+            android:background="@drawable/tab_semester"
+            android:gravity="center"
+            android:spinnerMode="dropdown"
+            android:visibility="gone"
+            app:rd_style="@style/Material.Drawable.Ripple.Wave"
+            app:spn_arrowAnimClockwise="true"
+            app:spn_arrowAnimDuration="300"
+            app:spn_arrowColor="@color/black"
+            app:spn_arrowSwitchMode="true"
+            app:spn_dividerColor="@color/black"
+            app:spn_dividerHeight="0dp"
+            app:spn_labelTextColor="@color/colorPrimary" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Teacher"
+            android:visibility="gone"
+            android:layout_marginTop="10dp"
+            android:id="@+id/hint_sp_teacher"
+            android:textColor="@color/black"
+            android:layout_marginStart="10dp"
+            android:layout_marginBottom="-10dp"/>
+
+        <com.rey.material.widget.Spinner
+            android:id="@+id/sp_teacher"
+            style="@style/Material.Widget.Spinner"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:layout_gravity="center"
+            android:layout_margin="10dp"
+            android:background="@drawable/tab_semester"
+            android:gravity="center"
+            android:spinnerMode="dropdown"
+            android:visibility="gone"
+            app:rd_style="@style/Material.Drawable.Ripple.Wave"
+            app:spn_arrowAnimClockwise="true"
+            app:spn_arrowAnimDuration="300"
+            app:spn_arrowColor="@color/black"
+            app:spn_arrowSwitchMode="true"
+            app:spn_dividerColor="@color/black"
+            app:spn_dividerHeight="0dp"
+            app:spn_labelTextColor="@color/colorPrimary" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Admin"
+            android:visibility="gone"
+            android:layout_marginTop="10dp"
+            android:id="@+id/hint_sp_admin"
+            android:textColor="@color/black"
+            android:layout_marginStart="10dp"
+            android:layout_marginBottom="-10dp"/>
+
+        <com.rey.material.widget.Spinner
+            android:id="@+id/sp_admin"
+            style="@style/Material.Widget.Spinner"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:layout_gravity="center"
+            android:layout_margin="10dp"
+            android:background="@drawable/tab_semester"
+            android:gravity="center"
+            android:spinnerMode="dropdown"
+            android:visibility="gone"
+            app:rd_style="@style/Material.Drawable.Ripple.Wave"
+            app:spn_arrowAnimClockwise="true"
+            app:spn_arrowAnimDuration="300"
+            app:spn_arrowColor="@color/black"
+            app:spn_arrowSwitchMode="true"
+            app:spn_dividerColor="@color/black"
+            app:spn_dividerHeight="0dp"
+            app:spn_labelTextColor="@color/colorPrimary" />
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Judul"
+            android:layout_marginTop="10dp"
+            android:layout_margin="5dp"
+            android:id="@+id/hint_kt_judul"
+            android:textColor="@color/black"
+            android:layout_marginStart="10dp"
+            android:layout_marginBottom="-10dp"/>
+
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="40sp"
+            android:layout_margin="5dp">
+
+        <EditText
+            android:id="@+id/kt_judul"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:theme="@style/TextLabelView"
+            android:background="@android:color/transparent"
+            android:textSize="15dp"
+            android:layout_gravity="start"
+            android:padding="10dp"
+            android:inputType="textMultiLine"
+            android:gravity="start"
+            tools:ignore="Autofill,LabelFor" />
+        </android.support.v7.widget.CardView>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Pesan"
+            android:layout_marginTop="10dp"
+            android:layout_margin="5dp"
+            android:id="@+id/hint_kt_pesan"
+            android:textColor="@color/black"
+            android:layout_marginStart="10dp"
+            android:layout_marginBottom="-10dp"/>
+
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="5dp"
+            >
+
+        <EditText
+            android:id="@+id/kt_pesan"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:theme="@style/TextLabelView"
+            android:background="@android:color/transparent"
+            android:textSize="15dp"
+            android:layout_gravity="start"
+            android:padding="10dp"
+            android:inputType="textMultiLine"
+            android:gravity="start"
+            tools:ignore="Autofill,LabelFor" />
+
+    </android.support.v7.widget.CardView>
+
+    </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>
+
