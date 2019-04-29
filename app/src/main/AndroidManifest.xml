@@ -217,6 +217,14 @@
             android:label="Agenda"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"/>
+        <activity android:name=".Guru.ActivityGuru.TulisPesan"
+            android:label="Tulis"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity android:name=".Guru.ActivityGuru.Pesan_Terkirim"
+            android:label="Terkirim"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"/>
     </application>
 
 </manifest>

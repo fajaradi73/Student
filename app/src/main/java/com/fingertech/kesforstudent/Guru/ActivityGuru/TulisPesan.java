@@ -1,6 +1,8 @@
 package com.fingertech.kesforstudent.Guru.ActivityGuru;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -13,6 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.fingertech.kesforstudent.R;
+import com.fingertech.kesforstudent.Student.Activity.Masuk;
 import com.rey.material.widget.Spinner;
 import com.shashank.sony.fancytoastlib.FancyToast;
 
@@ -24,7 +27,6 @@ public class TulisPesan extends AppCompatActivity {
     TextView ht_kelas, ht_siswa, ht_mapel, ht_teacher, ht_admin;
     EditText kt_judul, kt_pesan;
     Toolbar toolbar;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
