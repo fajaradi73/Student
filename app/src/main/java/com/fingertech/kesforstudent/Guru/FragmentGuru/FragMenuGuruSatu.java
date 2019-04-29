@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.fingertech.kesforstudent.Controller.Auth;
+import com.fingertech.kesforstudent.Guru.ActivityGuru.AbsenMurid;
 import com.fingertech.kesforstudent.Guru.ActivityGuru.AgendaGuru;
 import com.fingertech.kesforstudent.Guru.ActivityGuru.JadwalGuru;
 import com.fingertech.kesforstudent.Guru.ActivityGuru.PenilaianGuru;
@@ -84,6 +85,26 @@ public class FragMenuGuruSatu extends Fragment {
                 startActivity(intent);
             }
         });
+
+        btn_absensi.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SharedPreferences.Editor editor = sharedpreferences.edit();
+                editor.putString("authorization",authorization);
+                editor.putString("member_id",memberid);
+                editor.putString("school_code",school_code);
+                editor.putString("scyear_id",scyear_id);
+                editor.apply();
+                Intent intent = new Intent(getContext(), AbsenMurid.class);
+                intent.putExtra("authorization",authorization);
+                intent.putExtra("school_code",school_code);
+                intent.putExtra("member_id",memberid);
+                intent.putExtra("scyear_id",scyear_id);
+                startActivity(intent);
+            }
+        });
+
+
         btn_silabus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

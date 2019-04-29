@@ -102,4 +102,19 @@
     <color name="mtrl_textinput_default_box_stroke_color" tools:override="true">#4FC3FA</color>
 
     <color name="deepblue">#192e5b</color>
+    <color name="color_absen_hadir">#A2FB5E</color>
+    <color name="color_absen_spritual">#6EC32D</color>
+    <color name="color_absen_jujur">#DC901C</color>
+    <color name="color_absen_disiplin">#1FA3DE</color>
+    <color name="color_absen_tanggungjawab">#CB1FDE</color>
+    <color name="color_absen_gotong">#DC1C36</color>
+    <color name="color_absen_toleran">#632A10</color>
+    <color name="color_absen_gotongroyong">#0F288F</color>
+    <color name="color_background_keterangan">#F1C97B</color>
+    <color name="color_dieluarkan_kelas">#529FBF</color>
+    <color name="color_telat">#2C3039</color>
+    <color name="color_sakit">#36B2E9</color>
+    <color name="color_ijin">#EFE138</color>
+    <color name="color_alpa">#CF2138</color>
+    <color name="color_ket_penilaian_sikap">#6ACF1D</color>
 </resources>
