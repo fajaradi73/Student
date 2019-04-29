@@ -102,4 +102,13 @@
         <item>Guru</item>
         <item>Admin</item>
     </string-array>
+    ///////// Forgot Passsword
+    <string name="tv_lupa_pass">Lupa Kata Sandi?</string>
+    <string name="tv_info_pass">Kami memerlukan email anda yang terdaftar untuk mengirimikan instruksi pengaturan ulang kata sandi</string>
+    <string name="btn_ubah_pass">Ubah Kata Sandi</string>
+
+    ///////// Toast show
+    <string name="error_resp_json">Internet bermasalah, coba lagi</string>
+    <string name="error_resp_internet_con">Tidak ada koneksi internet, periksa dan hubungkan kembali</string>
+    <string name="toast_cancel">Batalkan</string>
 </resources>

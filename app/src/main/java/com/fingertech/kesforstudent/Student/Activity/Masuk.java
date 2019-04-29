@@ -19,6 +19,7 @@ import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.fingertech.kesforstudent.Guru.ActivityGuru.MenuUtamaGuru;
@@ -26,10 +27,16 @@ import com.fingertech.kesforstudent.Controller.Auth;
 import com.fingertech.kesforstudent.R;
 import com.fingertech.kesforstudent.Rest.ApiClient;
 import com.fingertech.kesforstudent.Rest.JSONResponse;
+import com.fingertech.kesforstudent.Service.Position;
+import com.fingertech.kesforstudent.Service.PositionTable;
 import com.fingertech.kesforstudent.Util.JWTUtils;
 import com.shashank.sony.fancytoastlib.FancyToast;
 
 import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Objects;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -57,7 +64,10 @@ public class Masuk extends AppCompatActivity {
     public static final String TAG_SCHOLL_NAME  = "school_name";
     String username, memberid, fullname, member_type,scyear_id;
     TextInputLayout til_email,til_password;
-
+    PositionTable positionTable = new PositionTable();
+    Position position = new Position();
+    ArrayList<HashMap<String, String>> row;
+    TextView tv_lupa_sandi;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,17 +78,23 @@ public class Masuk extends AppCompatActivity {
         btn_masuk       = findViewById(R.id.btn_Masuk);
         til_email       = findViewById(R.id.til_email);
         til_password    = findViewById(R.id.til_kata_sandi);
+        tv_lupa_sandi   = findViewById(R.id.tvb_lupa_pass);
         mApiInterface   = ApiClient.getClient().create(Auth.class);
         school_code     = getIntent().getStringExtra("school_code");
         school_name     = getIntent().getStringExtra("school_name");
 
         sharedpreferences = getSharedPreferences(my_shared_preferences, Context.MODE_PRIVATE);
+        row = positionTable.getAllData();
 
         btn_masuk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 submitForm();
             }
+        });
+        tv_lupa_sandi.setOnClickListener(v -> {
+            Intent intent = new Intent(getApplicationContext(), ForgotPassword.class);
+            startActivity(intent);
         });
     }
     ///// check editext
@@ -181,30 +197,21 @@ public class Masuk extends AppCompatActivity {
                             editor.putString("scyear_id", scyear_id);
                             editor.apply();
                             /// call session
-                            if (member_type.toString().equals("4")) {
-                                AlertDialog.Builder builder = new AlertDialog.Builder(Masuk.this, R.style.DialogTheme);
-                                builder.setTitle("Change Password");
-                                builder.setMessage("Apakah anda ingin mengubah kata sandi anda?");
-                                builder.setIcon(R.drawable.ic_alarm);
-                                builder.setPositiveButton("Ya", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        Intent intent = new Intent(Masuk.this, ChangePassword.class);
-                                        intent.putExtra(TAG_EMAIL, username);
-                                        intent.putExtra(TAG_MEMBER_ID, memberid);
-                                        intent.putExtra(TAG_FULLNAME, fullname);
-                                        intent.putExtra(TAG_MEMBER_TYPE, member_type);
-                                        intent.putExtra(TAG_SCHOOL_CODE, school_code);
-                                        intent.putExtra(TAG_SCHOLL_NAME, school_name);
-                                        intent.putExtra(TAG_TOKEN, token);
-                                        intent.putExtra("scyear_id", scyear_id);
-                                        finish();
-                                        startActivity(intent);
-                                    }
-                                });
-                                builder.setNegativeButton("Tidak", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
+                            if (row.size() <= 0){
+                                Intent intent = new Intent(Masuk.this, ChangePassword.class);
+                                intent.putExtra(TAG_EMAIL, username);
+                                intent.putExtra(TAG_MEMBER_ID, memberid);
+                                intent.putExtra(TAG_FULLNAME, fullname);
+                                intent.putExtra(TAG_MEMBER_TYPE, member_type);
+                                intent.putExtra(TAG_SCHOOL_CODE, school_code);
+                                intent.putExtra(TAG_SCHOLL_NAME, school_name);
+                                intent.putExtra(TAG_TOKEN, token);
+                                intent.putExtra("scyear_id", scyear_id);
+                                finish();
+                                startActivity(intent);
+                            }else {
+                                if (member_type.toString().equals("4")) {
+                                    if (Objects.equals(row.get(0).get(Position.KEY_Name), "murid")){
                                         Intent intent = new Intent(Masuk.this, MenuUtama.class);
                                         intent.putExtra(TAG_EMAIL, username);
                                         intent.putExtra(TAG_MEMBER_ID, memberid);
@@ -217,32 +224,8 @@ public class Masuk extends AppCompatActivity {
                                         finish();
                                         startActivity(intent);
                                     }
-                                });
-                                builder.show();
-                            } else if (member_type.equals("3")) {
-                                AlertDialog.Builder builder = new AlertDialog.Builder(Masuk.this, R.style.DialogTheme);
-                                builder.setTitle("Change Password");
-                                builder.setMessage("Apakah anda ingin mengubah kata sandi anda?");
-                                builder.setIcon(R.drawable.ic_alarm);
-                                builder.setPositiveButton("Ya", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        Intent intent = new Intent(Masuk.this, ChangePassword.class);
-                                        intent.putExtra(TAG_EMAIL, username);
-                                        intent.putExtra(TAG_MEMBER_ID, memberid);
-                                        intent.putExtra(TAG_FULLNAME, fullname);
-                                        intent.putExtra(TAG_MEMBER_TYPE, member_type);
-                                        intent.putExtra(TAG_SCHOOL_CODE, school_code);
-                                        intent.putExtra(TAG_SCHOLL_NAME, school_name);
-                                        intent.putExtra(TAG_TOKEN, token);
-                                        intent.putExtra("scyear_id", scyear_id);
-                                        finish();
-                                        startActivity(intent);
-                                    }
-                                });
-                                builder.setNegativeButton("Tidak", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
+                                } else if (member_type.equals("3")) {
+                                    if (Objects.equals(row.get(0).get(Position.KEY_Name), "guru")){
                                         Intent intent = new Intent(Masuk.this, MenuUtamaGuru.class);
                                         intent.putExtra(TAG_EMAIL, username);
                                         intent.putExtra(TAG_MEMBER_ID, memberid);
@@ -255,9 +238,9 @@ public class Masuk extends AppCompatActivity {
                                         finish();
                                         startActivity(intent);
                                     }
-                                });
-                                builder.show();
+                                }
                             }
+
                         } catch (Exception e) {
                             e.printStackTrace();
                         }

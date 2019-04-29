@@ -442,7 +442,7 @@ public class AgendaDetail extends AppCompatActivity {
     private void dapat_Agenda(){
         progressBar();
         showDialog();
-        Call<JSONResponse.ListAgenda> call = mApiInterface.kes_class_agenda_teacher_get(authorization,school_code.toLowerCase(),member_id,edulevel_id,bulan_sekarang, String.valueOf(day-1));
+        Call<JSONResponse.ListAgenda> call = mApiInterface.kes_class_agenda_teacher_get(authorization,school_code.toLowerCase(),member_id,edulevel_id,cources_id,bulan_sekarang, String.valueOf(day-1));
         call.enqueue(new Callback<JSONResponse.ListAgenda>() {
             @Override
             public void onResponse(Call<JSONResponse.ListAgenda> call, Response<JSONResponse.ListAgenda> response) {
@@ -491,29 +491,30 @@ public class AgendaDetail extends AppCompatActivity {
                             }
                             Long timesnow = datenow.getTime();
                             Long timesakhir = datejam.getTime();
-                            if (timesnow > timesakhir) {
-                                if(Integer.parseInt(tanggal) > agendaModelTanggalList.size()-1){
-                                    datatanggal(Integer.parseInt(tahun),Integer.parseInt(bulan)+1);
-                                    rvtanggal.scrollToPosition(1);
-                                    rvtanggal.smoothScrollToPosition(0);
-                                    rvtanggal.smoothScrollBy(1,0);
-                                    datePicker.updateDate(Integer.parseInt(tahun),Integer.parseInt(bulan),0);
-                                }else {
-                                    if (Integer.parseInt(tanggal) == agendaModelTanggalList.size() -1){
-                                        rvtanggal.scrollToPosition(Integer.parseInt(tanggal)-1);
-                                        rvtanggal.smoothScrollToPosition(Integer.parseInt(tanggal));
-                                        rvtanggal.smoothScrollBy(1,0);
-                                        datePicker.updateDate(Integer.parseInt(tahun),Integer.parseInt(bulan)-1,Integer.parseInt(tanggal)+1);
-                                    }else {
-                                        rvtanggal.scrollToPosition(Integer.parseInt(tanggal));
-                                        rvtanggal.smoothScrollBy(1,0);
-                                        datePicker.updateDate(Integer.parseInt(tahun),Integer.parseInt(bulan)-1,Integer.parseInt(tanggal)+1);
+                            if (agendaModelTanggalList!=null) {
+                                if (timesnow > timesakhir) {
+                                    if (Integer.parseInt(tanggal) > agendaModelTanggalList.size() - 1) {
+                                        datatanggal(Integer.parseInt(tahun), Integer.parseInt(bulan) + 1);
+                                        rvtanggal.scrollToPosition(1);
+                                        rvtanggal.smoothScrollToPosition(0);
+                                        rvtanggal.smoothScrollBy(1, 0);
+                                        datePicker.updateDate(Integer.parseInt(tahun), Integer.parseInt(bulan), 0);
+                                    } else {
+                                        if (Integer.parseInt(tanggal) == agendaModelTanggalList.size() - 1) {
+                                            rvtanggal.scrollToPosition(Integer.parseInt(tanggal) - 1);
+                                            rvtanggal.smoothScrollToPosition(Integer.parseInt(tanggal));
+                                            rvtanggal.smoothScrollBy(1, 0);
+                                            datePicker.updateDate(Integer.parseInt(tahun), Integer.parseInt(bulan) - 1, Integer.parseInt(tanggal) + 1);
+                                        } else {
+                                            rvtanggal.scrollToPosition(Integer.parseInt(tanggal));
+                                            rvtanggal.smoothScrollBy(1, 0);
+                                            datePicker.updateDate(Integer.parseInt(tahun), Integer.parseInt(bulan) - 1, Integer.parseInt(tanggal) + 1);
+                                        }
                                     }
-
+                                } else {
+                                    rvtanggal.scrollToPosition(Integer.parseInt(tanggal) - 1);
+                                    rvtanggal.smoothScrollBy(1, 0);
                                 }
-                            } else {
-                                rvtanggal.scrollToPosition(Integer.parseInt(tanggal) - 1);
-                                rvtanggal.smoothScrollBy(1,0);
                             }
                         } else {
                             Log.d("schedule","datadata");

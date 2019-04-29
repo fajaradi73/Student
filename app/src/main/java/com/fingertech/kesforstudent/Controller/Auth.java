@@ -36,6 +36,11 @@ public interface Auth {
                                  @Field("username") String username,
                                  @Field("password") String password);
 
+    //////// Forgot password
+    @FormUrlEncoded
+    @POST("auth/kes_forgot_password")
+    Call<JSONResponse>forgot_password_post(@Field("email") String email);
+
     //////Ganti Password
     @FormUrlEncoded
     @PUT("auth/kes_change_password/{member_id}")
@@ -265,6 +270,7 @@ public interface Auth {
                                                                @Query("school_code") String school_code,
                                                                @Query("teacher_id") String teacher_id,
                                                                @Query("classroom_id") String classroom_id,
+                                                               @Query("cources_id") String cources_id,
                                                                @Query("year_month") String year_month,
                                                                @Query("day_now") String day_now);
 

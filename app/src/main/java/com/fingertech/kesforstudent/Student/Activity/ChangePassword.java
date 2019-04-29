@@ -26,7 +26,13 @@ import com.fingertech.kesforstudent.Guru.ActivityGuru.ProfileGuru;
 import com.fingertech.kesforstudent.R;
 import com.fingertech.kesforstudent.Rest.ApiClient;
 import com.fingertech.kesforstudent.Rest.JSONResponse;
+import com.fingertech.kesforstudent.Service.Position;
+import com.fingertech.kesforstudent.Service.PositionTable;
 import com.shashank.sony.fancytoastlib.FancyToast;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Objects;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -53,8 +59,11 @@ public class ChangePassword extends AppCompatActivity {
     public static final String my_change_shared = "my_change_shared";
 
     SharedPreferences sharedpreferences,changeshared;
-    String authorization,memberid,username,member_type,fullname,school_code,change;
+    String authorization,memberid,username,member_type,fullname,school_code;
     TextInputLayout til_password_lama,til_password_baru,til_konfirmasi;
+    PositionTable positionTable = new PositionTable();
+    Position position = new Position();
+    ArrayList<HashMap<String, String>> row;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -80,16 +89,13 @@ public class ChangePassword extends AppCompatActivity {
         fullname          = sharedpreferences.getString(TAG_FULLNAME,"");
         member_type       = sharedpreferences.getString(TAG_MEMBER_TYPE,"");
         school_code       = sharedpreferences.getString(TAG_SCHOOL_CODE,"");
-        change            = sharedpreferences.getString("change",null);
-
-        changeshared    = getSharedPreferences(my_change_shared,Context.MODE_PRIVATE);
         btn_ganti_password.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 submitForm();
             }
         });
-
+        row = positionTable.getAllData();
     }
 
     private void submitForm() {
@@ -167,54 +173,60 @@ public class ChangePassword extends AppCompatActivity {
             public void onResponse(Call<JSONResponse.ChangePassword> call, final Response<JSONResponse.ChangePassword> response) {
                 hideDialog();
                 Log.i("KES", response.code() + "");
-
-                JSONResponse.ChangePassword resource = response.body();
-
-                status = resource.status;
-                code   = resource.code;
-
-                if (status == 1 && code.equals("CP_SCS_0001")) {
-                    if (change !=null) {
-                        if (member_type.equals("4")) {
-                            FancyToast.makeText(getApplicationContext(), "Kata sandi telah berubah", Toast.LENGTH_LONG, FancyToast.INFO, false).show();
-                            Intent intent = new Intent(ChangePassword.this, ProfileGuru.class);
-                            intent.putExtra("authorization",authorization);
-                            intent.putExtra("school_code",school_code);
-                            intent.putExtra("member_id",memberid);
-                            setResult(RESULT_OK, intent);
-                            finish();
-                        } else if (member_type.equals("3")) {
-                            FancyToast.makeText(getApplicationContext(), "Kata sandi telah berubah", Toast.LENGTH_LONG, FancyToast.INFO, false).show();
-                            Intent intent = new Intent(ChangePassword.this, ProfileAnak.class);
-                            intent.putExtra("authorization",authorization);
-                            intent.putExtra("school_code",school_code);
-                            intent.putExtra("member_id",memberid);
-                            setResult(RESULT_OK, intent);
-                            finish();
-                        }
-                    }else {
-                        if (member_type.equals("4")) {
+                if (response.isSuccessful()) {
+                    JSONResponse.ChangePassword resource = response.body();
+                    status = resource.status;
+                    code = resource.code;
+                    if (status == 1 && code.equals("CP_SCS_0001")) {
+                        if (member_type.equals("3")) {
                             FancyToast.makeText(getApplicationContext(), "Kata sandi telah berubah", Toast.LENGTH_LONG, FancyToast.INFO, false).show();
                             Intent intent = new Intent(ChangePassword.this, MenuUtamaGuru.class);
-                            startActivity(intent);
-                            finish();
-                        } else if (member_type.equals("3")) {
+                            if (row.size() <= 0) {
+                                position.setName("guru");
+                                positionTable.insert(position);
+                                startActivity(intent);
+                                finish();
+                            } else {
+                                if (Objects.equals(row.get(0).get(Position.KEY_Name), "guru")) {
+                                    startActivity(intent);
+                                    finish();
+                                } else {
+                                    positionTable.updateName(row.get(0).get(Position.KEY_Name), "guru");
+                                    startActivity(intent);
+                                    finish();
+                                }
+                            }
+                        } else if (member_type.equals("4")) {
                             FancyToast.makeText(getApplicationContext(), "Kata sandi telah berubah", Toast.LENGTH_LONG, FancyToast.INFO, false).show();
                             Intent intent = new Intent(ChangePassword.this, MenuUtama.class);
                             startActivity(intent);
                             finish();
+                            if (row.size() <= 0) {
+                                position.setName("murid");
+                                positionTable.insert(position);
+                                startActivity(intent);
+                                finish();
+                            } else {
+                                if (Objects.equals(row.get(0).get(Position.KEY_Name), "murid")) {
+                                    startActivity(intent);
+                                    finish();
+                                } else {
+                                    positionTable.updateName(row.get(0).get(Position.KEY_Name), "murid");
+                                    startActivity(intent);
+                                    finish();
+                                }
+                            }
+                        }
+                    } else {
+                        if (status == 0 && code.equals("CP_ERR_0001")) {
+                            Toast.makeText(getApplicationContext(), "Kata sandi lama anda salah", Toast.LENGTH_LONG).show();
+                            requestFocus(et_password_lama);
+                        } else if (status == 0 && code.equals("CP_ERR_0004")) {
+                            requestFocus(et_password_baru);
+                            Toast.makeText(getApplicationContext(), "Kata sandi tidak boleh sama dengan yang lain", Toast.LENGTH_LONG).show();
                         }
                     }
-                } else{
-                    if (status == 0 && code.equals("CP_ERR_0001")) {
-                        Toast.makeText(getApplicationContext(), "Kata sandi lama anda salah", Toast.LENGTH_LONG).show();
-                        requestFocus(et_password_lama);
-                    }else if (status == 0 && code.equals("CP_ERR_0004")){
-                        requestFocus(et_password_baru);
-                        Toast.makeText(getApplicationContext(), "Kata sandi tidak boleh sama dengan yang lain", Toast.LENGTH_LONG).show();
-                    }
                 }
-
             }
 
             @Override
