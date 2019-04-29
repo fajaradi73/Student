@@ -19,8 +19,6 @@ public class SplashScreen extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.splash_screen);
 
-
-
         hideSystemUI();
         final Handler handler = new Handler();
         handler.postDelayed(new Runnable() {

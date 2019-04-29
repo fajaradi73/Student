@@ -5,7 +5,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.ColorDrawable;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
+import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -17,11 +22,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.fingertech.kesforstudent.Guru.FragmentGuru.FragMenuGuruDua;
+import com.fingertech.kesforstudent.Guru.FragmentGuru.FragMenuGuruSatu;
 import com.fingertech.kesforstudent.Rest.ApiClient;
 import com.fingertech.kesforstudent.Rest.JSONResponse;
 import com.fingertech.kesforstudent.Student.Activity.Masuk;
 import com.fingertech.kesforstudent.Controller.Auth;
 import com.fingertech.kesforstudent.R;
+import com.pixelcan.inkpageindicator.InkPageIndicator;
 import com.shashank.sony.fancygifdialoglib.FancyGifDialog;
 import com.shashank.sony.fancygifdialoglib.FancyGifDialogListener;
 
@@ -44,24 +52,26 @@ public class MenuUtamaGuru extends AppCompatActivity {
     public static final String TAG_TOKEN = "token";
     public static final String TAG_SCHOOL_CODE = "school_code";
     public static final String my_viewpager_preferences = "my_viewpager_preferences";
-    CardView btn_absensi,btn_penilaian,btn_silabus,btn_pesan,btn_jadwal,btn_kalendar;
     Toolbar toolbar;
     ImageView image_guru;
     String nama,nis,email,alamat,gender,tanggal,tempat,agama,no_hp,last_login;
     ProgressDialog dialog;
     TextView tv_nama_guru;
+    ViewPager viewPager;
+    InkPageIndicator inkPageIndicator;
+    public static int PAGE_COUNT = 2;
+    FragmentAdapter fragmentAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.menu__utama__guru);
         toolbar     = findViewById(R.id.toolbarJadwalGuru);
-        btn_absensi = findViewById(R.id.btn_absensi);
-        btn_penilaian   = findViewById(R.id.btn_penilaian);
-        btn_jadwal      = findViewById(R.id.btn_jadwal_mengajar);
-        btn_silabus     = findViewById(R.id.btn_silabus);
-        btn_pesan       = findViewById(R.id.btn_pesan);
-        btn_kalendar    = findViewById(R.id.btn_kalender);
+
+        inkPageIndicator    = findViewById(R.id.indicators);
+        viewPager       = findViewById(R.id.PagerUtama);
         image_guru      = findViewById(R.id.image_guru);
+        fragmentAdapter     = new FragmentAdapter(getSupportFragmentManager());
         tv_nama_guru    = findViewById(R.id.tv_nama_profil_guru);
         mApiInterface   = ApiClient.getClient().create(Auth.class);
         sharedpreferences = getSharedPreferences(Masuk.my_shared_preferences, Context.MODE_PRIVATE);
@@ -74,24 +84,10 @@ public class MenuUtamaGuru extends AppCompatActivity {
         scyear_id       = sharedpreferences.getString("scyear_id","");
         Base_anak               = "http://www.kes.co.id/schoolc/assets/images/profile/mm_";
 
+        viewPager.setAdapter(fragmentAdapter);
+        inkPageIndicator.setViewPager(viewPager);
         get_profile();
-        btn_jadwal.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                SharedPreferences.Editor editor = sharedpreferences.edit();
-                editor.putString("authorization",authorization);
-                editor.putString("member_id",memberid);
-                editor.putString("school_code",school_code);
-                editor.putString("scyear_id",scyear_id);
-                editor.apply();
-                Intent intent = new Intent(MenuUtamaGuru.this,JadwalGuru.class);
-                intent.putExtra("authorization",authorization);
-                intent.putExtra("school_code",school_code);
-                intent.putExtra("member_id",memberid);
-                intent.putExtra("scyear_id",scyear_id);
-                startActivity(intent);
-            }
-        });
+
         image_guru.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -110,74 +106,30 @@ public class MenuUtamaGuru extends AppCompatActivity {
             }
         });
 
-        btn_silabus.setOnClickListener(new View.OnClickListener() {
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
-            public void onClick(View v) {
-                SharedPreferences.Editor editor = sharedpreferences.edit();
-                editor.putString("authorization",authorization);
-                editor.putString("member_id",memberid);
-                editor.putString("school_code",school_code);
-                editor.putString("scyear_id",scyear_id);
-                editor.apply();
-                Intent intent = new Intent(MenuUtamaGuru.this,Silabus.class);
-                intent.putExtra("authorization",authorization);
-                intent.putExtra("school_code",school_code);
-                intent.putExtra("member_id",memberid);
-                intent.putExtra("scyear_id",scyear_id);
-                startActivity(intent);
+            public void onPageScrolled(int i, float v, int i1) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                switch (position){
+                    case 0:
+                        send_data();
+                        break;
+                    case 1:
+                        send_data2();
+                        break;
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int i) {
+
             }
         });
-        btn_kalendar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                SharedPreferences.Editor editor = sharedpreferences.edit();
-                editor.putString("authorization",authorization);
-                editor.putString("member_id",memberid);
-                editor.putString("school_code",school_code);
-                editor.putString("scyear_id",scyear_id);
-                editor.apply();
-                Intent intent = new Intent(MenuUtamaGuru.this,KalendarGuru.class);
-                intent.putExtra("authorization",authorization);
-                intent.putExtra("school_code",school_code);
-                intent.putExtra("member_id",memberid);
-                intent.putExtra("scyear_id",scyear_id);
-                startActivity(intent);
-            }
-        });
-        btn_penilaian.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                SharedPreferences.Editor editor = sharedpreferences.edit();
-                editor.putString("authorization",authorization);
-                editor.putString("member_id",memberid);
-                editor.putString("school_code",school_code);
-                editor.putString("scyear_id",scyear_id);
-                editor.apply();
-                Intent intent = new Intent(MenuUtamaGuru.this,PenilaianGuru.class);
-                intent.putExtra("authorization",authorization);
-                intent.putExtra("school_code",school_code);
-                intent.putExtra("member_id",memberid);
-                intent.putExtra("scyear_id",scyear_id);
-                startActivity(intent);
-            }
-        });
-        btn_pesan.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                SharedPreferences.Editor editor = sharedpreferences.edit();
-                editor.putString("authorization",authorization);
-                editor.putString("member_id",memberid);
-                editor.putString("school_code",school_code);
-                editor.putString("scyear_id",scyear_id);
-                editor.apply();
-                Intent intent = new Intent(MenuUtamaGuru.this,PesanGuru.class);
-                intent.putExtra("authorization",authorization);
-                intent.putExtra("school_code",school_code);
-                intent.putExtra("member_id",memberid);
-                intent.putExtra("scyear_id",scyear_id);
-                startActivity(intent);
-            }
-        });
+
     }
     private void get_profile(){
         progressBar();
@@ -250,11 +202,6 @@ public class MenuUtamaGuru extends AppCompatActivity {
                 .OnPositiveClicked(new FancyGifDialogListener() {
                     @Override
                     public void OnClick() {
-//                        moveTaskToBack(true);
-//                        Intent homeIntent = new Intent(Intent.ACTION_MAIN);
-//                        homeIntent.addCategory( Intent.CATEGORY_HOME );
-//                        homeIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//                        startActivity(homeIntent);
                         android.os.Process.killProcess(android.os.Process.myPid());
                         System.exit(0);
                     }
@@ -265,7 +212,78 @@ public class MenuUtamaGuru extends AppCompatActivity {
                         }
                 })
                 .build();
-
     }
+
+    private void send_data(){
+        SharedPreferences.Editor editor = sharedpreferences.edit();
+        editor.putString("authorization",authorization);
+        editor.putString("member_id",memberid);
+        editor.putString("school_code",school_code);
+        editor.putString("scyear_id",scyear_id);
+        editor.apply();
+        Bundle bundle = new Bundle();
+        bundle.putString("authorization",authorization);
+        bundle.putString("member_id",memberid);
+        bundle.putString("school_code",school_code);
+        bundle.putString("scyear_id",scyear_id);
+        Fragment fragment = new FragMenuGuruSatu();
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.add(R.id.fragment1, fragment);
+        fragmentTransaction.commitAllowingStateLoss();
+        fragmentTransaction.addToBackStack(null);
+        fragment.setArguments(bundle);
+    }
+
+    private void send_data2(){
+        SharedPreferences.Editor editor = sharedpreferences.edit();
+        editor.putString("authorization",authorization);
+        editor.putString("member_id",memberid);
+        editor.putString("school_code",school_code);
+        editor.putString("scyear_id",scyear_id);
+        editor.apply();
+        Bundle bundle = new Bundle();
+        bundle.putString("authorization",authorization);
+        bundle.putString("member_id",memberid);
+        bundle.putString("school_code",school_code);
+        bundle.putString("scyear_id",scyear_id);
+        FragMenuGuruDua fragments = new FragMenuGuruDua();
+        FragmentManager fragmentManagers = getSupportFragmentManager();
+        FragmentTransaction fragmentTransactions = fragmentManagers.beginTransaction();
+        fragmentTransactions.add(R.id.fragment6, fragments);
+        fragmentTransactions.commitAllowingStateLoss();
+        fragmentTransactions.addToBackStack(null);
+        fragments.setArguments(bundle);
+    }
+
+    public class FragmentAdapter extends FragmentStatePagerAdapter {
+
+        public FragmentAdapter(FragmentManager fm) {
+            super(fm);
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            switch (position){
+                case 0:
+                    send_data();
+                    return new FragMenuGuruSatu();
+                case 1:
+                    send_data2();
+                    return new FragMenuGuruDua();
+            }
+            return null;
+        }
+
+        @Override
+        public int getCount() {
+            return PAGE_COUNT;
+        }
+
+        public int getItemPosition(Object object) {
+            return POSITION_NONE;
+        }
+    }
+
 
 }

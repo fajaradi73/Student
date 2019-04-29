@@ -4827,36 +4827,193 @@ public class JSONResponse {
             this.edulevel_name = edulevel_name;
         }
 
-        public String getEdulevel_name2() {
-            return edulevel_name2;
+    }
+
+    //// Response List Kelas
+    public class ListKelas{
+        @SerializedName("status")
+        public int status;
+
+        @SerializedName("code")
+        public String code;
+
+        @SerializedName("data")
+        public List<DataKelas> data;
+
+        public int getStatus() {
+            return status;
         }
 
-        public void setEdulevel_name2(String edulevel_name2) {
-            this.edulevel_name2 = edulevel_name2;
+        public void setStatus(int status) {
+            this.status = status;
         }
 
-        public String getEdulevel_status() {
-            return edulevel_status;
+        public String getCode() {
+            return code;
         }
 
-        public void setEdulevel_status(String edulevel_status) {
-            this.edulevel_status = edulevel_status;
+        public void setCode(String code) {
+            this.code = code;
         }
 
-        public String getEdulevel_pos() {
-            return edulevel_pos;
+        public List<DataKelas> getData() {
+            return data;
         }
 
-        public void setEdulevel_pos(String edulevel_pos) {
-            this.edulevel_pos = edulevel_pos;
+        public void setData(List<DataKelas> data) {
+            this.data = data;
+        }
+    }
+    public class DataKelas{
+        @SerializedName("classroomid")
+        public String classroomid;
+        @SerializedName("classroom_code")
+        public String classroom_code;
+        @SerializedName("classroom_name")
+        public String classroom_name;
+        @SerializedName("classroom_desc")
+        public String classroom_desc;
+        @SerializedName("classroom_publish")
+        public String classroom_publish;
+        @SerializedName("classroom_type")
+        public String classroom_type;
+        @SerializedName("classroom_count")
+        public String classroom_count;
+        @SerializedName("edulevel_id")
+        public String edulevel_id;
+        @SerializedName("datez")
+        public String datez;
+        @SerializedName("member_id")
+        public String member_id;
+        @SerializedName("lastupdate")
+        public String lastupdate;
+        @SerializedName("teacher_id")
+        public String teacher_id;
+        @SerializedName("scyear_id")
+        public String scyear_id;
+        @SerializedName("leader_mbr")
+        public String leader_mbr;
+        @SerializedName("viceleader_mbr")
+        public String viceleader_mbr;
+
+        public String getClassroomid() {
+            return classroomid;
         }
 
-        public String getEdulevel_type() {
-            return edulevel_type;
+        public void setClassroomid(String classroomid) {
+            this.classroomid = classroomid;
         }
 
-        public void setEdulevel_type(String edulevel_type) {
-            this.edulevel_type = edulevel_type;
+        public String getClassroom_code() {
+            return classroom_code;
+        }
+
+        public void setClassroom_code(String classroom_code) {
+            this.classroom_code = classroom_code;
+        }
+
+        public String getClassroom_name() {
+            return classroom_name;
+        }
+
+        public void setClassroom_name(String classroom_name) {
+            this.classroom_name = classroom_name;
+        }
+
+        public String getClassroom_desc() {
+            return classroom_desc;
+        }
+
+        public void setClassroom_desc(String classroom_desc) {
+            this.classroom_desc = classroom_desc;
+        }
+
+        public String getClassroom_publish() {
+            return classroom_publish;
+        }
+
+        public void setClassroom_publish(String classroom_publish) {
+            this.classroom_publish = classroom_publish;
+        }
+
+        public String getClassroom_type() {
+            return classroom_type;
+        }
+
+        public void setClassroom_type(String classroom_type) {
+            this.classroom_type = classroom_type;
+        }
+
+        public String getClassroom_count() {
+            return classroom_count;
+        }
+
+        public void setClassroom_count(String classroom_count) {
+            this.classroom_count = classroom_count;
+        }
+
+        public String getEdulevel_id() {
+            return edulevel_id;
+        }
+
+        public void setEdulevel_id(String edulevel_id) {
+            this.edulevel_id = edulevel_id;
+        }
+
+        public String getDatez() {
+            return datez;
+        }
+
+        public void setDatez(String datez) {
+            this.datez = datez;
+        }
+
+        public String getMember_id() {
+            return member_id;
+        }
+
+        public void setMember_id(String member_id) {
+            this.member_id = member_id;
+        }
+
+        public String getLastupdate() {
+            return lastupdate;
+        }
+
+        public void setLastupdate(String lastupdate) {
+            this.lastupdate = lastupdate;
+        }
+
+        public String getTeacher_id() {
+            return teacher_id;
+        }
+
+        public void setTeacher_id(String teacher_id) {
+            this.teacher_id = teacher_id;
+        }
+
+        public String getScyear_id() {
+            return scyear_id;
+        }
+
+        public void setScyear_id(String scyear_id) {
+            this.scyear_id = scyear_id;
+        }
+
+        public String getLeader_mbr() {
+            return leader_mbr;
+        }
+
+        public void setLeader_mbr(String leader_mbr) {
+            this.leader_mbr = leader_mbr;
+        }
+
+        public String getViceleader_mbr() {
+            return viceleader_mbr;
+        }
+
+        public void setViceleader_mbr(String viceleader_mbr) {
+            this.viceleader_mbr = viceleader_mbr;
         }
     }
 
@@ -5221,7 +5378,6 @@ public class JSONResponse {
             this.data = data;
         }
     }
-
     public class DashboardCalendar{
         @SerializedName("status")
         public int status;
@@ -5313,5 +5469,211 @@ public class JSONResponse {
         }
     }
 
+    //// Response List exam
+    public class ListExam{
+        @SerializedName("status")
+        public int status;
+
+        @SerializedName("code")
+        public String code;
+
+        @SerializedName("data")
+        public List<DataExam> data;
+
+        public int getStatus() {
+            return status;
+        }
+
+        public void setStatus(int status) {
+            this.status = status;
+        }
+
+        public String getCode() {
+            return code;
+        }
+
+        public void setCode(String code) {
+            this.code = code;
+        }
+
+        public List<DataExam> getData() {
+            return data;
+        }
+
+        public void setData(List<DataExam> data) {
+            this.data = data;
+        }
+    }
+    public class DataExam{
+        @SerializedName("typeid")
+        public String typeid;
+        @SerializedName("type_name")
+        public String type_name;
+        @SerializedName("type_status")
+        public String type_status;
+        @SerializedName("type_publish")
+        public String type_publish;
+        @SerializedName("type_sort")
+        public String type_sort;
+
+        public String getTypeid() {
+            return typeid;
+        }
+
+        public void setTypeid(String typeid) {
+            this.typeid = typeid;
+        }
+
+        public String getType_name() {
+            return type_name;
+        }
+
+        public void setType_name(String type_name) {
+            this.type_name = type_name;
+        }
+
+        public String getType_status() {
+            return type_status;
+        }
+
+        public void setType_status(String type_status) {
+            this.type_status = type_status;
+        }
+
+        public String getType_publish() {
+            return type_publish;
+        }
+
+        public void setType_publish(String type_publish) {
+            this.type_publish = type_publish;
+        }
+
+        public String getType_sort() {
+            return type_sort;
+        }
+
+        public void setType_sort(String type_sort) {
+            this.type_sort = type_sort;
+        }
+    }
+
+    ///Response Agenda
+    public class ListAgenda{
+        @SerializedName("status")
+        public int status;
+
+        @SerializedName("code")
+        public String code;
+
+        @SerializedName("data")
+        public List<DataAgenda> data;
+
+        @SerializedName("last_cources")
+        public List<JadwalData> class_schedule;
+
+        public List<JadwalData> getClass_schedule() {
+            return class_schedule;
+        }
+
+        public void setClass_schedule(List<JadwalData> class_schedule) {
+            this.class_schedule = class_schedule;
+        }
+
+        public int getStatus() {
+            return status;
+        }
+
+        public void setStatus(int status) {
+            this.status = status;
+        }
+
+        public String getCode() {
+            return code;
+        }
+
+        public void setCode(String code) {
+            this.code = code;
+        }
+
+        public List<DataAgenda> getData() {
+            return data;
+        }
+
+        public void setData(List<DataAgenda> data) {
+            this.data = data;
+        }
+    }
+    public class DataAgenda{
+        @SerializedName("agenda_desc")
+        public String agenda_desc;
+        @SerializedName("desc")
+        public String desc;
+        @SerializedName("type")
+        public String type;
+        @SerializedName("date")
+        public String date;
+        @SerializedName("day")
+        public String day;
+        @SerializedName("agenda_color")
+        public String agenda_color;
+        @SerializedName("agenda_time")
+        public String agenda_time;
+
+        public String getAgenda_desc() {
+            return agenda_desc;
+        }
+
+        public void setAgenda_desc(String agenda_desc) {
+            this.agenda_desc = agenda_desc;
+        }
+
+        public String getDesc() {
+            return desc;
+        }
+
+        public void setDesc(String desc) {
+            this.desc = desc;
+        }
+
+        public String getType() {
+            return type;
+        }
+
+        public void setType(String type) {
+            this.type = type;
+        }
+
+        public String getDate() {
+            return date;
+        }
+
+        public void setDate(String date) {
+            this.date = date;
+        }
+
+        public String getDay() {
+            return day;
+        }
+
+        public void setDay(String day) {
+            this.day = day;
+        }
+
+        public String getAgenda_color() {
+            return agenda_color;
+        }
+
+        public void setAgenda_color(String agenda_color) {
+            this.agenda_color = agenda_color;
+        }
+
+        public String getAgenda_time() {
+            return agenda_time;
+        }
+
+        public void setAgenda_time(String agenda_time) {
+            this.agenda_time = agenda_time;
+        }
+    }
 }
 

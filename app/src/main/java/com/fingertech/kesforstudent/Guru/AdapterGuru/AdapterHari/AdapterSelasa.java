@@ -1,10 +1,12 @@
 package com.fingertech.kesforstudent.Guru.AdapterGuru.AdapterHari;
 
 import android.annotation.SuppressLint;
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.fingertech.kesforstudent.Guru.ModelGuru.ModelHari.ModelSelasa;
@@ -43,8 +45,8 @@ public class AdapterSelasa extends RecyclerView.Adapter<AdapterSelasa.MyHolder> 
         // Get car item dto in list.
         ModelSelasa viewItem = viewItemList.get(position);
         holder.mapel.setText(viewItem.getMapel());
-        holder.lambel.setText(viewItem.getLama_ngajar() + " Menit");
         holder.jambel.setText(viewItem.getJam_mulai() +" - "+ viewItem.getJam_selesai());
+        holder.ll_jadwal.setBackgroundColor(Color.parseColor(viewItem.getWarna_mapel()));
         holder.guru.setText("Kelas "+viewItem.getKelas());
     }
 
@@ -54,15 +56,16 @@ public class AdapterSelasa extends RecyclerView.Adapter<AdapterSelasa.MyHolder> 
     }
 
     class MyHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        TextView mapel, lambel,jambel,guru;
+        TextView mapel,jambel,guru;
+        LinearLayout ll_jadwal;
         OnItemClickListener onItemClickListener;
 
         public MyHolder(View itemView,OnItemClickListener onItemClickListener) {
             super(itemView);
-            mapel    = itemView.findViewById(R.id.mapel);
-            lambel   = itemView.findViewById(R.id.lamber);
-            jambel   = itemView.findViewById(R.id.jam);
-            guru     = itemView.findViewById(R.id.guru);
+            mapel       = itemView.findViewById(R.id.mapel);
+            jambel      = itemView.findViewById(R.id.jam);
+            guru        = itemView.findViewById(R.id.guru);
+            ll_jadwal   = itemView.findViewById(R.id.ll_jadwal);
 //            itemView.setOnClickListener(this);
 //            this.onItemClickListener = onItemClickListener;
         }

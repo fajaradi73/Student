@@ -38,6 +38,7 @@ import com.fingertech.kesforstudent.Rest.ApiClient;
 import com.fingertech.kesforstudent.Rest.JSONResponse;
 import com.fingertech.kesforstudent.Student.Activity.Masuk;
 
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -83,7 +84,7 @@ public class JadwalGuru extends AppCompatActivity {
     SimpleDateFormat outFormat = new SimpleDateFormat("EEEE", new Locale("in","ID"));
     SharedPreferences sharedpreferences;
 
-    String jam_mulai,jam_selesai,mapel,kelas,lamber;
+    String jam_mulai,jam_selesai,mapel,kelas,lamber,warna_mapel;
     public static final String TAG_MEMBER_ID = "member_id";
     public static final String TAG_TOKEN = "token";
     public static final String TAG_SCHOOL_CODE = "school_code";
@@ -94,6 +95,7 @@ public class JadwalGuru extends AppCompatActivity {
     private boolean isExpandedJumat     = false;
     private boolean isExpandedSabtu     = false;
     private boolean isExpandedSenin     = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -164,7 +166,7 @@ public class JadwalGuru extends AppCompatActivity {
                 btn_sabtu.callOnClick();
                 break;
             case "Minggu":
-
+                btn_senin.callOnClick();
                 break;
         }
         btn_senin.setOnClickListener(new View.OnClickListener() {
@@ -317,6 +319,23 @@ public class JadwalGuru extends AppCompatActivity {
                 }
             }
         });
+        DateFormat format = new SimpleDateFormat("dd MMMM yyyy",new Locale("in","ID"));
+        Calendar calendar = Calendar.getInstance();
+        calendar.setFirstDayOfWeek(Calendar.MONDAY);
+        calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
+
+        String[] days = new String[7];
+        for (int i = 0; i < 7; i++)
+        {
+            days[i] = format.format(calendar.getTime());
+            calendar.add(Calendar.DAY_OF_MONTH, 1);
+            tv_senin.setText(days[0]);
+            tv_selasa.setText(days[1]);
+            tv_rabu.setText(days[2]);
+            tv_kamis.setText(days[3]);
+            tv_jumat.setText(days[4]);
+            tv_sabtu.setText(days[5]);
+        }
     }
 
     @Override
@@ -367,126 +386,145 @@ public class JadwalGuru extends AppCompatActivity {
                 if (status == 1 && code.equals("DTS_SCS_0001")){
                     for (int i = 0 ; i < response.body().getData().getSchedule_class().size(); i++){
                         days_name = response.body().getData().getSchedule_class().get(i).getDay_name();
-                        if (days_name.equals("Senin")){
-                            tv_senin.setText(response.body().getData().getSchedule_class().get(i).getSchedule_class().size()+" Mata Pelajaran");
-                            for (int o = 0 ; o < response.body().getData().getSchedule_class().get(i).getSchedule_class().size();o++){
-                                jam_mulai   = response.body().getData().getSchedule_class().get(i).getSchedule_class().get(o).getTimez_start();
-                                jam_selesai = response.body().getData().getSchedule_class().get(i).getSchedule_class().get(o).getTimez_finish();
-                                lamber      = response.body().getData().getSchedule_class().get(i).getSchedule_class().get(o).getLesson_duration();
-                                mapel       = response.body().getData().getSchedule_class().get(i).getSchedule_class().get(o).getCources_name();
-                                kelas       = response.body().getData().getSchedule_class().get(i).getSchedule_class().get(o).getClassroom_name();
-                                modelSenin = new ModelSenin();
-                                modelSenin.setJam_mulai(jam_mulai);
-                                modelSenin.setJam_selesai(jam_selesai);
-                                modelSenin.setKelas(kelas);
-                                modelSenin.setLama_ngajar(lamber);
-                                modelSenin.setMapel(mapel);
-                                modelSeninList.add(modelSenin);
+                        switch (days_name) {
+                            case "Senin": {
+                                for (int o = 0; o < response.body().getData().getSchedule_class().get(i).getSchedule_class().size(); o++) {
+                                    jam_mulai   = response.body().getData().getSchedule_class().get(i).getSchedule_class().get(o).getTimez_start();
+                                    jam_selesai = response.body().getData().getSchedule_class().get(i).getSchedule_class().get(o).getTimez_finish();
+                                    lamber      = response.body().getData().getSchedule_class().get(i).getSchedule_class().get(o).getLesson_duration();
+                                    mapel       = response.body().getData().getSchedule_class().get(i).getSchedule_class().get(o).getCources_name();
+                                    kelas       = response.body().getData().getSchedule_class().get(i).getSchedule_class().get(o).getClassroom_name();
+                                    warna_mapel = response.body().getData().getSchedule_class().get(i).getSchedule_class().get(o).getCources_colour();
+                                    modelSenin = new ModelSenin();
+                                    modelSenin.setJam_mulai(jam_mulai);
+                                    modelSenin.setJam_selesai(jam_selesai);
+                                    modelSenin.setKelas(kelas);
+                                    modelSenin.setWarna_mapel(warna_mapel);
+                                    modelSenin.setLama_ngajar(lamber);
+                                    modelSenin.setMapel(mapel);
+                                    modelSeninList.add(modelSenin);
+                                }
+                                adapterSenin = new AdapterSenin(modelSeninList);
+                                RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(JadwalGuru.this);
+                                rv_senin.setLayoutManager(layoutManager);
+                                rv_senin.setAdapter(adapterSenin);
+                                break;
                             }
-                            adapterSenin = new AdapterSenin(modelSeninList);
-                            RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(JadwalGuru.this);
-                            rv_senin.setLayoutManager(layoutManager);
-                            rv_senin.setAdapter(adapterSenin);
-                        }else if (days_name.equals("Selasa")){
-                            tv_selasa.setText(response.body().getData().getSchedule_class().get(i).getSchedule_class().size()+" Mata Pelajaran");
-                            for (int o = 0 ; o < response.body().getData().getSchedule_class().get(i).getSchedule_class().size();o++){
-                                jam_mulai   = response.body().getData().getSchedule_class().get(i).getSchedule_class().get(o).getTimez_start();
-                                jam_selesai = response.body().getData().getSchedule_class().get(i).getSchedule_class().get(o).getTimez_finish();
-                                lamber      = response.body().getData().getSchedule_class().get(i).getSchedule_class().get(o).getLesson_duration();
-                                mapel       = response.body().getData().getSchedule_class().get(i).getSchedule_class().get(o).getCources_name();
-                                kelas       = response.body().getData().getSchedule_class().get(i).getSchedule_class().get(o).getClassroom_name();
-                                modelSelasa = new ModelSelasa();
-                                modelSelasa.setJam_mulai(jam_mulai);
-                                modelSelasa.setJam_selesai(jam_selesai);
-                                modelSelasa.setKelas(kelas);
-                                modelSelasa.setLama_ngajar(lamber);
-                                modelSelasa.setMapel(mapel);
-                                modelSelasaList.add(modelSelasa);
+                            case "Selasa": {
+                                for (int o = 0; o < response.body().getData().getSchedule_class().get(i).getSchedule_class().size(); o++) {
+                                    jam_mulai   = response.body().getData().getSchedule_class().get(i).getSchedule_class().get(o).getTimez_start();
+                                    jam_selesai = response.body().getData().getSchedule_class().get(i).getSchedule_class().get(o).getTimez_finish();
+                                    lamber      = response.body().getData().getSchedule_class().get(i).getSchedule_class().get(o).getLesson_duration();
+                                    mapel       = response.body().getData().getSchedule_class().get(i).getSchedule_class().get(o).getCources_name();
+                                    kelas       = response.body().getData().getSchedule_class().get(i).getSchedule_class().get(o).getClassroom_name();
+                                    warna_mapel = response.body().getData().getSchedule_class().get(i).getSchedule_class().get(o).getCources_colour();
+                                    modelSelasa = new ModelSelasa();
+                                    modelSelasa.setJam_mulai(jam_mulai);
+                                    modelSelasa.setJam_selesai(jam_selesai);
+                                    modelSelasa.setKelas(kelas);
+                                    modelSelasa.setWarna_mapel(warna_mapel);
+                                    modelSelasa.setLama_ngajar(lamber);
+                                    modelSelasa.setMapel(mapel);
+                                    modelSelasaList.add(modelSelasa);
+                                }
+                                adapterSelasa = new AdapterSelasa(modelSelasaList);
+                                RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(JadwalGuru.this);
+                                rv_selasa.setLayoutManager(layoutManager);
+                                rv_selasa.setAdapter(adapterSelasa);
+                                break;
                             }
-                            adapterSelasa = new AdapterSelasa(modelSelasaList);
-                            RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(JadwalGuru.this);
-                            rv_selasa.setLayoutManager(layoutManager);
-                            rv_selasa.setAdapter(adapterSelasa);
-                        }else if (days_name.equals("Rabu")){
-                            tv_rabu.setText(response.body().getData().getSchedule_class().get(i).getSchedule_class().size()+" Mata Pelajaran");
-                            for (int o = 0 ; o < response.body().getData().getSchedule_class().get(i).getSchedule_class().size();o++){
-                                jam_mulai   = response.body().getData().getSchedule_class().get(i).getSchedule_class().get(o).getTimez_start();
-                                jam_selesai = response.body().getData().getSchedule_class().get(i).getSchedule_class().get(o).getTimez_finish();
-                                lamber      = response.body().getData().getSchedule_class().get(i).getSchedule_class().get(o).getLesson_duration();
-                                mapel       = response.body().getData().getSchedule_class().get(i).getSchedule_class().get(o).getCources_name();
-                                kelas       = response.body().getData().getSchedule_class().get(i).getSchedule_class().get(o).getClassroom_name();
-                                modelRabu = new ModelRabu();
-                                modelRabu.setJam_mulai(jam_mulai);
-                                modelRabu.setJam_selesai(jam_selesai);
-                                modelRabu.setKelas(kelas);
-                                modelRabu.setLama_ngajar(lamber);
-                                modelRabu.setMapel(mapel);
-                                modelRabuList.add(modelRabu);
+                            case "Rabu": {
+                                for (int o = 0; o < response.body().getData().getSchedule_class().get(i).getSchedule_class().size(); o++) {
+                                    jam_mulai   = response.body().getData().getSchedule_class().get(i).getSchedule_class().get(o).getTimez_start();
+                                    jam_selesai = response.body().getData().getSchedule_class().get(i).getSchedule_class().get(o).getTimez_finish();
+                                    lamber      = response.body().getData().getSchedule_class().get(i).getSchedule_class().get(o).getLesson_duration();
+                                    mapel       = response.body().getData().getSchedule_class().get(i).getSchedule_class().get(o).getCources_name();
+                                    kelas       = response.body().getData().getSchedule_class().get(i).getSchedule_class().get(o).getClassroom_name();
+                                    warna_mapel = response.body().getData().getSchedule_class().get(i).getSchedule_class().get(o).getCources_colour();
+                                    modelRabu = new ModelRabu();
+                                    modelRabu.setJam_mulai(jam_mulai);
+                                    modelRabu.setJam_selesai(jam_selesai);
+                                    modelRabu.setKelas(kelas);
+                                    modelRabu.setWarna_mapel(warna_mapel);
+                                    modelRabu.setLama_ngajar(lamber);
+                                    modelRabu.setMapel(mapel);
+                                    modelRabuList.add(modelRabu);
+                                }
+                                adapterRabu = new AdapterRabu(modelRabuList);
+                                RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(JadwalGuru.this);
+                                rv_rabu.setLayoutManager(layoutManager);
+                                rv_rabu.setAdapter(adapterRabu);
+                                break;
                             }
-                            adapterRabu = new AdapterRabu(modelRabuList);
-                            RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(JadwalGuru.this);
-                            rv_rabu.setLayoutManager(layoutManager);
-                            rv_rabu.setAdapter(adapterRabu);
-                        }else if (days_name.equals("Kamis")){
-                            tv_kamis.setText(response.body().getData().getSchedule_class().get(i).getSchedule_class().size()+" Mata Pelajaran");
-                            for (int o = 0 ; o < response.body().getData().getSchedule_class().get(i).getSchedule_class().size();o++){
-                                jam_mulai   = response.body().getData().getSchedule_class().get(i).getSchedule_class().get(o).getTimez_start();
-                                jam_selesai = response.body().getData().getSchedule_class().get(i).getSchedule_class().get(o).getTimez_finish();
-                                lamber      = response.body().getData().getSchedule_class().get(i).getSchedule_class().get(o).getLesson_duration();
-                                mapel       = response.body().getData().getSchedule_class().get(i).getSchedule_class().get(o).getCources_name();
-                                kelas       = response.body().getData().getSchedule_class().get(i).getSchedule_class().get(o).getClassroom_name();
-                                modelKamis = new ModelKamis();
-                                modelKamis.setJam_mulai(jam_mulai);
-                                modelKamis.setJam_selesai(jam_selesai);
-                                modelKamis.setKelas(kelas);
-                                modelKamis.setLama_ngajar(lamber);
-                                modelKamis.setMapel(mapel);
-                                modelKamisList.add(modelKamis);
+                            case "Kamis": {
+                                for (int o = 0; o < response.body().getData().getSchedule_class().get(i).getSchedule_class().size(); o++) {
+                                    jam_mulai   = response.body().getData().getSchedule_class().get(i).getSchedule_class().get(o).getTimez_start();
+                                    jam_selesai = response.body().getData().getSchedule_class().get(i).getSchedule_class().get(o).getTimez_finish();
+                                    lamber      = response.body().getData().getSchedule_class().get(i).getSchedule_class().get(o).getLesson_duration();
+                                    mapel       = response.body().getData().getSchedule_class().get(i).getSchedule_class().get(o).getCources_name();
+                                    kelas       = response.body().getData().getSchedule_class().get(i).getSchedule_class().get(o).getClassroom_name();
+                                    warna_mapel = response.body().getData().getSchedule_class().get(i).getSchedule_class().get(o).getCources_colour();
+                                    modelKamis = new ModelKamis();
+                                    modelKamis.setJam_mulai(jam_mulai);
+                                    modelKamis.setJam_selesai(jam_selesai);
+                                    modelKamis.setKelas(kelas);
+                                    modelKamis.setWarna_mapel(warna_mapel);
+                                    modelKamis.setLama_ngajar(lamber);
+                                    modelKamis.setMapel(mapel);
+                                    modelKamisList.add(modelKamis);
+                                }
+                                adapterKamis = new AdapterKamis(modelKamisList);
+                                RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(JadwalGuru.this);
+                                rv_kamis.setLayoutManager(layoutManager);
+                                rv_kamis.setAdapter(adapterKamis);
+                                break;
                             }
-                            adapterKamis = new AdapterKamis(modelKamisList);
-                            RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(JadwalGuru.this);
-                            rv_kamis.setLayoutManager(layoutManager);
-                            rv_kamis.setAdapter(adapterKamis);
-                        }else if (days_name.equals("Jumat")){
-                            tv_jumat.setText(response.body().getData().getSchedule_class().get(i).getSchedule_class().size()+" Mata Pelajaran");
-                            for (int o = 0 ; o < response.body().getData().getSchedule_class().get(i).getSchedule_class().size();o++){
-                                jam_mulai   = response.body().getData().getSchedule_class().get(i).getSchedule_class().get(o).getTimez_start();
-                                jam_selesai = response.body().getData().getSchedule_class().get(i).getSchedule_class().get(o).getTimez_finish();
-                                lamber      = response.body().getData().getSchedule_class().get(i).getSchedule_class().get(o).getLesson_duration();
-                                mapel       = response.body().getData().getSchedule_class().get(i).getSchedule_class().get(o).getCources_name();
-                                kelas       = response.body().getData().getSchedule_class().get(i).getSchedule_class().get(o).getClassroom_name();
-                                modelJumat = new ModelJumat();
-                                modelJumat.setJam_mulai(jam_mulai);
-                                modelJumat.setJam_selesai(jam_selesai);
-                                modelJumat.setKelas(kelas);
-                                modelJumat.setLama_ngajar(lamber);
-                                modelJumat.setMapel(mapel);
-                                modelJumatList.add(modelJumat);
+                            case "Jumat": {
+                                for (int o = 0; o < response.body().getData().getSchedule_class().get(i).getSchedule_class().size(); o++) {
+                                    jam_mulai   = response.body().getData().getSchedule_class().get(i).getSchedule_class().get(o).getTimez_start();
+                                    jam_selesai = response.body().getData().getSchedule_class().get(i).getSchedule_class().get(o).getTimez_finish();
+                                    lamber      = response.body().getData().getSchedule_class().get(i).getSchedule_class().get(o).getLesson_duration();
+                                    mapel       = response.body().getData().getSchedule_class().get(i).getSchedule_class().get(o).getCources_name();
+                                    kelas       = response.body().getData().getSchedule_class().get(i).getSchedule_class().get(o).getClassroom_name();
+                                    warna_mapel = response.body().getData().getSchedule_class().get(i).getSchedule_class().get(o).getCources_colour();
+                                    modelJumat = new ModelJumat();
+                                    modelJumat.setJam_mulai(jam_mulai);
+                                    modelJumat.setJam_selesai(jam_selesai);
+                                    modelJumat.setKelas(kelas);
+                                    modelJumat.setWarna_mapel(warna_mapel);
+                                    modelJumat.setLama_ngajar(lamber);
+                                    modelJumat.setMapel(mapel);
+                                    modelJumatList.add(modelJumat);
+                                }
+                                adapterJumat = new AdapterJumat(modelJumatList);
+                                RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(JadwalGuru.this);
+                                rv_jumat.setLayoutManager(layoutManager);
+                                rv_jumat.setAdapter(adapterJumat);
+                                break;
                             }
-                            adapterJumat = new AdapterJumat(modelJumatList);
-                            RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(JadwalGuru.this);
-                            rv_jumat.setLayoutManager(layoutManager);
-                            rv_jumat.setAdapter(adapterJumat);
-                        }else if (days_name.equals("Sabtu")){
-                            tv_sabtu.setText(response.body().getData().getSchedule_class().get(i).getSchedule_class().size()+" Mata Pelajaran");
-                            for (int o = 0 ; o < response.body().getData().getSchedule_class().get(i).getSchedule_class().size();o++){
-                                jam_mulai   = response.body().getData().getSchedule_class().get(i).getSchedule_class().get(o).getTimez_start();
-                                jam_selesai = response.body().getData().getSchedule_class().get(i).getSchedule_class().get(o).getTimez_finish();
-                                lamber      = response.body().getData().getSchedule_class().get(i).getSchedule_class().get(o).getLesson_duration();
-                                mapel       = response.body().getData().getSchedule_class().get(i).getSchedule_class().get(o).getCources_name();
-                                kelas       = response.body().getData().getSchedule_class().get(i).getSchedule_class().get(o).getClassroom_name();
-                                modelSabtu = new ModelSabtu();
-                                modelSabtu.setJam_mulai(jam_mulai);
-                                modelSabtu.setJam_selesai(jam_selesai);
-                                modelSabtu.setKelas(kelas);
-                                modelSabtu.setLama_ngajar(lamber);
-                                modelSabtu.setMapel(mapel);
-                                modelSabtuList.add(modelSabtu);
+                            case "Sabtu": {
+                                for (int o = 0; o < response.body().getData().getSchedule_class().get(i).getSchedule_class().size(); o++) {
+                                    jam_mulai   = response.body().getData().getSchedule_class().get(i).getSchedule_class().get(o).getTimez_start();
+                                    jam_selesai = response.body().getData().getSchedule_class().get(i).getSchedule_class().get(o).getTimez_finish();
+                                    lamber      = response.body().getData().getSchedule_class().get(i).getSchedule_class().get(o).getLesson_duration();
+                                    mapel       = response.body().getData().getSchedule_class().get(i).getSchedule_class().get(o).getCources_name();
+                                    kelas       = response.body().getData().getSchedule_class().get(i).getSchedule_class().get(o).getClassroom_name();
+                                    warna_mapel = response.body().getData().getSchedule_class().get(i).getSchedule_class().get(o).getCources_colour();
+                                    modelSabtu = new ModelSabtu();
+                                    modelSabtu.setJam_mulai(jam_mulai);
+                                    modelSabtu.setJam_selesai(jam_selesai);
+                                    modelSabtu.setKelas(kelas);
+                                    modelSabtu.setWarna_mapel(warna_mapel);
+                                    modelSabtu.setLama_ngajar(lamber);
+                                    modelSabtu.setMapel(mapel);
+                                    modelSabtuList.add(modelSabtu);
+                                }
+                                adapterSabtu = new AdapterSabtu(modelSabtuList);
+                                RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(JadwalGuru.this);
+                                rv_sabtu.setLayoutManager(layoutManager);
+                                rv_sabtu.setAdapter(adapterSabtu);
+                                break;
                             }
-                            adapterSabtu = new AdapterSabtu(modelSabtuList);
-                            RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(JadwalGuru.this);
-                            rv_sabtu.setLayoutManager(layoutManager);
-                            rv_sabtu.setAdapter(adapterSabtu);
                         }
                     }
                     switch (day) {
@@ -509,7 +547,7 @@ public class JadwalGuru extends AppCompatActivity {
                             btn_sabtu.performClick();
                             break;
                         case "Minggu":
-
+                            btn_senin.performClick();
                             break;
                     }
                 }

@@ -1,9 +1,11 @@
 package com.fingertech.kesforstudent.Guru.ActivityGuru;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Environment;
 import android.os.SystemClock;
@@ -19,18 +21,24 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.fingertech.kesforstudent.R;
 import com.fingertech.kesforstudent.Student.Activity.LihatPdf;
 import com.fingertech.kesforstudent.Student.Activity.RaporAnak;
 import com.fingertech.kesforstudent.Util.CheckForSDCard;
+import com.github.barteksc.pdfviewer.PDFView;
+import com.github.barteksc.pdfviewer.util.FitPolicy;
 
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.MalformedURLException;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.text.SimpleDateFormat;
@@ -52,6 +60,10 @@ public class LihatFile extends AppCompatActivity implements EasyPermissions.Perm
     NotificationCompat.Builder notification;
     int progressMax = 100;
     PendingIntent pendingIntent;
+    String extension,base_silabus;
+    ProgressBar progressDialog;
+
+    @SuppressLint("SetJavaScriptEnabled")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,17 +71,32 @@ public class LihatFile extends AppCompatActivity implements EasyPermissions.Perm
         webView     = findViewById(R.id.webview);
         iv_close    = findViewById(R.id.iv_close);
         iv_unduh    = findViewById(R.id.iv_download);
+        progressDialog  = findViewById(R.id.progress_bar);
+        base_silabus    = "https://www.kes.co.id/schoolc/assets/images/silabus/";
         file    = getIntent().getStringExtra("file");
+        extension   = file.substring(file.lastIndexOf("."));
 
-        webView.setWebViewClient(new AppWebViewClients());
+        webView.setWebViewClient(new AppWebViewClients(progressDialog));
         webView.getSettings().setJavaScriptEnabled(true);
         webView.getSettings().setBuiltInZoomControls(true);
         webView.getSettings().setDisplayZoomControls(false);
         webView.setVerticalScrollBarEnabled(false);
         webView.setHorizontalScrollBarEnabled(false);
         webView.setScrollContainer(false);
-        webView.loadUrl("https://docs.google.com/viewer?url="
-                + file);
+        webView.getSettings().setAllowFileAccess(true);
+
+        switch (extension) {
+            case ".png":
+            case ".jpg":
+            case ".jpeg":
+                webView.getSettings().setDefaultZoom(WebSettings.ZoomDensity.FAR);
+                webView.loadDataWithBaseURL(null, "<html><head></head><body><table style=\"width:100%; height:100%;\"><tr><td style=\"text-align:center;\"><img style=\"max-width:100%; height:auto;\"src=\"" + base_silabus + file + "\"></td></tr></table></body></html>", "html/css", "utf-8", null);
+                break;
+            default:
+                webView.loadUrl("https://docs.google.com/viewer?url=" + base_silabus + file+"&embedded=true");
+                break;
+        }
+
         iv_close.setOnClickListener(v -> finish());
 
         notificationManager = NotificationManagerCompat.from(this);
@@ -81,7 +108,6 @@ public class LihatFile extends AppCompatActivity implements EasyPermissions.Perm
                 if (EasyPermissions.hasPermissions(LihatFile.this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
                     //Get the URL entered
                     new DownloadFile().execute(file);
-
                 } else {
                     //If permission is not present request for the same.
                     EasyPermissions.requestPermissions(LihatFile.this, getString(R.string.write_file), WRITE_REQUEST_CODE, Manifest.permission.READ_EXTERNAL_STORAGE);
@@ -96,9 +122,13 @@ public class LihatFile extends AppCompatActivity implements EasyPermissions.Perm
         });
 
     }
+    public class AppWebViewClients extends WebViewClient {
+        private ProgressBar progressBar;
 
-    class AppWebViewClients extends WebViewClient {
-
+        public AppWebViewClients(ProgressBar progressBar) {
+            this.progressBar=progressBar;
+            progressBar.setVisibility(View.VISIBLE);
+        }
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
             // TODO Auto-generated method stub
@@ -109,8 +139,7 @@ public class LihatFile extends AppCompatActivity implements EasyPermissions.Perm
         @Override
         public void onPageFinished(WebView view, String url) {
             // TODO Auto-generated method stub
-            super.onPageFinished(view, url);
-
+            super.onPageFinished(view, url);progressBar.setVisibility(View.GONE);
         }
     }
     @Override
@@ -128,6 +157,7 @@ public class LihatFile extends AppCompatActivity implements EasyPermissions.Perm
     @Override
     public void onPermissionsDenied(int requestCode, List<String> perms) {
         Log.d("KES", "Permission has been denied");
+        EasyPermissions.requestPermissions(LihatFile.this, getString(R.string.write_file), WRITE_REQUEST_CODE, Manifest.permission.READ_EXTERNAL_STORAGE);
     }
 
     /**

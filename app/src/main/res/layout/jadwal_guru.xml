@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@color/background_color"
     tools:context=".Guru.ActivityGuru.JadwalGuru">
 
     <android.support.v7.widget.Toolbar
@@ -29,7 +30,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="40dp"
                 android:layout_marginLeft="20dp"
-                app:cardBackgroundColor="@color/grey_300"
+                app:cardBackgroundColor="@color/background_color"
                 android:layout_marginRight="20dp">
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -96,6 +97,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:visibility="gone"
+                        android:layout_marginBottom="5dp"
                         android:id="@+id/senin">
 
                     </android.support.v7.widget.RecyclerView>
@@ -108,7 +110,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:layout_marginLeft="20dp"
-                app:cardBackgroundColor="@color/grey_300"
+                app:cardBackgroundColor="@color/background_color"
                 android:layout_marginRight="20dp">
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -176,6 +178,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:visibility="gone"
+                        android:layout_marginBottom="5dp"
                         android:id="@+id/selasa">
 
                     </android.support.v7.widget.RecyclerView>
@@ -187,7 +190,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:layout_marginLeft="20dp"
-                app:cardBackgroundColor="@color/grey_300"
+                app:cardBackgroundColor="@color/background_color"
                 android:layout_marginRight="20dp">
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -252,6 +255,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:visibility="gone"
+                        android:layout_marginBottom="5dp"
                         android:id="@+id/rabu">
 
                     </android.support.v7.widget.RecyclerView>
@@ -263,7 +267,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:layout_marginLeft="20dp"
-                app:cardBackgroundColor="@color/grey_300"
+                app:cardBackgroundColor="@color/background_color"
                 android:layout_marginRight="20dp">
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -328,6 +332,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:visibility="gone"
+                        android:layout_marginBottom="5dp"
                         android:id="@+id/kamis">
 
                     </android.support.v7.widget.RecyclerView>
@@ -339,7 +344,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:layout_marginLeft="20dp"
-                app:cardBackgroundColor="@color/grey_300"
+                app:cardBackgroundColor="@color/background_color"
                 android:layout_marginRight="20dp">
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -407,6 +412,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:visibility="gone"
+                        android:layout_marginBottom="5dp"
                         android:id="@+id/jumat">
 
                     </android.support.v7.widget.RecyclerView>
@@ -419,7 +425,7 @@
                 android:layout_marginTop="20dp"
                 android:layout_marginLeft="20dp"
                 android:layout_marginBottom="40dp"
-                app:cardBackgroundColor="@color/grey_300"
+                app:cardBackgroundColor="@color/background_color"
                 android:layout_marginRight="20dp">
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -485,6 +491,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:visibility="gone"
+                        android:layout_marginBottom="5dp"
                         android:id="@+id/sabtu">
 
                     </android.support.v7.widget.RecyclerView>

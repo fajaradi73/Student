@@ -1,7 +1,21 @@
 package com.fingertech.kesforstudent.Guru.ModelGuru.ModelHari;
 
 public class ModelSelasa {
-    private String jam_mulai,jam_selesai,lama_ngajar,mapel,kelas;
+    private String jam_mulai;
+    private String jam_selesai;
+    private String lama_ngajar;
+    private String mapel;
+    private String kelas;
+
+    public String getWarna_mapel() {
+        return warna_mapel;
+    }
+
+    public void setWarna_mapel(String warna_mapel) {
+        this.warna_mapel = warna_mapel;
+    }
+
+    private String warna_mapel;
 
     public String getJam_mulai() {
         return jam_mulai;
