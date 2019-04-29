@@ -40,7 +40,7 @@ public class AgendaGuru extends AppCompatActivity {
     CardView btn_lihat;
     Spinner sp_edulevel,sp_mapel;
     Auth mApiInterface;
-    String authorization,school_code,member_id,scyear_id,edulevel_id,edulevel_name,cources_id,cources_name,code;
+    String authorization,school_code,member_id,scyear_id, classroom_id,edulevel_name,cources_id,cources_name,code;
     public static final String TAG_EMAIL        = "email";
     public static final String TAG_MEMBER_ID    = "member_id";
     public static final String TAG_FULLNAME     = "fullname";
@@ -79,7 +79,7 @@ public class AgendaGuru extends AppCompatActivity {
         btn_lihat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (edulevel_id==null){
+                if (classroom_id ==null){
                     FancyToast.makeText(getApplicationContext(),"Harap pilih tingkatan kelas terlebih dahulu", Toast.LENGTH_LONG,FancyToast.ERROR,false).show();
                 }else if (cources_id == null){
                     FancyToast.makeText(getApplicationContext(),"Harap pilih mata pelajaran terlebih dahulu", Toast.LENGTH_LONG,FancyToast.ERROR,false).show();
@@ -90,7 +90,7 @@ public class AgendaGuru extends AppCompatActivity {
                     editor.putString("school_code",school_code);
                     editor.putString("scyear_id",scyear_id);
                     editor.putString("cources_id",cources_id);
-                    editor.putString("edulevel_id",edulevel_id);
+                    editor.putString("classroom_id", classroom_id);
                     editor.apply();
                     Intent intent = new Intent(AgendaGuru.this,AgendaDetail.class);
                     intent.putExtra("authorization",authorization);
@@ -98,7 +98,7 @@ public class AgendaGuru extends AppCompatActivity {
                     intent.putExtra("school_code",school_code);
                     intent.putExtra("scyear_id",scyear_id);
                     intent.putExtra("cources_id",cources_id);
-                    intent.putExtra("edulevel_id",edulevel_id);
+                    intent.putExtra("classroom_id", classroom_id);
                     startActivity(intent);
                 }
             }
@@ -139,10 +139,10 @@ public class AgendaGuru extends AppCompatActivity {
                             sp_edulevel.setAdapter(adapterRaport);
                             sp_edulevel.setOnItemSelectedListener((parent, view, position, id) -> {
                                 if (position == 0) {
-                                    edulevel_id = null;
+                                    classroom_id = null;
                                     sp_mapel.setEnabled(false);
                                 } else {
-                                    edulevel_id = dataEdulevelList.get(position - 1).getClassroomid();
+                                    classroom_id = dataEdulevelList.get(position - 1).getClassroomid();
                                     sp_mapel.setEnabled(true);
                                     dapat_mapel();
                                 }
@@ -162,7 +162,7 @@ public class AgendaGuru extends AppCompatActivity {
     private void dapat_mapel(){
         progressBar();
         showDialog();
-        Call<JSONResponse.ListMapelEdu> call = mApiInterface.kes_get_edulevel_cources_get(authorization,school_code.toLowerCase(),member_id,edulevel_id,scyear_id);
+        Call<JSONResponse.ListMapelEdu> call = mApiInterface.kes_get_edulevel_cources_get(authorization,school_code.toLowerCase(),member_id, classroom_id,scyear_id);
         call.enqueue(new Callback<JSONResponse.ListMapelEdu>() {
             @Override
             public void onResponse(Call<JSONResponse.ListMapelEdu> call, Response<JSONResponse.ListMapelEdu> response) {

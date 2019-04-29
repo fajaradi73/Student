@@ -3,6 +3,7 @@ package com.fingertech.kesforstudent.Guru.ActivityGuru;
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.ColorDrawable;
@@ -136,7 +137,7 @@ public class AgendaDetail extends AppCompatActivity {
         member_id           = sharedpreferences.getString(TAG_MEMBER_ID,"");
         scyear_id           = sharedpreferences.getString("scyear_id","");
         school_code         = sharedpreferences.getString(TAG_SCHOOL_CODE,"");
-        edulevel_id         = sharedpreferences.getString("edulevel_id","");
+        edulevel_id         = sharedpreferences.getString("classroom_id","");
         cources_id          = sharedpreferences.getString("cources_id","");
 
         date = df.format(Calendar.getInstance().getTime());
@@ -491,15 +492,24 @@ public class AgendaDetail extends AppCompatActivity {
                             Long timesnow = datenow.getTime();
                             Long timesakhir = datejam.getTime();
                             if (timesnow > timesakhir) {
-                                if(Integer.parseInt(tanggal) > agendaModelTanggalList.size()){
+                                if(Integer.parseInt(tanggal) > agendaModelTanggalList.size()-1){
                                     datatanggal(Integer.parseInt(tahun),Integer.parseInt(bulan)+1);
-                                    rvtanggal.scrollToPosition(0);
+                                    rvtanggal.scrollToPosition(1);
+                                    rvtanggal.smoothScrollToPosition(0);
                                     rvtanggal.smoothScrollBy(1,0);
                                     datePicker.updateDate(Integer.parseInt(tahun),Integer.parseInt(bulan),0);
                                 }else {
-                                    rvtanggal.scrollToPosition(Integer.parseInt(tanggal));
-                                    rvtanggal.smoothScrollBy(1,0);
-                                    datePicker.updateDate(Integer.parseInt(tahun),Integer.parseInt(bulan)-1,Integer.parseInt(tanggal)+1);
+                                    if (Integer.parseInt(tanggal) == agendaModelTanggalList.size() -1){
+                                        rvtanggal.scrollToPosition(Integer.parseInt(tanggal)-1);
+                                        rvtanggal.smoothScrollToPosition(Integer.parseInt(tanggal));
+                                        rvtanggal.smoothScrollBy(1,0);
+                                        datePicker.updateDate(Integer.parseInt(tahun),Integer.parseInt(bulan)-1,Integer.parseInt(tanggal)+1);
+                                    }else {
+                                        rvtanggal.scrollToPosition(Integer.parseInt(tanggal));
+                                        rvtanggal.smoothScrollBy(1,0);
+                                        datePicker.updateDate(Integer.parseInt(tahun),Integer.parseInt(bulan)-1,Integer.parseInt(tanggal)+1);
+                                    }
+
                                 }
                             } else {
                                 rvtanggal.scrollToPosition(Integer.parseInt(tanggal) - 1);
@@ -546,11 +556,39 @@ public class AgendaDetail extends AppCompatActivity {
             case android.R.id.home:
                 finish();
                 return true;
+            case R.id.item_add:
+                SharedPreferences.Editor editor = sharedpreferences.edit();
+                editor.putString("authorization",authorization);
+                editor.putString("member_id",member_id);
+                editor.putString("school_code",school_code);
+                editor.putString("scyear_id",scyear_id);
+                editor.putString("classroom_id",edulevel_id);
+                editor.apply();
+                Intent intent = new Intent(AgendaDetail.this,TambahAgenda.class);
+                intent.putExtra("authorization",authorization);
+                intent.putExtra("member_id",member_id);
+                intent.putExtra("school_code",school_code);
+                intent.putExtra("scyear_id",scyear_id);
+                intent.putExtra("classroom_id",edulevel_id);
+                startActivityForResult(intent,1);
+                return true;
         }
         return super.onOptionsItemSelected(item);
     }
     public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_agenda, menu);
         return true;
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Log.d("requze",requestCode+"");
+        if (requestCode == 1) {
+            if(resultCode == RESULT_OK) {
+                dapat_Agenda();
+            }
+        }
     }
 
 }

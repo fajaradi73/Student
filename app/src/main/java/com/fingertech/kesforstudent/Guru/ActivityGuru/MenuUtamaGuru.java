@@ -144,16 +144,16 @@ public class MenuUtamaGuru extends AppCompatActivity {
                     JSONResponse.GetProfile resource = response.body();
                     status = resource.status;
                     if (status == 1) {
-                        nama = response.body().getData().getFullname();
-                        nis = response.body().getData().getMember_code();
-                        email = response.body().getData().getEmail();
-                        alamat = response.body().getData().getAddress();
-                        gender = response.body().getData().getGender();
-                        tanggal = response.body().getData().getBirth_date();
-                        tempat = response.body().getData().getBirth_place();
-                        agama = response.body().getData().getReligion();
-                        picture = response.body().getData().getPicture();
-                        no_hp = response.body().getData().getMobile_phone();
+                        nama        = response.body().getData().getFullname();
+                        nis         = response.body().getData().getMember_code();
+                        email       = response.body().getData().getEmail();
+                        alamat      = response.body().getData().getAddress();
+                        gender      = response.body().getData().getGender();
+                        tanggal     = response.body().getData().getBirth_date();
+                        tempat      = response.body().getData().getBirth_place();
+                        agama       = response.body().getData().getReligion();
+                        picture     = response.body().getData().getPicture();
+                        no_hp       = response.body().getData().getMobile_phone();
                         last_login = response.body().getData().getLast_login();
                         tv_nama_guru.setText(nama);
                         if (picture.equals("")) {
