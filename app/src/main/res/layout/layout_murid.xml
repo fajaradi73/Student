@@ -139,7 +139,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="44dp"
-                    android:background="@color/color_absen_spiritual"
+                    android:background="@color/color_absen_spritual"
                     >
                     <com.github.florent37.shapeofview.shapes.RoundRectView
                         android:layout_width="wrap_content"
@@ -226,7 +226,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="4dp"
-                    android:background="@color/color_absen_toleransi"
+                    android:background="@color/color_absen_toleran"
                     >
                     <com.github.florent37.shapeofview.shapes.RoundRectView
                         android:layout_width="wrap_content"
@@ -247,7 +247,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="4dp"
-                    android:background="@color/color_absen_gotongroyong"
+                    android:background="@color/color_absen_gotong"
                     >
                     <com.github.florent37.shapeofview.shapes.RoundRectView
                         android:layout_width="wrap_content"
@@ -269,7 +269,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="4dp"
-                    android:background="@color/color_santun"
+                    android:background="@color/color_absen_gotongroyong"
                     >
                     <com.github.florent37.shapeofview.shapes.RoundRectView
                         android:layout_width="wrap_content"
