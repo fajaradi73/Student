@@ -265,6 +265,7 @@ public interface Auth {
                                                                @Query("school_code") String school_code,
                                                                @Query("teacher_id") String teacher_id,
                                                                @Query("classroom_id") String classroom_id,
+                                                               @Query("cources_id") String cources_id,
                                                                @Query("year_month") String year_month,
                                                                @Query("day_now") String day_now);
 
