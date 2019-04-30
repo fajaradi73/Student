@@ -328,4 +328,13 @@ public interface Auth {
                                                        @Query("message_id") String message_id,
                                                        @Query("parent_message_id") String parent_message_id);
 
+    //// Detail Pesan Terkirim Guru
+    @GET("teachers/kes_message_sent")
+    Call<JSONResponse.ListPesanTerkirimGuru>kes_message_sent_get(@Header("Authorization") String authorization,
+                                                       @Query("school_code") String school_code,
+                                                       @Query("teacher_id") String parent_id,
+                                                       @Query("date_from") String date_from,
+                                                       @Query("date_to") String parent_date_to);
+
+
 }

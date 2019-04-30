@@ -33,7 +33,7 @@
         android:theme="@style/AppTheme"
         tools:ignore="AllowBackup,GoogleAppIndexingWarning,InnerclassSeparator"
         tools:targetApi="n">
-
+        <activity android:name=".Guru.ActivityGuru.PesanTerkirimDetail"></activity>
 
         <uses-library
             android:name="org.apache.http.legacy"
@@ -246,12 +246,12 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".Guru.ActivityGuru.TulisPesan"
-            android:label="Tulis"
+            android:label="Tulis Pesan"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".Guru.ActivityGuru.Pesan_Terkirim"
-            android:label="Terkirim"
+            android:label="Pesan Terkirim"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
@@ -268,10 +268,11 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.fingertech.kesforstudent.Student.Activity.Masuk" />
         </activity>
-        <activity android:name=".Guru.ActivityGuru.PesanMasukDetail"
+        <activity
+            android:name=".Guru.ActivityGuru.PesanMasukDetail"
             android:label=""
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>
