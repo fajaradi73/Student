@@ -4,22 +4,19 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbarPesanGuru"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="?attr/colorPrimary"
-        android:minHeight="?attr/actionBarSize"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
 
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="350dp"
-        android:layout_below="@id/toolbarPesanGuru"
-        android:background="@drawable/ic_email_bg"
-        >
+        android:background="@drawable/ic_email_bg">
     </ImageView>
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/ic_left_arrow_white"
+        android:layout_margin="10dp"
+        android:id="@+id/iv_close"
+        android:elevation="10dp"/>
     <LinearLayout
         android:clipToPadding="false"
         android:gravity="center"

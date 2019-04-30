@@ -312,5 +312,20 @@ public interface Auth {
                                                       @Field("agenda_desc") String agenda_desc,
                                                       @Field("scyear_id") String scyear_id);
 
+    //// Pesan Guru
+    @GET("teachers/kes_message_inbox")
+    Call<JSONResponse.ListPesanGuru> kes_message_inbox_get(@Header("Authorization") String authorization,
+                                                      @Query("school_code") String school_code,
+                                                      @Query("teacher_id") String teacher_id,
+                                                      @Query("date_from") String date_from,
+                                                      @Query("date_to") String date_to);
+
+    //// Detail Pesan Guru
+    @GET("teachers/kes_inbox_detail")
+    Call<JSONResponse.PesanDetail>kes_inbox_detail_get(@Header("Authorization") String authorization,
+                                                       @Query("school_code") String school_code,
+                                                       @Query("teacher_id") String parent_id,
+                                                       @Query("message_id") String message_id,
+                                                       @Query("parent_message_id") String parent_message_id);
 
 }
