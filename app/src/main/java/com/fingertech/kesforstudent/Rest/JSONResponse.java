@@ -6140,5 +6140,173 @@ public class JSONResponse {
             this.reply_status = reply_status;
         }
     }
+
+    ///Response List Whattodolist
+    public class ListWhattodolist{
+        @SerializedName("status")
+        public int status;
+
+        @SerializedName("code")
+        public String code;
+
+        @SerializedName("data")
+        public List<DataWhattodolis> data;
+
+        public int getStatus() {
+            return status;
+        }
+
+        public void setStatus(int status) {
+            this.status = status;
+        }
+
+        public String getCode() {
+            return code;
+        }
+
+        public void setCode(String code) {
+            this.code = code;
+        }
+
+        public List<DataWhattodolis> getData() {
+            return data;
+        }
+
+        public void setData(List<DataWhattodolis> data) {
+            this.data = data;
+        }
+    }
+    public class DataWhattodolis{
+        @SerializedName("cources_name")
+        public String cources_name;
+        @SerializedName("cscheduletimeid")
+        public String cscheduletimeid;
+        @SerializedName("class")
+        public String classs;
+        @SerializedName("absent_todo_text")
+        public String absent_todo_text;
+        @SerializedName("classid")
+        public String classid;
+        @SerializedName("classroom_name")
+        public String classroom_name;
+        @SerializedName("courcesid")
+        public String courcesid;
+        @SerializedName("exam_date")
+        public String exam_date;
+        @SerializedName("exam_desc")
+        public String exam_desc;
+        @SerializedName("exam_tipe")
+        public String exam_tipe;
+        @SerializedName("exam_id")
+        public String exam_id;
+        @SerializedName("exam_tipe_id")
+        public String exam_tipe_id;
+        @SerializedName("exam_todo_text")
+        public String exam_todo_text;
+
+        public String getCources_name() {
+            return cources_name;
+        }
+
+        public void setCources_name(String cources_name) {
+            this.cources_name = cources_name;
+        }
+
+        public String getCscheduletimeid() {
+            return cscheduletimeid;
+        }
+
+        public void setCscheduletimeid(String cscheduletimeid) {
+            this.cscheduletimeid = cscheduletimeid;
+        }
+
+        public String getClasss() {
+            return classs;
+        }
+
+        public void setClasss(String classs) {
+            this.classs = classs;
+        }
+
+        public String getAbsent_todo_text() {
+            return absent_todo_text;
+        }
+
+        public void setAbsent_todo_text(String absent_todo_text) {
+            this.absent_todo_text = absent_todo_text;
+        }
+
+        public String getClassid() {
+            return classid;
+        }
+
+        public void setClassid(String classid) {
+            this.classid = classid;
+        }
+
+        public String getClassroom_name() {
+            return classroom_name;
+        }
+
+        public void setClassroom_name(String classroom_name) {
+            this.classroom_name = classroom_name;
+        }
+
+        public String getCourcesid() {
+            return courcesid;
+        }
+
+        public void setCourcesid(String courcesid) {
+            this.courcesid = courcesid;
+        }
+
+        public String getExam_date() {
+            return exam_date;
+        }
+
+        public void setExam_date(String exam_date) {
+            this.exam_date = exam_date;
+        }
+
+        public String getExam_desc() {
+            return exam_desc;
+        }
+
+        public void setExam_desc(String exam_desc) {
+            this.exam_desc = exam_desc;
+        }
+
+        public String getExam_tipe() {
+            return exam_tipe;
+        }
+
+        public void setExam_tipe(String exam_tipe) {
+            this.exam_tipe = exam_tipe;
+        }
+
+        public String getExam_id() {
+            return exam_id;
+        }
+
+        public void setExam_id(String exam_id) {
+            this.exam_id = exam_id;
+        }
+
+        public String getExam_tipe_id() {
+            return exam_tipe_id;
+        }
+
+        public void setExam_tipe_id(String exam_tipe_id) {
+            this.exam_tipe_id = exam_tipe_id;
+        }
+
+        public String getExam_todo_text() {
+            return exam_todo_text;
+        }
+
+        public void setExam_todo_text(String exam_todo_text) {
+            this.exam_todo_text = exam_todo_text;
+        }
+    }
 }
 

@@ -328,4 +328,12 @@ public interface Auth {
                                                        @Query("message_id") String message_id,
                                                        @Query("parent_message_id") String parent_message_id);
 
+    //// List Whattodolist
+    @GET("teachers/kes_whattodolist")
+    Call<JsonElement>kes_whattodolist_get(@Header("Authorization") String authorization,
+                                          @Query("school_code") String school_code,
+                                          @Query("teacher_id") String teacher_id,
+                                          @Query("scyear_id") String scyear_id);
+
+
 }
