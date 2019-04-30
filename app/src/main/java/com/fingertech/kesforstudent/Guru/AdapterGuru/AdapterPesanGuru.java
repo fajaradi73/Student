@@ -1,7 +1,6 @@
-package com.fingertech.kesforstudent.Student.Adapter;
+package com.fingertech.kesforstudent.Guru.AdapterGuru;
 
 import android.annotation.SuppressLint;
-import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,7 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.fingertech.kesforstudent.Student.Model.PesanModel;
+import com.fingertech.kesforstudent.Guru.ModelGuru.ModelPesanGuru;
 import com.fingertech.kesforstudent.R;
 
 import java.text.DateFormat;
@@ -25,9 +24,9 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 import static com.fingertech.kesforstudent.Service.App.getContext;
 
-public class PesanAdapter extends RecyclerView.Adapter<PesanAdapter.MyHolder> {
+public class AdapterPesanGuru extends RecyclerView.Adapter<AdapterPesanGuru.MyHolder> {
 
-    private List<PesanModel> viewItemList;
+    private List<ModelPesanGuru> viewItemList;
     Date date_now,date_pesan;
 
     private OnItemClickListener onItemClickListener;
@@ -35,7 +34,7 @@ public class PesanAdapter extends RecyclerView.Adapter<PesanAdapter.MyHolder> {
 
     private DateFormat times_format = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
     public int row_index = 0;
-    public PesanAdapter(List<PesanModel> viewItemList) {
+    public AdapterPesanGuru(List<ModelPesanGuru> viewItemList) {
         this.viewItemList = viewItemList;
     }
 
@@ -58,7 +57,7 @@ public class PesanAdapter extends RecyclerView.Adapter<PesanAdapter.MyHolder> {
     public void onBindViewHolder(MyHolder holder, int position) {
 
         // Get car item dto in list.
-        PesanModel viewItem = viewItemList.get(position);
+        ModelPesanGuru viewItem = viewItemList.get(position);
         // Set car item title.
 
         String tanggal = tanggalFormat.format(Calendar.getInstance().getTime());
@@ -143,7 +142,7 @@ public class PesanAdapter extends RecyclerView.Adapter<PesanAdapter.MyHolder> {
         }
     }
 
-    String convertjam(String tanggal){
+    private String convertjam(String tanggal){
         SimpleDateFormat calendarDateFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
         SimpleDateFormat newDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:dd",Locale.getDefault());
         try {
@@ -154,7 +153,7 @@ public class PesanAdapter extends RecyclerView.Adapter<PesanAdapter.MyHolder> {
             return "";
         }
     }
-    String convertTanggal(String tanggal){
+    private String convertTanggal(String tanggal){
         SimpleDateFormat calendarDateFormat = new SimpleDateFormat("dd MMM", Locale.getDefault());
         SimpleDateFormat newDateFormat = new SimpleDateFormat("yyyy-MM-dd",Locale.getDefault());
         try {

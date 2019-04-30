@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.ImageView;
 
 import com.fingertech.kesforstudent.R;
 import com.fingertech.kesforstudent.Student.Activity.Masuk;
@@ -26,7 +27,7 @@ public class PesanGuru extends AppCompatActivity {
     public static final String TAG_TOKEN = "token";
     public static final String TAG_SCHOOL_CODE = "school_code";
     public static final String my_viewpager_preferences = "my_viewpager_preferences";
-
+    ImageView iv_close;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,10 +43,17 @@ public class PesanGuru extends AppCompatActivity {
         school_code     = sharedpreferences.getString(TAG_SCHOOL_CODE, "");
         scyear_id       = sharedpreferences.getString("scyear_id","");
 
-        toolbar = findViewById(R.id.toolbarTulisPesan);
-        cv_pesanmasukguru = findViewById(R.id.btn_pesan_masuk);
-        cv_kirimpesan = findViewById(R.id.btn_kirim_pesan);
-        cv_pesanterkirim = findViewById(R.id.btn_pesan_terkirim);
+        cv_pesanmasukguru   = findViewById(R.id.btn_pesan_masuk);
+        cv_kirimpesan       = findViewById(R.id.btn_kirim_pesan);
+        cv_pesanterkirim    = findViewById(R.id.btn_pesan_terkirim);
+        iv_close            = findViewById(R.id.iv_close);
+
+        iv_close.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
         cv_kirimpesan.setOnClickListener(new View.OnClickListener() {
             @Override

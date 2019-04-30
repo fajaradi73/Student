@@ -1,6 +1,6 @@
-package com.fingertech.kesforstudent.Student.Model;
+package com.fingertech.kesforstudent.Guru.ModelGuru;
 
-public class PesanModel {
+public class ModelPesanGuru {
     private String jam;
     private String dari;
     private String pesan;
@@ -9,7 +9,15 @@ public class PesanModel {
     private String tanggal;
     private String message_id;
     private String title;
+    private String reply_message_id;
 
+    public String getReply_message_id() {
+        return reply_message_id;
+    }
+
+    public void setReply_message_id(String reply_message_id) {
+        this.reply_message_id = reply_message_id;
+    }
     public String getMessage_id() {
         return message_id;
     }
@@ -83,6 +91,4 @@ public class PesanModel {
     public void setTitle(String title) {
         this.title = title;
     }
-
-
 }
