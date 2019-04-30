@@ -7,15 +7,12 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.TextView;
 
 import com.fingertech.kesforstudent.R;
 import com.fingertech.kesforstudent.Student.Activity.Masuk;
 
 public class Pesan_Terkirim extends AppCompatActivity {
 
-    TextView tv_contohView, tv_contohView2;
-    String  data, data2;
     Toolbar toolbar;
 
     SharedPreferences sharedpreferences,sharedViewpager;
