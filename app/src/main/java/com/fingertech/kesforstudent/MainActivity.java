@@ -211,20 +211,22 @@ public class MainActivity extends AppCompatActivity {
                     recyclerView.setAdapter(searchAdapter);
                     searchAdapter.notifyDataSetChanged();
                     searchAdapter.getFilter(key).filter(key);
-                    searchAdapter.setOnItemClickListener((view, position) -> {
-                        school_name         = arraylist.get(position).getSchool_name();
-                        sekolah_kode        = arraylist.get(position).getSchool_code();
-                        school_id           = arraylist.get(position).getSchool_id();
-                        sekolah_kode        = sekolah_kode.toLowerCase();
-                        floatingSearchView.setSearchText(school_name);
-                        floatingSearchView.clearSearchFocus();
-                        recyclerView.setVisibility(View.GONE);
-                        logo.setVisibility(View.VISIBLE);
-                        footer.setVisibility(View.VISIBLE);
-                        tv_sekolah.setVisibility(View.VISIBLE);
-                        hideKeyboard(MainActivity.this);
+                    searchAdapter.setOnItemClickListener(new SearchAdapter.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(View view, int position) {
+                            school_name         = arraylist.get(position).getSchool_name();
+                            sekolah_kode        = arraylist.get(position).getSchool_code();
+                            school_id           = arraylist.get(position).getSchool_id();
+                            sekolah_kode        = sekolah_kode.toLowerCase();
+                            floatingSearchView.setSearchText(school_name);
+                            floatingSearchView.clearSearchFocus();
+                            recyclerView.setVisibility(View.GONE);
+                            logo.setVisibility(View.VISIBLE);
+                            footer.setVisibility(View.VISIBLE);
+                            tv_sekolah.setVisibility(View.VISIBLE);
+                            hideKeyboard(MainActivity.this);
+                        }
                     });
-
                 } else {
                     if(status == 0 && code.equals("SS_ERR_0001")){
 
