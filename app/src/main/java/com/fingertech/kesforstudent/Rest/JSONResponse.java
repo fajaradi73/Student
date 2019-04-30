@@ -6308,5 +6308,285 @@ public class JSONResponse {
             this.exam_todo_text = exam_todo_text;
         }
     }
-}
+    //Response Pesan Terkirim Guru
+    public class ListPesanTerkirimGuru {
+        @SerializedName("status")
+        public int status;
 
+        @SerializedName("code")
+        public String code;
+
+        @SerializedName("data")
+        public ListPesanTerkirimGuru data;
+
+        public int getStatus() {
+            return status;
+        }
+
+        public void setStatus(int status) {
+            this.status = status;
+        }
+
+        public String getCode() {
+            return code;
+        }
+
+        public void setCode(String code) {
+            this.code = code;
+        }
+
+        public ListPesanTerkirimGuru getData() {
+            return data;
+        }
+
+        public void setData(ListPesanTerkirimGuru data) {
+            this.data = data;
+        }
+    }
+    public class DataPesanTerkirim{
+        @SerializedName("messageid")
+        public String messageid;
+        @SerializedName("user_id_from")
+        public String user_id_from;
+        @SerializedName("user_id_to")
+        public String user_id_to;
+        @SerializedName("message_cont")
+        public String message_cont;
+        @SerializedName("message_date")
+        public String message_date;
+        @SerializedName("message_status")
+        public String message_status;
+        @SerializedName("message_type")
+        public String message_type;
+        @SerializedName("classroom_id")
+        public String classroom_id;
+        @SerializedName("cources_id")
+        public String cources_id;
+        @SerializedName("datez")
+        public String datez;
+        @SerializedName("member_id")
+        public String member_id;
+        @SerializedName("reply_message_id")
+        public String reply_message_id;
+        @SerializedName("read_status")
+        public String read_status;
+        @SerializedName("read_date")
+        public String read_date;
+        @SerializedName("read_message_id")
+        public String read_message_id;
+        @SerializedName("parent_status")
+        public String parent_status;
+        @SerializedName("parent_id")
+        public String parent_id;
+        @SerializedName("message_title")
+        public String message_title;
+        @SerializedName("student_status")
+        public String student_status;
+        @SerializedName("datez_ok")
+        public String datez_ok;
+        @SerializedName("classroom_name")
+        public String classroom_name;
+        @SerializedName("cources_name")
+        public String cources_name;
+        @SerializedName("recipient_name")
+        public String recipient_name;
+        @SerializedName("member_type_text")
+        public String member_type_text;
+
+
+        public String getMessageid() {
+            return messageid;
+        }
+
+        public void setMessageid(String messageid) {
+            this.messageid = messageid;
+        }
+
+        public String getUser_id_from() {
+            return user_id_from;
+        }
+
+        public void setUser_id_from(String user_id_from) {
+            this.user_id_from = user_id_from;
+        }
+
+        public String getUser_id_to() {
+            return user_id_to;
+        }
+
+        public void setUser_id_to(String user_id_to) {
+            this.user_id_to = user_id_to;
+        }
+
+        public String getMessage_cont() {
+            return message_cont;
+        }
+
+        public void setMessage_cont(String message_cont) {
+            this.message_cont = message_cont;
+        }
+
+        public String getMessage_date() {
+            return message_date;
+        }
+
+        public void setMessage_date(String message_date) {
+            this.message_date = message_date;
+        }
+
+        public String getMessage_status() {
+            return message_status;
+        }
+
+        public void setMessage_status(String message_status) {
+            this.message_status = message_status;
+        }
+
+        public String getMessage_type() {
+            return message_type;
+        }
+
+        public void setMessage_type(String message_type) {
+            this.message_type = message_type;
+        }
+
+        public String getClassroom_id() {
+            return classroom_id;
+        }
+
+        public void setClassroom_id(String classroom_id) {
+            this.classroom_id = classroom_id;
+        }
+
+        public String getCources_id() {
+            return cources_id;
+        }
+
+        public void setCources_id(String cources_id) {
+            this.cources_id = cources_id;
+        }
+
+        public String getDatez() {
+            return datez;
+        }
+
+        public void setDatez(String datez) {
+            this.datez = datez;
+        }
+
+        public String getMember_id() {
+            return member_id;
+        }
+
+        public void setMember_id(String member_id) {
+            this.member_id = member_id;
+        }
+
+        public String getReply_message_id() {
+            return reply_message_id;
+        }
+
+        public void setReply_message_id(String reply_message_id) {
+            this.reply_message_id = reply_message_id;
+        }
+
+        public String getRead_status() {
+            return read_status;
+        }
+
+        public void setRead_status(String read_status) {
+            this.read_status = read_status;
+        }
+
+        public String getRead_date() {
+            return read_date;
+        }
+
+        public void setRead_date(String read_date) {
+            this.read_date = read_date;
+        }
+
+        public String getRead_message_id() {
+            return read_message_id;
+        }
+
+        public void setRead_message_id(String read_message_id) {
+            this.read_message_id = read_message_id;
+        }
+
+        public String getParent_status() {
+            return parent_status;
+        }
+
+        public void setParent_status(String parent_status) {
+            this.parent_status = parent_status;
+        }
+
+        public String getParent_id() {
+            return parent_id;
+        }
+
+        public void setParent_id(String parent_id) {
+            this.parent_id = parent_id;
+        }
+
+        public String getMessage_title() {
+            return message_title;
+        }
+
+        public void setMessage_title(String message_title) {
+            this.message_title = message_title;
+        }
+
+        public String getStudent_status() {
+            return student_status;
+        }
+
+        public void setStudent_status(String student_status) {
+            this.student_status = student_status;
+        }
+
+        public String getDatez_ok() {
+            return datez_ok;
+        }
+
+        public void setDatez_ok(String datez_ok) {
+            this.datez_ok = datez_ok;
+        }
+
+        public String getClassroom_name() {
+            return classroom_name;
+        }
+
+        public void setClassroom_name(String classroom_name) {
+            this.classroom_name = classroom_name;
+        }
+
+        public String getCources_name() {
+            return cources_name;
+        }
+
+        public void setCources_name(String cources_name) {
+            this.cources_name = cources_name;
+        }
+
+        public String getSender_name() {
+            return recipient_name;
+        }
+
+        public void setSender_name(String sender_name) {
+            this.recipient_name = sender_name;
+        }
+
+        public String getMember_type_text() {
+            return member_type_text;
+        }
+
+        public void setMember_type_text(String member_type_text) {
+            this.member_type_text = member_type_text;
+        }
+
+    }
+
+
+}
