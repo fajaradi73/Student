@@ -8,12 +8,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <uses-permission android:name="com.google.android.providers.gsf.permisson.READ_GSERVICES" />
-    <uses-permission android:name="android.permission.RECEIVE_SMS" />
-    <uses-permission android:name="android.permission.READ_SMS" /> <!-- GCM requires a Google account to use push notifications. -->
-    <uses-permission android:name="android.permission.GET_ACCOUNTS" /> <!-- Keeps the processor from sleeping when a message is received. -->
+    <uses-permission android:name="com.google.android.providers.gsf.permisson.READ_GSERVICES" /> <!-- Keeps the processor from sleeping when a message is received. -->
     <uses-permission android:name="android.permission.WAKE_LOCK" /> <!-- Prevents other applications from registering and receiving the application's messages. -->
     <uses-permission android:name="${applicationId}.permission.C2D_MESSAGE" />
 
@@ -33,7 +28,7 @@
         android:theme="@style/AppTheme"
         tools:ignore="AllowBackup,GoogleAppIndexingWarning,InnerclassSeparator"
         tools:targetApi="n">
-        <activity android:name=".Guru.ActivityGuru.PesanTerkirimDetail"></activity>
+
 
         <uses-library
             android:name="org.apache.http.legacy"
@@ -89,10 +84,10 @@
             android:name=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".Student.Activity.Masuk"
+            android:name=".Masuk"
             android:label="Masuk" />
         <activity
-            android:name=".Student.Activity.ChangePassword"
+            android:name=".ChangePassword"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".Student.Activity.MenuUtama"
@@ -266,13 +261,14 @@
             android:theme="@style/AppTheme">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.fingertech.kesforstudent.Student.Activity.Masuk" />
+                android:value="com.fingertech.kesforstudent.Masuk" />
         </activity>
         <activity
             android:name=".Guru.ActivityGuru.PesanMasukDetail"
             android:label=""
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".Guru.ActivityGuru.PesanTerkirimDetail"/>
     </application>
 
 </manifest>

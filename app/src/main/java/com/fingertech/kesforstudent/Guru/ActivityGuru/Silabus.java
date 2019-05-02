@@ -1,15 +1,10 @@
 package com.fingertech.kesforstudent.Guru.ActivityGuru;
 
-import android.Manifest;
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.ColorDrawable;
-import android.net.Uri;
-import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
@@ -20,39 +15,21 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.ArrayAdapter;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
 import com.fingertech.kesforstudent.Controller.Auth;
 import com.fingertech.kesforstudent.Guru.AdapterGuru.AdapterSilabus;
 import com.fingertech.kesforstudent.Guru.ModelGuru.ModelSilabus;
 import com.fingertech.kesforstudent.R;
 import com.fingertech.kesforstudent.Rest.ApiClient;
 import com.fingertech.kesforstudent.Rest.JSONResponse;
-import com.fingertech.kesforstudent.Student.Activity.JadwalUjian;
-import com.fingertech.kesforstudent.Student.Activity.Masuk;
-import com.fingertech.kesforstudent.Student.Activity.RaporAnak;
-import com.fingertech.kesforstudent.Util.FileUtils;
-import com.gun0912.tedpermission.PermissionListener;
-import com.gun0912.tedpermission.TedPermission;
+import com.fingertech.kesforstudent.Masuk;
 import com.rey.material.widget.Spinner;
-import com.shashank.sony.fancytoastlib.FancyToast;
-import com.sothree.slidinguppanel.SlidingUpPanelLayout;
-import com.stone.vega.library.VegaLayoutManager;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import okhttp3.MediaType;
-import okhttp3.MultipartBody;
-import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;

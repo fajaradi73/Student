@@ -18,9 +18,8 @@ import com.fingertech.kesforstudent.Guru.ActivityGuru.JadwalGuru;
 import com.fingertech.kesforstudent.Guru.ActivityGuru.KegiatanGuru;
 import com.fingertech.kesforstudent.Guru.ActivityGuru.PenilaianGuru;
 import com.fingertech.kesforstudent.Guru.ActivityGuru.PesanGuru;
-import com.fingertech.kesforstudent.Guru.ActivityGuru.Silabus;
 import com.fingertech.kesforstudent.R;
-import com.fingertech.kesforstudent.Student.Activity.Masuk;
+import com.fingertech.kesforstudent.Masuk;
 
 /**
  * A simple {@link Fragment} subclass.

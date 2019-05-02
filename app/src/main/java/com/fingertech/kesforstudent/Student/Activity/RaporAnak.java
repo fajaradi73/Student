@@ -40,7 +40,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
-import com.dant.centersnapreyclerview.SnappingRecyclerView;
 import com.fingertech.kesforstudent.CustomView.CustomLayoutManager;
 import com.fingertech.kesforstudent.Student.Adapter.RaporAdapter;
 import com.fingertech.kesforstudent.Controller.Auth;

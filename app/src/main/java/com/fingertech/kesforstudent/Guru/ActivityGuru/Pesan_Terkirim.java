@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.ColorDrawable;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -23,7 +22,7 @@ import com.fingertech.kesforstudent.Guru.ModelGuru.ModelPesanGuru;
 import com.fingertech.kesforstudent.R;
 import com.fingertech.kesforstudent.Rest.ApiClient;
 import com.fingertech.kesforstudent.Rest.JSONResponse;
-import com.fingertech.kesforstudent.Student.Activity.Masuk;
+import com.fingertech.kesforstudent.Masuk;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;

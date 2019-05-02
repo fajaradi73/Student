@@ -22,7 +22,7 @@ import com.fingertech.kesforstudent.Controller.Auth;
 import com.fingertech.kesforstudent.R;
 import com.fingertech.kesforstudent.Rest.ApiClient;
 import com.fingertech.kesforstudent.Rest.JSONResponse;
-import com.fingertech.kesforstudent.Student.Activity.Masuk;
+import com.fingertech.kesforstudent.Masuk;
 import com.rey.material.widget.Spinner;
 import com.shashank.sony.fancytoastlib.FancyToast;
 

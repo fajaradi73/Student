@@ -19,13 +19,11 @@ import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.arlib.floatingsearchview.FloatingSearchView;
 import com.fingertech.kesforstudent.Guru.ActivityGuru.MenuUtamaGuru;
-import com.fingertech.kesforstudent.Student.Activity.Masuk;
 import com.fingertech.kesforstudent.Student.Activity.MenuUtama;
 import com.fingertech.kesforstudent.Student.Adapter.SearchAdapter;
 import com.fingertech.kesforstudent.Controller.Auth;

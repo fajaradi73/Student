@@ -15,7 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.fingertech.kesforstudent.R;
-import com.fingertech.kesforstudent.Student.Activity.Masuk;
+import com.fingertech.kesforstudent.Masuk;
 import com.rey.material.widget.Spinner;
 import com.shashank.sony.fancytoastlib.FancyToast;
 

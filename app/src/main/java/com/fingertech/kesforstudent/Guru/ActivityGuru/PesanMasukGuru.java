@@ -23,8 +23,7 @@ import com.fingertech.kesforstudent.Guru.ModelGuru.ModelPesanGuru;
 import com.fingertech.kesforstudent.R;
 import com.fingertech.kesforstudent.Rest.ApiClient;
 import com.fingertech.kesforstudent.Rest.JSONResponse;
-import com.fingertech.kesforstudent.Student.Activity.Masuk;
-import com.fingertech.kesforstudent.Student.Activity.PesanDetail;
+import com.fingertech.kesforstudent.Masuk;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;

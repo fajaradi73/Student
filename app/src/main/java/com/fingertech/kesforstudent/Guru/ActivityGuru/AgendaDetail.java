@@ -26,8 +26,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.fingertech.kesforstudent.Controller.Auth;
-import com.fingertech.kesforstudent.CustomView.CustomLayoutManager;
-import com.fingertech.kesforstudent.CustomView.NpaGridLayoutManager;
 import com.fingertech.kesforstudent.CustomView.SnappyRecycleView;
 import com.fingertech.kesforstudent.Guru.AdapterGuru.AdapterAgenda;
 import com.fingertech.kesforstudent.Guru.AdapterGuru.AdapterDataTanggal;
@@ -36,7 +34,7 @@ import com.fingertech.kesforstudent.Guru.ModelGuru.ModelAgenda;
 import com.fingertech.kesforstudent.R;
 import com.fingertech.kesforstudent.Rest.ApiClient;
 import com.fingertech.kesforstudent.Rest.JSONResponse;
-import com.fingertech.kesforstudent.Student.Activity.Masuk;
+import com.fingertech.kesforstudent.Masuk;
 import com.pepperonas.materialdialog.MaterialDialog;
 import com.rbrooks.indefinitepagerindicator.IndefinitePagerIndicator;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;

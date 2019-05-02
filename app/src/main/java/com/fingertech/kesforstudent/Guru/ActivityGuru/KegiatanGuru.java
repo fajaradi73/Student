@@ -11,7 +11,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -23,7 +22,7 @@ import com.fingertech.kesforstudent.Guru.AdapterGuru.AdapterKegiatan;
 import com.fingertech.kesforstudent.Guru.ModelGuru.ModelKegiatan;
 import com.fingertech.kesforstudent.R;
 import com.fingertech.kesforstudent.Rest.ApiClient;
-import com.fingertech.kesforstudent.Student.Activity.Masuk;
+import com.fingertech.kesforstudent.Masuk;
 import com.google.gson.JsonElement;
 import com.shashank.sony.fancytoastlib.FancyToast;
 
@@ -44,7 +43,7 @@ public class KegiatanGuru extends AppCompatActivity {
     RecyclerView rv_kegiatan;
     TextView tv_hint;
     Auth mApiInterface;
-    JSONArray absenlist,nilailist,mergearray;
+    JSONArray absenlist,nilailist;
     JsonElement jsonElement;
     String authorization,school_code,member_id,scyear_id, texttodolist,exam_type,cources_id,cources_name,code;
     public static final String TAG_EMAIL        = "email";
@@ -111,28 +110,32 @@ public class KegiatanGuru extends AppCompatActivity {
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
-                        for (int i = 0; i < absenlist.length(); i++){
-                            try {
-                                texttodolist    = absenlist.getJSONObject(i).getString("absent_todo_text");
-                            } catch (JSONException e) {
-                                e.printStackTrace();
+                        if (absenlist!=null) {
+                            for (int i = 0; i < absenlist.length(); i++) {
+                                try {
+                                    texttodolist = absenlist.getJSONObject(i).getString("absent_todo_text");
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                                modelKegiatan = new ModelKegiatan();
+                                modelKegiatan.setExam_id(null);
+                                modelKegiatan.setText(texttodolist);
+                                modelKegiatanList.add(modelKegiatan);
                             }
-                            modelKegiatan   = new ModelKegiatan();
-                            modelKegiatan.setExam_id(null);
-                            modelKegiatan.setText(texttodolist);
-                            modelKegiatanList.add(modelKegiatan);
                         }
-                        for (int o = 0 ; o < nilailist.length(); o++){
-                            try {
-                                texttodolist    = nilailist.getJSONObject(o).getString("exam_todo_text");
-                                exam_type       = nilailist.getJSONObject(o).getString("exam_id");
-                            } catch (JSONException e) {
-                                e.printStackTrace();
+                        if (nilailist!=null) {
+                            for (int o = 0; o < nilailist.length(); o++) {
+                                try {
+                                    texttodolist = nilailist.getJSONObject(o).getString("exam_todo_text");
+                                    exam_type = nilailist.getJSONObject(o).getString("exam_id");
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                                modelKegiatan = new ModelKegiatan();
+                                modelKegiatan.setText(texttodolist);
+                                modelKegiatan.setExam_id(exam_type);
+                                modelKegiatanList.add(modelKegiatan);
                             }
-                            modelKegiatan   = new ModelKegiatan();
-                            modelKegiatan.setText(texttodolist);
-                            modelKegiatan.setExam_id(exam_type);
-                            modelKegiatanList.add(modelKegiatan);
                         }
                         adapterKegiatan = new AdapterKegiatan(modelKegiatanList);
                         LinearLayoutManager layoutManager = new LinearLayoutManager(KegiatanGuru.this);

@@ -16,7 +16,7 @@ import com.fingertech.kesforstudent.Controller.Auth;
 import com.fingertech.kesforstudent.Guru.ActivityGuru.KalendarGuru;
 import com.fingertech.kesforstudent.Guru.ActivityGuru.Silabus;
 import com.fingertech.kesforstudent.R;
-import com.fingertech.kesforstudent.Student.Activity.Masuk;
+import com.fingertech.kesforstudent.Masuk;
 
 /**
  * A simple {@link Fragment} subclass.

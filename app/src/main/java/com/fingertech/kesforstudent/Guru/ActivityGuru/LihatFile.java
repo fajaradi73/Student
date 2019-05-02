@@ -26,10 +26,13 @@ import android.widget.Toast;
 
 import com.fingertech.kesforstudent.R;
 import com.fingertech.kesforstudent.Student.Activity.LihatPdf;
+import com.fingertech.kesforstudent.Student.Activity.ProfileAnak;
 import com.fingertech.kesforstudent.Student.Activity.RaporAnak;
 import com.fingertech.kesforstudent.Util.CheckForSDCard;
 import com.github.barteksc.pdfviewer.PDFView;
 import com.github.barteksc.pdfviewer.util.FitPolicy;
+import com.gun0912.tedpermission.PermissionListener;
+import com.gun0912.tedpermission.TedPermission;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -46,11 +49,10 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-import pub.devrel.easypermissions.EasyPermissions;
 
 import static com.fingertech.kesforstudent.Service.App.CHANNEL_2_ID;
 
-public class LihatFile extends AppCompatActivity implements EasyPermissions.PermissionCallbacks {
+public class LihatFile extends AppCompatActivity {
 
     ImageView iv_close,iv_unduh;
     String file;
@@ -103,17 +105,23 @@ public class LihatFile extends AppCompatActivity implements EasyPermissions.Perm
 
         iv_unduh.setOnClickListener(v -> {
             if (CheckForSDCard.isSDCardPresent()) {
+                PermissionListener permissionlistener = new PermissionListener() {
+                    @Override
+                    public void onPermissionGranted() {
+                        new DownloadFile().execute(file);
+                    }
 
-                //check if app has permission to write to the external storage.
-                if (EasyPermissions.hasPermissions(LihatFile.this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-                    //Get the URL entered
-                    new DownloadFile().execute(file);
-                } else {
-                    //If permission is not present request for the same.
-                    EasyPermissions.requestPermissions(LihatFile.this, getString(R.string.write_file), WRITE_REQUEST_CODE, Manifest.permission.READ_EXTERNAL_STORAGE);
-                }
-
-
+                    @Override
+                    public void onPermissionDenied(List<String> deniedPermissions) {
+                        Toast.makeText(LihatFile.this, "Permission Denied\n" + deniedPermissions.toString(), Toast.LENGTH_SHORT).show();
+                    }
+                };
+                //check all needed permissions together
+                TedPermission.with(LihatFile.this)
+                        .setPermissionListener(permissionlistener)
+                        .setDeniedMessage("Jika Anda menolak izin, Anda tidak dapat menggunakan layanan ini\n\nSilakan aktifkan izin di [Pengaturan] > [Izin]")
+                        .setPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                        .check();
             } else {
                 Toast.makeText(getApplicationContext(),
                         "SD Card not found", Toast.LENGTH_LONG).show();
@@ -142,24 +150,6 @@ public class LihatFile extends AppCompatActivity implements EasyPermissions.Perm
             super.onPageFinished(view, url);progressBar.setVisibility(View.GONE);
         }
     }
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, LihatFile.this);
-    }
-
-    @Override
-    public void onPermissionsGranted(int requestCode, List<String> perms) {
-        //Download the file once permission is granted
-        new DownloadFile().execute(file);
-    }
-
-    @Override
-    public void onPermissionsDenied(int requestCode, List<String> perms) {
-        Log.d("KES", "Permission has been denied");
-        EasyPermissions.requestPermissions(LihatFile.this, getString(R.string.write_file), WRITE_REQUEST_CODE, Manifest.permission.READ_EXTERNAL_STORAGE);
-    }
-
     /**
      * Async Task to download file from URL
      */

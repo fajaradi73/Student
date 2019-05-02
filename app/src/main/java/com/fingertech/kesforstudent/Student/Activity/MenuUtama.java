@@ -16,7 +16,6 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -31,7 +30,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.fingertech.kesforstudent.Service.GlideApp;
+import com.fingertech.kesforstudent.Masuk;
 import com.fingertech.kesforstudent.Student.Activity.Setting.Setting_Activity;
 import com.fingertech.kesforstudent.Student.Adapter.HariAdapter.JumatAdapter;
 import com.fingertech.kesforstudent.Student.Adapter.HariAdapter.KamisAdapter;
@@ -53,7 +52,6 @@ import com.fingertech.kesforstudent.CustomView.SnappyRecycleView;
 import com.fingertech.kesforstudent.Rest.ApiClient;
 import com.fingertech.kesforstudent.Rest.JSONResponse;
 import com.pixelcan.inkpageindicator.InkPageIndicator;
-import com.squareup.picasso.Picasso;
 
 import java.text.DateFormat;
 import java.text.ParseException;

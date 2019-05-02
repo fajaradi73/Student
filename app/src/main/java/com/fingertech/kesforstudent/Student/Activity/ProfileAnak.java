@@ -37,15 +37,14 @@ import com.bumptech.glide.Glide;
 import com.fingertech.kesforstudent.BuildConfig;
 import com.fingertech.kesforstudent.Controller.Auth;
 import com.fingertech.kesforstudent.MainActivity;
+import com.fingertech.kesforstudent.Masuk;
 import com.fingertech.kesforstudent.R;
 import com.fingertech.kesforstudent.Rest.ApiClient;
 import com.fingertech.kesforstudent.Rest.JSONResponse;
-import com.fingertech.kesforstudent.Service.GlideApp;
 import com.fingertech.kesforstudent.Util.FileUtils;
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
 import com.shashank.sony.fancytoastlib.FancyToast;
-import com.squareup.picasso.Picasso;
 
 import java.io.File;
 import java.io.IOException;
@@ -55,7 +54,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.logging.Logger;
 
-import de.hdodenhof.circleimageview.CircleImageView;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;

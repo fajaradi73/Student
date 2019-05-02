@@ -6317,7 +6317,7 @@ public class JSONResponse {
         public String code;
 
         @SerializedName("data")
-        public ListPesanTerkirimGuru data;
+        public List<DataPesanTerkirim> data;
 
         public int getStatus() {
             return status;
@@ -6335,11 +6335,11 @@ public class JSONResponse {
             this.code = code;
         }
 
-        public ListPesanTerkirimGuru getData() {
+        public List<DataPesanTerkirim> getData() {
             return data;
         }
 
-        public void setData(ListPesanTerkirimGuru data) {
+        public void setData(List<DataPesanTerkirim> data) {
             this.data = data;
         }
     }

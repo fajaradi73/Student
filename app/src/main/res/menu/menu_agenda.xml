@@ -4,7 +4,7 @@
     tools:context="com.fingertech.kes.Activity.MainActivity">
     <item
         android:id="@+id/item_add"
-        android:icon="@drawable/ic_add_black_48dp_00"
+        android:icon="@drawable/ic_add"
         android:title="Tambah"
         app:showAsAction="ifRoom"/>
 

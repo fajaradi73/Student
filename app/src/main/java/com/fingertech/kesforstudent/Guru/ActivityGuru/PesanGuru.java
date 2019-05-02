@@ -11,7 +11,7 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.fingertech.kesforstudent.R;
-import com.fingertech.kesforstudent.Student.Activity.Masuk;
+import com.fingertech.kesforstudent.Masuk;
 
 public class PesanGuru extends AppCompatActivity {
 
