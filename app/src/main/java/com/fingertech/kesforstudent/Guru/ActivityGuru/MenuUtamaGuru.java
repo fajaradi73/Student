@@ -52,7 +52,7 @@ public class MenuUtamaGuru extends AppCompatActivity {
 
     SharedPreferences sharedpreferences,sharedViewpager;
     String picture, Base_anak;
-    String authorization, memberid, username, member_type, fullname, school_code,scyear_id;
+    String authorization, memberid, username, member_type, fullname, school_code,scyear_id,classroom;
     Auth mApiInterface;
     int status;
     String code;
@@ -62,6 +62,7 @@ public class MenuUtamaGuru extends AppCompatActivity {
     public static final String TAG_MEMBER_TYPE = "member_type";
     public static final String TAG_TOKEN = "token";
     public static final String TAG_SCHOOL_CODE = "school_code";
+    public static final String TAG_CLASS = "classroom_id";
     public static final String my_viewpager_preferences = "my_viewpager_preferences";
     Toolbar toolbar;
     ImageView image_guru;
@@ -105,6 +106,7 @@ public class MenuUtamaGuru extends AppCompatActivity {
         fullname            = sharedpreferences.getString(TAG_FULLNAME, "");
         member_type         = sharedpreferences.getString(TAG_MEMBER_TYPE, "");
         school_code         = sharedpreferences.getString(TAG_SCHOOL_CODE, "");
+        classroom           = sharedpreferences.getString(TAG_CLASS,"");
         scyear_id           = sharedpreferences.getString("scyear_id","");
         Base_anak           = "http://www.kes.co.id/schoolc/assets/images/profile/mm_";
 
@@ -178,7 +180,9 @@ public class MenuUtamaGuru extends AppCompatActivity {
                         agama       = response.body().getData().getReligion();
                         picture     = response.body().getData().getPicture();
                         no_hp       = response.body().getData().getMobile_phone();
-                        last_login = response.body().getData().getLast_login();
+                        last_login  = response.body().getData().getLast_login();
+                        classroom   = response.body().getData().getClassroom_id();
+                        Log.d("class",classroom.toString());
                         tv_nama_guru.setText(nama);
                         if (picture.equals("")) {
                             Glide.with(MenuUtamaGuru.this).load(R.drawable.ic_logo).into(image_guru);
@@ -246,12 +250,14 @@ public class MenuUtamaGuru extends AppCompatActivity {
         editor.putString("member_id",memberid);
         editor.putString("school_code",school_code);
         editor.putString("scyear_id",scyear_id);
+        editor.putString("classroom_id",classroom);
         editor.apply();
         Bundle bundle = new Bundle();
         bundle.putString("authorization",authorization);
         bundle.putString("member_id",memberid);
         bundle.putString("school_code",school_code);
         bundle.putString("scyear_id",scyear_id);
+        bundle.putString("classroom_id",classroom);
         Fragment fragment = new FragMenuGuruSatu();
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -267,12 +273,14 @@ public class MenuUtamaGuru extends AppCompatActivity {
         editor.putString("member_id",memberid);
         editor.putString("school_code",school_code);
         editor.putString("scyear_id",scyear_id);
+        editor.putString("classroom_id",classroom);
         editor.apply();
         Bundle bundle = new Bundle();
         bundle.putString("authorization",authorization);
         bundle.putString("member_id",memberid);
         bundle.putString("school_code",school_code);
         bundle.putString("scyear_id",scyear_id);
+        bundle.putString("classroom_id",classroom);
         FragMenuGuruDua fragments = new FragMenuGuruDua();
         FragmentManager fragmentManagers = getSupportFragmentManager();
         FragmentTransaction fragmentTransactions = fragmentManagers.beginTransaction();
