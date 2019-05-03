@@ -1651,19 +1651,19 @@ public class JSONResponse {
     }
     public class DataMurid{
         @SerializedName("memberid")
-        public int member_id;
+        public String member_id;
 
         @SerializedName("fullname")
         public String fullname;
 
         @SerializedName("NIS")
-        public int NIS;
+        public String NIS;
 
-        public int getMember_id() {
+        public String getMember_id() {
             return member_id;
         }
 
-        public void setMember_id(int member_id) {
+        public void setMember_id(String member_id) {
             this.member_id = member_id;
         }
 
@@ -1675,9 +1675,9 @@ public class JSONResponse {
             this.fullname = fullname;
         }
 
-        public int getNIS(){return member_id;}
+        public String getNIS(){return member_id;}
 
-        public void setNIS (int NIS){this.NIS = NIS;}
+        public void setNIS (String NIS){this.NIS = NIS;}
 
 
 
@@ -6386,6 +6386,7 @@ public class JSONResponse {
             this.exam_todo_text = exam_todo_text;
         }
     }
+
     //Response Pesan Terkirim Guru
     public class ListPesanTerkirimGuru {
         @SerializedName("status")
@@ -6666,5 +6667,97 @@ public class JSONResponse {
 
     }
 
+    //// Response List admin
+    public class ListAdmin{
+        @SerializedName("status")
+        public int status;
 
+        @SerializedName("code")
+        public String code;
+
+        @SerializedName("data")
+        public List<DataAdmin> data;
+
+        public int getStatus() {
+            return status;
+        }
+
+        public void setStatus(int status) {
+            this.status = status;
+        }
+
+        public String getCode() {
+            return code;
+        }
+
+        public void setCode(String code) {
+            this.code = code;
+        }
+
+        public List<DataAdmin> getData() {
+            return data;
+        }
+
+        public void setData(List<DataAdmin> data) {
+            this.data = data;
+        }
+    }
+    public class DataAdmin{
+        @SerializedName("memberid")
+        public String memberid;
+        @SerializedName("fullname")
+        public String fullname;
+
+        public String getMemberid() {
+            return memberid;
+        }
+
+        public void setMemberid(String memberid) {
+            this.memberid = memberid;
+        }
+
+        public String getFullname() {
+            return fullname;
+        }
+
+        public void setFullname(String fullname) {
+            this.fullname = fullname;
+        }
+    }
+
+    //// Response Kirim Pesan{
+    public class KirimPesanGuru{
+        @SerializedName("status")
+        public int status;
+
+        @SerializedName("code")
+        public String code;
+
+        @SerializedName("data")
+        public String data;
+
+        public int getStatus() {
+            return status;
+        }
+
+        public void setStatus(int status) {
+            this.status = status;
+        }
+
+        public String getCode() {
+            return code;
+        }
+
+        public void setCode(String code) {
+            this.code = code;
+        }
+
+        public String getData() {
+            return data;
+        }
+
+        public void setData(String data) {
+            this.data = data;
+        }
+    }
 }

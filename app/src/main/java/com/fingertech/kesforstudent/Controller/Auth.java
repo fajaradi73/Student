@@ -352,7 +352,24 @@ public interface Auth {
                                                                  @Query("teacher_id") String parent_id,
                                                                  @Query("date_from") String date_from,
                                                                  @Query("date_to") String parent_date_to);
+    //// List Whattodolist
+    @GET("teachers/kes_get_admin")
+    Call<JSONResponse.ListAdmin>kes_get_admin_get(@Header("Authorization") String authorization,
+                                          @Query("school_code") String school_code,
+                                          @Query("teacher_id") String teacher_id,
+                                          @Query("scyear_id") String scyear_id);
 
-
-
+    ///Tambah Agenda
+    @FormUrlEncoded
+    @POST("teachers/kes_send_message")
+    Call<JSONResponse.KirimPesanGuru>kes_send_message(@Header("Authorization") String authorization,
+                                                      @Field("school_code") String school_code,
+                                                      @Field("teacher_id") String teacher_id,
+                                                      @Field("type_id") String type_id,
+                                                      @Field("admin_id") String admin_id,
+                                                      @Field("classroom_id") String classroom_id,
+                                                      @Field("student_id") String student_id,
+                                                      @Field("cources_id") String cources_id,
+                                                      @Field("message_title") String message_title,
+                                                      @Field("message") String message);
 }
