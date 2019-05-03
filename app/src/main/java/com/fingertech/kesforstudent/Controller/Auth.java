@@ -78,6 +78,8 @@ public interface Auth {
                                       @Field("religion") String religion,
                                       @Field("birth_date") String birth_date);
 
+//
+
 
     ////// Jadwal Pelajaran
     @GET("students/kes_class_schedule")
@@ -178,6 +180,14 @@ public interface Auth {
                                                              @Query("school_code") String school_code,
                                                              @Query("teacher_id") String teacher_id,
                                                              @Query("scyear_id") String scyear_id);
+//    absenmurid
+
+    @GET("teachers/kes_get_student")
+    Call<JSONResponse.ListMurid>kes_get_student_get(@Header("Authorization") String authorization,
+                                                    @Query("school_code") String school_code,
+                                                    @Query("teacher_id") String teacher_id,
+                                                    @Query("scyear_id") String scyear_id,
+                                                    @Query("classroom_id") String classroom_id);
 
     ///// Jadwal Guru
     @GET("teachers/kes_get_edulevel")
