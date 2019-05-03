@@ -200,13 +200,15 @@ public class KalendarKelas extends AppCompatActivity {
                         .positiveText("Ok")
                         .show();
             }else {
-                calendar_date = calendarModelList.get(position).getCalendar_date();
-                calendar_time = calendarModelList.get(position).getCalendar_time();
-                calendar_id = calendarModelList.get(position).getCalendar_id();
+                calendar_date   = calendarModelList.get(position).getCalendar_date();
+                calendar_time   = calendarModelList.get(position).getCalendar_time();
+                calendar_id     = calendarModelList.get(position).getCalendar_id();
+                calendar_colour = calendarModelList.get(position).getCalendar_color();
                 Intent intent = new Intent(KalendarKelas.this, KalendarDetail.class);
                 intent.putExtra("authorization", authorization);
                 intent.putExtra("school_code", school_code);
                 intent.putExtra("calendar_id", calendar_id);
+                intent.putExtra("warna",calendar_colour);
                 startActivity(intent);
             }
         });

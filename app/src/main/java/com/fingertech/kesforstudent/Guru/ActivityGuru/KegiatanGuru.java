@@ -110,7 +110,7 @@ public class KegiatanGuru extends AppCompatActivity {
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
-                        if (absenlist!=null) {
+                        if (absenlist.length() > 0) {
                             for (int i = 0; i < absenlist.length(); i++) {
                                 try {
                                     texttodolist = absenlist.getJSONObject(i).getString("absent_todo_text");
@@ -123,7 +123,7 @@ public class KegiatanGuru extends AppCompatActivity {
                                 modelKegiatanList.add(modelKegiatan);
                             }
                         }
-                        if (nilailist!=null) {
+                        if (nilailist.length() > 0) {
                             for (int o = 0; o < nilailist.length(); o++) {
                                 try {
                                     texttodolist = nilailist.getJSONObject(o).getString("exam_todo_text");

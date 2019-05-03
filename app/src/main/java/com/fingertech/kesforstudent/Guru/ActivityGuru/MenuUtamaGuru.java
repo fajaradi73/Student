@@ -339,7 +339,7 @@ public class MenuUtamaGuru extends AppCompatActivity {
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
-                        if (absenlist!=null) {
+                        if (absenlist.length() > 0) {
                             for (int i = 0; i < 1; i++) {
                                 try {
                                     texttodolist = absenlist.getJSONObject(i).getString("absent_todo_text");
@@ -352,7 +352,7 @@ public class MenuUtamaGuru extends AppCompatActivity {
                                 modelKegiatanList.add(modelKegiatan);
                             }
                         }
-                        if (nilailist!=null) {
+                        if (nilailist.length()>0) {
                             for (int o = 0; o < 1; o++) {
                                 try {
                                     texttodolist = nilailist.getJSONObject(o).getString("exam_todo_text");

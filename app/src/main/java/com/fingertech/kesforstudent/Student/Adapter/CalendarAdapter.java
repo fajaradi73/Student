@@ -34,7 +34,6 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.MyHold
         return myHolder;
     }
 
-
     @Override
     public void onBindViewHolder(MyHolder holder, int position) {
 
@@ -46,6 +45,7 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.MyHold
         holder.jam.setText(viewItem.getCalendar_time());
         holder.mapel.setText(viewItem.getCalendar_title());
         holder.type_id.setText(viewItem.getCalendar_desc());
+        holder.view.setBackgroundColor(Color.parseColor(viewItem.getCalendar_color()));
     }
 
     @Override
@@ -56,6 +56,7 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.MyHold
     class MyHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView tanggal,jam,mapel,type_id;
         OnItemClickListener onItemClickListener;
+        View view;
 
         public MyHolder(View itemView,OnItemClickListener onItemClickListener) {
             super(itemView);
@@ -63,6 +64,7 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.MyHold
             jam     = itemView.findViewById(R.id.jam_kalendar);
             mapel   = itemView.findViewById(R.id.title_kalender);
             type_id = itemView.findViewById(R.id.desc_kalender);
+            view    = itemView.findViewById(R.id.view);
             itemView.setOnClickListener(this);
             this.onItemClickListener = onItemClickListener;
         }
