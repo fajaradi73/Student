@@ -78,23 +78,6 @@ public class AbsenMurid extends AppCompatActivity {
         school_code         = sharedpreferences.getString(TAG_SCHOOL_CODE,"");
         classroom           = sharedpreferences.getString(TAG_CLASS_ID,"");
 
-//
-//        modelAbsenGuruList = new ArrayList<>();
-//
-//
-//        rv_absen.setHasFixedSize(true);
-//        rv_absen.setLayoutManager(new LinearLayoutManager(this));
-//        ModelAbsenGuru modelAbsenGuru = new ModelAbsenGuru("");
-//        modelAbsenGuru.setNama("Vina Sonia");
-//        modelAbsenGuruList.add(modelAbsenGuru);
-//        modelAbsenGuruList.add(modelAbsenGuru);
-//        modelAbsenGuruList.add(modelAbsenGuru);
-//        modelAbsenGuruList.add(modelAbsenGuru);
-//        modelAbsenGuruList.add(modelAbsenGuru);
-//        modelAbsenGuruList.add(modelAbsenGuru);
-//        modelAbsenGuruList.add(modelAbsenGuru);
-//        adapterAbsen = new AdapterAbsen(this,modelAbsenGuruList);
-//        rv_absen.setAdapter(adapterAbsen);
 
         classroom = "1";
         Getmurid();
