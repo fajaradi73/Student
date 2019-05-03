@@ -479,7 +479,7 @@ public class AgendaDetail extends AppCompatActivity {
                             tv_hint_agenda_hari.setVisibility(View.VISIBLE);
                         }
                         String tanngall = formatfull.format(Calendar.getInstance().getTime());
-                        if (response.body().getClass_schedule().size() > 0) {
+                        if (response.body().getClass_schedule().get(0).getScheduleClass().size() > 0) {
                             tanggalakhiran  = response.body().getClass_schedule().get(0).getScheduleClass().get(0).getTimezFinish();
                             try {
                                 datenow = ds.parse(tanngall);
@@ -515,7 +515,24 @@ public class AgendaDetail extends AppCompatActivity {
                                 }
                             }
                         } else {
-                            Log.d("schedule","datadata");
+                            if (Integer.parseInt(tanggal) > agendaModelTanggalList.size() - 1) {
+                                datatanggal(Integer.parseInt(tahun), Integer.parseInt(bulan) + 1);
+                                rvtanggal.scrollToPosition(1);
+                                rvtanggal.smoothScrollToPosition(0);
+                                rvtanggal.smoothScrollBy(1, 0);
+                                datePicker.updateDate(Integer.parseInt(tahun), Integer.parseInt(bulan), 0);
+                            } else {
+                                if (Integer.parseInt(tanggal) == agendaModelTanggalList.size() - 1) {
+                                    rvtanggal.scrollToPosition(Integer.parseInt(tanggal) - 1);
+                                    rvtanggal.smoothScrollToPosition(Integer.parseInt(tanggal));
+                                    rvtanggal.smoothScrollBy(1, 0);
+                                    datePicker.updateDate(Integer.parseInt(tahun), Integer.parseInt(bulan) - 1, Integer.parseInt(tanggal) + 1);
+                                } else {
+                                    rvtanggal.scrollToPosition(Integer.parseInt(tanggal));
+                                    rvtanggal.smoothScrollBy(1, 0);
+                                    datePicker.updateDate(Integer.parseInt(tahun), Integer.parseInt(bulan) - 1, Integer.parseInt(tanggal) + 1);
+                                }
+                            }
                         }
                     } else {
                         indefinitePagerIndicator.setVisibility(View.GONE);
