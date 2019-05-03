@@ -72,6 +72,8 @@ public class AbsenMurid extends AppCompatActivity {
 
 
 
+
+
     public void Dialog(){
 
         btninfo.setOnClickListener(new View.OnClickListener() {

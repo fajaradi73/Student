@@ -1609,6 +1609,82 @@ public class JSONResponse {
         }
     }
 
+//    absen
+
+    public class ListMurid{
+
+        @SerializedName("status")
+        public Integer status;
+
+        @SerializedName("code")
+        public String code;
+
+        @SerializedName("data")
+        public List<DataMurid> data;
+
+        public int getStatus() {
+            return status;
+        }
+
+        public void setStatus(int status) {
+            this.status = status;
+        }
+
+        public String getCode() {
+            return code;
+        }
+
+        public void setCode(String code) {
+            this.code = code;
+        }
+
+        public List<DataMurid> getData() {
+            return data;
+        }
+
+        public void setData(List<DataMurid> data) {
+            this.data = data;
+        }
+
+
+
+    }
+    public class DataMurid{
+        @SerializedName("memberid")
+        public int member_id;
+
+        @SerializedName("fullname")
+        public String fullname;
+
+        @SerializedName("NIS")
+        public int NIS;
+
+        public int getMember_id() {
+            return member_id;
+        }
+
+        public void setMember_id(int member_id) {
+            this.member_id = member_id;
+        }
+
+        public String getFullname() {
+            return fullname;
+        }
+
+        public void setFullname(String fullname) {
+            this.fullname = fullname;
+        }
+
+        public int getNIS(){return member_id;}
+
+        public void setNIS (int NIS){this.NIS = NIS;}
+
+
+
+
+    }
+
+
     ///// Response Check Semester
     public class CheckSemester{
         @SerializedName("status")
@@ -1644,6 +1720,8 @@ public class JSONResponse {
             this.data = data;
         }
     }
+
+
 
     ///// Response List Semester
     public class ListSemester{
