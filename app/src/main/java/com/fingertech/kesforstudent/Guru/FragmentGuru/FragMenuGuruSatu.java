@@ -33,7 +33,7 @@ public class FragMenuGuruSatu extends Fragment {
     CardView btn_absensi,btn_penilaian, btn_kegiatan,btn_pesan,btn_jadwal, btn_agenda;
     SharedPreferences sharedpreferences,sharedViewpager;
     String picture, Base_anak;
-    String authorization, memberid, username, member_type, fullname, school_code,scyear_id;
+    String authorization, memberid, username, member_type, fullname, school_code,scyear_id,classroom;
     Auth mApiInterface;
     int status;
     String code;
@@ -43,6 +43,7 @@ public class FragMenuGuruSatu extends Fragment {
     public static final String TAG_MEMBER_TYPE = "member_type";
     public static final String TAG_TOKEN = "token";
     public static final String TAG_SCHOOL_CODE = "school_code";
+    public static final String TAG_CLASSROOM = "classroom_id";
     public static final String my_viewpager_preferences = "my_viewpager_preferences";
 
     @Override
@@ -56,6 +57,7 @@ public class FragMenuGuruSatu extends Fragment {
         member_type     = sharedpreferences.getString(TAG_MEMBER_TYPE, "");
         school_code     = sharedpreferences.getString(TAG_SCHOOL_CODE, "");
         scyear_id       = sharedpreferences.getString("scyear_id","");
+        classroom       = sharedpreferences.getString(TAG_CLASSROOM,"");
     }
 
     @Override
@@ -166,12 +168,14 @@ public class FragMenuGuruSatu extends Fragment {
                 editor.putString("member_id",memberid);
                 editor.putString("school_code",school_code);
                 editor.putString("scyear_id",scyear_id);
+                editor.putString("classroom_id",classroom);
                 editor.apply();
                 Intent intent = new Intent(getContext(), AbsenMurid.class);
                 intent.putExtra("authorization",authorization);
                 intent.putExtra("school_code",school_code);
                 intent.putExtra("member_id",memberid);
                 intent.putExtra("scyear_id",scyear_id);
+                intent.putExtra("classroom_id",classroom);
                 startActivity(intent);
             }
         });

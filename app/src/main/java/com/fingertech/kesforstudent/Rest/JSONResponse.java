@@ -1651,19 +1651,19 @@ public class JSONResponse {
     }
     public class DataMurid{
         @SerializedName("memberid")
-        public int member_id;
+        public String member_id;
 
         @SerializedName("fullname")
         public String fullname;
 
         @SerializedName("NIS")
-        public int NIS;
+        public String NIS;
 
-        public int getMember_id() {
+        public String getMember_id() {
             return member_id;
         }
 
-        public void setMember_id(int member_id) {
+        public void setMember_id(String member_id) {
             this.member_id = member_id;
         }
 
@@ -1675,9 +1675,9 @@ public class JSONResponse {
             this.fullname = fullname;
         }
 
-        public int getNIS(){return member_id;}
+        public String getNIS(){return member_id;}
 
-        public void setNIS (int NIS){this.NIS = NIS;}
+        public void setNIS (String NIS){this.NIS = NIS;}
 
 
 

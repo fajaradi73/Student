@@ -20,14 +20,14 @@ import java.util.List;
 
 public class AdapterAbsen extends RecyclerView.Adapter<AdapterAbsen.MyHolder> {
 
-    private List<ModelAbsenGuru> viewItemList;
+    private List<ModelAbsenGuru> modelAbsenGuruList;
 
     Context context;
     private OnItemClickListener onItemClickListener;
     public int row_index = 0;
     public AdapterAbsen(Context context,List<ModelAbsenGuru> viewItemList) {
         this.context = context;
-        this.viewItemList = viewItemList;
+        this.modelAbsenGuruList = viewItemList;
     }
 
     public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
@@ -48,14 +48,14 @@ public class AdapterAbsen extends RecyclerView.Adapter<AdapterAbsen.MyHolder> {
     @Override
     public void onBindViewHolder(MyHolder holder, int position) {
 
-        ModelAbsenGuru viewItem = viewItemList.get(position);
+        ModelAbsenGuru viewItem = modelAbsenGuruList.get(position);
         holder.nama.setText(viewItem.getNama());
 
     }
 
     @Override
     public int getItemCount() {
-        return viewItemList.size();
+        return modelAbsenGuruList.size();
     }
 
     class MyHolder extends RecyclerView.ViewHolder implements View.OnClickListener {

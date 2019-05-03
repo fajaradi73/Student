@@ -181,7 +181,6 @@ public interface Auth {
                                                              @Query("teacher_id") String teacher_id,
                                                              @Query("scyear_id") String scyear_id);
 //    absenmurid
-
     @GET("teachers/kes_get_student")
     Call<JSONResponse.ListMurid>kes_get_student_get(@Header("Authorization") String authorization,
                                                     @Query("school_code") String school_code,

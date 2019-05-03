@@ -4,9 +4,6 @@ public class ModelAbsenGuru {
 
 private  String nama;
 
-    public ModelAbsenGuru(String nama) {
-        this.nama = nama;
-    }
 
     public String getNama() {
         return nama;
