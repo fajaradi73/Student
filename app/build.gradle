@@ -30,6 +30,9 @@ android {
         cleanedAnnotations
         compile.exclude group: 'org.jetbrains', module: 'annotations'
     }
+    configurations.all {
+        resolutionStrategy.force 'com.google.code.findbugs:jsr305:1.3.9'
+    }
 }
 
 dependencies {
@@ -118,4 +121,6 @@ dependencies {
     implementation group: 'com.google.guava', name: 'guava', version: '24.1-jre'
     implementation 'com.ryanjeffreybrooks:indefinitepagerindicator:1.0.10'
     implementation 'com.github.ybq:Android-SpinKit:1.2.0'
+
+
 }
