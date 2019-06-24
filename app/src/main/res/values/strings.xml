@@ -1,4 +1,10 @@
 <resources>
+
+    <string name="anak1">bambang</string>
+    <string name="anak2">adinda</string>
+    <string name="anak3">rizki</string>
+
+
     <string name="app_name">KES for School</string>
     <string name="default_notification_channel_id" translatable="false">fcm_default_channel</string>
     <string name="facebook_app_id">287281171956441</string>

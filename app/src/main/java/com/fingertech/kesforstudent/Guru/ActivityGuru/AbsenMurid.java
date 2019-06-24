@@ -1,9 +1,9 @@
 package com.fingertech.kesforstudent.Guru.ActivityGuru;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.PorterDuff;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -16,14 +16,17 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
-import android.widget.Button;
-import android.widget.GridLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.fingertech.kesforstudent.Controller.Auth;
+import com.fingertech.kesforstudent.Guru.ActivityGuru.AdapterAbsen.AdapterAttidudes;
+import com.fingertech.kesforstudent.Guru.ActivityGuru.AdapterAbsen.AdapterDetailAbsen;
 import com.fingertech.kesforstudent.Guru.AdapterGuru.AdapterAbsen;
-import com.fingertech.kesforstudent.Guru.ModelGuru.ModelAbsenGuru;
+import com.fingertech.kesforstudent.Guru.ModelGuru.ModelAbsen.ModelAbsenGuru;
+import com.fingertech.kesforstudent.Guru.ModelGuru.ModelAbsen.ModelDataAttidude;
+import com.fingertech.kesforstudent.Guru.ModelGuru.ModelAbsen.ModelDetailAbsen;
+import com.fingertech.kesforstudent.Guru.ModelGuru.ModelAbsen.ModelDetailAttidude;
 import com.fingertech.kesforstudent.Masuk;
 import com.fingertech.kesforstudent.R;
 import com.fingertech.kesforstudent.Rest.ApiClient;
@@ -40,12 +43,17 @@ public class AbsenMurid extends AppCompatActivity {
     CardView btninfo;
     RecyclerView rv_absen;
     AdapterAbsen adapterAbsen;
+    AdapterAttidudes adapterAttidudes;
     List<ModelAbsenGuru> modelAbsenGuruList = new ArrayList<>();
+    List<ModelDetailAbsen> modelDetailAbsenList = new ArrayList<>();
+    List<ModelDataAttidude> modelDataAttidudes = new ArrayList<>();
+    ModelDetailAbsen modelDetailAbsen;
     ModelAbsenGuru modelAbsenGuru;
+    ModelDataAttidude modelDataAttidude;
     Toolbar toolbar;
     Auth mApiInterface;
-    String authorization,school_code,member_id,scyear_id, classroom,code,nama;
-    int status;
+    String authorization,school_code,member_id,scyear_id, classroom,code,nama,codeattidude,attidudename,attidudegradecode;
+    int status,statusattidude;
     SharedPreferences sharedpreferences;
 
     public static final String TAG_EMAIL        = "email";
@@ -79,6 +87,7 @@ public class AbsenMurid extends AppCompatActivity {
         classroom           = sharedpreferences.getString(TAG_CLASS_ID,"");
 
 
+
         classroom = "1";
         Getmurid();
         Dialog();
@@ -86,7 +95,7 @@ public class AbsenMurid extends AppCompatActivity {
     }
 
     private void Getmurid(){
-        Call<JSONResponse.ListMurid> call =mApiInterface.kes_get_student_get(authorization,school_code,member_id,scyear_id, classroom);
+        Call<JSONResponse.ListMurid> call = mApiInterface.kes_get_student_get(authorization,school_code,member_id,scyear_id, classroom);
         call.enqueue(new Callback<JSONResponse.ListMurid>() {
             @Override
             public void onResponse(Call<JSONResponse.ListMurid> call, Response<JSONResponse.ListMurid> response) {
@@ -96,9 +105,12 @@ public class AbsenMurid extends AppCompatActivity {
                     status = resource.status;
                     code = resource.code;
                     if (status == 1 && code.equals("DTS_SCS_0001")) {
+                        Log.d("jumlah",response.body().getData().size()+"");
                         for (int i = 0; i < response.body().getData().size(); i++) {
                             nama = response.body().getData().get(i).getFullname();
+                            String nisku = response.body().getData().get(i).getNIS();
                             modelAbsenGuru = new ModelAbsenGuru();
+                            modelAbsenGuru.setNis(nisku);
                             modelAbsenGuru.setNama(nama);
                             modelAbsenGuruList.add(modelAbsenGuru);
                         }
@@ -107,6 +119,115 @@ public class AbsenMurid extends AppCompatActivity {
                         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
                         rv_absen.setLayoutManager(linearLayoutManager);
                         rv_absen.setAdapter(adapterAbsen);
+                        adapterAbsen.setOnItemClickListener(new AdapterAbsen.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(View view, int position) {
+                                Log.e("position",position+"");
+                                    modelDetailAbsenList.clear();
+                                    AlertDialog.Builder showdialog = new AlertDialog.Builder(AbsenMurid.this);
+                                    CardView btnnext,btnback;
+                                    AdapterDetailAbsen adapterDetailAbsen;
+                                    ViewPager viewpager;
+                                    view = getLayoutInflater().inflate(R.layout.activity_detail_absen_guru,null);
+                                    btnnext  = view.findViewById(R.id.btnnext);
+                                    btnback  = view.findViewById(R.id.btnback);
+                                    viewpager= view.findViewById(R.id.pagerabsen);
+                                    for (int a=position; a<response.body().getData().size(); a++) {
+                                        String namaku = response.body().getData().get(a).getFullname();
+                                        String nis = response.body().getData().get(a).getNIS();
+                                        Log.e("nisku", nis.toString());
+                                        modelDetailAbsen = new ModelDetailAbsen();
+                                        modelDetailAbsen.setNama(namaku);
+                                        modelDetailAbsen.setNis(nis);
+                                        modelDetailAbsenList.add(modelDetailAbsen);
+                                    }
+                                    adapterDetailAbsen = new AdapterDetailAbsen(AbsenMurid.this,modelDetailAbsenList);
+                                    viewpager.setAdapter(adapterDetailAbsen);
+                                    btnnext.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            viewpager.setCurrentItem(viewpager.getCurrentItem()+1,true);
+
+                                        }
+                                    });
+                                    btnback.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            viewpager.setCurrentItem(viewpager.getCurrentItem()-1,true);
+
+                                        }
+                                    });
+                                    showdialog.setView(view);
+                                    AlertDialog dialog = showdialog.create();
+                                    dialog.show();
+                                    Window window = dialog.getWindow();
+                                    window.setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+
+
+
+
+
+
+
+//                                    tv_namaku.setText(namaku);
+//                                    tvnisku.setText(nisku);
+//
+//                                    btnnext.setOnClickListener(new View.OnClickListener() {
+//                                        @Override
+//                                        public void onClick(View v) {
+//                                                if (position >= response.body().getData().size()-1){
+//                                                    Toast.makeText(getApplicationContext(),"index terakhir",Toast.LENGTH_LONG).show();
+//                                                }else {
+//                                                    for (int a=0; a<response.body().getData().size();a++) {
+//                                                        String namaku = response.body().getData().get(position + a).getFullname();
+//                                                        Log.d("namaaja", namaku.toString());
+//                                                        String nisku = response.body().getData().get(position + a).getNIS();
+//                                                        List<String> list = new ArrayList<String>();
+//                                                        list.add(namaku);
+//                                                        list.add(nisku);
+//                                                        Log.d("array", list + "");
+//
+//
+//                                                        AlertDialog.Builder showdialog = new AlertDialog.Builder(AbsenMurid.this);
+//                                                        CardView btnnext, btnback;
+//                                                        TextView tv_namaku, tvnisku;
+//                                                        v = getLayoutInflater().inflate(R.layout.layout_absen_guru, null);
+//                                                        tv_namaku = v.findViewById(R.id.tv_nama);
+//                                                        tvnisku = v.findViewById(R.id.tv_nis);
+//                                                        btnnext = v.findViewById(R.id.btnnext);
+//                                                        btnback = v.findViewById(R.id.btnback);
+//                                                        showdialog.setView(v);
+//                                                        AlertDialog dialog = showdialog.create();
+//                                                        dialog.show();
+//                                                        Window window = dialog.getWindow();
+//                                                        window.setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+//                                                        tv_namaku.setText(namaku);
+//                                                        tvnisku.setText(nisku);
+//                                                        btnback.setOnClickListener(new View.OnClickListener() {
+//                                                            @Override
+//                                                            public void onClick(View v) {
+//
+//                                                            }
+//                                                        });
+//
+//                                                    }
+//
+//
+//                                                }
+//
+//
+//
+//
+//                                        }
+//
+//                                    });
+
+
+
+                            }
+
+
+                        });
 
                     }
                 }

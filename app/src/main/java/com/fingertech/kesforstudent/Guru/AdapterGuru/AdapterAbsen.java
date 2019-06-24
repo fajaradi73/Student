@@ -2,9 +2,6 @@ package com.fingertech.kesforstudent.Guru.AdapterGuru;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.Intent;
-import android.graphics.Color;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,8 +9,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.fingertech.kesforstudent.Guru.ModelGuru.ModelAbsenGuru;
-import com.fingertech.kesforstudent.Guru.ModelGuru.ModelPenilaian;
+import com.fingertech.kesforstudent.Guru.ModelGuru.ModelAbsen.ModelAbsenGuru;
 import com.fingertech.kesforstudent.R;
 
 import java.util.List;
@@ -24,7 +20,7 @@ public class AdapterAbsen extends RecyclerView.Adapter<AdapterAbsen.MyHolder> {
 
     Context context;
     private OnItemClickListener onItemClickListener;
-    public int row_index = 0;
+
     public AdapterAbsen(Context context,List<ModelAbsenGuru> viewItemList) {
         this.context = context;
         this.modelAbsenGuruList = viewItemList;
@@ -59,20 +55,22 @@ public class AdapterAbsen extends RecyclerView.Adapter<AdapterAbsen.MyHolder> {
     }
 
     class MyHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        TextView nama,nis,nilai;
+        TextView nama,nis,nilai,btn_absen;
         OnItemClickListener onItemClickListener;
         LinearLayout linearLayout;
         public MyHolder(View itemView,OnItemClickListener onItemClickListener) {
             super(itemView);
             nama       = itemView.findViewById(R.id.tv_nama_murid);
+            btn_absen  = itemView.findViewById(R.id.arrow_absen);
 
-//            itemView.setOnClickListener(this);
-//            this.onItemClickListener = onItemClickListener;
+
+            btn_absen.setOnClickListener(this);
+            this.onItemClickListener = onItemClickListener;
         }
 
         @Override
         public void onClick(View v) {
-//            onItemClickListener.onItemClick(v, getAdapterPosition());
+            onItemClickListener.onItemClick(v, getAdapterPosition());
         }
     }
     public interface OnItemClickListener {
