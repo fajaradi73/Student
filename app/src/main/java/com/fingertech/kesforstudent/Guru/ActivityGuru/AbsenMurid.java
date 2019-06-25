@@ -128,7 +128,7 @@ public class AbsenMurid extends AppCompatActivity {
                                     CardView btnnext,btnback;
                                     AdapterDetailAbsen adapterDetailAbsen;
                                     ViewPager viewpager;
-                                    view = getLayoutInflater().inflate(R.layout.activity_detail_absen_guru,null);
+                                    view     = getLayoutInflater().inflate(R.layout.activity_detail_absen_guru,null);
                                     btnnext  = view.findViewById(R.id.btnnext);
                                     btnback  = view.findViewById(R.id.btnback);
                                     viewpager= view.findViewById(R.id.pagerabsen);

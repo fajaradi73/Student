@@ -204,7 +204,7 @@
                     <TextView
                         android:layout_width="20dp"
                         android:layout_height="match_parent"
-                        android:text="A"
+                        android:text="H"
                         android:textAlignment="center"
                         android:id="@+id/tv_Hadir"
                         android:textColor="@color/background"

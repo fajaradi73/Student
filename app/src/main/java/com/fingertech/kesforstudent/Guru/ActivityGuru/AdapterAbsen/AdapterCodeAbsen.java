@@ -71,7 +71,7 @@ public class AdapterCodeAbsen extends RecyclerView.Adapter<AdapterCodeAbsen.MyHo
         TextView tv_code;
 
         OnItemClickListener onItemClickListener;
-        ModelDataAttidude modelDataAttidude;
+
 
         public MyHolder(View itemView, OnItemClickListener onItemClickListener) {
             super(itemView);

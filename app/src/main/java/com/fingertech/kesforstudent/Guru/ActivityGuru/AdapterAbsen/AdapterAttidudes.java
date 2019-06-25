@@ -33,6 +33,7 @@ public class AdapterAttidudes extends RecyclerView.Adapter<AdapterAttidudes.MyHo
     String authorization,school_code,member_id,codeattidude,attidudename,attidudegradecode,scyear_id;
     int statusattidude;
     List<ModelDataAttidude> modelDataAttidudeList = new ArrayList<>();
+    RecyclerView rv_code;
     ModelDataAttidude modelDataAttidude;
     Auth mApiInterface;
     Context context;
@@ -52,51 +53,8 @@ public class AdapterAttidudes extends RecyclerView.Adapter<AdapterAttidudes.MyHo
     public MyHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
         View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_fragmentabsen, parent, false);
-        mApiInterface               = ApiClient.getClient().create(Auth.class);
-        authorization               ="eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6ImZhamFyYWRpcHJhc3RAZ21haWwuY29tIiwibWVtYmVyX2lkIjoiODUzIiwiZnVsbG5hbWUiOiJNb25hbGlzYSIsIm1lbWJlcl90eXBlIjoiMyJ9.GDytEt9XgLGPzAMUUyC5YkDSE378H2i-T-b-q8_w4U4";
-        member_id                   ="777";
-        scyear_id                   ="1";
-        school_code                 ="bpk02";
 
-        Call<JSONResponse.Attidude> Callat = mApiInterface.kes_attitude_get(authorization,school_code,member_id,scyear_id);
-        Callat.enqueue(new Callback<JSONResponse.Attidude>() {
-            @Override
-            public void onResponse(Call<JSONResponse.Attidude> call, Response<JSONResponse.Attidude> response) {
-                Log.d("cattidude",response.code()+"");
-                modelDataAttidudes.clear();
-                if (response.isSuccessful()){
-                    JSONResponse.Attidude resourceattidude = response.body();
-                    statusattidude = resourceattidude.statusattidude;
-                    codeattidude   = resourceattidude.codeattidude;
-                    if (statusattidude==1 && codeattidude.equals("DTS_SCS_0001")){
-                        for (int at = 0; at<response.body().getDataattidude().size();at++){
-                            attidudename = response.body().getDataattidude().get(at).getAttitude_grade_name();
-                            modelDataAttidude = new ModelDataAttidude();
-                            modelDataAttidude.setAttitude_name(attidudename);
-                            modelDataAttidudes.add(modelDataAttidude);
-                            Log.d("nama",attidudename.toString());
-                            for (int i = 0; i < response.body().getDataattidude().get(at).getData().size();i++)
-                            {
-                                attidudegradecode = response.body().getDataattidude().get(at).getData().get(i).getAttitude_grade_code();
 
-                            }
-                        }
-//                        AdapterAttidudes    adapterAttidudes    = new AdapterAttidudes(context,modelDataAttidudes);
-//                        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
-//                        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-//                        rv_attidude.setLayoutManager(linearLayoutManager);
-//                        rv_attidude.setAdapter(adapterAttidudes);
-                    }
-
-                }
-
-            }
-
-            @Override
-            public void onFailure(Call<JSONResponse.Attidude> call, Throwable t) {
-
-            }
-        });
 
 
         MyHolder myHolder = new MyHolder(itemView,onItemClickListener);
@@ -111,7 +69,6 @@ public class AdapterAttidudes extends RecyclerView.Adapter<AdapterAttidudes.MyHo
         ModelDataAttidude viewItem = modelDataAttidudes.get(position);
         holder.tv_attidude.setText(viewItem.getAttitude_name());
 
-
     }
 
     @Override
@@ -121,13 +78,63 @@ public class AdapterAttidudes extends RecyclerView.Adapter<AdapterAttidudes.MyHo
 
     class MyHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView tv_attidude;
+        RecyclerView rv_code;
         AdapterAttidudes.OnItemClickListener onItemClickListener;
         LinearLayout linearLayout;
         public MyHolder(View itemView, AdapterAttidudes.OnItemClickListener onItemClickListener) {
             super(itemView);
             tv_attidude       = itemView.findViewById(R.id.tv_attidude);
+            rv_code           = itemView.findViewById(R.id.rv_code);
 
 
+
+            mApiInterface               = ApiClient.getClient().create(Auth.class);
+            authorization               ="eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6ImZhamFyYWRpcHJhc3RAZ21haWwuY29tIiwibWVtYmVyX2lkIjoiODUzIiwiZnVsbG5hbWUiOiJNb25hbGlzYSIsIm1lbWJlcl90eXBlIjoiMyJ9.GDytEt9XgLGPzAMUUyC5YkDSE378H2i-T-b-q8_w4U4";
+            member_id                   ="777";
+            scyear_id                   ="1";
+            school_code                 ="bpk02";
+
+
+            Call<JSONResponse.Attidude> Callat = mApiInterface.kes_attitude_get(authorization,school_code,member_id,scyear_id);
+            Callat.enqueue(new Callback<JSONResponse.Attidude>() {
+                @Override
+                public void onResponse(Call<JSONResponse.Attidude> call, Response<JSONResponse.Attidude> response) {
+                    Log.d("cattidude",response.code()+"");
+                    modelDataAttidudeList.clear();
+                    if (response.isSuccessful()){
+                        JSONResponse.Attidude resourceattidude = response.body();
+                        statusattidude = resourceattidude.statusattidude;
+                        codeattidude   = resourceattidude.codeattidude;
+                        if (statusattidude==1 && codeattidude.equals("DTS_SCS_0001")){
+                            for (int at = 0; at<response.body().getDataattidude().size();at++){
+                                attidudename = response.body().getDataattidude().get(at).getAttitude_grade_name();
+                                modelDataAttidudeList.clear();
+                                for (int i = 0; i < response.body().getDataattidude().get(at).getData().size();i++)
+                                {
+                                    attidudegradecode = response.body().getDataattidude().get(at).getData().get(i).getAttitude_grade_code();
+                                    Log.d("namakode",attidudegradecode.toString());
+                                    modelDataAttidude = new ModelDataAttidude();
+                                    modelDataAttidude.setAttitude_grade_code(attidudegradecode);
+                                    modelDataAttidudeList.add(modelDataAttidude);
+
+                                }
+                            }
+                        AdapterCodeAbsen    adapterCodeAbsen    = new AdapterCodeAbsen(context,modelDataAttidudeList);
+                        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
+                        linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+                        rv_code.setLayoutManager(linearLayoutManager);
+                        rv_code.setAdapter(adapterCodeAbsen);
+                        }
+
+                    }
+
+                }
+
+                @Override
+                public void onFailure(Call<JSONResponse.Attidude> call, Throwable t) {
+
+                }
+            });
 
 //            btn_absen.setOnClickListener(this);
 //            this.onItemClickListener = onItemClickListener;
