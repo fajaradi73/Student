@@ -209,7 +209,7 @@ public class AbsenAnak extends AppCompatActivity{
                         for (JSONResponse.DataJam dataJam : dataJamList) {
                             absenModel = new AbsenModel();
                             absenModel.setTanggal(tanggals);
-                            absenModel.setTimez_star(dataJam.getTimez_start());
+                            absenModel.setTimez_star(dataJam.getTimez_ok());
                             absenModel.setTimez_finish(dataJam.getTimez_finish());
                             absenModel.setDay_id(dataJam.getDays().get(Integer.parseInt(day)-1).getAbsen_status());
                             absenModelList.add(absenModel);
@@ -368,7 +368,7 @@ public class AbsenAnak extends AppCompatActivity{
                                             for (JSONResponse.DataJam dataJam : dataJamList) {
                                                 absenModel = new AbsenModel();
                                                 absenModel.setTanggal(tanggals);
-                                                absenModel.setTimez_star(dataJam.getTimez_start());
+                                                absenModel.setTimez_star(dataJam.getTimez_ok());
                                                 absenModel.setTimez_finish(dataJam.getTimez_finish());
                                                 absenModel.setDay_id(dataJam.getDays().get(Integer.parseInt(day) - 1).getAbsen_status());
                                                 absenModelList.add(absenModel);

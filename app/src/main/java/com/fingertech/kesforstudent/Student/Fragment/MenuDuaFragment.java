@@ -65,6 +65,7 @@ public class MenuDuaFragment extends Fragment {
             intent.putExtra("school_code", school_code.toLowerCase());
             intent.putExtra("member_id", member_id);
             intent.putExtra("classroom_id", classroom_id);
+            intent.putExtra("edulevelid",edulevelid);
             startActivity(intent);
         });
         return view;

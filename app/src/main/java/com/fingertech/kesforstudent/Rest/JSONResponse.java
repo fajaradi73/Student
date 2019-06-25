@@ -1649,6 +1649,8 @@ public class JSONResponse {
 
 
     }
+
+
     public class DataMurid{
         @SerializedName("memberid")
         public String member_id;
@@ -1658,6 +1660,8 @@ public class JSONResponse {
 
         @SerializedName("NIS")
         public String NIS;
+
+
 
         public String getMember_id() {
             return member_id;
@@ -1680,9 +1684,154 @@ public class JSONResponse {
         public void setNIS (String NIS){this.NIS = NIS;}
 
 
-
-
     }
+
+    //    attidude
+    public class Attidude{
+        @SerializedName("status")
+        public Integer statusattidude;
+
+        @SerializedName("code")
+        public String codeattidude;
+
+        @SerializedName("data")
+        public List<DataAttidude> dataattidude;
+
+        public Integer getStatusattidude() {
+            return statusattidude;
+        }
+
+        public void setStatusattidude(Integer statusattidude) {
+            this.statusattidude = statusattidude;
+        }
+
+        public String getCodeattidude() {
+            return codeattidude;
+        }
+
+        public void setCodeattidude(String codeattidude) {
+            this.codeattidude = codeattidude;
+        }
+
+        public List<DataAttidude> getDataattidude() {
+            return dataattidude;
+        }
+
+        public void setDataattidude(List<DataAttidude> dataattidude) {
+            this.dataattidude = dataattidude;
+        }
+    }
+
+    public class DataAttidude{
+
+        @SerializedName("attitudeid")
+        public String attitudeid;
+        @SerializedName("attitude_name")
+        public String attitude_grade_name;
+        @SerializedName("attitude_desc")
+        public String attitude_desc;
+        @SerializedName("colour_code")
+        public String colour_code;
+        @SerializedName("details")
+        public List<Detail> details;
+
+
+        public String getAttitudeid() {
+            return attitudeid;
+        }
+
+        public void setAttitudeid(String attitudeid) {
+            this.attitudeid = attitudeid;
+        }
+
+        public String getAttitude_grade_name() {
+            return attitude_grade_name;
+        }
+
+        public void setAttitude_grade_name(String attitude_grade_name) {
+            this.attitude_grade_name = attitude_grade_name;
+        }
+
+        public String getAttitude_desc() {
+            return attitude_desc;
+        }
+
+        public void setAttitude_desc(String attitude_desc) {
+            this.attitude_desc = attitude_desc;
+        }
+
+        public String getColour_code() {
+            return colour_code;
+        }
+
+        public void setColour_code(String colour_code) {
+            this.colour_code = colour_code;
+        }
+        public List<Detail> getData() {
+            return details;
+        }
+
+        public void setData(List<Detail> data) {
+            this.details = details;
+        }
+    }
+
+
+
+    public class Detail{
+        @SerializedName("attitude_grade_code")
+        public String attitude_grade_code;
+        @SerializedName("attitude_grade_name")
+        public String attitude_grade_name;
+        @SerializedName("attitude_grade_desc")
+        public String attitude_grade_desc;
+        @SerializedName("attitude_grade_from")
+        public String attitude_grade_from;
+        @SerializedName("attitude_grade_to")
+        public String attitude_grade_to;
+
+        public String getAttitude_grade_code() {
+            return attitude_grade_code;
+        }
+
+        public void setAttitude_grade_code(String attitude_grade_code) {
+            this.attitude_grade_code = attitude_grade_code;
+        }
+
+        public String getAttitude_grade_name() {
+            return attitude_grade_name;
+        }
+
+        public void setAttitude_grade_name(String attitude_grade_name) {
+            this.attitude_grade_name = attitude_grade_name;
+        }
+
+        public String getAttitude_grade_desc() {
+            return attitude_grade_desc;
+        }
+
+        public void setAttitude_grade_desc(String attitude_grade_desc) {
+            this.attitude_grade_desc = attitude_grade_desc;
+        }
+
+        public String getAttitude_grade_from() {
+            return attitude_grade_from;
+        }
+
+        public void setAttitude_grade_from(String attitude_grade_from) {
+            this.attitude_grade_from = attitude_grade_from;
+        }
+
+        public String getAttitude_grade_to() {
+            return attitude_grade_to;
+        }
+
+        public void setAttitude_grade_to(String attitude_grade_to) {
+            this.attitude_grade_to = attitude_grade_to;
+        }
+    }
+
+
 
 
     ///// Response Check Semester
@@ -4141,6 +4290,14 @@ public class JSONResponse {
 
         @SerializedName("total_leave_sick")
         public String total_leave_sick;
+
+        public String getTimez_ok() {
+            return timez_ok;
+        }
+
+        public void setTimez_ok(String timez_ok) {
+            this.timez_ok = timez_ok;
+        }
 
         @SerializedName("days")
         public List<DataHari> days;

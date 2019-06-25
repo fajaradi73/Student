@@ -29,7 +29,6 @@
         tools:ignore="AllowBackup,GoogleAppIndexingWarning,InnerclassSeparator"
         tools:targetApi="n">
 
-
         <uses-library
             android:name="org.apache.http.legacy"
             android:required="false" />
@@ -268,7 +267,7 @@
             android:label=""
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".Guru.ActivityGuru.PesanTerkirimDetail"/>
+        <activity android:name=".Guru.ActivityGuru.PesanTerkirimDetail" />
     </application>
 
 </manifest>

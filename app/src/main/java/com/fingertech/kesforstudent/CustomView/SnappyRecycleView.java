@@ -5,7 +5,8 @@ import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 
-public class SnappyRecycleView extends RecyclerView {
+public final class SnappyRecycleView extends RecyclerView {
+
     public SnappyRecycleView(Context context) {
         super(context);
     }

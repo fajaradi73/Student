@@ -101,13 +101,13 @@ public class AbsensiAdapter extends RecyclerView.Adapter<AbsensiAdapter.MyHolder
         if (times_start.equals(times_mulai)){
             switch (absenModel.getDay_id()) {
                 case "0":
-                    Glide.with(getContext()).load(R.drawable.ic_false).into(holder.image_absen);
+                    Glide.with(getContext()).load(R.drawable.ic_kuning).into(holder.image_absen);
                     break;
                 case "1":
                     Glide.with(getContext()).load(R.drawable.ic_true).into(holder.image_absen);
                     break;
                 case "2":
-                    Glide.with(getContext()).load(R.drawable.ic_kuning).into(holder.image_absen);
+                    Glide.with(getContext()).load(R.drawable.ic_false).into(holder.image_absen);
                     break;
             }
         }else {

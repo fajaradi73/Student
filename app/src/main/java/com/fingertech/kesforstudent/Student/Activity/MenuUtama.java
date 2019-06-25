@@ -16,6 +16,7 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.LinearSnapHelper;
 import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -52,6 +53,7 @@ import com.fingertech.kesforstudent.CustomView.SnappyRecycleView;
 import com.fingertech.kesforstudent.Rest.ApiClient;
 import com.fingertech.kesforstudent.Rest.JSONResponse;
 import com.pixelcan.inkpageindicator.InkPageIndicator;
+import com.rbrooks.indefinitepagerindicator.IndefinitePagerIndicator;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -131,6 +133,7 @@ public class MenuUtama extends AppCompatActivity
     SnappyRecycleView rv_senin, rv_selasa, rv_rabu, rv_kamis, rv_jumat, rv_sabtu;
     CoordinatorLayout coordinatorLayout;
     TextView tv_hint;
+    IndefinitePagerIndicator indefinitePagerIndicator;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -155,7 +158,9 @@ public class MenuUtama extends AppCompatActivity
         rv_sabtu            = findViewById(R.id.rv_sabtu);
         coordinatorLayout   = findViewById(R.id.menu_utama);
         title_jadwal        = findViewById(R.id.title_jadwal);
-        Base_anak           = "http://www.kes.co.id/schoolc/assets/images/profile/mm_";
+        indefinitePagerIndicator    = findViewById(R.id.recyclerview_pager_indicator);
+
+        Base_anak           = "http://genpin.co.id/schoolc/assets/images/profile/mm_";
 
         setSupportActionBar(toolbar);
 
@@ -228,7 +233,7 @@ public class MenuUtama extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_utama, menu);
+
         return true;
     }
 
@@ -313,16 +318,17 @@ public class MenuUtama extends AppCompatActivity
                     JSONResponse.GetProfile resource = response.body();
                     status = resource.status;
                     if (status == 1) {
-                        fullname = response.body().getData().getFullname();
-                        picture = response.body().getData().getPicture();
-                        classroom_id = response.body().getData().getClassroom_id();
-                        edulevel_id = response.body().getData().getEdulevel_id();
+                        fullname        = response.body().getData().getFullname();
+                        picture         = response.body().getData().getPicture();
+                        classroom_id    = response.body().getData().getClassroom_id();
+                        edulevel_id     = response.body().getData().getEdulevel_id();
                         tv_profile.setText(fullname);
                         String imageFile = Base_anak + picture;
                         Glide.with(MenuUtama.this).load(imageFile).into(image_profile);
                         Jadwal_pelajaran();
                         send_data();
                         send_data2();
+                        Log.d("edulevel",edulevel_id+"");
                     }
                 }
             }
@@ -420,10 +426,10 @@ public class MenuUtama extends AppCompatActivity
                         if (status == 1 && code.equals("CSCH_SCS_0001")) {
                             for (int i = 0; i < response.body().getData().getClass_schedule().size(); i++) {
                                 JSONResponse.JadwalData jadwalData = resource.data.getClass_schedule().get(i);
-                                days_name = jadwalData.getDayName();
-                                day_status = jadwalData.getDayStatus();
-                                daysid = jadwalData.getDayid();
-                                day_type = jadwalData.getDayType();
+                                days_name   = jadwalData.getDayName();
+                                day_status  = jadwalData.getDayStatus();
+                                daysid      = jadwalData.getDayid();
+                                day_type    = jadwalData.getDayType();
                                 switch (days_name) {
                                     case "Senin": {
                                         for (int o = 0; o < response.body().getData().getClass_schedule().get(i).getScheduleClass().size(); o++) {
@@ -446,9 +452,12 @@ public class MenuUtama extends AppCompatActivity
                                             jadwalSenin.setJam_selesai(jam_selesai);
                                             itemlist.add(jadwalSenin);
                                         }
+                                        LinearSnapHelper snapHelper = new LinearSnapHelper();
                                         seninAdapter = new SeninAdapter(itemlist);
                                         LinearLayoutManager layoutManager = new LinearLayoutManager(MenuUtama.this);
                                         layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+                                        indefinitePagerIndicator.attachToRecyclerView(rv_senin);
+                                        snapHelper.attachToRecyclerView(rv_senin);
                                         rv_senin.setLayoutManager(layoutManager);
                                         rv_senin.setAdapter(seninAdapter);
 
@@ -475,9 +484,12 @@ public class MenuUtama extends AppCompatActivity
                                             jadwalSelasa.setJam_selesai(jam_selesai);
                                             itemselasa.add(jadwalSelasa);
                                         }
+                                        LinearSnapHelper snapHelper = new LinearSnapHelper();
                                         selasaAdapter = new SelasaAdapter(itemselasa);
                                         LinearLayoutManager layoutManager = new LinearLayoutManager(MenuUtama.this);
                                         layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+                                        indefinitePagerIndicator.attachToRecyclerView(rv_selasa);
+                                        snapHelper.attachToRecyclerView(rv_selasa);
                                         rv_selasa.setLayoutManager(layoutManager);
                                         rv_selasa.setAdapter(selasaAdapter);
                                         break;
@@ -503,9 +515,12 @@ public class MenuUtama extends AppCompatActivity
                                             jadwalRabu.setJam_selesai(jam_selesai);
                                             itemRabu.add(jadwalRabu);
                                         }
+                                        LinearSnapHelper snapHelper = new LinearSnapHelper();
                                         rabuAdapter = new RabuAdapter(itemRabu);
                                         LinearLayoutManager layoutManager = new LinearLayoutManager(MenuUtama.this);
                                         layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+                                        indefinitePagerIndicator.attachToRecyclerView(rv_rabu);
+                                        snapHelper.attachToRecyclerView(rv_rabu);
                                         rv_rabu.setLayoutManager(layoutManager);
                                         rv_rabu.setAdapter(rabuAdapter);
                                         break;
@@ -531,9 +546,12 @@ public class MenuUtama extends AppCompatActivity
                                             jadwalKamis.setJam_selesai(jam_selesai);
                                             itemKamis.add(jadwalKamis);
                                         }
+                                        LinearSnapHelper snapHelper = new LinearSnapHelper();
                                         kamisAdapter = new KamisAdapter(itemKamis);
                                         LinearLayoutManager layoutManager = new LinearLayoutManager(MenuUtama.this);
                                         layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+                                        indefinitePagerIndicator.attachToRecyclerView(rv_kamis);
+                                        snapHelper.attachToRecyclerView(rv_kamis);
                                         rv_kamis.setLayoutManager(layoutManager);
                                         rv_kamis.setAdapter(kamisAdapter);
 
@@ -560,9 +578,12 @@ public class MenuUtama extends AppCompatActivity
                                             jadwalJumat.setJam_selesai(jam_selesai);
                                             itemJumat.add(jadwalJumat);
                                         }
+                                        LinearSnapHelper snapHelper = new LinearSnapHelper();
                                         jumatAdapter = new JumatAdapter(itemJumat);
                                         LinearLayoutManager layoutManager = new LinearLayoutManager(MenuUtama.this);
                                         layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+                                        indefinitePagerIndicator.attachToRecyclerView(rv_jumat);
+                                        snapHelper.attachToRecyclerView(rv_jumat);
                                         rv_jumat.setLayoutManager(layoutManager);
                                         rv_jumat.setAdapter(jumatAdapter);
 
@@ -589,9 +610,12 @@ public class MenuUtama extends AppCompatActivity
                                             jadwalSabtu.setJam_selesai(jam_selesai);
                                             itemSabtu.add(jadwalSabtu);
                                         }
+                                        LinearSnapHelper snapHelper = new LinearSnapHelper();
                                         sabtuAdapter = new SabtuAdapter(itemSabtu);
                                         LinearLayoutManager layoutManager = new LinearLayoutManager(MenuUtama.this);
                                         layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+                                        indefinitePagerIndicator.attachToRecyclerView(rv_sabtu);
+                                        snapHelper.attachToRecyclerView(rv_sabtu);
                                         rv_sabtu.setLayoutManager(layoutManager);
                                         rv_sabtu.setAdapter(sabtuAdapter);
                                         break;

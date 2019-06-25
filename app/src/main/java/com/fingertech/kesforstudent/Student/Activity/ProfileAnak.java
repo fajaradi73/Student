@@ -124,7 +124,7 @@ public class ProfileAnak extends AppCompatActivity {
         btn_edit                = findViewById(R.id.btn_edit);
         btn_gantifoto           = findViewById(R.id.btn_edit_foto);
         constraintLayout        = findViewById(R.id.content_profile);
-        Base_anak               = "http://www.kes.co.id/schoolc/assets/images/profile/mm_";
+        Base_anak               = "http://genpin.co.id/schoolc/assets/images/profile/mm_";
 
         sharedpreferences = getSharedPreferences(Masuk.my_shared_preferences, Context.MODE_PRIVATE);
         authorization     = sharedpreferences.getString(TAG_TOKEN,"");

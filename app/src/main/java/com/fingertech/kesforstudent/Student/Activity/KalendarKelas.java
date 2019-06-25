@@ -17,6 +17,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -74,7 +75,7 @@ public class KalendarKelas extends AppCompatActivity {
     Date date;
     String calendar_id,calendar_type,calendar_colour,calendar_time,calendar_date,calendar_title;
     Toolbar toolbar;
-    TextView kalendar;
+    LinearLayout kalendar;
     SharedPreferences sharedPreferences;
     String hari;
 

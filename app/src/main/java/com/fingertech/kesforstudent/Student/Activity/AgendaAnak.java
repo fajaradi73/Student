@@ -65,19 +65,19 @@ public class AgendaAnak extends AppCompatActivity {
     AgendaDataTanggal agendaDataTanggal;
     AgendaAdapter agendaAdapter;
     List<AgendaModel> agendaModelList = new ArrayList<>();
-    List<AgendaTanggalModel> agendaModeltanggalbaru = new ArrayList<>();
+    List<AgendaTanggalModel> agendaTanggalModelList = new ArrayList<>();
     AgendaModel agendaModel;
     AgendaTanggalModel agendaTanggalModel;
-    private DateFormat dateFormat = new SimpleDateFormat("yyyy-MM", new Locale("in", "ID"));
-    private SimpleDateFormat bulanFormat = new SimpleDateFormat("yyyy-MM", Locale.getDefault());
-    DateFormat df = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
-    SimpleDateFormat fmt = new SimpleDateFormat("dd MMMM yyyy",new Locale("in","ID"));
-    SimpleDateFormat tanggalformat = new SimpleDateFormat("d",new Locale("in","ID"));
-    SimpleDateFormat bulanformat = new SimpleDateFormat("M",new Locale("in","ID"));
-    SimpleDateFormat tahunformat = new SimpleDateFormat("yyyy",new Locale("in","ID"));
-    SimpleDateFormat formattanggal = new SimpleDateFormat("yyyy-MM-dd",new Locale("in","ID"));
-    SimpleDateFormat formatfull = new SimpleDateFormat("yyyy-MM-dd HH:mm",new Locale("in","ID"));
-    DateFormat ds = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault());
+    private DateFormat dateFormat           = new SimpleDateFormat("yyyy-MM", new Locale("in", "ID"));
+    private SimpleDateFormat bulanFormat    = new SimpleDateFormat("yyyy-MM", Locale.getDefault());
+    DateFormat df                           = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+    SimpleDateFormat fmt                    = new SimpleDateFormat("dd MMMM yyyy",new Locale("in","ID"));
+    SimpleDateFormat tanggalformat          = new SimpleDateFormat("d",new Locale("in","ID"));
+    SimpleDateFormat bulanformat            = new SimpleDateFormat("M",new Locale("in","ID"));
+    SimpleDateFormat tahunformat            = new SimpleDateFormat("yyyy",new Locale("in","ID"));
+    SimpleDateFormat formattanggal          = new SimpleDateFormat("yyyy-MM-dd",new Locale("in","ID"));
+    SimpleDateFormat formatfull             = new SimpleDateFormat("yyyy-MM-dd HH:mm",new Locale("in","ID"));
+    DateFormat ds                           = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault());
 
     int status;
     String tanggalagenda,bulan_sekarang,date,semester,start_date,end_date,semester_id,color,code,authorization,school_code,student_id,classroom_id,tanggal_agenda,type_agenda,desc_agenda,content_agenda;
@@ -95,8 +95,7 @@ public class AgendaAnak extends AppCompatActivity {
     Date dateawal,dateakhir,bulannow,bulanpicker,datenow,datejam;
     Long times_awal,times_akhir,times_sekarang,times_picker;
     CardView btn_pilih;
-    String tanggals;
-
+    String tanggals,calendardate;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -124,20 +123,39 @@ public class AgendaAnak extends AppCompatActivity {
         school_code         = sharedPreferences.getString("school_code",null);
         student_id          = sharedPreferences.getString("member_id",null);
         classroom_id        = sharedPreferences.getString("classroom_id",null);
-
+        calendardate        = getIntent().getStringExtra("calendar");
         date = df.format(Calendar.getInstance().getTime());
-        bulan_sekarang = bulanFormat.format(Calendar.getInstance().getTime());
-        Calendar calendar = Calendar.getInstance();
-        day  = calendar.get(Calendar.DAY_OF_WEEK);
-        dapat_Agenda();
-        Check_Semester();
-        tanggal = tanggalformat.format(Calendar.getInstance().getTime());
-        bulan   = bulanformat.format(Calendar.getInstance().getTime());
-        tahun   = tahunformat.format(Calendar.getInstance().getTime());
-        tanggalawalan   = formattanggal.format(Calendar.getInstance().getTime());
-        tanggals        = fmt.format(Calendar.getInstance().getTime());
 
-        Log.d("tanggal",tanggal+"");
+        if (calendardate != null){
+            Calendar calendar = Calendar.getInstance();
+            try {
+                calendar.setTime(df.parse(calendardate));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            bulan_sekarang = bulanFormat.format(calendar.getTime());
+
+            day  = calendar.get(Calendar.DAY_OF_WEEK);
+            dapat_Agenda();
+            Check_Semester();
+            tanggal         = tanggalformat.format(calendar.getTime());
+            bulan           = bulanformat.format(calendar.getTime());
+            tahun           = tahunformat.format(calendar.getTime());
+            tanggalawalan   = formattanggal.format(calendar.getTime());
+            tanggals        = fmt.format(calendar.getTime());
+        }else {
+            bulan_sekarang = bulanFormat.format(Calendar.getInstance().getTime());
+            Calendar calendar = Calendar.getInstance();
+            day  = calendar.get(Calendar.DAY_OF_WEEK);
+            dapat_Agenda();
+            Check_Semester();
+            tanggal         = tanggalformat.format(Calendar.getInstance().getTime());
+            bulan           = bulanformat.format(Calendar.getInstance().getTime());
+            tahun           = tahunformat.format(Calendar.getInstance().getTime());
+            tanggalawalan   = formattanggal.format(Calendar.getInstance().getTime());
+            tanggals        = fmt.format(Calendar.getInstance().getTime());
+        }
+
 
         slidingUpPanelLayout.setFadeOnClickListener(view -> {
             slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
@@ -170,7 +188,7 @@ public class AgendaAnak extends AppCompatActivity {
         });
 
         Calendar calendars = Calendar.getInstance();
-        calendar.setTimeInMillis(System.currentTimeMillis());
+        calendars.setTimeInMillis(System.currentTimeMillis());
         datePicker.init(calendars.get(Calendar.YEAR), calendars.get(Calendar.MONTH), calendars.get(Calendar.DAY_OF_MONTH), new DatePicker.OnDateChangedListener() {
             @Override
             public void onDateChanged(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
@@ -207,7 +225,7 @@ public class AgendaAnak extends AppCompatActivity {
         datatanggal(Integer.parseInt(tahun),Integer.parseInt(bulan));
 
         LinearSnapHelper snapHelper = new LinearSnapHelper();
-        agendaDataTanggal = new AgendaDataTanggal(agendaModeltanggalbaru);
+        agendaDataTanggal = new AgendaDataTanggal(agendaTanggalModelList);
         LinearLayoutManager layoutManager = new LinearLayoutManager(AgendaAnak.this, LinearLayoutManager.HORIZONTAL, false);
         indefinitePagerIndicator.attachToRecyclerView(rvtanggal);
         rvtanggal.setOnFlingListener(new SnappyRecycleView(AgendaAnak.this).getOnFlingListener());
@@ -221,14 +239,14 @@ public class AgendaAnak extends AppCompatActivity {
                 int horizontalScrollRange = recyclerView.computeHorizontalScrollRange();
                 int scrollOffset = recyclerView.computeHorizontalScrollOffset();
                 int currentItem = 0;
-                float itemWidth = horizontalScrollRange * 1.0f / agendaModeltanggalbaru.size();
+                float itemWidth = horizontalScrollRange * 1.0f / agendaTanggalModelList.size();
                 itemWidth = (itemWidth == 0) ? 1.0f : itemWidth;
                 if (scrollOffset != 0) {
                     currentItem = Math.round(scrollOffset / itemWidth);
                 }
                 currentItem = (currentItem < 0) ? 0 : currentItem;
-                currentItem = (currentItem >= agendaModeltanggalbaru.size()) ? agendaModeltanggalbaru.size() - 1 : currentItem;
-                tanggals = agendaModeltanggalbaru.get(currentItem).getDate();
+                currentItem = (currentItem >= agendaTanggalModelList.size()) ? agendaTanggalModelList.size() - 1 : currentItem;
+                tanggals = agendaTanggalModelList.get(currentItem).getDate();
                 if (dataAgendaList!=null) {
                     if (agendaModelList != null) {
                         agendaModelList.clear();
@@ -326,7 +344,6 @@ public class AgendaAnak extends AppCompatActivity {
                 }
             }
 
-
             @Override
             public void onFailure(Call<JSONResponse.CheckSemester> call, Throwable t) {
                 Log.d("onFailure", t.toString());
@@ -390,7 +407,6 @@ public class AgendaAnak extends AppCompatActivity {
 
         });
     }
-
     private void dapat_Agenda(){
         progressBar();
         showDialog();
@@ -404,7 +420,7 @@ public class AgendaAnak extends AppCompatActivity {
                     JSONResponse.ListAgenda resource = response.body();
                     status  = resource.status;
                     code    = resource.code;
-                    if (status == 1&& code.equals("AGN_SCS_0001")){
+                    if (status == 1 && code.equals("AGN_SCS_0001")){
                         indefinitePagerIndicator.setVisibility(View.VISIBLE);
                         rv_agenda.setVisibility(View.VISIBLE);
                         rvtanggal.setVisibility(View.VISIBLE);
@@ -433,37 +449,81 @@ public class AgendaAnak extends AppCompatActivity {
                             tv_hint_agenda_hari.setVisibility(View.VISIBLE);
                         }
                         String tanngall = formatfull.format(Calendar.getInstance().getTime());
-                        if (response.body().getClass_schedule() != null) {
-                            tanggalakhiran  = response.body().getClass_schedule().get(0).getScheduleClass().get(0).getTimezFinish();
-                            try {
-                                datenow = ds.parse(tanngall);
-                                datejam = ds.parse(tanggalawalan+" "+tanggalakhiran);
-                            } catch (ParseException e) {
-                                e.printStackTrace();
-                            }
-                            Long timesnow = datenow.getTime();
-                            Long timesakhir = datejam.getTime();
-                            if (timesnow > timesakhir) {
-                                if(Integer.parseInt(tanggal) > agendaModeltanggalbaru.size()){
-                                    datatanggal(Integer.parseInt(tahun),Integer.parseInt(bulan)+1);
-                                    rvtanggal.scrollToPosition(0);
-                                    rvtanggal.smoothScrollBy(1,0);
-                                    datePicker.updateDate(Integer.parseInt(tahun),Integer.parseInt(bulan)-1,0);
-                                }else {
-                                    rvtanggal.scrollToPosition(Integer.parseInt(tanggal));
-                                    rvtanggal.smoothScrollBy(1,0);
-                                    if (Integer.parseInt(tanggal) > agendaModeltanggalbaru.size()){
-                                        datePicker.updateDate(Integer.parseInt(tahun),Integer.parseInt(bulan)-1,0);
-                                    }else {
-                                        datePicker.updateDate(Integer.parseInt(tahun),Integer.parseInt(bulan)-1,Integer.parseInt(tanggal)+1);
+                        if (response.body().getClass_schedule().size() > 0) {
+                            if (response.body().getClass_schedule().get(0).getScheduleClass().size() > 0) {
+                                tanggalakhiran = response.body().getClass_schedule().get(0).getScheduleClass().get(0).getTimezFinish();
+                                try {
+                                    datenow = ds.parse(tanngall);
+                                    datejam = ds.parse(tanggalawalan + " " + tanggalakhiran);
+                                } catch (ParseException e) {
+                                    e.printStackTrace();
+                                }
+                                Long timesnow = datenow.getTime();
+                                Long timesakhir = datejam.getTime();
+                                if (agendaTanggalModelList != null) {
+                                    if (timesnow > timesakhir) {
+                                        if (Integer.parseInt(tanggal) > agendaTanggalModelList.size() - 1) {
+                                            datatanggal(Integer.parseInt(tahun), Integer.parseInt(bulan) + 1);
+                                            rvtanggal.scrollToPosition(1);
+                                            rvtanggal.smoothScrollToPosition(0);
+                                            rvtanggal.smoothScrollBy(1, 0);
+                                            datePicker.updateDate(Integer.parseInt(tahun), Integer.parseInt(bulan), 0);
+                                        } else {
+                                            if (Integer.parseInt(tanggal) == agendaTanggalModelList.size() - 1) {
+                                                rvtanggal.scrollToPosition(Integer.parseInt(tanggal) - 1);
+                                                rvtanggal.smoothScrollToPosition(Integer.parseInt(tanggal));
+                                                rvtanggal.smoothScrollBy(1, 0);
+                                                datePicker.updateDate(Integer.parseInt(tahun), Integer.parseInt(bulan) - 1, Integer.parseInt(tanggal) + 1);
+                                            } else {
+                                                rvtanggal.scrollToPosition(Integer.parseInt(tanggal));
+                                                rvtanggal.smoothScrollBy(1, 0);
+                                                datePicker.updateDate(Integer.parseInt(tahun), Integer.parseInt(bulan) - 1, Integer.parseInt(tanggal) + 1);
+                                            }
+                                        }
+                                    } else {
+                                        rvtanggal.scrollToPosition(Integer.parseInt(tanggal) - 1);
+                                        rvtanggal.smoothScrollBy(1, 0);
                                     }
                                 }
                             } else {
-                                rvtanggal.scrollToPosition(Integer.parseInt(tanggal) - 1);
-                                rvtanggal.smoothScrollBy(1,0);
+                                if (Integer.parseInt(tanggal) > agendaTanggalModelList.size() - 1) {
+                                    datatanggal(Integer.parseInt(tahun), Integer.parseInt(bulan) + 1);
+                                    rvtanggal.scrollToPosition(1);
+                                    rvtanggal.smoothScrollToPosition(0);
+                                    rvtanggal.smoothScrollBy(1, 0);
+                                    datePicker.updateDate(Integer.parseInt(tahun), Integer.parseInt(bulan), 0);
+                                } else {
+                                    if (Integer.parseInt(tanggal) == agendaTanggalModelList.size() - 1) {
+                                        rvtanggal.scrollToPosition(Integer.parseInt(tanggal) - 1);
+                                        rvtanggal.smoothScrollToPosition(Integer.parseInt(tanggal));
+                                        rvtanggal.smoothScrollBy(1, 0);
+                                        datePicker.updateDate(Integer.parseInt(tahun), Integer.parseInt(bulan) - 1, Integer.parseInt(tanggal) + 1);
+                                    } else {
+                                        rvtanggal.scrollToPosition(Integer.parseInt(tanggal));
+                                        rvtanggal.smoothScrollBy(1, 0);
+                                        datePicker.updateDate(Integer.parseInt(tahun), Integer.parseInt(bulan) - 1, Integer.parseInt(tanggal) + 1);
+                                    }
+                                }
                             }
-                        } else {
-                            Log.d("schedule","datadata");
+                        }else {
+                            if (Integer.parseInt(tanggal) > agendaTanggalModelList.size() - 1) {
+                                datatanggal(Integer.parseInt(tahun), Integer.parseInt(bulan) + 1);
+                                rvtanggal.scrollToPosition(1);
+                                rvtanggal.smoothScrollToPosition(0);
+                                rvtanggal.smoothScrollBy(1, 0);
+                                datePicker.updateDate(Integer.parseInt(tahun), Integer.parseInt(bulan), 0);
+                            } else {
+                                if (Integer.parseInt(tanggal) == agendaTanggalModelList.size() - 1) {
+                                    rvtanggal.scrollToPosition(Integer.parseInt(tanggal) - 1);
+                                    rvtanggal.smoothScrollToPosition(Integer.parseInt(tanggal));
+                                    rvtanggal.smoothScrollBy(1, 0);
+                                    datePicker.updateDate(Integer.parseInt(tahun), Integer.parseInt(bulan) - 1, Integer.parseInt(tanggal) + 1);
+                                } else {
+                                    rvtanggal.scrollToPosition(Integer.parseInt(tanggal));
+                                    rvtanggal.smoothScrollBy(1, 0);
+                                    datePicker.updateDate(Integer.parseInt(tahun), Integer.parseInt(bulan) - 1, Integer.parseInt(tanggal) + 1);
+                                }
+                            }
                         }
                     } else {
                         indefinitePagerIndicator.setVisibility(View.GONE);
@@ -548,14 +608,14 @@ public class AgendaAnak extends AppCompatActivity {
         Calendar cal = Calendar.getInstance();
         cal.set(tahun,bulan-1, 1);
         int daysInMonth = cal.getActualMaximum(Calendar.DAY_OF_MONTH);
-        if (agendaModeltanggalbaru!=null) {
-            agendaModeltanggalbaru.clear();
+        if (agendaTanggalModelList !=null) {
+            agendaTanggalModelList.clear();
             for (int i = 0; i < daysInMonth; i++) {
                 tanggalagenda = fmt.format(cal.getTime());
                 cal.add(Calendar.DAY_OF_MONTH, 1);
                 agendaTanggalModel = new AgendaTanggalModel();
                 agendaTanggalModel.setDate(tanggalagenda);
-                agendaModeltanggalbaru.add(agendaTanggalModel);
+                agendaTanggalModelList.add(agendaTanggalModel);
             }
         }
     }
