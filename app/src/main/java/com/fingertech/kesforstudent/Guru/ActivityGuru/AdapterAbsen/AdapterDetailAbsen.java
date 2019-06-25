@@ -111,6 +111,7 @@ public class AdapterDetailAbsen extends PagerAdapter {
                             for (int i = 0; i < response.body().getDataattidude().get(at).getData().size();i++)
                             {
                                 attidudegradecode = response.body().getDataattidude().get(at).getData().get(i).getAttitude_grade_code();
+//
 
                             }
                         }
