@@ -15,7 +15,7 @@ import java.util.List;
 public class DBHelper extends SQLiteOpenHelper{
 
     private static final String db_name ="kes_school";
-    private static final int db_version = 5;
+    private static final int db_version = 6;
     public static final String TABLE_SQLite = "sqlite";
 
     public static final String COLUMN_ID = "id";

@@ -376,10 +376,14 @@ public class EditProfile extends AppCompatActivity {
                 code   = resource.code;
 
                 if (status == 1 && code.equals("UP_SCS_0001")) {
+                    SharedPreferences.Editor editor = sharedpreferences.edit();
+                    editor.putString("status","1");
+                    editor.apply();
                     Intent intent = new Intent(EditProfile.this, ProfileAnak.class);
                     intent.putExtra("authorization",authorization);
                     intent.putExtra("school_code",school_code);
                     intent.putExtra("member_id",memberid);
+                    intent.putExtra("status","1");
                     setResult(RESULT_OK, intent);
                     finish();
                     FancyToast.makeText(getApplicationContext(),"Berhasil Update",FancyToast.LENGTH_LONG,FancyToast.SUCCESS,false).show();

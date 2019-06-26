@@ -166,7 +166,7 @@ public class Masuk extends AppCompatActivity {
             @Override
             public void onResponse(Call<JSONResponse> call, Response<JSONResponse> response) {
                 hideDialog();
-                Log.d("TAG",response.code()+"");
+                Log.d("Login",response.code()+"");
                 if (response.isSuccessful()) {
                     JSONResponse resource = response.body();
                     status = resource.status;
@@ -179,11 +179,11 @@ public class Masuk extends AppCompatActivity {
                             token = data.token;
                             jsonObject = new JSONObject(JWTUtils.decoded(token));
                             /// save session
-                            username = String.valueOf(jsonObject.get("username"));
-                            memberid = String.valueOf(jsonObject.get("member_id"));
-                            fullname = String.valueOf(jsonObject.get("fullname"));
+                            username    = String.valueOf(jsonObject.get("username"));
+                            memberid    = String.valueOf(jsonObject.get("member_id"));
+                            fullname    = String.valueOf(jsonObject.get("fullname"));
                             member_type = String.valueOf(jsonObject.get("member_type"));
-                            scyear_id = String.valueOf(jsonObject.get("scyear_id"));
+                            scyear_id   = String.valueOf(jsonObject.get("scyear_id"));
                             SharedPreferences.Editor editor = sharedpreferences.edit();
                             editor.putBoolean(session_status, true);
                             editor.putString(TAG_EMAIL, username);
@@ -211,32 +211,118 @@ public class Masuk extends AppCompatActivity {
                             }else {
                                 if (member_type.toString().equals("4")) {
                                     if (Objects.equals(row.get(0).get(Position.KEY_Name), "murid")){
-                                        Intent intent = new Intent(Masuk.this, MenuUtama.class);
-                                        intent.putExtra(TAG_EMAIL, username);
-                                        intent.putExtra(TAG_MEMBER_ID, memberid);
-                                        intent.putExtra(TAG_FULLNAME, fullname);
-                                        intent.putExtra(TAG_MEMBER_TYPE, member_type);
-                                        intent.putExtra(TAG_SCHOOL_CODE, school_code);
-                                        intent.putExtra(TAG_SCHOLL_NAME, school_name);
-                                        intent.putExtra(TAG_TOKEN, token);
-                                        intent.putExtra("scyear_id", scyear_id);
-                                        finish();
-                                        startActivity(intent);
+                                        if (Objects.equals(row.get(0).get(Position.KEY_Status), "2")) {
+                                            Intent intent = new Intent(Masuk.this, MenuUtama.class);
+                                            intent.putExtra(TAG_EMAIL, username);
+                                            intent.putExtra(TAG_MEMBER_ID, memberid);
+                                            intent.putExtra(TAG_FULLNAME, fullname);
+                                            intent.putExtra(TAG_MEMBER_TYPE, member_type);
+                                            intent.putExtra(TAG_SCHOOL_CODE, school_code);
+                                            intent.putExtra(TAG_SCHOLL_NAME, school_name);
+                                            intent.putExtra(TAG_TOKEN, token);
+                                            intent.putExtra("scyear_id", scyear_id);
+                                            finish();
+                                            startActivity(intent);
+                                        }else {
+                                            Intent intent = new Intent(Masuk.this, ChangePassword.class);
+                                            intent.putExtra(TAG_EMAIL, username);
+                                            intent.putExtra(TAG_MEMBER_ID, memberid);
+                                            intent.putExtra(TAG_FULLNAME, fullname);
+                                            intent.putExtra(TAG_MEMBER_TYPE, member_type);
+                                            intent.putExtra(TAG_SCHOOL_CODE, school_code);
+                                            intent.putExtra(TAG_SCHOLL_NAME, school_name);
+                                            intent.putExtra(TAG_TOKEN, token);
+                                            intent.putExtra("scyear_id", scyear_id);
+                                            finish();
+                                            startActivity(intent);
+                                        }
+                                    }else {
+                                        positionTable.updateName(row.get(0).get(Position.KEY_Name), "murid");
+                                        positionTable.updateStatus(row.get(0).get(Position.KEY_Status), "2");
+                                        if (Objects.equals(row.get(0).get(Position.KEY_Status), "2")) {
+                                            Intent intent = new Intent(Masuk.this, MenuUtama.class);
+                                            intent.putExtra(TAG_EMAIL, username);
+                                            intent.putExtra(TAG_MEMBER_ID, memberid);
+                                            intent.putExtra(TAG_FULLNAME, fullname);
+                                            intent.putExtra(TAG_MEMBER_TYPE, member_type);
+                                            intent.putExtra(TAG_SCHOOL_CODE, school_code);
+                                            intent.putExtra(TAG_SCHOLL_NAME, school_name);
+                                            intent.putExtra(TAG_TOKEN, token);
+                                            intent.putExtra("scyear_id", scyear_id);
+                                            finish();
+                                            startActivity(intent);
+                                        }else {
+                                            Intent intent = new Intent(Masuk.this, ChangePassword.class);
+                                            intent.putExtra(TAG_EMAIL, username);
+                                            intent.putExtra(TAG_MEMBER_ID, memberid);
+                                            intent.putExtra(TAG_FULLNAME, fullname);
+                                            intent.putExtra(TAG_MEMBER_TYPE, member_type);
+                                            intent.putExtra(TAG_SCHOOL_CODE, school_code);
+                                            intent.putExtra(TAG_SCHOLL_NAME, school_name);
+                                            intent.putExtra(TAG_TOKEN, token);
+                                            intent.putExtra("scyear_id", scyear_id);
+                                            finish();
+                                            startActivity(intent);
+                                        }
                                     }
+
                                 } else if (member_type.equals("3")) {
                                     if (Objects.equals(row.get(0).get(Position.KEY_Name), "guru")){
-                                        Intent intent = new Intent(Masuk.this, MenuUtamaGuru.class);
-                                        intent.putExtra(TAG_EMAIL, username);
-                                        intent.putExtra(TAG_MEMBER_ID, memberid);
-                                        intent.putExtra(TAG_FULLNAME, fullname);
-                                        intent.putExtra(TAG_MEMBER_TYPE, member_type);
-                                        intent.putExtra(TAG_SCHOOL_CODE, school_code);
-                                        intent.putExtra(TAG_SCHOLL_NAME, school_name);
-                                        intent.putExtra(TAG_TOKEN, token);
-                                        intent.putExtra("scyear_id", scyear_id);
-                                        finish();
-                                        startActivity(intent);
+                                        if (Objects.equals(row.get(0).get(Position.KEY_Status), "1")) {
+                                            Intent intent = new Intent(Masuk.this, MenuUtamaGuru.class);
+                                            intent.putExtra(TAG_EMAIL, username);
+                                            intent.putExtra(TAG_MEMBER_ID, memberid);
+                                            intent.putExtra(TAG_FULLNAME, fullname);
+                                            intent.putExtra(TAG_MEMBER_TYPE, member_type);
+                                            intent.putExtra(TAG_SCHOOL_CODE, school_code);
+                                            intent.putExtra(TAG_SCHOLL_NAME, school_name);
+                                            intent.putExtra(TAG_TOKEN, token);
+                                            intent.putExtra("scyear_id", scyear_id);
+                                            finish();
+                                            startActivity(intent);
+                                        }else {
+                                            Intent intent = new Intent(Masuk.this, ChangePassword.class);
+                                            intent.putExtra(TAG_EMAIL, username);
+                                            intent.putExtra(TAG_MEMBER_ID, memberid);
+                                            intent.putExtra(TAG_FULLNAME, fullname);
+                                            intent.putExtra(TAG_MEMBER_TYPE, member_type);
+                                            intent.putExtra(TAG_SCHOOL_CODE, school_code);
+                                            intent.putExtra(TAG_SCHOLL_NAME, school_name);
+                                            intent.putExtra(TAG_TOKEN, token);
+                                            intent.putExtra("scyear_id", scyear_id);
+                                            finish();
+                                            startActivity(intent);
+                                        }
+                                    }else {
+                                        positionTable.updateName(row.get(0).get(Position.KEY_Name), "guru");
+                                        positionTable.updateStatus(row.get(0).get(Position.KEY_Status), "1");
+                                        if (Objects.equals(row.get(0).get(Position.KEY_Status), "1")) {
+                                            Intent intent = new Intent(Masuk.this, MenuUtamaGuru.class);
+                                            intent.putExtra(TAG_EMAIL, username);
+                                            intent.putExtra(TAG_MEMBER_ID, memberid);
+                                            intent.putExtra(TAG_FULLNAME, fullname);
+                                            intent.putExtra(TAG_MEMBER_TYPE, member_type);
+                                            intent.putExtra(TAG_SCHOOL_CODE, school_code);
+                                            intent.putExtra(TAG_SCHOLL_NAME, school_name);
+                                            intent.putExtra(TAG_TOKEN, token);
+                                            intent.putExtra("scyear_id", scyear_id);
+                                            finish();
+                                            startActivity(intent);
+                                        }else {
+                                            Intent intent = new Intent(Masuk.this, ChangePassword.class);
+                                            intent.putExtra(TAG_EMAIL, username);
+                                            intent.putExtra(TAG_MEMBER_ID, memberid);
+                                            intent.putExtra(TAG_FULLNAME, fullname);
+                                            intent.putExtra(TAG_MEMBER_TYPE, member_type);
+                                            intent.putExtra(TAG_SCHOOL_CODE, school_code);
+                                            intent.putExtra(TAG_SCHOLL_NAME, school_name);
+                                            intent.putExtra(TAG_TOKEN, token);
+                                            intent.putExtra("scyear_id", scyear_id);
+                                            finish();
+                                            startActivity(intent);
+                                        }
                                     }
+
                                 }
                             }
 

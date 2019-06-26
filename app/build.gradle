@@ -122,7 +122,7 @@ dependencies {
     implementation 'com.ryanjeffreybrooks:indefinitepagerindicator:1.0.10'
     implementation 'com.github.ybq:Android-SpinKit:1.2.0'
     implementation 'com.azoft.carousellayoutmanager:carousel:1.2.4'
-
+    implementation 'com.github.fccaikai:BottomMenuTutorial:1.1.0'
 
 
 }

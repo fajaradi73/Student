@@ -31,7 +31,7 @@ public class SabtuAdapter extends RecyclerView.Adapter<SabtuAdapter.MyHolder> {
     @Override
     public MyHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
-        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_jadwal, parent, false);
+        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_jadwal_harian, parent, false);
 
         MyHolder myHolder = new MyHolder(itemView,onItemClickListener);
         return myHolder;
@@ -66,13 +66,13 @@ public class SabtuAdapter extends RecyclerView.Adapter<SabtuAdapter.MyHolder> {
             jambel      = itemView.findViewById(R.id.jam);
             guru        = itemView.findViewById(R.id.guru);
             ll_jadwal   = itemView.findViewById(R.id.ll_jadwal);
-            itemView.setOnClickListener(this);
-            this.onItemClickListener = onItemClickListener;
+//            itemView.setOnClickListener(this);
+//            this.onItemClickListener = onItemClickListener;
         }
 
         @Override
         public void onClick(View v) {
-            onItemClickListener.onItemClick(v, getAdapterPosition());
+//            onItemClickListener.onItemClick(v, getAdapterPosition());
         }
     }
     public interface OnItemClickListener {

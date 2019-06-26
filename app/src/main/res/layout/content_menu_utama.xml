@@ -81,14 +81,6 @@
                 android:background="@drawable/border_biru"
                 android:id="@+id/rv_sabtu">
             </com.fingertech.kesforstudent.CustomView.SnappyRecycleView>
-            <com.rbrooks.indefinitepagerindicator.IndefinitePagerIndicator
-                android:id="@+id/recyclerview_pager_indicator"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                app:selectedDotColor="@color/colorPrimary"
-                app:dotColor="#bdc3c7"
-                android:layout_gravity="center"/>
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"

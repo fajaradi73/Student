@@ -1,4 +1,4 @@
-package com.fingertech.kesforstudent.Student.Activity;
+package com.fingertech.kesforstudent;
 
 import android.content.Intent;
 import android.graphics.Color;

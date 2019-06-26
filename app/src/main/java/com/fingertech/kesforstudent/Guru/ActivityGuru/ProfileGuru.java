@@ -48,6 +48,7 @@ import com.fingertech.kesforstudent.Student.Activity.ProfileAnak;
 import com.fingertech.kesforstudent.Util.FileUtils;
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
+import com.kcode.bottomlib.BottomDialog;
 import com.shashank.sony.fancytoastlib.FancyToast;
 
 import java.io.File;
@@ -105,7 +106,7 @@ public class ProfileGuru extends AppCompatActivity {
     Uri fileUri,uri;
     File image;
     Intent intent;
-    String mCurrentPhotoPath,school_name;
+    String mCurrentPhotoPath,status_profile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -136,7 +137,7 @@ public class ProfileGuru extends AppCompatActivity {
         fullname          = sharedpreferences.getString(TAG_FULLNAME,"");
         member_type       = sharedpreferences.getString(TAG_MEMBER_TYPE,"");
         school_code       = sharedpreferences.getString(TAG_SCHOOL_CODE,"");
-        Base_anak               = "http://www.kes.co.id/schoolc/assets/images/profile/mm_";
+        Base_anak               = ApiClient.BASE_IMAGE;
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         toolbar.getNavigationIcon().setColorFilter(getResources().getColor(R.color.white), PorterDuff.Mode.SRC_ATOP);
@@ -234,13 +235,28 @@ public class ProfileGuru extends AppCompatActivity {
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                finish();
-                return true;
+        if (item.getItemId() == android.R.id.home) {
+            Intent intent = new Intent(ProfileGuru.this, MenuUtamaGuru.class);
+            intent.putExtra("authorization", authorization);
+            intent.putExtra("school_code", school_code);
+            intent.putExtra("member_id", memberid);
+            intent.putExtra("status", status_profile);
+            setResult(RESULT_OK, intent);
+            finish();
+            return true;
         }
-
         return super.onOptionsItemSelected(item);
+    }
+    @Override
+    public void onBackPressed(){
+        super.onBackPressed();
+        Intent intent = new Intent(ProfileGuru.this, MenuUtamaGuru.class);
+        intent.putExtra("authorization",authorization);
+        intent.putExtra("school_code",school_code);
+        intent.putExtra("member_id",memberid);
+        intent.putExtra("status",status_profile);
+        setResult(RESULT_OK, intent);
+        finish();
     }
 
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -358,16 +374,13 @@ public class ProfileGuru extends AppCompatActivity {
     }
 
     private void selectImage() {
-        final CharSequence[] items = {"Buka kamera", "Pilih foto",
-                "Batal"};
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(ProfileGuru.this);
-        builder.setTitle("Ganti foto profile!");
-        builder.setIcon(R.drawable.ic_kamera);
-        builder.setItems(items, new DialogInterface.OnClickListener() {
+        BottomDialog dialog = BottomDialog.newInstance("Ganti foto profile",new String[]{"Buka kamera", "Pilih foto",});
+        dialog.show(getSupportFragmentManager(),"dialog");
+        //add item click listener
+        dialog.setListener(new BottomDialog.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialog, int item) {
-                if (items[item].equals("Buka kamera")) {
+            public void click(int position) {
+                if (position == 0){
                     PermissionListener permissionlistener = new PermissionListener() {
                         @Override
                         public void onPermissionGranted() {
@@ -385,8 +398,7 @@ public class ProfileGuru extends AppCompatActivity {
                             .setDeniedMessage("Jika Anda menolak izin, Anda tidak dapat menggunakan layanan ini\n\nSilakan aktifkan izin di [Pengaturan] > [Izin]")
                             .setPermissions(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.READ_EXTERNAL_STORAGE)
                             .check();
-
-                } else if (items[item].equals("Pilih foto")) {
+                }else if (position == 1){
                     PermissionListener permissionlistener = new PermissionListener() {
                         @Override
                         public void onPermissionGranted() {
@@ -407,13 +419,9 @@ public class ProfileGuru extends AppCompatActivity {
                             .setDeniedMessage("Jika Anda menolak izin, Anda tidak dapat menggunakan layanan ini\n\nSilakan aktifkan izin di [Pengaturan] > [Izin]")
                             .setPermissions(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE)
                             .check();
-
-                } else if (items[item].equals("Batal")) {
-                    dialog.dismiss();
                 }
             }
         });
-        builder.show();
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -438,12 +446,14 @@ public class ProfileGuru extends AppCompatActivity {
                 authorization = data.getStringExtra("authorization");
                 school_code   = data.getStringExtra("school_code");
                 memberid      = data.getStringExtra("member_id");
+                status_profile  = data.getStringExtra("status");
                 get_profile();
             }else if (requestCode == 2){
                 authorization = data.getStringExtra("authorization");
                 school_code   = data.getStringExtra("school_code");
                 memberid      = data.getStringExtra("member_id");
                 mCurrentPhotoPath = data.getStringExtra("picture");
+                status_profile  = data.getStringExtra("status");
                 File file = new File(mCurrentPhotoPath);
                 Glide.with(ProfileGuru.this).load(mCurrentPhotoPath).into(imageView);
                 UploadImage(file);
@@ -575,6 +585,7 @@ public class ProfileGuru extends AppCompatActivity {
                 code   = resource.code;
 
                 if (status == 1 && code.equals("UPP_SCS_0001")) {
+                    status_profile = "1";
                     FancyToast.makeText(getApplicationContext(),"Foto berhasil diupload",FancyToast.LENGTH_LONG,FancyToast.SUCCESS,false).show();
                 } else{
                     if (status == 0 && code.equals("UPP_ERR_0001")) {

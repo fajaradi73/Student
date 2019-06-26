@@ -76,7 +76,7 @@ public class ChangePassword extends AppCompatActivity {
         til_konfirmasi      = findViewById(R.id.til_konfirmasi);
         mApiInterface       = ApiClient.getClient().create(Auth.class);
 
-        final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_change);
+        final Toolbar toolbar = findViewById(R.id.toolbar_change);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         toolbar.getNavigationIcon().setColorFilter(getResources().getColor(R.color.white), PorterDuff.Mode.SRC_ATOP);
@@ -164,14 +164,14 @@ public class ChangePassword extends AppCompatActivity {
     public void change_password(){
         progressBar();
         showDialog();
-        Call<JSONResponse.ChangePassword> call = mApiInterface.kes_change_password_post(authorization.toString(),memberid.toString(),et_password_baru.getText().toString(),et_password_lama.getText().toString(),school_code.toLowerCase());
+        Call<JSONResponse.ChangePassword> call = mApiInterface.kes_change_password_post(authorization, memberid,et_password_baru.getText().toString(),et_password_lama.getText().toString(),school_code.toLowerCase());
 
         call.enqueue(new Callback<JSONResponse.ChangePassword>() {
 
             @Override
             public void onResponse(Call<JSONResponse.ChangePassword> call, final Response<JSONResponse.ChangePassword> response) {
                 hideDialog();
-                Log.i("KES", response.code() + "");
+                Log.i("ganti_password", response.code() + "");
                 if (response.isSuccessful()) {
                     JSONResponse.ChangePassword resource = response.body();
                     status = resource.status;
@@ -182,6 +182,7 @@ public class ChangePassword extends AppCompatActivity {
                             Intent intent = new Intent(ChangePassword.this, MenuUtamaGuru.class);
                             if (row.size() <= 0) {
                                 position.setName("guru");
+                                position.setStatus("1");
                                 positionTable.insert(position);
                                 startActivity(intent);
                                 finish();
@@ -191,6 +192,7 @@ public class ChangePassword extends AppCompatActivity {
                                     finish();
                                 } else {
                                     positionTable.updateName(row.get(0).get(Position.KEY_Name), "guru");
+                                    positionTable.updateStatus(row.get(0).get(Position.KEY_Status), "1");
                                     startActivity(intent);
                                     finish();
                                 }
@@ -202,6 +204,7 @@ public class ChangePassword extends AppCompatActivity {
                             finish();
                             if (row.size() <= 0) {
                                 position.setName("murid");
+                                position.setStatus("2");
                                 positionTable.insert(position);
                                 startActivity(intent);
                                 finish();
@@ -211,6 +214,7 @@ public class ChangePassword extends AppCompatActivity {
                                     finish();
                                 } else {
                                     positionTable.updateName(row.get(0).get(Position.KEY_Name), "murid");
+                                    positionTable.updateStatus(row.get(0).get(Position.KEY_Status), "2");
                                     startActivity(intent);
                                     finish();
                                 }

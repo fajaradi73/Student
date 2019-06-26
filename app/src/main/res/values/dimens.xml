@@ -14,4 +14,7 @@
     <dimen name="header_view_end_margin_left">56dp</dimen>
     <dimen name="header_view_start_margin_bottom">16dp</dimen>
     <dimen name="header_view_end_margin_right">14dp</dimen>
+    <dimen name="bottom_lib_dialog_item_text">16sp</dimen>
+    <dimen name="bottom_lib_dialog_title_text">20sp</dimen>
+    <dimen name="bottom_lib_dialog_cancel_text">14sp</dimen>
 </resources>

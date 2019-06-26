@@ -18,7 +18,8 @@ public class PositionTable {
     public static String createTable(){
         return "CREATE TABLE " + Position.TABLE + " (" +
                 Position.KEY_CourseId + " INTEGER PRIMARY KEY autoincrement, " +
-                Position.KEY_Name + " STRING NOT NULL" +
+                Position.KEY_Name + " STRING NOT NULL," +
+                Position.KEY_Status + "STRING" +
                 " )";
     }
     public void insert(Position data) {
@@ -26,6 +27,7 @@ public class PositionTable {
         ContentValues values = new ContentValues();
         values.put(Position.KEY_CourseId, data.getId());
         values.put(Position.KEY_Name, data.getName());
+        values.put(Position.KEY_Status,data.getStatus());
         // Inserting Row
         db.insert(Position.TABLE, null, values);
         DatabaseManager.getInstance().closeDatabase();
@@ -56,6 +58,15 @@ public class PositionTable {
         int count =db.update(Position.TABLE,contentValues, Position.KEY_Name+" = ?",whereArgs );
         return count;
     }
+    public int updateStatus(String oldName , String newName)
+    {
+        SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(Position.KEY_Status,newName);
+        String[] whereArgs= {oldName};
+        int count =db.update(Position.TABLE,contentValues, Position.KEY_Status+" = ?",whereArgs );
+        return count;
+    }
 
     public ArrayList<HashMap<String, String>> getAllData() {
         ArrayList<HashMap<String, String>> wordList;
@@ -68,6 +79,7 @@ public class PositionTable {
                 HashMap<String, String> map = new HashMap<String, String>();
                 map.put(Position.KEY_CourseId, cursor.getString(0));
                 map.put(Position.KEY_Name, cursor.getString(1));
+                map.put(Position.KEY_Status,cursor.getString(2));
                 wordList.add(map);
             } while (cursor.moveToNext());
         }

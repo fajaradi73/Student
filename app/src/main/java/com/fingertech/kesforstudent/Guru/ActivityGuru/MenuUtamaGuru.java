@@ -1,5 +1,6 @@
 package com.fingertech.kesforstudent.Guru.ActivityGuru;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -81,6 +82,7 @@ public class MenuUtamaGuru extends AppCompatActivity {
     ModelKegiatan modelKegiatan;
     List<ModelKegiatan> modelKegiatanList = new ArrayList<>();
     AdapterKegiatan adapterKegiatan;
+    String status_profile;
 
 
     @Override
@@ -108,7 +110,7 @@ public class MenuUtamaGuru extends AppCompatActivity {
         school_code         = sharedpreferences.getString(TAG_SCHOOL_CODE, "");
         classroom           = sharedpreferences.getString(TAG_CLASS,"");
         scyear_id           = sharedpreferences.getString("scyear_id","");
-        Base_anak           = "http://www.kes.co.id/schoolc/assets/images/profile/mm_";
+        Base_anak           = ApiClient.BASE_IMAGE;
 
         viewPager.setAdapter(fragmentAdapter);
         inkPageIndicator.setViewPager(viewPager);
@@ -156,6 +158,18 @@ public class MenuUtamaGuru extends AppCompatActivity {
             }
         });
 
+    }
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        Log.e("onActivityResult", "requestCode " + requestCode + ", resultCode " + resultCode);
+
+        if (resultCode == Activity.RESULT_OK) {
+            if (requestCode == 1){
+                status_profile = data.getStringExtra("status");
+                if (status_profile != null){
+                    get_profile();
+                }
+            }
+        }
     }
     private void get_profile(){
         progressBar();
