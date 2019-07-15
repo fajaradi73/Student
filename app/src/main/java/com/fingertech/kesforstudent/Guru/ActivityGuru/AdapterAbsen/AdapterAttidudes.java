@@ -90,11 +90,11 @@ public class AdapterAttidudes extends RecyclerView.Adapter<AdapterAttidudes.MyHo
 
                         }
 
-                        AdapterCodeAbsen    adapterCodeAbsen    = new AdapterCodeAbsen(context,modelDataAttidudeList);
-                        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
-                        linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
-                        holder.rv_code.setLayoutManager(linearLayoutManager);
-                        holder.rv_code.setAdapter(adapterCodeAbsen);
+//                        AdapterCodeAbsen    adapterCodeAbsen    = new AdapterCodeAbsen(context,modelDataAttidudeList);
+//                        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
+//                        linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+//                        holder.rv_code.setLayoutManager(linearLayoutManager);
+//                        holder.rv_code.setAdapter(adapterCodeAbsen);
                     }
 
                 }

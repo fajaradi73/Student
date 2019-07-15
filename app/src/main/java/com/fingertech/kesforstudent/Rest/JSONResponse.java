@@ -1609,8 +1609,7 @@ public class JSONResponse {
         }
     }
 
-//    absen
-
+    //absen
     public class ListMurid{
 
         @SerializedName("status")
@@ -1649,8 +1648,6 @@ public class JSONResponse {
 
 
     }
-
-
     public class DataMurid{
         @SerializedName("memberid")
         public String member_id;
@@ -1685,8 +1682,7 @@ public class JSONResponse {
 
 
     }
-
-    //    attidude
+    //attidude
     public class Attidude{
         @SerializedName("status")
         public Integer statusattidude;
@@ -1721,7 +1717,6 @@ public class JSONResponse {
             this.dataattidude = dataattidude;
         }
     }
-
     public class DataAttidude{
 
         @SerializedName("attitudeid")
@@ -1775,9 +1770,6 @@ public class JSONResponse {
             this.details = details;
         }
     }
-
-
-
     public class Detail{
         @SerializedName("attitude_grade_code")
         public String attitude_grade_code;
@@ -1831,8 +1823,456 @@ public class JSONResponse {
         }
     }
 
+    //    revisiabsen
+    public class Absen{
+
+        @SerializedName("code")
+        public String code;
+
+        @SerializedName("data")
+        public DataAbsen data;
+
+        @SerializedName("status")
+        public int status;
+
+        public String getCode() {
+            return code;
+        }
+
+        public void setCode(String code) {
+            this.code = code;
+        }
+
+        public DataAbsen getData() {
+            return data;
+        }
+
+        public void setData(DataAbsen data) {
+            this.data = data;
+        }
+
+        public int getStatus() {
+            return status;
+        }
+
+        public void setStatus(int status) {
+            this.status = status;
+        }
+    }
+
+    public class DataAbsen{
 
 
+        @SerializedName("attitudes")
+        public List<AttitudesItem> attitudes;
+
+        @SerializedName("student_absent")
+        public List<StudentAbsentItem> studentAbsent;
+
+        @SerializedName("infodetails")
+        public Infodetails infodetails;
+
+        public List<AttitudesItem> getAttitudes() {
+            return attitudes;
+        }
+
+        public void setAttitudes(List<AttitudesItem> attitudes) {
+            this.attitudes = attitudes;
+        }
+
+        public List<StudentAbsentItem> getStudentAbsent() {
+            return studentAbsent;
+        }
+
+        public void setStudentAbsent(List<StudentAbsentItem> studentAbsent) {
+            this.studentAbsent = studentAbsent;
+        }
+
+        public Infodetails getInfodetails() {
+            return infodetails;
+        }
+
+        public void setInfodetails(Infodetails infodetails) {
+            this.infodetails = infodetails;
+        }
+    }
+
+    public class AttitudesItem{
+        @SerializedName("colour_code")
+        public String colourCode;
+
+        @SerializedName("attitude_name")
+        public String attitudeName;
+
+        @SerializedName("grade")
+        public List<GradeItem> grade;
+
+        @SerializedName("attitudeid")
+        public String attitudeid;
+
+        public String getColourCode() {
+            return colourCode;
+        }
+
+        public void setColourCode(String colourCode) {
+            this.colourCode = colourCode;
+        }
+
+        public String getAttitudeName() {
+            return attitudeName;
+        }
+
+        public void setAttitudeName(String attitudeName) {
+            this.attitudeName = attitudeName;
+        }
+
+        public List<GradeItem> getGrade() {
+            return grade;
+        }
+
+        public void setGrade(List<GradeItem> grade) {
+            this.grade = grade;
+        }
+
+        public String getAttitudeid() {
+            return attitudeid;
+        }
+
+        public void setAttitudeid(String attitudeid) {
+            this.attitudeid = attitudeid;
+        }
+    }
+
+    public class GradeItem{
+
+        @SerializedName("attitude_grade_code")
+        public String attitudeGradeCode;
+
+        @SerializedName("attitude_grade_name")
+        public String attitudeGradeName;
+
+        @SerializedName("attitudegradeid")
+        public String attitudegradeid;
+
+        @SerializedName("attitude_grade_from")
+        public String attitudeGradeFrom;
+
+        @SerializedName("attitude_grade_to")
+        public String attitudeGradeTo;
+
+        public String getAttitudeGradeCode() {
+            return attitudeGradeCode;
+        }
+
+        public void setAttitudeGradeCode(String attitudeGradeCode) {
+            this.attitudeGradeCode = attitudeGradeCode;
+        }
+
+        public String getAttitudeGradeName() {
+            return attitudeGradeName;
+        }
+
+        public void setAttitudeGradeName(String attitudeGradeName) {
+            this.attitudeGradeName = attitudeGradeName;
+        }
+
+        public String getAttitudegradeid() {
+            return attitudegradeid;
+        }
+
+        public void setAttitudegradeid(String attitudegradeid) {
+            this.attitudegradeid = attitudegradeid;
+        }
+
+        public String getAttitudeGradeFrom() {
+            return attitudeGradeFrom;
+        }
+
+        public void setAttitudeGradeFrom(String attitudeGradeFrom) {
+            this.attitudeGradeFrom = attitudeGradeFrom;
+        }
+
+        public String getAttitudeGradeTo() {
+            return attitudeGradeTo;
+        }
+
+        public void setAttitudeGradeTo(String attitudeGradeTo) {
+            this.attitudeGradeTo = attitudeGradeTo;
+        }
+    }
+
+
+    public class Infodetails{
+        @SerializedName("classroom_id")
+        public String classroomId;
+
+        @SerializedName("timez_ok")
+        public String timezOk;
+
+        @SerializedName("schedule_time")
+        public String scheduleTime;
+
+        @SerializedName("classroom_name")
+        public String classroomName;
+
+        @SerializedName("cources_id")
+        public String courcesId;
+
+        @SerializedName("cources_name")
+        public String courcesName;
+
+        @SerializedName("edulevel_name")
+        public String edulevelName;
+
+        @SerializedName("timez_finish")
+        private String timezFinish;
+
+        public String getClassroomId() {
+            return classroomId;
+        }
+
+        public void setClassroomId(String classroomId) {
+            this.classroomId = classroomId;
+        }
+
+        public String getTimezOk() {
+            return timezOk;
+        }
+
+        public void setTimezOk(String timezOk) {
+            this.timezOk = timezOk;
+        }
+
+        public String getScheduleTime() {
+            return scheduleTime;
+        }
+
+        public void setScheduleTime(String scheduleTime) {
+            this.scheduleTime = scheduleTime;
+        }
+
+        public String getClassroomName() {
+            return classroomName;
+        }
+
+        public void setClassroomName(String classroomName) {
+            this.classroomName = classroomName;
+        }
+
+        public String getCourcesId() {
+            return courcesId;
+        }
+
+        public void setCourcesId(String courcesId) {
+            this.courcesId = courcesId;
+        }
+
+        public String getCourcesName() {
+            return courcesName;
+        }
+
+        public void setCourcesName(String courcesName) {
+            this.courcesName = courcesName;
+        }
+
+        public String getEdulevelName() {
+            return edulevelName;
+        }
+
+        public void setEdulevelName(String edulevelName) {
+            this.edulevelName = edulevelName;
+        }
+
+        public String getTimezFinish() {
+            return timezFinish;
+        }
+
+        public void setTimezFinish(String timezFinish) {
+            this.timezFinish = timezFinish;
+        }
+    }
+
+    public class StudentAbsentItem{
+        @SerializedName("absen_detail")
+        public List<AbsenDetailItem> absenDetail;
+
+        @SerializedName("atlas_datas")
+        public int atlasDatas;
+
+        @SerializedName("absent_stat")
+        public int absentStat;
+
+        @SerializedName("member_code")
+        public String memberCode;
+
+        @SerializedName("fullname")
+        public String fullname;
+
+        @SerializedName("memberid")
+        public String memberid;
+
+        public List<AbsenDetailItem> getAbsenDetail() {
+            return absenDetail;
+        }
+
+        public void setAbsenDetail(List<AbsenDetailItem> absenDetail) {
+            this.absenDetail = absenDetail;
+        }
+
+        public int getAtlasDatas() {
+            return atlasDatas;
+        }
+
+        public void setAtlasDatas(int atlasDatas) {
+            this.atlasDatas = atlasDatas;
+        }
+
+        public int getAbsentStat() {
+            return absentStat;
+        }
+
+        public void setAbsentStat(int absentStat) {
+            this.absentStat = absentStat;
+        }
+
+        public String getMemberCode() {
+            return memberCode;
+        }
+
+        public void setMemberCode(String memberCode) {
+            this.memberCode = memberCode;
+        }
+
+        public String getFullname() {
+            return fullname;
+        }
+
+        public void setFullname(String fullname) {
+            this.fullname = fullname;
+        }
+
+        public String getMemberid() {
+            return memberid;
+        }
+
+        public void setMemberid(String memberid) {
+            this.memberid = memberid;
+        }
+    }
+
+    public class AbsenDetailItem{
+        @SerializedName("attendanceDetail")
+        public List<AttendanceDetailItem> attendanceDetail;
+
+        @SerializedName("attendance_status")
+        public String attendanceStatus;
+
+        @SerializedName("attendance_comment")
+        public String attendanceComment;
+
+        @SerializedName("attendanceid")
+        public String attendanceid;
+
+        public List<AttendanceDetailItem> getAttendanceDetail() {
+            return attendanceDetail;
+        }
+
+        public void setAttendanceDetail(List<AttendanceDetailItem> attendanceDetail) {
+            this.attendanceDetail = attendanceDetail;
+        }
+
+        public String getAttendanceStatus() {
+            return attendanceStatus;
+        }
+
+        public void setAttendanceStatus(String attendanceStatus) {
+            this.attendanceStatus = attendanceStatus;
+        }
+
+        public String getAttendanceComment() {
+            return attendanceComment;
+        }
+
+        public void setAttendanceComment(String attendanceComment) {
+            this.attendanceComment = attendanceComment;
+        }
+
+        public String getAttendanceid() {
+            return attendanceid;
+        }
+
+        public void setAttendanceid(String attendanceid) {
+            this.attendanceid = attendanceid;
+        }
+    }
+
+    public class AttendanceDetailItem{
+        @SerializedName("attendancedetail_absentType")
+        public String attendancedetailAbsentType;
+
+        @SerializedName("attitudegrade_id")
+        public String attitudegradeId;
+
+        @SerializedName("attitude_id")
+        public String attitudeId;
+
+        @SerializedName("typeText")
+        public String typeText;
+
+        @SerializedName("title")
+        public String title;
+
+        @SerializedName("bgcolor")
+        public String bgcolor;
+
+        public String getAttendancedetailAbsentType() {
+            return attendancedetailAbsentType;
+        }
+
+        public void setAttendancedetailAbsentType(String attendancedetailAbsentType) {
+            this.attendancedetailAbsentType = attendancedetailAbsentType;
+        }
+
+        public String getAttitudegradeId() {
+            return attitudegradeId;
+        }
+
+        public void setAttitudegradeId(String attitudegradeId) {
+            this.attitudegradeId = attitudegradeId;
+        }
+
+        public String getAttitudeId() {
+            return attitudeId;
+        }
+
+        public void setAttitudeId(String attitudeId) {
+            this.attitudeId = attitudeId;
+        }
+
+        public String getTypeText() {
+            return typeText;
+        }
+
+        public void setTypeText(String typeText) {
+            this.typeText = typeText;
+        }
+
+        public String getTitle() {
+            return title;
+        }
+
+        public void setTitle(String title) {
+            this.title = title;
+        }
+
+        public String getBgcolor() {
+            return bgcolor;
+        }
+
+        public void setBgcolor(String bgcolor) {
+            this.bgcolor = bgcolor;
+        }
+    }
 
     ///// Response Check Semester
     public class CheckSemester{
@@ -1869,8 +2309,6 @@ public class JSONResponse {
             this.data = data;
         }
     }
-
-
 
     ///// Response List Semester
     public class ListSemester{

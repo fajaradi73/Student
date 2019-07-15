@@ -18,21 +18,29 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.fingertech.kesforstudent.Controller.Auth;
 import com.fingertech.kesforstudent.Guru.ActivityGuru.AdapterAbsen.AdapterAttidudes;
+import com.fingertech.kesforstudent.Guru.ActivityGuru.AdapterAbsen.AdapterCodeAbsen;
 import com.fingertech.kesforstudent.Guru.ActivityGuru.AdapterAbsen.AdapterDetailAbsen;
 import com.fingertech.kesforstudent.Guru.AdapterGuru.AdapterAbsen;
 import com.fingertech.kesforstudent.Guru.ModelGuru.ModelAbsen.ModelAbsenGuru;
+import com.fingertech.kesforstudent.Guru.ModelGuru.ModelAbsen.ModelArrayAbsen;
 import com.fingertech.kesforstudent.Guru.ModelGuru.ModelAbsen.ModelDataAttidude;
 import com.fingertech.kesforstudent.Guru.ModelGuru.ModelAbsen.ModelDetailAbsen;
 import com.fingertech.kesforstudent.Masuk;
 import com.fingertech.kesforstudent.R;
 import com.fingertech.kesforstudent.Rest.ApiClient;
 import com.fingertech.kesforstudent.Rest.JSONResponse;
+import com.google.gson.JsonElement;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,17 +52,21 @@ import retrofit2.Response;
 public class AbsenMurid extends AppCompatActivity {
     CardView btninfo;
     RecyclerView rv_absen;
-    AdapterAbsen adapterAbsen;
-    AdapterAttidudes adapterAttidudes;
-    List<ModelAbsenGuru> modelAbsenGuruList = new ArrayList<>();
-    List<ModelDetailAbsen> modelDetailAbsenList = new ArrayList<>();
     List<ModelDataAttidude> modelDataAttidudes = new ArrayList<>();
+    AdapterAbsen adapterAbsen;
+    List<ModelAbsenGuru> modelAbsenGuruList = new ArrayList<>();
+//    List<ModelCodeAttidude> modelCodeAttidudes = new ArrayList<>();
+    List<ModelArrayAbsen> modelArrayAbsenList = new ArrayList<>();
     ModelDetailAbsen modelDetailAbsen;
     ModelAbsenGuru modelAbsenGuru;
+    EditText et_search;
     ModelDataAttidude modelDataAttidude;
+//    ModelCodeAttidude modelCodeAttidude;
+    ModelArrayAbsen modelArrayAbsen;
+    AdapterCodeAbsen adapterCodeAbsen;
     Toolbar toolbar;
     Auth mApiInterface;
-    String authorization,school_code,member_id,scyear_id, classroom,code,nama,codeattidude,attidudename,attidudegradecode;
+    String  schedule_id,authorization,school_code,member_id,scyear_id, classroom,code,nama,absent,bgcolor,attidude,absentcode,absentwarna;
     int status,statusattidude;
     SharedPreferences sharedpreferences;
 
@@ -66,8 +78,11 @@ public class AbsenMurid extends AppCompatActivity {
     public static final String TAG_SCHOOL_CODE  = "school_code";
     public static final String TAG_CLASS_ID     = "classroom_id";
     public static final String TAG_YEAR_ID      = "scyear_id";
+    String nis;
 
-
+    JsonElement jsonElement;
+    JSONObject jsonObject,dataobject;
+    JSONArray absenObject,absenArray,attendanceArray;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -87,108 +102,12 @@ public class AbsenMurid extends AppCompatActivity {
         scyear_id           = sharedpreferences.getString(TAG_YEAR_ID,"");
         school_code         = sharedpreferences.getString(TAG_SCHOOL_CODE,"");
         classroom           = sharedpreferences.getString(TAG_CLASS_ID,"");
-        classroom = "1";
-        Getmurid();
+        schedule_id = "500";
+        classroom   = "1";
+        GetStudent();
         Dialog();
 
     }
-
-    private void Getmurid(){
-        Call<JSONResponse.ListMurid> call = mApiInterface.kes_get_student_get(authorization,school_code,member_id,scyear_id, classroom);
-        call.enqueue(new Callback<JSONResponse.ListMurid>() {
-            @Override
-            public void onResponse(Call<JSONResponse.ListMurid> call, Response<JSONResponse.ListMurid> response) {
-                Log.d("muridsukses",response.code()+"");
-                if (response.isSuccessful()) {
-                    JSONResponse.ListMurid resource = response.body();
-                    status = resource.status;
-                    code = resource.code;
-                    if (status == 1 && code.equals("DTS_SCS_0001")) {
-                        Log.d("jumlah",response.body().getData().size()+"");
-                        for (int i = 0; i < response.body().getData().size(); i++) {
-                            nama = response.body().getData().get(i).getFullname();
-                            String nisku = response.body().getData().get(i).getNIS();
-                            modelAbsenGuru = new ModelAbsenGuru();
-                            modelAbsenGuru.setNis(nisku);
-                            modelAbsenGuru.setNama(nama);
-                            modelAbsenGuruList.add(modelAbsenGuru);
-                        }
-                        adapterAbsen = new AdapterAbsen(AbsenMurid.this,modelAbsenGuruList);
-                        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(AbsenMurid.this);
-                        linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
-                        rv_absen.setLayoutManager(linearLayoutManager);
-                        rv_absen.setAdapter(adapterAbsen);
-                        adapterAbsen.setOnItemClickListener(new AdapterAbsen.OnItemClickListener() {
-                            @Override
-                            public void onItemClick(View view, int position) {
-                                modelDetailAbsenList.clear();
-                                CardView btnnext,btnback,iv_close;
-                                AdapterDetailAbsen adapterDetailAbsen;
-                                ViewPager viewpager;
-                                view        = getLayoutInflater().inflate(R.layout.activity_detail_absen_guru,null);
-                                btnnext     = view.findViewById(R.id.btnnext);
-                                btnback     = view.findViewById(R.id.btnback);
-                                viewpager   = view.findViewById(R.id.pagerabsen);
-                                iv_close    = view.findViewById(R.id.iv_close);
-                                for (int a = 0; a < response.body().getData().size(); a++) {
-                                    String namaku   = response.body().getData().get(a).getFullname();
-                                    String nis      = response.body().getData().get(a).getNIS();
-                                    modelDetailAbsen = new ModelDetailAbsen();
-                                    modelDetailAbsen.setNama(namaku);
-                                    modelDetailAbsen.setNis(nis);
-                                    modelDetailAbsenList.add(modelDetailAbsen);
-                                }
-                                adapterDetailAbsen = new AdapterDetailAbsen(AbsenMurid.this,modelDetailAbsenList);
-                                viewpager.setAdapter(adapterDetailAbsen);
-
-                                viewpager.setCurrentItem(position,true);
-                                btnnext.setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-                                        viewpager.setCurrentItem(viewpager.getCurrentItem()+1,true);
-                                    }
-                                });
-                                btnback.setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-                                        viewpager.setCurrentItem(viewpager.getCurrentItem()-1,true);
-                                    }
-                                });
-                                final Dialog mBottomSheetDialog = new Dialog(AbsenMurid.this);
-                                mBottomSheetDialog.setContentView(view);
-                                mBottomSheetDialog.setCancelable(true);
-                                mBottomSheetDialog.getWindow().setLayout(LinearLayout.LayoutParams.MATCH_PARENT,
-                                        LinearLayout.LayoutParams.MATCH_PARENT);
-                                mBottomSheetDialog.getWindow().setGravity(Gravity.CENTER);
-                                mBottomSheetDialog.show();
-
-                                iv_close.setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-                                        mBottomSheetDialog.dismiss();
-                                    }
-                                });
-                            }
-
-                        });
-
-                    }
-                }
-
-
-            }
-
-            @Override
-            public void onFailure(Call<JSONResponse.ListMurid> call, Throwable t) {
-                Log.e("muridgagal",t.toString());
-            }
-        });
-
-
-
-    }
-
-
 
     public void Dialog(){
 
@@ -215,8 +134,6 @@ public class AbsenMurid extends AppCompatActivity {
                 });
 
             }
-
-
         });
     }
 
@@ -235,4 +152,89 @@ public class AbsenMurid extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         return true;
     }
+
+    private void GetStudent(){
+        Call<JSONResponse.Absen> call = mApiInterface.kes_classroom_absent_get(authorization,school_code,member_id,scyear_id,classroom,schedule_id);
+        call.enqueue(new Callback<JSONResponse.Absen>() {
+            @Override
+            public void onResponse(Call<JSONResponse.Absen> call, Response<JSONResponse.Absen> response) {
+                Log.d("suksesabsent",response.code()+"");
+
+                if (response.isSuccessful()){
+                    JSONResponse.Absen resource = response.body();
+                    status                      = resource.status;
+                    code                        = resource.code;
+                    if (status==1 && code.equals("DTS_SCS_0001")){
+                        modelAbsenGuruList.clear();
+                        for (JSONResponse.StudentAbsentItem studentAbsentItem : response.body().getData().getStudentAbsent()){
+                            nama    = studentAbsentItem.getFullname();
+                            nis     = studentAbsentItem.getMemberCode();
+                            for (JSONResponse.AbsenDetailItem dataAbsen : studentAbsentItem.getAbsenDetail()){
+                                for (JSONResponse.AttendanceDetailItem attendanceDetailItem : dataAbsen.getAttendanceDetail()){
+                                    absentcode  = attendanceDetailItem.getTypeText();
+                                    absentwarna = attendanceDetailItem.getBgcolor();
+                                    modelArrayAbsen = new ModelArrayAbsen();
+                                    modelArrayAbsen.setCodeabsen(absentcode);
+                                    modelArrayAbsen.setWarna(absentwarna);
+                                    modelArrayAbsen.setNis(nis);
+                                    modelArrayAbsenList.add(modelArrayAbsen);
+                                }
+                            }
+
+                            modelAbsenGuru = new ModelAbsenGuru();
+                            modelAbsenGuru.setNama(nama);
+                            modelAbsenGuru.setNis(nis);
+                            modelAbsenGuru.setModelArrayAbsenList(modelArrayAbsenList);
+                            modelAbsenGuruList.add(modelAbsenGuru);
+                        }
+                        adapterAbsen = new AdapterAbsen(AbsenMurid.this,modelAbsenGuruList);
+                        LinearLayoutManager layoutManager = new LinearLayoutManager(AbsenMurid.this);
+                        layoutManager.setOrientation(RecyclerView.VERTICAL);
+                        rv_absen.setLayoutManager(layoutManager);
+                        rv_absen.setAdapter(adapterAbsen);
+
+//                        adapterAbsen.setOnItemClickListener(new AdapterAbsen.OnItemClickListener() {
+//                            @Override
+//                            public void onItemClick(View view, int position) {
+//                                CardView btnnext,btnback,iv_close;
+//                                AdapterDetailAbsen adapterDetailAbsen;
+//                                ViewPager viewpager;
+//
+//                                view     = getLayoutInflater().inflate(R.layout.activity_detail_absen_guru,null);
+//                                btnnext  = view.findViewById(R.id.btnnext);
+//                                btnback  = view.findViewById(R.id.btnback);
+//                                viewpager= view.findViewById(R.id.pagerabsen);
+//                                iv_close    = view.findViewById(R.id.iv_close);
+//                                final Dialog mBottomSheetDialog = new Dialog(AbsenMurid.this);
+//                                mBottomSheetDialog.setContentView(view);
+//                                mBottomSheetDialog.setCancelable(true);
+//                                mBottomSheetDialog.getWindow().setLayout(LinearLayout.LayoutParams.MATCH_PARENT,
+//                                        LinearLayout.LayoutParams.MATCH_PARENT);
+//                                mBottomSheetDialog.getWindow().setGravity(Gravity.CENTER);
+//                                mBottomSheetDialog.show();
+//
+//                                iv_close.setOnClickListener(new View.OnClickListener() {
+//                                    @Override
+//                                    public void onClick(View v) {
+//                                        mBottomSheetDialog.dismiss();
+//                                    }
+//                                });
+//
+//                            }
+//                        });
+
+
+                    }
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JSONResponse.Absen> call, Throwable t) {
+                Log.e("eror_absen",t.toString());
+            }
+        });
+
+    }
+
 }

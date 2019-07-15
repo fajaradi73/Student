@@ -2,28 +2,40 @@ package com.fingertech.kesforstudent.Guru.AdapterGuru;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.fingertech.kesforstudent.Guru.ActivityGuru.AdapterAbsen.AdapterCodeAbsen;
 import com.fingertech.kesforstudent.Guru.ModelGuru.ModelAbsen.ModelAbsenGuru;
+import com.fingertech.kesforstudent.Guru.ModelGuru.ModelAbsen.ModelArrayAbsen;
+import com.fingertech.kesforstudent.Guru.ModelGuru.ModelAttendance;
 import com.fingertech.kesforstudent.R;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class AdapterAbsen extends RecyclerView.Adapter<AdapterAbsen.MyHolder> {
 
     private List<ModelAbsenGuru> modelAbsenGuruList;
+    private List<ModelAttendance> modelArrayAbsenList = new ArrayList<>();
+    ModelAttendance modelAttendance;
 
     Context context;
     private OnItemClickListener onItemClickListener;
+    AdapterCodeAbsen adapterCodeAbsen;
+
 
     public AdapterAbsen(Context context,List<ModelAbsenGuru> viewItemList) {
-        this.context = context;
-        this.modelAbsenGuruList = viewItemList;
+        this.context                = context;
+        this.modelAbsenGuruList     = viewItemList;
     }
 
     public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
@@ -46,7 +58,22 @@ public class AdapterAbsen extends RecyclerView.Adapter<AdapterAbsen.MyHolder> {
 
         ModelAbsenGuru viewItem = modelAbsenGuruList.get(position);
         holder.nama.setText(viewItem.getNama());
-
+        if (modelArrayAbsenList != null){
+            modelArrayAbsenList.clear();
+        }
+        for (int i = 0 ; i < viewItem.getModelArrayAbsenList().size();i++){
+            if (viewItem.getModelArrayAbsenList().get(i).getNis().equals(viewItem.getNis())){
+                modelAttendance = new ModelAttendance();
+                modelAttendance.setCodeabsen(viewItem.getModelArrayAbsenList().get(i).getCodeabsen());
+                modelAttendance.setWarna(viewItem.getModelArrayAbsenList().get(i).getWarna());
+                modelArrayAbsenList.add(modelAttendance);
+            }
+        }
+        adapterCodeAbsen = new AdapterCodeAbsen(context,modelArrayAbsenList);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(context);
+        layoutManager.setOrientation(RecyclerView.HORIZONTAL);
+        holder.recyclerView.setLayoutManager(layoutManager);
+        holder.recyclerView.setAdapter(adapterCodeAbsen);
     }
 
     @Override
@@ -55,16 +82,16 @@ public class AdapterAbsen extends RecyclerView.Adapter<AdapterAbsen.MyHolder> {
     }
 
     class MyHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        TextView nama,nis,nilai,btn_absen;
+        TextView nama,nis,nilai;
+        RecyclerView recyclerView;
         OnItemClickListener onItemClickListener;
         LinearLayout linearLayout;
         public MyHolder(View itemView,OnItemClickListener onItemClickListener) {
             super(itemView);
             nama       = itemView.findViewById(R.id.tv_nama_murid);
-            btn_absen  = itemView.findViewById(R.id.arrow_absen);
-
-            itemView.setOnClickListener(this);
-            this.onItemClickListener = onItemClickListener;
+            recyclerView   = itemView.findViewById(R.id.rv_hasil_absen);
+//            itemView.setOnClickListener(this);
+//            this.onItemClickListener = onItemClickListener;
         }
 
         @Override

@@ -182,6 +182,16 @@ public interface Auth {
                                                              @Query("school_code") String school_code,
                                                              @Query("teacher_id") String teacher_id,
                                                              @Query("scyear_id") String scyear_id);
+
+    //revisiabsen
+    @GET("teachers/kes_classroom_absent")
+    Call<JSONResponse.Absen>kes_classroom_absent_get(@Header("Authorization") String authorization,
+                                                     @Query("school_code") String school_code,
+                                                     @Query("teacher_id") String teacher_id,
+                                                     @Query("scyear_id") String scyear_id,
+                                                     @Query("classroom_id") String classroom_id,
+                                                     @Query ("schedule_time_id") String schedule_time_id);
+    
     //absenmurid
     @GET("teachers/kes_get_student")
     Call<JSONResponse.ListMurid>kes_get_student_get(@Header("Authorization") String authorization,

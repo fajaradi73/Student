@@ -210,7 +210,7 @@ public class PenilaianDetail extends AppCompatActivity {
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-                    if (status == 1&& code.equals("DTS_SCS_0001")){
+                    if (status == 1 && code.equals("DTS_SCS_0001")){
                         try {
                             dataobject = new JSONArray(String.valueOf(jsonElement.getAsJsonObject().get("data")));
                         } catch (JSONException e) {

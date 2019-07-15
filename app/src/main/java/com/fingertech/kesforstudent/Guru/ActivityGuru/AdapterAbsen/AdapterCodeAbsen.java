@@ -2,35 +2,32 @@ package com.fingertech.kesforstudent.Guru.ActivityGuru.AdapterAbsen;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.graphics.Color;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.fingertech.kesforstudent.Controller.Auth;
-import com.fingertech.kesforstudent.Guru.ModelGuru.ModelAbsen.ModelDataAttidude;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.fingertech.kesforstudent.Guru.ModelGuru.ModelAbsen.ModelArrayAbsen;
+import com.fingertech.kesforstudent.Guru.ModelGuru.ModelAttendance;
 import com.fingertech.kesforstudent.R;
 
 import java.util.List;
 
 public class AdapterCodeAbsen extends RecyclerView.Adapter<AdapterCodeAbsen.MyHolder>  {
-    private List<ModelDataAttidude> modelDataAttidudes;
+    private List<ModelAttendance> modelCodeAttidudes;
     Context context;
     int statusattidude;
-    String authorization,school_code,member_id,codeattidude,attidudename,attidudegradecode,scyear_id;
-    Auth mApiInterface;
+
 
     private OnItemClickListener onItemClickListener;
 
-    public AdapterCodeAbsen(Context context,List<ModelDataAttidude> viewItemList) {
+    public AdapterCodeAbsen(Context context,List<ModelAttendance> viewItemList) {
         this.context = context;
-        this.modelDataAttidudes = viewItemList;
+        this.modelCodeAttidudes = viewItemList;
     }
 
     public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
@@ -51,30 +48,28 @@ public class AdapterCodeAbsen extends RecyclerView.Adapter<AdapterCodeAbsen.MyHo
     @Override
     public void onBindViewHolder(MyHolder holder, int position) {
 
-        ModelDataAttidude viewItem = modelDataAttidudes.get(position);
-        holder.tv_code.setText(viewItem.getAttitude_grade_code());
-        holder.ll_color.setBackgroundColor(Color.parseColor(viewItem.getColour_code()));
+        ModelAttendance viewItem = modelCodeAttidudes.get(position);
+
+        holder.tv_code.setText(viewItem.getCodeabsen());
+        holder.bgcolor.setBackgroundColor(Color.parseColor(viewItem.getWarna()));
+
     }
 
     @Override
     public int getItemCount() {
-        return modelDataAttidudes.size();
+        return modelCodeAttidudes.size();
     }
 
     class MyHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView tv_code;
-        LinearLayout ll_color;
+        LinearLayout bgcolor;
+
         OnItemClickListener onItemClickListener;
 
-
-        public MyHolder(View itemView, OnItemClickListener onItemClickListener) {
+        MyHolder(View itemView, OnItemClickListener onItemClickListener) {
             super(itemView);
             tv_code       = itemView.findViewById(R.id.tv_code);
-            ll_color        = itemView.findViewById(R.id.ll_color);
-
-
-//            btn_absen.setOnClickListener(this);
-//            this.onItemClickListener = onItemClickListener;
+            bgcolor       = itemView.findViewById(R.id.ll_color);
         }
 
         @Override
@@ -86,4 +81,5 @@ public class AdapterCodeAbsen extends RecyclerView.Adapter<AdapterCodeAbsen.MyHo
 
         void onItemClick(View view, int position);
     }
+
 }
