@@ -11,7 +11,10 @@ import net.danlew.android.joda.JodaTimeAndroid;
 public class  App extends Application {
     private static Context context;
     private static DBHelper dbHelper;
-    public static final String CHANNEL_2_ID = "channel2";
+
+    public static final String ANDROID_CHANNEL_ID = "Notifikasi";
+    public static final String ANDROID_CHANNEL_NAME = "Notifikasi KES";
+    public static final String ANDROID_CHANNEL_DESC = "Notifikasi dari hp";
 
     @Override
     public void onCreate()
@@ -33,8 +36,8 @@ public class  App extends Application {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
 
             NotificationChannel channel2 = new NotificationChannel(
-                    CHANNEL_2_ID,
-                    "Channel 2",
+                    ANDROID_CHANNEL_ID,
+                    ANDROID_CHANNEL_NAME,
                     NotificationManager.IMPORTANCE_HIGH
             );
             channel2.setDescription("This is Channel 2");

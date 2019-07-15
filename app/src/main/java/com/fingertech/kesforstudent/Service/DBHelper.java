@@ -6,6 +6,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import com.fingertech.kesforstudent.Rest.PositionTable;
 import com.fingertech.kesforstudent.Student.Model.Data;
 import com.fingertech.kesforstudent.Rest.BookmarkTabel;
 
@@ -15,7 +16,7 @@ import java.util.List;
 public class DBHelper extends SQLiteOpenHelper{
 
     private static final String db_name ="kes_school";
-    private static final int db_version = 6;
+    private static final int db_version = 8;
     public static final String TABLE_SQLite = "sqlite";
 
     public static final String COLUMN_ID = "id";

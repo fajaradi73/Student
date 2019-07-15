@@ -20,7 +20,7 @@
                 android:layout_marginTop="5dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
-                <android.support.v7.widget.CardView
+                <androidx.cardview.widget.CardView
                     android:foreground="?android:attr/selectableItemBackground"
                     android:clickable="true"
                     android:id="@+id/btn_absensi"
@@ -47,8 +47,8 @@
                             android:textSize="13sp"
                             android:text="Absensi"/>
                     </LinearLayout>
-                </android.support.v7.widget.CardView>
-                <android.support.v7.widget.CardView
+                </androidx.cardview.widget.CardView>
+                <androidx.cardview.widget.CardView
                     android:foreground="?android:attr/selectableItemBackground"
                     android:clickable="true"
                     android:layout_width="90dp"
@@ -79,8 +79,8 @@
                             android:gravity="center"
                             />
                     </LinearLayout>
-                </android.support.v7.widget.CardView>
-                <android.support.v7.widget.CardView
+                </androidx.cardview.widget.CardView>
+                <androidx.cardview.widget.CardView
                     android:foreground="?android:attr/selectableItemBackground"
                     android:clickable="true"
                     android:layout_width="90dp"
@@ -107,7 +107,7 @@
                             android:textSize="13sp"
                             android:text="Agenda"/>
                     </LinearLayout>
-                </android.support.v7.widget.CardView>
+                </androidx.cardview.widget.CardView>
             </LinearLayout>
 
             <LinearLayout
@@ -116,7 +116,7 @@
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
-                <android.support.v7.widget.CardView
+                <androidx.cardview.widget.CardView
                     android:foreground="?android:attr/selectableItemBackground"
                     android:clickable="true"
                     android:id="@+id/btn_kegiatan"
@@ -145,8 +145,8 @@
                             android:layout_gravity="center"
                             android:gravity="center"/>
                     </LinearLayout>
-                </android.support.v7.widget.CardView>
-                <android.support.v7.widget.CardView
+                </androidx.cardview.widget.CardView>
+                <androidx.cardview.widget.CardView
                     android:foreground="?android:attr/selectableItemBackground"
                     android:clickable="true"
                     android:layout_width="90dp"
@@ -172,8 +172,8 @@
                             android:layout_marginTop="10dp"
                             android:text="pesan"/>
                     </LinearLayout>
-                </android.support.v7.widget.CardView>
-                <android.support.v7.widget.CardView
+                </androidx.cardview.widget.CardView>
+                <androidx.cardview.widget.CardView
                     android:foreground="?android:attr/selectableItemBackground"
                     android:clickable="true"
                     android:layout_width="90dp"
@@ -203,7 +203,7 @@
                             android:gravity="center"
                             />
                     </LinearLayout>
-                </android.support.v7.widget.CardView>
+                </androidx.cardview.widget.CardView>
             </LinearLayout>
         </LinearLayout>
 </FrameLayout>

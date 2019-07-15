@@ -9,7 +9,7 @@
     android:focusableInTouchMode="true"
     android:orientation="vertical">
 
-    <android.support.v7.widget.Toolbar
+    <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar_add_agenda"
         android:minHeight="?attr/actionBarSize"
         android:background="@color/colorPrimary"
@@ -17,7 +17,7 @@
         android:layout_height="wrap_content"
         android:theme="@style/AppTheme.AppBarOverlay"/>
 
-    <android.support.v4.widget.NestedScrollView
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <LinearLayout
@@ -25,7 +25,7 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <android.support.design.widget.TextInputLayout
+            <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/til_tanggal"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
@@ -52,7 +52,7 @@
                     android:textColor="@color/default_textColor"
                     android:textSize="16sp"
                     android:theme="@style/TextLabel" />
-            </android.support.design.widget.TextInputLayout>
+            </com.google.android.material.textfield.TextInputLayout>
 
             <com.rey.material.widget.Spinner
                 android:id="@+id/sp_mapel"
@@ -72,7 +72,7 @@
                 app:spn_dividerColor="@color/black"
                 app:spn_dividerHeight="0dp"
                 app:spn_labelTextColor="@color/colorPrimary" />
-            <android.support.design.widget.TextInputLayout
+            <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/til_keterangan"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
@@ -98,7 +98,7 @@
                     android:textColor="@color/default_textColor"
                     android:textSize="16sp"
                     android:theme="@style/TextLabel" />
-            </android.support.design.widget.TextInputLayout>
+            </com.google.android.material.textfield.TextInputLayout>
 
             <Button
                 android:id="@+id/btn_simpan"
@@ -117,5 +117,5 @@
                 android:textColor="@android:color/white"
                 android:textSize="15dp" />
         </LinearLayout>
-    </android.support.v4.widget.NestedScrollView>
+    </androidx.core.widget.NestedScrollView>
 </LinearLayout>

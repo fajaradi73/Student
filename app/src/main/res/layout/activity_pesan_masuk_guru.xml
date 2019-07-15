@@ -8,7 +8,7 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     android:orientation="vertical">
 
-    <android.support.v7.widget.Toolbar
+    <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbarPesanMasukGuru"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -21,22 +21,33 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
-        <TextView
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="Tidak ada pesan masuk"
             android:layout_gravity="center"
             android:gravity="center"
-            android:textSize="16sp"
             android:id="@+id/hint_pesan"
-            android:visibility="gone"
-            android:textColor="@color/black"/>
+            android:layout_marginTop="-20dp"
+            android:orientation="vertical">
+            <ImageView
+                android:layout_width="300dp"
+                android:layout_height="250dp"
+                android:src="@drawable/ic_no_pesan"/>
+            <TextView
+                android:layout_marginTop="-30dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Tidak ada pesan masuk"
+                android:textAlignment="center"
+                android:textSize="16sp"
+                android:textColor="@color/black"/>
+        </LinearLayout>
 
-        <android.support.v7.widget.RecyclerView
+        <androidx.recyclerview.widget.RecyclerView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/rv_pesan_guru">
 
-        </android.support.v7.widget.RecyclerView>
+        </androidx.recyclerview.widget.RecyclerView>
     </LinearLayout>
 </LinearLayout>

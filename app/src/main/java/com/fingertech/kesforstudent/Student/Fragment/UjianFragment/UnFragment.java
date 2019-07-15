@@ -5,12 +5,13 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v7.widget.RecyclerView;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -37,7 +38,6 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import static com.facebook.FacebookSdk.getApplicationContext;
 
 public class UnFragment extends Fragment {
 
@@ -46,21 +46,22 @@ public class UnFragment extends Fragment {
         // Required empty public constructor
     }
 
-    UjianAdapter ujianAdapter;
-    RecyclerView recyclerView;
-    int status;
-    String code;
-    SharedPreferences sharedPreferences;
-    String authorization, school_code, memberid, classroom_id, date, bulan_sekarang;
+    private UjianAdapter ujianAdapter;
+    private RecyclerView recyclerView;
+    private int status;
+    private String code;
+    private SharedPreferences sharedPreferences;
+    private String authorization, school_code, memberid, classroom_id, date, bulan_sekarang;
     private SimpleDateFormat dateFormat = new SimpleDateFormat("MM-yyyy", new Locale("in", "ID"));
-    Auth mApiInterface;
-    String waktu,bulan, tanggal,  mapel, deskripsi, semester_id, start_date, end_date, semester;
-    TextView hint_ujian,tv_semester;
-    List<ItemUjian> itemUjianList = new ArrayList<>();
-    List<JSONResponse.DataUjian> dataUjianList;
+    private Auth mApiInterface;
+    private String waktu,bulan, tanggal,  mapel, deskripsi, semester_id, start_date, end_date, semester;
+    private TextView tv_semester;
+    private List<ItemUjian> itemUjianList = new ArrayList<>();
+    private List<JSONResponse.DataUjian> dataUjianList;
 
-    TextView tv_start;
-    SpinKitView spinKitView;
+    private TextView tv_start;
+    private LinearLayout hint_ujian;
+    private SpinKitView spinKitView;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -232,7 +233,7 @@ public class UnFragment extends Fragment {
             @Override
             public void onFailure(Call<JSONResponse.ListSemester> call, Throwable t) {
                 Log.d("onFailure", t.toString());
-                Toast.makeText(getApplicationContext(), t.toString(), Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(), t.toString(), Toast.LENGTH_LONG).show();
             }
 
         });

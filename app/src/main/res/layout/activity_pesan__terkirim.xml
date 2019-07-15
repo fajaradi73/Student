@@ -8,7 +8,7 @@
     tools:context=".Guru.ActivityGuru.Pesan_Terkirim"
     android:orientation="vertical">
 
-    <android.support.v7.widget.Toolbar
+    <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbarPesanTerkirim"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -21,23 +21,34 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
-        <TextView
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="Tidak ada pesan terkirim"
             android:layout_gravity="center"
             android:gravity="center"
-            android:textSize="16sp"
-            android:id="@+id/hint_pesan_terkirim"
-            android:visibility="gone"
-            android:textColor="@color/black"/>
+            android:id="@+id/hint_pesan"
+            android:layout_marginTop="-20dp"
+            android:orientation="vertical">
+            <ImageView
+                android:layout_width="300dp"
+                android:layout_height="250dp"
+                android:src="@drawable/ic_no_pesan"/>
+            <TextView
+                android:layout_marginTop="-30dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Anda belum mengirim pesan"
+                android:textAlignment="center"
+                android:textSize="16sp"
+                android:textColor="@color/black"/>
+        </LinearLayout>
 
-        <android.support.v7.widget.RecyclerView
+        <androidx.recyclerview.widget.RecyclerView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/rv_pesan_guru_terkirim">
 
-        </android.support.v7.widget.RecyclerView>
+        </androidx.recyclerview.widget.RecyclerView>
     </LinearLayout>
 
 

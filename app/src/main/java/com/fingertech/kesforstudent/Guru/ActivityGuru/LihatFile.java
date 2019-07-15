@@ -5,16 +5,15 @@ import android.annotation.SuppressLint;
 import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Environment;
-import android.os.SystemClock;
-import android.support.annotation.NonNull;
-import android.support.design.widget.Snackbar;
-import android.support.v4.app.NotificationCompat;
-import android.support.v4.app.NotificationManagerCompat;
-import android.support.v7.app.AppCompatActivity;
+
+import androidx.cardview.widget.CardView;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.util.Log;
 import android.view.View;
 import android.webkit.WebSettings;
@@ -25,23 +24,17 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.fingertech.kesforstudent.R;
+import com.fingertech.kesforstudent.Rest.ApiClient;
 import com.fingertech.kesforstudent.Student.Activity.LihatPdf;
-import com.fingertech.kesforstudent.Student.Activity.ProfileAnak;
-import com.fingertech.kesforstudent.Student.Activity.RaporAnak;
 import com.fingertech.kesforstudent.Util.CheckForSDCard;
-import com.github.barteksc.pdfviewer.PDFView;
-import com.github.barteksc.pdfviewer.util.FitPolicy;
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
 
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.net.MalformedURLException;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.text.SimpleDateFormat;
@@ -49,12 +42,11 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-
-import static com.fingertech.kesforstudent.Service.App.CHANNEL_2_ID;
+import static com.fingertech.kesforstudent.Service.App.ANDROID_CHANNEL_ID;
 
 public class LihatFile extends AppCompatActivity {
 
-    ImageView iv_close,iv_unduh;
+    CardView iv_close,iv_unduh;
     String file;
     WebView webView;
     private static final int WRITE_REQUEST_CODE = 300;
@@ -74,7 +66,7 @@ public class LihatFile extends AppCompatActivity {
         iv_close    = findViewById(R.id.iv_close);
         iv_unduh    = findViewById(R.id.iv_download);
         progressDialog  = findViewById(R.id.progress_bar);
-        base_silabus    = "https://www.kes.co.id/schoolc/assets/images/silabus/";
+        base_silabus    = ApiClient.BASE_SILABUS;
         file    = getIntent().getStringExtra("file");
         extension   = file.substring(file.lastIndexOf("."));
 
@@ -108,7 +100,7 @@ public class LihatFile extends AppCompatActivity {
                 PermissionListener permissionlistener = new PermissionListener() {
                     @Override
                     public void onPermissionGranted() {
-                        new DownloadFile().execute(file);
+                        new DownloadFile().execute(base_silabus+file);
                     }
 
                     @Override
@@ -177,7 +169,7 @@ public class LihatFile extends AppCompatActivity {
             pendingIntent = PendingIntent.getActivity(LihatFile.this, 2, intent,
                     PendingIntent.FLAG_ONE_SHOT);
 
-            notification = new NotificationCompat.Builder(LihatFile.this, CHANNEL_2_ID)
+            notification = new NotificationCompat.Builder(LihatFile.this, ANDROID_CHANNEL_ID)
                     .setSmallIcon(R.drawable.ic_logo_grey)
                     .setContentTitle("Download")
                     .setContentText("Download in progress")
@@ -265,10 +257,8 @@ public class LihatFile extends AppCompatActivity {
             notification.setContentText(Integer.parseInt(progress[0])+" %")
                     .setProgress(progressMax, Integer.parseInt(progress[0]), false);
             notificationManager.notify(2, notification.build());
-//            SystemClock.sleep(1000);
             Log.d("Loading",progress[0]+"%");
         }
-
 
         @Override
         protected void onPostExecute(String message) {
@@ -278,12 +268,19 @@ public class LihatFile extends AppCompatActivity {
             Toast.makeText(getApplicationContext(),
                     message, Toast.LENGTH_LONG).show();
 
-            notification.setContentText("Download selesai")
-                    .setProgress(0, 0, false)
-                    .setOngoing(false)
-                    .setContentIntent(pendingIntent);
-            notificationManager.notify(2, notification.build());
-
+            if (message.equals("Something went wrong")) {
+                notification.setContentText("Download gagal")
+                        .setProgress(0, 0, false)
+                        .setOngoing(false)
+                        .setContentIntent(pendingIntent);
+                notificationManager.notify(2, notification.build());
+            }else {
+                notification.setContentText("Download selesai")
+                        .setProgress(0, 0, false)
+                        .setOngoing(false)
+                        .setContentIntent(pendingIntent);
+                notificationManager.notify(2, notification.build());
+            }
         }
     }
 }

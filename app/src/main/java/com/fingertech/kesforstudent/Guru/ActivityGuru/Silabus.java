@@ -5,17 +5,18 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.ColorDrawable;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.CardView;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
+import androidx.cardview.widget.CardView;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.appcompat.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.fingertech.kesforstudent.Controller.Auth;
@@ -43,12 +44,10 @@ public class Silabus extends AppCompatActivity {
     String mapel,datez,kelas,files,base_silabus;
     int status;
     Toolbar toolbar;
-    TextView tv_hint;
+    LinearLayout tv_hint;
     CardView btn_go;
     List<String> listEdulevel           = new ArrayList<String>();
     List<String> listMapel              = new ArrayList<String>();
-    List<String> listKelas              = new ArrayList<String>();
-    List<String> listMatapelajaran      = new ArrayList<String>();
     List<ModelSilabus> modelSilabusList = new ArrayList<>();
     ModelSilabus modelSilabus;
     AdapterSilabus adapterSilabus;
@@ -75,7 +74,7 @@ public class Silabus extends AppCompatActivity {
         sp_edulevel = findViewById(R.id.sp_tingkatan_kelas);
         sp_mapel    = findViewById(R.id.sp_mapel);
         mApiInterface   = ApiClient.getClient().create(Auth.class);
-        base_silabus    = "https://www.kes.co.id/schoolc/assets/images/silabus/";
+        base_silabus    = ApiClient.BASE_SILABUS;
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         toolbar.getNavigationIcon().setColorFilter(getResources().getColor(R.color.white), PorterDuff.Mode.SRC_ATOP);
@@ -101,6 +100,7 @@ public class Silabus extends AppCompatActivity {
             }else {
                 edulevel_id = dataEdulevelList.get(position - 1).getEdulevelid();
                 sp_mapel.setEnabled(true);
+                listMapel.clear();
                 dapat_mapel();
             }
         });
@@ -120,6 +120,7 @@ public class Silabus extends AppCompatActivity {
             }else {
                 cources_id = dataMapelEduList.get(position - 1).getCourcesid();
             }
+            Log.d("position",cources_id+"");
         });
         dapat_silabus();
         btn_go.setOnClickListener(new View.OnClickListener() {
@@ -136,22 +137,23 @@ public class Silabus extends AppCompatActivity {
             @Override
             public void onResponse(Call<JSONResponse.ListEdulevel> call, Response<JSONResponse.ListEdulevel> response) {
                 Log.d("Sukses",response.code()+"");
-                JSONResponse.ListEdulevel resource = response.body();
-                status  = resource.status;
-                code    = resource.code;
-                if (status  == 1   &&  code.equals("DTS_SCS_0001")){
-                    dataEdulevelList    = response.body().getData();
-                    for (int i = 0; i < dataEdulevelList.size();i++){
-                        edulevel_name   = dataEdulevelList.get(i).getEdulevel_name();
-                        listEdulevel.add(edulevel_name);
-                        listKelas.add(edulevel_name);
+                if (response.isSuccessful()) {
+                    JSONResponse.ListEdulevel resource = response.body();
+                    status = resource.status;
+                    code = resource.code;
+                    if (status == 1 && code.equals("DTS_SCS_0001")) {
+                        dataEdulevelList = response.body().getData();
+                        for (int i = 0; i < dataEdulevelList.size(); i++) {
+                            edulevel_name = dataEdulevelList.get(i).getEdulevel_name();
+                            listEdulevel.add(edulevel_name);
+                        }
                     }
                 }
             }
 
             @Override
             public void onFailure(Call<JSONResponse.ListEdulevel> call, Throwable t) {
-                Log.d("Gagal",t.toString());
+                Log.e("Gagal",t.toString());
             }
         });
     }
@@ -159,32 +161,22 @@ public class Silabus extends AppCompatActivity {
     private void dapat_mapel(){
         progressBar();
         showDialog();
-        Call<JSONResponse.ListMapelEdu> call = mApiInterface.kes_get_edulevel_cources_get(authorization,school_code.toLowerCase(),member_id,edulevel_id,scyear_id);
+        Call<JSONResponse.ListMapelEdu> call = mApiInterface.kes_get_edulevel_cource_get(authorization,school_code.toLowerCase(),member_id,edulevel_id,scyear_id);
         call.enqueue(new Callback<JSONResponse.ListMapelEdu>() {
             @Override
             public void onResponse(Call<JSONResponse.ListMapelEdu> call, Response<JSONResponse.ListMapelEdu> response) {
                 Log.d("MataPelajaran",response.code()+"");
                 hideDialog();
-                JSONResponse.ListMapelEdu resource = response.body();
-                status  = resource.status;
-                code    = resource.code;
-                if (status==1 && code.equals("DTS_SCS_0001")){
-                    dataMapelEduList    = response.body().getData();
-                    if (listMapel!=null) {
-                        listMapel.clear();
+                if (response.isSuccessful()) {
+                    JSONResponse.ListMapelEdu resource = response.body();
+                    status = resource.status;
+                    code = resource.code;
+                    if (status == 1 && code.equals("DTS_SCS_0001")) {
+                        dataMapelEduList = response.body().getData();
                         listMapel.add("Semua Mata Pelajaran");
                         for (int i = 0; i < response.body().getData().size(); i++) {
                             cources_name = response.body().getData().get(i).getCources_name();
                             listMapel.add(cources_name);
-                            listMatapelajaran.add(cources_name);
-                        }
-                    }
-                    if (listMatapelajaran!=null){
-                        listMatapelajaran.clear();
-                        listMatapelajaran.add("-");
-                        for (int i = 0; i < response.body().getData().size(); i++) {
-                            cources_name = response.body().getData().get(i).getCources_name();
-                            listMatapelajaran.add(cources_name);
                         }
                     }
                 }
@@ -192,39 +184,7 @@ public class Silabus extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<JSONResponse.ListMapelEdu> call, Throwable t) {
-                Log.d("Gagal",t.toString());
-                hideDialog();
-            }
-        });
-    }
-    private void dapat_mapel2(){
-        progressBar();
-        showDialog();
-        Call<JSONResponse.ListMapelEdu> call = mApiInterface.kes_get_edulevel_cources_get(authorization,school_code.toLowerCase(),member_id,kelas_id,scyear_id);
-        call.enqueue(new Callback<JSONResponse.ListMapelEdu>() {
-            @Override
-            public void onResponse(Call<JSONResponse.ListMapelEdu> call, Response<JSONResponse.ListMapelEdu> response) {
-                Log.d("MataPelajaran",response.code()+"");
-                hideDialog();
-                JSONResponse.ListMapelEdu resource = response.body();
-                status  = resource.status;
-                code    = resource.code;
-                if (status==1 && code.equals("DTS_SCS_0001")){
-                    dataMapelEduList    = response.body().getData();
-                    if (listMatapelajaran!=null){
-                        listMatapelajaran.clear();
-                        listMatapelajaran.add("-");
-                        for (int i = 0; i < response.body().getData().size(); i++) {
-                            cources_name = response.body().getData().get(i).getCources_name();
-                            listMatapelajaran.add(cources_name);
-                        }
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(Call<JSONResponse.ListMapelEdu> call, Throwable t) {
-                Log.d("Gagal",t.toString());
+                Log.e("Gagal",t.toString());
                 hideDialog();
             }
         });
@@ -232,7 +192,7 @@ public class Silabus extends AppCompatActivity {
     private void dapat_silabus(){
         progressBar();
         showDialog();
-        Call<JSONResponse.ListSilabus> call = mApiInterface.kes_silabus_get(authorization,school_code.toLowerCase(),member_id,cources_id,edulevel_id,scyear_id);
+        Call<JSONResponse.ListSilabus> call = mApiInterface.kes_silabus_get(authorization,school_code.toLowerCase(),member_id,edulevel_id,cources_id,scyear_id);
         call.enqueue(new Callback<JSONResponse.ListSilabus>() {
             @Override
             public void onResponse(Call<JSONResponse.ListSilabus> call, Response<JSONResponse.ListSilabus> response) {
@@ -263,7 +223,7 @@ public class Silabus extends AppCompatActivity {
                             adapterSilabus = new AdapterSilabus(Silabus.this, modelSilabusList);
                             rv_silabus.setOnFlingListener(null);
                             LinearLayoutManager layoutManager = new LinearLayoutManager(Silabus.this);
-                            layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+                            layoutManager.setOrientation(RecyclerView.VERTICAL);
                             rv_silabus.setLayoutManager(layoutManager);
                             rv_silabus.setAdapter(adapterSilabus);
                             adapterSilabus.notifyDataSetChanged();

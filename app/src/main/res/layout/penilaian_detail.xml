@@ -7,7 +7,7 @@
     tools:context=".Guru.ActivityGuru.PenilaianDetail"
     android:orientation="vertical">
 
-    <android.support.v7.widget.Toolbar
+    <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar_penilaian"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -41,26 +41,37 @@
             app:spn_dividerHeight="0dp"
             app:spn_labelTextColor="@color/colorPrimary" />
     </LinearLayout>
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:orientation="vertical"
         android:layout_gravity="center"
-        android:gravity="center"
-        android:text="Penilaian belum diberikan di website"
-        android:textColor="@color/black"
         android:id="@+id/hint_penilaian"
         android:visibility="gone"
-        android:textSize="15sp"/>
+        android:gravity="center">
+        <ImageView
+            android:layout_width="350dp"
+            android:layout_height="300dp"
+            android:background="@drawable/ic_no_penilaian"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="Penilaian belum diberikan di website"
+            android:textColor="@color/black"
+            android:textSize="15sp"/>
+    </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/ll_penilaian"
         android:orientation="vertical">
-        <android.support.v7.widget.RecyclerView
+        <androidx.recyclerview.widget.RecyclerView
             android:layout_width="match_parent"
             android:layout_height="55dp"
             android:id="@+id/rv_tanggal">
-        </android.support.v7.widget.RecyclerView>
+        </androidx.recyclerview.widget.RecyclerView>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="40dp"
@@ -104,12 +115,12 @@
                 android:layout_weight="1"/>
         </LinearLayout>
 
-        <android.support.v7.widget.RecyclerView
+        <androidx.recyclerview.widget.RecyclerView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:id="@+id/rv_penilaian">
 
-        </android.support.v7.widget.RecyclerView>
+        </androidx.recyclerview.widget.RecyclerView>
     </LinearLayout>
 
 </LinearLayout>

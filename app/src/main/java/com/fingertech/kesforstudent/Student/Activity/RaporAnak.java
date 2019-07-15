@@ -11,20 +11,17 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.ColorDrawable;
-import android.media.RingtoneManager;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Environment;
-import android.os.SystemClock;
-import android.support.v4.app.NotificationCompat;
-import android.support.v4.app.NotificationManagerCompat;
-import android.support.v7.app.AppCompatActivity;
+
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.CardView;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.LinearSnapHelper;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
+
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.appcompat.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -32,32 +29,24 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TableLayout;
-import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
 
-import com.fingertech.kesforstudent.CustomView.CustomLayoutManager;
-import com.fingertech.kesforstudent.Student.Adapter.RaporAdapter;
 import com.fingertech.kesforstudent.Controller.Auth;
 import com.fingertech.kesforstudent.Student.Adapter.RaportAdapter;
 import com.fingertech.kesforstudent.Student.Model.RaporModel;
-import com.fingertech.kesforstudent.Student.Model.RaportModel;
 import com.fingertech.kesforstudent.R;
 import com.fingertech.kesforstudent.Rest.ApiClient;
 import com.fingertech.kesforstudent.Rest.JSONResponse;
 import com.pepperonas.materialdialog.MaterialDialog;
 import com.rey.material.widget.Spinner;
 import com.shashank.sony.fancytoastlib.FancyToast;
-import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
@@ -72,16 +61,15 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import static com.fingertech.kesforstudent.Service.App.CHANNEL_2_ID;
+import static com.fingertech.kesforstudent.Service.App.ANDROID_CHANNEL_ID;
 
 public class RaporAnak extends AppCompatActivity {
     Toolbar toolbar;
-    TextView tv_semester,no_rapor,nama_kelas,tv_status,tv_kritik,tv_kelas,tv_naik,tv_peringkat;
+    TextView tv_semester,nama_kelas,tv_status,tv_kritik,tv_kelas,tv_naik,tv_peringkat;
     Button btn_download,btn_go;
     int status;
     Auth mApiInterface;
@@ -108,7 +96,10 @@ public class RaporAnak extends AppCompatActivity {
     String fileName,nama_anak;
     String folder;
     private boolean isDownloaded;
-    LinearLayout ll_kritik,ll_status;
+    LinearLayout ll_kritik,ll_status,no_rapor;
+    List<String> listSpinner = new ArrayList<String>();
+    int spinnerPosition;
+    LinearLayout raport_view,ll_ajaran;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -122,7 +113,9 @@ public class RaporAnak extends AppCompatActivity {
         tv_kritik           = findViewById(R.id.kritik_saran);
         ll_kritik           = findViewById(R.id.ll_kritik);
         ll_status           = findViewById(R.id.ll_status);
+        ll_ajaran           = findViewById(R.id.hint_ajaran);
         no_rapor            = findViewById(R.id.hint_raport);
+        raport_view         = findViewById(R.id.rapor_view);
         tv_kelas            = findViewById(R.id.tv_kelas);
         tv_naik             = findViewById(R.id.tv_naik);
         tv_peringkat        = findViewById(R.id.peringkat);
@@ -151,7 +144,7 @@ public class RaporAnak extends AppCompatActivity {
         call.enqueue(new Callback<JSONResponse.CheckSemester>() {
             @Override
             public void onResponse(Call<JSONResponse.CheckSemester> call, final Response<JSONResponse.CheckSemester> response) {
-                Log.i("KES", response.code() + "");
+                Log.i("check_semester", response.code() + "");
                 if (response.isSuccessful()) {
                     JSONResponse.CheckSemester resource = response.body();
                     status = resource.status;
@@ -184,11 +177,10 @@ public class RaporAnak extends AppCompatActivity {
 
                 if (response.isSuccessful()) {
                     JSONResponse.ListSemester resource = response.body();
-                    status = resource.status;
-                    code = resource.code;
+                    status  = resource.status;
+                    code    = resource.code;
                     if (status == 1 && code.equals("DTS_SCS_0001")) {
                         dataSemesters = response.body().getData();
-                        List<String> listSpinner = new ArrayList<String>();
                         listSpinner.add("Pilih Semester...");
                         for (int i = 0; i < dataSemesters.size(); i++) {
                             Collections.sort(dataSemesters, new Comparator<JSONResponse.DataSemester>() {
@@ -200,48 +192,7 @@ public class RaporAnak extends AppCompatActivity {
                             start_year  = converTahun(dataSemesters.get(0).getStart_date());
                             start_end   = converTahun(dataSemesters.get(dataSemesters.size()-1).getEnd_date());
                             listSpinner.add("Semester "+dataSemesters.get(i).getSemester_name()+" "+start_year+"/"+start_end);
-                            if (dataSemesters.get(i).getSemester_id().equals(semester_id)) {
-                                semester_nama   = dataSemesters.get(i).getSemester_name();
-                                start_date      = dataSemesters.get(i).getStart_date();
-                                end_date        = dataSemesters.get(i).getEnd_date();
-                                final ArrayAdapter<String> adapterRaport = new ArrayAdapter<String>(
-                                        RaporAnak.this, R.layout.spinner_white, listSpinner) {
-                                    @Override
-                                    public boolean isEnabled(int position) {
-                                        if (position == 0) {
-                                            // Disable the first item from Spinner
-                                            // First item will be use for hint
-                                            return false;
-                                        } else {
-                                            return true;
-                                        }
-                                    }
 
-                                    @Override
-                                    public View getDropDownView(int position, View convertView,
-                                                                ViewGroup parent) {
-                                        View view = super.getDropDownView(position, convertView, parent);
-                                        TextView tv = (TextView) view;
-                                        if (position == 0) {
-                                            // Set the hint text color gray
-                                            tv.setTextColor(Color.GRAY);
-                                        } else {
-                                            tv.setTextColor(Color.WHITE);
-                                        }
-                                        return view;
-                                    }
-                                };
-                                int spinnerPosition = adapterRaport.getPosition("Semester "+semester_nama+" "+start_year+"/"+start_end);
-                                adapterRaport.setDropDownViewResource(R.layout.custom_spinner_dropdown);
-                                sp_semester.setAdapter(adapterRaport);
-                                sp_semester.setOnItemSelectedListener((parent, view, position, id) -> {
-                                    if (position > 0) {
-                                        semester_id = dataSemesters.get(position - 1).getSemester_id();
-                                    }
-                                });
-
-                                sp_semester.setSelection(spinnerPosition);
-                            }
                         }
                         final ArrayAdapter<String> adapterRaport = new ArrayAdapter<String>(
                                 RaporAnak.this, R.layout.spinner_white, listSpinner) {
@@ -270,25 +221,37 @@ public class RaporAnak extends AppCompatActivity {
                                 return view;
                             }
                         };
-                        int spinnerPosition = adapterRaport.getPosition("Semester "+semester_nama+" "+start_year+"/"+start_end);
+                        spinnerPosition = adapterRaport.getPosition("Semester "+semester_nama+" "+start_year+"/"+start_end);
                         adapterRaport.setDropDownViewResource(R.layout.custom_spinner_dropdown);
                         sp_semester.setAdapter(adapterRaport);
                         sp_semester.setOnItemSelectedListener((parent, view, position, id) -> {
                             if (position > 0) {
-                                semester_id = dataSemesters.get(position - 1).getSemester_id();
-                                dapat_semester();
+                                semester_id     = dataSemesters.get(position - 1).getSemester_id();
+                                semester_nama   = dataSemesters.get(position - 1).getSemester_name();
+                                start_date      = dataSemesters.get(position - 1).getStart_date();
+                                end_date        = dataSemesters.get(position - 1).getEnd_date();
+                                spinnerPosition = adapterRaport.getPosition("Semester "+semester_nama+" "+start_year+"/"+start_end);
+                                sp_semester.setSelection(spinnerPosition);
                                 dapat_rapor();
+                                if (semester_id.equals("0")){
+                                    tv_semester.setText("Tahun ajaran telah selesai");
+                                }else {
+                                    tv_semester.setText(convertTanggal(start_date) + " Sampai " + convertTanggal(end_date));
+                                }
                             }
                         });
                         sp_semester.setSelection(spinnerPosition);
-                        tv_semester.setText(convertTanggal(start_date) + " Sampai " + convertTanggal(end_date));
+                        if (semester_id.equals("0")){
+                            tv_semester.setText("Tahun ajaran telah selesai");
+                        }else {
+                            tv_semester.setText(convertTanggal(start_date) + " Sampai " + convertTanggal(end_date));
+                        }
                     }
                 }
             }
             @Override
             public void onFailure(Call<JSONResponse.ListSemester> call, Throwable t) {
                 Log.d("onFailure", t.toString());
-                Toast.makeText(getApplicationContext(), t.toString(), Toast.LENGTH_LONG).show();
             }
         });
     }
@@ -298,8 +261,7 @@ public class RaporAnak extends AppCompatActivity {
 
         SimpleDateFormat newDateFormat = new SimpleDateFormat("yyyy",Locale.getDefault());
         try {
-            String e = newDateFormat.format(calendarDateFormat.parse(tahun));
-            return e;
+            return newDateFormat.format(calendarDateFormat.parse(tahun));
         } catch (java.text.ParseException e) {
             e.printStackTrace();
             return "";
@@ -310,8 +272,7 @@ public class RaporAnak extends AppCompatActivity {
 
         SimpleDateFormat newDateFormat = new SimpleDateFormat("dd MMMM yyyy",Locale.getDefault());
         try {
-            String e = newDateFormat.format(calendarDateFormat.parse(tahun));
-            return e;
+            return newDateFormat.format(calendarDateFormat.parse(tahun));
         } catch (java.text.ParseException e) {
             e.printStackTrace();
             return "";
@@ -331,11 +292,12 @@ public class RaporAnak extends AppCompatActivity {
                     JSONResponse.Raport resource = response.body();
                     status  = resource.status;
                     code    = resource.code;
-                    if (status == 1&&code.equals("DTS_SCS_0001")){
+                    if (status == 1 && code.equals("DTS_SCS_0001")){
                         if (response.body().getData().getDetailScore()!=null){
                             detailScoreItemList = response.body().getData().getDetailScore();
                             no_rapor.setVisibility(View.GONE);
-                            rv_rapor.setVisibility(View.VISIBLE);
+                            raport_view.setVisibility(View.VISIBLE);
+                            ll_ajaran.setVisibility(View.GONE);
                             peringkat       = response.body().getData().getClassroom().getPromoteRanking();
                             statusrapor     = response.body().getData().getClassroom().getPromoteText();
                             kritik          = response.body().getData().getClassroom().getDescriptionText();
@@ -375,7 +337,7 @@ public class RaporAnak extends AppCompatActivity {
                                 }
                                 raportAdapter = new RaportAdapter(raporModelList);
                                 LinearLayoutManager layoutManager = new LinearLayoutManager(RaporAnak.this);
-                                layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+                                layoutManager.setOrientation(RecyclerView.VERTICAL);
                                 rv_rapor.setLayoutManager(layoutManager);
                                 rv_rapor.setAdapter(raportAdapter);
                                 raportAdapter.setOnItemClickListener(new RaportAdapter.OnItemClickListener() {
@@ -387,16 +349,25 @@ public class RaporAnak extends AppCompatActivity {
                                         intent.putExtra("student_id",student_id);
                                         intent.putExtra("classroom_id",classroom_id);
                                         intent.putExtra("posisi",position);
+                                        intent.putExtra("semester_id",semester_id);
                                         startActivityForResult(intent,1);
                                     }
                                 });
                             }
                         }else {
-                            no_rapor.setVisibility(View.VISIBLE);
-                            rv_rapor.setVisibility(View.GONE);
-                            tv_status.setText("-");
-                            tv_peringkat.setText("-");
-                            tv_kritik.setText("-");
+                            detailScoreItemList = null;
+                            if (semester_id.equals("0")){
+                                no_rapor.setVisibility(View.GONE);
+                                ll_ajaran.setVisibility(View.VISIBLE);
+                                raport_view.setVisibility(View.GONE);
+                            }else {
+                                no_rapor.setVisibility(View.VISIBLE);
+                                raport_view.setVisibility(View.GONE);
+                                ll_ajaran.setVisibility(View.GONE);
+                                tv_status.setText("-");
+                                tv_peringkat.setText("-");
+                                tv_kritik.setText("-");
+                            }
                         }
                     }
                 }
@@ -444,7 +415,7 @@ public class RaporAnak extends AppCompatActivity {
                 return true;
             case R.id.item_download:
                 if (detailScoreItemList != null){
-                    new DownloadFile().execute("https://kes.co.id/api/students/kes_rapor_pdf?school_code="+school_code.toLowerCase()+"&student_id="+student_id+"&classroom_id="+classroom_id+"&semester_id="+semester_id);
+                    new DownloadFile().execute(ApiClient.BASE_URL+"students/kes_rapor_pdf?school_code="+school_code.toLowerCase()+"&student_id="+student_id+"&classroom_id="+classroom_id+"&semester_id="+semester_id);
                 }else {
                     FancyToast.makeText(getApplicationContext(),"Rapor Belum diterbitkan oleh guru",Toast.LENGTH_LONG,FancyToast.ERROR,false).show();
                 }
@@ -476,8 +447,7 @@ public class RaporAnak extends AppCompatActivity {
             this.progressDialog.setCancelable(false);
             this.progressDialog.show();
 
-
-            notification = new NotificationCompat.Builder(RaporAnak.this, CHANNEL_2_ID)
+            notification = new NotificationCompat.Builder(RaporAnak.this, ANDROID_CHANNEL_ID)
                     .setSmallIcon(R.drawable.ic_logo_grey)
                     .setContentTitle("Download")
                     .setContentText("Download in progress")
@@ -573,18 +543,26 @@ public class RaporAnak extends AppCompatActivity {
             // dismiss the dialog after the file was downloaded
             this.progressDialog.dismiss();
             // Display File path after downloading
-            Intent intent = new Intent(RaporAnak.this, LihatPdf.class);
-            intent.putExtra("file",fileName);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            pendingIntent = PendingIntent.getActivity(RaporAnak.this, (int) (Math.random() * 100), intent,
-                    PendingIntent.FLAG_ONE_SHOT);
+            if (message.equals("Something went wrong")){
+                notification.setContentText("Download Gagal")
+                        .setProgress(0, 0, false)
+                        .setOngoing(false)
+                        .setContentIntent(pendingIntent);
+                notificationManager.notify(2, notification.build());
+            }else {
+                Intent intent = new Intent(RaporAnak.this, LihatPdf.class);
+                intent.putExtra("file", fileName);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                pendingIntent = PendingIntent.getActivity(RaporAnak.this, (int) (Math.random() * 100), intent,
+                        PendingIntent.FLAG_ONE_SHOT);
 
-            notification.setContentText("Download selesai")
-                    .setProgress(0, 0, false)
-                    .setOngoing(false)
-                    .setContentIntent(pendingIntent);
-            notificationManager.notify(2, notification.build());
-            pilihan();
+                notification.setContentText("Download selesai")
+                        .setProgress(0, 0, false)
+                        .setOngoing(false)
+                        .setContentIntent(pendingIntent);
+                notificationManager.notify(2, notification.build());
+                pilihan();
+            }
         }
     }
     private void pilihan(){

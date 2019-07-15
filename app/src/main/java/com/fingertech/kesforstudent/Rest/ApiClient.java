@@ -11,8 +11,9 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ApiClient {
     //////////// http://192.168.43.182/apikes/
-    public static final String BASE_URL = "http://genpin.co.id/ztapi2/";
-    public static final String BASE_IMAGE = "http://genpin.co.id/schoolc/assets/images/profile/mm_";
+    public static final String BASE_URL     = "http://genpin.co.id/ztapi2/";
+    public static final String BASE_IMAGE   = "http://genpin.co.id/schoolc/assets/images/profile/mm_";
+    public static final String BASE_SILABUS = "http://genpin.co.id/schoolc/assets/images/silabus/";
     private static Retrofit retrofit = null;
 
     public static Retrofit getClient() {

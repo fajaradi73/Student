@@ -4,12 +4,14 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.CardView;
+import androidx.cardview.widget.CardView;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -31,7 +33,7 @@ import retrofit2.Response;
 
 public class PenilaianGuru extends AppCompatActivity {
 
-    ImageView iv_close;
+    CardView iv_close;
     CardView btn_lihat;
     Spinner sp_edulevel,sp_mapel;
     Auth mApiInterface;
@@ -66,6 +68,10 @@ public class PenilaianGuru extends AppCompatActivity {
         member_id           = sharedpreferences.getString(TAG_MEMBER_ID,"");
         scyear_id           = sharedpreferences.getString("scyear_id","");
         school_code         = sharedpreferences.getString(TAG_SCHOOL_CODE,"");
+
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        getWindow().setStatusBarColor(Color.parseColor("#D2F0FC"));
+
         dapat_edulevel();
         btn_lihat.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -2,9 +2,10 @@ package com.fingertech.kesforstudent.Guru.ActivityGuru.AdapterAbsen;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.support.annotation.NonNull;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+
+import androidx.recyclerview.widget.RecyclerView;
+
+import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,14 +16,8 @@ import android.widget.TextView;
 import com.fingertech.kesforstudent.Controller.Auth;
 import com.fingertech.kesforstudent.Guru.ModelGuru.ModelAbsen.ModelDataAttidude;
 import com.fingertech.kesforstudent.R;
-import com.fingertech.kesforstudent.Rest.ApiClient;
-import com.fingertech.kesforstudent.Rest.JSONResponse;
 
 import java.util.List;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class AdapterCodeAbsen extends RecyclerView.Adapter<AdapterCodeAbsen.MyHolder>  {
     private List<ModelDataAttidude> modelDataAttidudes;
@@ -58,8 +53,7 @@ public class AdapterCodeAbsen extends RecyclerView.Adapter<AdapterCodeAbsen.MyHo
 
         ModelDataAttidude viewItem = modelDataAttidudes.get(position);
         holder.tv_code.setText(viewItem.getAttitude_grade_code());
-        Log.d("apaaja",viewItem.getAttitude_grade_code()+"");
-
+        holder.ll_color.setBackgroundColor(Color.parseColor(viewItem.getColour_code()));
     }
 
     @Override
@@ -69,13 +63,14 @@ public class AdapterCodeAbsen extends RecyclerView.Adapter<AdapterCodeAbsen.MyHo
 
     class MyHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView tv_code;
-
+        LinearLayout ll_color;
         OnItemClickListener onItemClickListener;
 
 
         public MyHolder(View itemView, OnItemClickListener onItemClickListener) {
             super(itemView);
             tv_code       = itemView.findViewById(R.id.tv_code);
+            ll_color        = itemView.findViewById(R.id.ll_color);
 
 
 //            btn_absen.setOnClickListener(this);

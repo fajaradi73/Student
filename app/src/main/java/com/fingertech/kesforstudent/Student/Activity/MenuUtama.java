@@ -7,35 +7,36 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.ColorDrawable;
-import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.support.design.widget.CoordinatorLayout;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentStatePagerAdapter;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.view.ViewPager;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.LinearSnapHelper;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
+
+import com.azoft.carousellayoutmanager.CarouselLayoutManager;
+import com.azoft.carousellayoutmanager.CarouselZoomPostLayoutListener;
+import com.azoft.carousellayoutmanager.CenterScrollListener;
+import com.fingertech.kesforstudent.TentangKami;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentStatePagerAdapter;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.ViewPager;
+import androidx.recyclerview.widget.LinearSnapHelper;
 import android.util.Log;
 import android.view.View;
-import android.support.design.widget.NavigationView;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
+import com.google.android.material.navigation.NavigationView;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.azoft.carousellayoutmanager.CarouselLayoutManager;
-import com.azoft.carousellayoutmanager.CarouselZoomPostLayoutListener;
-import com.azoft.carousellayoutmanager.CenterScrollListener;
 import com.bumptech.glide.Glide;
 import com.fingertech.kesforstudent.Masuk;
 import com.fingertech.kesforstudent.Student.Activity.Setting.Setting_Activity;
@@ -58,10 +59,9 @@ import com.fingertech.kesforstudent.R;
 import com.fingertech.kesforstudent.CustomView.SnappyRecycleView;
 import com.fingertech.kesforstudent.Rest.ApiClient;
 import com.fingertech.kesforstudent.Rest.JSONResponse;
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.pixelcan.inkpageindicator.InkPageIndicator;
-import com.rbrooks.indefinitepagerindicator.IndefinitePagerIndicator;
 
-import java.io.File;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -114,12 +114,12 @@ public class MenuUtama extends AppCompatActivity
     int status;
     String code;
 
-    private List<JadwalSenin> itemlist;
-    private List<JadwalSelasa> itemselasa;
-    private List<JadwalRabu> itemRabu;
-    private List<JadwalKamis> itemKamis;
-    private List<JadwalJumat> itemJumat;
-    private List<JadwalSabtu> itemSabtu;
+    private List<JadwalSenin> itemlist = new ArrayList<>();
+    private List<JadwalSelasa> itemselasa = new ArrayList<>();
+    private List<JadwalRabu> itemRabu = new ArrayList<>();
+    private List<JadwalKamis> itemKamis = new ArrayList<>();
+    private List<JadwalJumat> itemJumat = new ArrayList<>();
+    private List<JadwalSabtu> itemSabtu = new ArrayList<>();
     SeninAdapter seninAdapter;
     SelasaAdapter selasaAdapter;
     RabuAdapter rabuAdapter;
@@ -218,12 +218,21 @@ public class MenuUtama extends AppCompatActivity
         df.setTimeZone(TimeZone.getDefault());
         day = outFormat.format(dater);
 
-        itemlist = new ArrayList<JadwalSenin>();
-        itemselasa = new ArrayList<JadwalSelasa>();
-        itemRabu = new ArrayList<JadwalRabu>();
-        itemKamis = new ArrayList<JadwalKamis>();
-        itemJumat = new ArrayList<JadwalJumat>();
-        itemSabtu = new ArrayList<JadwalSabtu>();
+
+
+        FirebaseInstanceId.getInstance().getInstanceId()
+                .addOnCompleteListener(task -> {
+                    if (!task.isSuccessful()) {
+                        Log.w("coba", "getInstanceId failed", task.getException());
+                        return;
+                    }
+
+                    // Get new Instance ID token
+                    String token = task.getResult().getToken();
+                    // Log and toast
+                    String msg = getString(R.string.msg_token_fmt, token);
+                    Log.d("firebase_Token", msg);
+                });
     }
 
     @Override
@@ -268,15 +277,14 @@ public class MenuUtama extends AppCompatActivity
             Intent intent = new Intent(MenuUtama.this, ProfileAnak.class);
             startActivityForResult(intent,1);
         } else if (id == R.id.nav_tentang) {
-
+            Intent intent = new Intent(MenuUtama.this, TentangKami.class);
+            startActivity(intent);
         }
         else if (id == R.id.nav_pengaturan){
             Intent intent = new Intent(MenuUtama.this, Setting_Activity.class);
             startActivity(intent);
         }
 
-
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
@@ -332,7 +340,7 @@ public class MenuUtama extends AppCompatActivity
         call.enqueue(new Callback<JSONResponse.GetProfile>() {
             @Override
             public void onResponse(Call<JSONResponse.GetProfile> call, Response<JSONResponse.GetProfile> response) {
-                Log.d("onResponse", response.code() + "");
+                Log.d("profile_sukses", response.code() + "");
                 hideDialog();
                 if (response.isSuccessful()) {
                     JSONResponse.GetProfile resource = response.body();
@@ -357,7 +365,7 @@ public class MenuUtama extends AppCompatActivity
 
             @Override
             public void onFailure(Call<JSONResponse.GetProfile> call, Throwable t) {
-                Log.d("onFailure", t.toString());
+                Log.e("onFailure_profile", t.toString());
                 hideDialog();
             }
         });
@@ -432,13 +440,12 @@ public class MenuUtama extends AppCompatActivity
                 @SuppressLint("SetTextI18n")
                 @Override
                 public void onResponse(Call<JSONResponse.JadwalPelajaran> call, final Response<JSONResponse.JadwalPelajaran> response) {
-                    Log.i("KES", response.code() + "");
+                    Log.i("Pelajaran_sukses", response.code() + "");
                     if (response.isSuccessful()) {
                         JSONResponse.JadwalPelajaran resource = response.body();
 
                         status = resource.status;
                         code = resource.code;
-
                         JadwalSenin jadwalSenin = null;
                         JadwalSelasa jadwalSelasa = null;
                         JadwalRabu jadwalRabu = null;
@@ -474,15 +481,13 @@ public class MenuUtama extends AppCompatActivity
                                             jadwalSenin.setJam_selesai(jam_selesai);
                                             itemlist.add(jadwalSenin);
                                         }
-                                        LinearSnapHelper snapHelper = new LinearSnapHelper();
                                         seninAdapter = new SeninAdapter(itemlist);
-                                        final CarouselLayoutManager layoutManager = new CarouselLayoutManager(CarouselLayoutManager.HORIZONTAL, true);
+                                        CarouselLayoutManager layoutManager = new CarouselLayoutManager(CarouselLayoutManager.HORIZONTAL, true);
                                         layoutManager.setPostLayoutListener(new CarouselZoomPostLayoutListener());
                                         rv_senin.addOnScrollListener(new CenterScrollListener());
                                         rv_senin.setHasFixedSize(true);
                                         rv_senin.setLayoutManager(layoutManager);
                                         rv_senin.setAdapter(seninAdapter);
-
                                         break;
                                     }
                                     case "Selasa": {
@@ -812,7 +817,7 @@ public class MenuUtama extends AppCompatActivity
 
                 @Override
                 public void onFailure(Call<JSONResponse.JadwalPelajaran> call, Throwable t) {
-                    Log.d("onFailure", t.toString());
+                    Log.e("onFailure", t.toString());
                 }
 
             });

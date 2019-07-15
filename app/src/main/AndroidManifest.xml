@@ -33,6 +33,14 @@
             android:name="org.apache.http.legacy"
             android:required="false" />
 
+        <!--&lt;!&ndash; Set custom default icon. This is used when no icon is set for incoming notification messages. &ndash;&gt;-->
+        <!--<meta-data-->
+            <!--android:name="com.google.firebase.messaging.default_notification_icon"-->
+            <!--android:resource="@drawable/ic_logo_genpin" />-->
+        <!--&lt;!&ndash; Set color used with incoming notification messages. This is used when no color is set for the incoming notification message. &ndash;&gt;-->
+        <!--<meta-data-->
+            <!--android:name="com.google.firebase.messaging.default_notification_color"-->
+            <!--android:resource="@color/colorPrimary" />-->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
@@ -53,7 +61,7 @@
         </service>
 
         <provider
-            android:name="android.support.v4.content.FileProvider"
+            android:name="androidx.core.content.FileProvider"
             android:authorities="${applicationId}.provider"
             android:exported="false"
             android:grantUriPermissions="true">
@@ -81,20 +89,26 @@
         </activity>
         <activity
             android:name=".MainActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".Masuk"
-            android:label="Masuk" />
+            android:label="Masuk"
+            android:windowSoftInputMode="adjustPan"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".ChangePassword"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".Student.Activity.MenuUtama"
             android:label="@string/title_activity_menu_utama"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".Student.Activity.ProfileAnak"
             android:label=""
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".Student.Activity.EditProfile"
@@ -197,7 +211,7 @@
         <activity
             android:name=".Guru.ActivityGuru.PenilaianGuru"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar.Penilaian" />
         <activity
             android:name=".Guru.ActivityGuru.PesanGuru"
             android:label="Pesan"
@@ -268,6 +282,10 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".Guru.ActivityGuru.PesanTerkirimDetail" />
+        <activity android:name=".TentangKami"
+            android:label="Tentang Kami"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"/>
     </application>
 
 </manifest>

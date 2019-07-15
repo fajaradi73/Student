@@ -4,13 +4,10 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Handler;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
-
-import com.fingertech.kesforstudent.MainActivity;
-import com.fingertech.kesforstudent.R;
 
 public class SplashScreen extends AppCompatActivity {
 

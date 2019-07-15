@@ -7,6 +7,7 @@
     android:layout_height="match_parent"
     android:focusable="true"
     android:focusableInTouchMode="true"
+    android:fitsSystemWindows="false"
     android:orientation="vertical">
 
     <ScrollView
@@ -27,7 +28,7 @@
                 android:layout_marginBottom="20dp"
                 android:id="@+id/logo"/>
 
-            <android.support.design.widget.TextInputLayout
+            <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/til_email"
                 android:textColorHint="@color/default_textHint"
                 android:layout_width="match_parent"
@@ -51,9 +52,9 @@
                     android:gravity="center_vertical"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" />
-            </android.support.design.widget.TextInputLayout>
+            </com.google.android.material.textfield.TextInputLayout>
 
-            <android.support.design.widget.TextInputLayout
+            <com.google.android.material.textfield.TextInputLayout
                 android:layout_marginTop="20dp"
                 app:passwordToggleTint="@color/colorPrimary"
                 android:textColorHint="@color/default_textHint"
@@ -79,7 +80,7 @@
                     android:gravity="center_vertical"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" />
-            </android.support.design.widget.TextInputLayout>
+            </com.google.android.material.textfield.TextInputLayout>
 
             <TextView
                 android:id="@+id/tvb_lupa_pass"

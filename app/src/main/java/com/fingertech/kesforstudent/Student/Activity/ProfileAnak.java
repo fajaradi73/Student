@@ -16,14 +16,14 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.support.constraint.ConstraintLayout;
-import android.support.design.widget.AppBarLayout;
-import android.support.design.widget.CollapsingToolbarLayout;
-import android.support.v4.content.FileProvider;
-import android.support.v7.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import com.google.android.material.appbar.AppBarLayout;
+import com.google.android.material.appbar.CollapsingToolbarLayout;
+import androidx.core.content.FileProvider;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.CardView;
-import android.support.v7.widget.Toolbar;
+import androidx.cardview.widget.CardView;
+import androidx.appcompat.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -241,36 +241,38 @@ public class ProfileAnak extends AppCompatActivity {
             public void onResponse(Call<JSONResponse.GetProfile> call, Response<JSONResponse.GetProfile> response) {
                 Log.d("onRespone",response.code()+"");
                 hideDialog();
-                JSONResponse.GetProfile resource = response.body();
-                status = resource.status;
-                if (status == 1){
-                    nama        = response.body().getData().getFullname();
-                    nis         = response.body().getData().getMember_code();
-                    email       = response.body().getData().getEmail();
-                    alamat      = response.body().getData().getAddress();
-                    gender      = response.body().getData().getGender();
-                    tanggal     = response.body().getData().getBirth_date();
-                    tempat      = response.body().getData().getBirth_place();
-                    agama       = response.body().getData().getReligion();
-                    picture     = response.body().getData().getPicture();
-                    no_hp       = response.body().getData().getMobile_phone();
+                if (response.isSuccessful()) {
+                    JSONResponse.GetProfile resource = response.body();
+                    status = resource.status;
+                    if (status == 1) {
+                        nama = response.body().getData().getFullname();
+                        nis = response.body().getData().getMember_code();
+                        email = response.body().getData().getEmail();
+                        alamat = response.body().getData().getAddress();
+                        gender = response.body().getData().getGender();
+                        tanggal = response.body().getData().getBirth_date();
+                        tempat = response.body().getData().getBirth_place();
+                        agama = response.body().getData().getReligion();
+                        picture = response.body().getData().getPicture();
+                        no_hp = response.body().getData().getMobile_phone();
 
-                    tv_nama.setText(nama);
-                    tv_nis.setText("Nomor induk siswa (NIS) : "+nis);
-                    tv_email.setText(email);
-                    tv_alamat.setText(alamat);
-                    tv_gender.setText(gender);
-                    tv_tanggal.setText(converDate(tanggal));
-                    tv_tempat.setText(tempat);
-                    tv_agama.setText(agama);
-                    tv_no_hp.setText(no_hp);
-                    Glide.with(ProfileAnak.this).load(Base_anak + picture).into(image_profile);
+                        tv_nama.setText(nama);
+                        tv_nis.setText("Nomor induk siswa (NIS) : " + nis);
+                        tv_email.setText(email);
+                        tv_alamat.setText(alamat);
+                        tv_gender.setText(gender);
+                        tv_tanggal.setText(converDate(tanggal));
+                        tv_tempat.setText(tempat);
+                        tv_agama.setText(agama);
+                        tv_no_hp.setText(no_hp);
+                        Glide.with(ProfileAnak.this).load(Base_anak + picture).into(image_profile);
+                    }
                 }
             }
 
             @Override
             public void onFailure(Call<JSONResponse.GetProfile> call, Throwable t) {
-                Log.d("onfailure",t.toString());
+                Log.e("onfailure",t.toString());
                 hideDialog();
             }
         });
@@ -308,8 +310,7 @@ public class ProfileAnak extends AppCompatActivity {
                 editor.putString(TAG_FULLNAME, null);
                 editor.putString(TAG_MEMBER_TYPE, null);
                 editor.putString(TAG_TOKEN, null);
-                editor.commit();
-
+                editor.apply();
                 Intent intent = new Intent(ProfileAnak.this, MainActivity.class);
                 finish();
                 startActivity(intent);

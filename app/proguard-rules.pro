@@ -20,4 +20,7 @@
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
 -keep class com.synnapps.carouselview.** { *; }
+-dontwarn javax.annotation.**
+-dontwarn javax.inject.**
+-dontwarn sun.misc.Unsafe
 

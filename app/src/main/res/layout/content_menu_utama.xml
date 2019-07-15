@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -35,63 +35,51 @@
                 android:gravity="center"
                 android:textSize="15sp"
                 android:visibility="gone"
-                android:textColor="@color/black"
-                />
+                android:layout_margin="10dp"
+                android:textColor="@color/black"/>
 
             <com.fingertech.kesforstudent.CustomView.SnappyRecycleView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:visibility="gone"
                 android:background="@drawable/border_biru"
-                android:id="@+id/rv_senin">
-
-            </com.fingertech.kesforstudent.CustomView.SnappyRecycleView>
-            <com.fingertech.kesforstudent.CustomView.SnappyRecycleView
-                android:layout_width="match_parent"
+                android:id="@+id/rv_senin"/>
+            <com.fingertech.kesforstudent.CustomView.SnappyRecycleView                android:layout_width="match_parent"
                 android:layout_height="80dp"
                 android:visibility="gone"
                 android:background="@drawable/border_biru"
-                android:id="@+id/rv_selasa">
-            </com.fingertech.kesforstudent.CustomView.SnappyRecycleView>
-            <com.fingertech.kesforstudent.CustomView.SnappyRecycleView
-                android:layout_width="match_parent"
+                android:id="@+id/rv_selasa"/>
+            <com.fingertech.kesforstudent.CustomView.SnappyRecycleView                android:layout_width="match_parent"
                 android:layout_height="80dp"
                 android:visibility="gone"
                 android:background="@drawable/border_biru"
-                android:id="@+id/rv_rabu">
-            </com.fingertech.kesforstudent.CustomView.SnappyRecycleView>
-            <com.fingertech.kesforstudent.CustomView.SnappyRecycleView
-                android:layout_width="match_parent"
+                android:id="@+id/rv_rabu"/>
+            <com.fingertech.kesforstudent.CustomView.SnappyRecycleView                android:layout_width="match_parent"
                 android:layout_height="80dp"
                 android:visibility="gone"
                 android:background="@drawable/border_biru"
-                android:id="@+id/rv_kamis">
-            </com.fingertech.kesforstudent.CustomView.SnappyRecycleView>
-            <com.fingertech.kesforstudent.CustomView.SnappyRecycleView
-                android:layout_width="match_parent"
+                android:id="@+id/rv_kamis"/>
+            <com.fingertech.kesforstudent.CustomView.SnappyRecycleView                android:layout_width="match_parent"
                 android:layout_height="80dp"
                 android:visibility="gone"
                 android:background="@drawable/border_biru"
-                android:id="@+id/rv_jumat">
-            </com.fingertech.kesforstudent.CustomView.SnappyRecycleView>
-            <com.fingertech.kesforstudent.CustomView.SnappyRecycleView
-                android:layout_width="match_parent"
+                android:id="@+id/rv_jumat"/>
+            <com.fingertech.kesforstudent.CustomView.SnappyRecycleView                android:layout_width="match_parent"
                 android:layout_height="80dp"
                 android:visibility="gone"
                 android:background="@drawable/border_biru"
-                android:id="@+id/rv_sabtu">
-            </com.fingertech.kesforstudent.CustomView.SnappyRecycleView>
+                android:id="@+id/rv_sabtu"/>
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/viewpager"
             android:orientation="vertical">
-            <android.support.v4.view.ViewPager
+            <androidx.viewpager.widget.ViewPager
                 android:id="@+id/PagerUtama"
                 android:layout_width="match_parent"
                 android:layout_height="275dp">
-            </android.support.v4.view.ViewPager>
+            </androidx.viewpager.widget.ViewPager>
             <com.pixelcan.inkpageindicator.InkPageIndicator
                 android:id="@+id/indicators"
                 android:layout_width="match_parent"
@@ -105,4 +93,4 @@
 
     </LinearLayout>
 
-</android.support.constraint.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -14,7 +14,7 @@
         android:layout_width="match_parent"
         android:paddingStart="20dp"
         android:layout_height="wrap_content">
-        <android.support.v7.widget.CardView
+        <androidx.cardview.widget.CardView
             android:foreground="?android:attr/selectableItemBackground"
             android:clickable="true"
             android:id="@+id/btn_kalender"
@@ -43,8 +43,8 @@
                     android:textSize="12sp"
                     android:text="Kalender"/>
             </LinearLayout>
-        </android.support.v7.widget.CardView>
-        <android.support.v7.widget.CardView
+        </androidx.cardview.widget.CardView>
+        <androidx.cardview.widget.CardView
             android:foreground="?android:attr/selectableItemBackground"
             android:clickable="true"
             android:layout_width="90dp"
@@ -73,7 +73,7 @@
                     android:singleLine="true"
                     android:text="Silabus"/>
             </LinearLayout>
-        </android.support.v7.widget.CardView>
+        </androidx.cardview.widget.CardView>
     </LinearLayout>
 
 </FrameLayout>

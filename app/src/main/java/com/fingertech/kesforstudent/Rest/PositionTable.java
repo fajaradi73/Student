@@ -1,8 +1,11 @@
-package com.fingertech.kesforstudent.Service;
+package com.fingertech.kesforstudent.Rest;
 
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+
+import com.fingertech.kesforstudent.Service.DatabaseManager;
+import com.fingertech.kesforstudent.Service.Position;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -55,8 +58,7 @@ public class PositionTable {
         ContentValues contentValues = new ContentValues();
         contentValues.put(Position.KEY_Name,newName);
         String[] whereArgs= {oldName};
-        int count =db.update(Position.TABLE,contentValues, Position.KEY_Name+" = ?",whereArgs );
-        return count;
+        return db.update(Position.TABLE,contentValues, Position.KEY_Name+" = ?",whereArgs );
     }
     public int updateStatus(String oldName , String newName)
     {
@@ -64,8 +66,7 @@ public class PositionTable {
         ContentValues contentValues = new ContentValues();
         contentValues.put(Position.KEY_Status,newName);
         String[] whereArgs= {oldName};
-        int count =db.update(Position.TABLE,contentValues, Position.KEY_Status+" = ?",whereArgs );
-        return count;
+        return db.update(Position.TABLE,contentValues, Position.KEY_Status+" = ?",whereArgs );
     }
 
     public ArrayList<HashMap<String, String>> getAllData() {

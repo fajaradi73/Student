@@ -5,12 +5,13 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v7.widget.RecyclerView;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -38,23 +39,23 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import static com.facebook.FacebookSdk.getApplicationContext;
 
 public class UtsFragment extends Fragment {
 
-    UjianAdapter ujianAdapter;
-    RecyclerView recyclerView;
-    int status;
-    String code;
-    SharedPreferences sharedPreferences;
-    String authorization, school_code, memberid, classroom_id, date, bulan_sekarang;
+    private UjianAdapter ujianAdapter;
+    private RecyclerView recyclerView;
+    private int status;
+    private String code;
+    private SharedPreferences sharedPreferences;
+    private String authorization, school_code, memberid, classroom_id, date, bulan_sekarang;
     private SimpleDateFormat dateFormat = new SimpleDateFormat("MM-yyyy", new Locale("in", "ID"));
     private DateFormat times_format = new SimpleDateFormat("MM-yyyy", Locale.getDefault());
-    Auth mApiInterface;
-    String bulan,waktu, tanggal, mapel, deskripsi, semester_id, start_date, end_date, semester, start_year, start_end;
-    TextView hint_ujian,tv_semester,start,akhir;
-    List<ItemUjian> itemUjianList = new ArrayList<>();
+    private Auth mApiInterface;
+    private String bulan,waktu, tanggal, mapel, deskripsi, semester_id, start_date, end_date, semester, start_year, start_end;
+    private TextView tv_semester,start,akhir;
+    private List<ItemUjian> itemUjianList = new ArrayList<>();
 
+    private LinearLayout hint_ujian;
     private List<JSONResponse.DataSemester> dataSemesters;
     private List<JSONResponse.DataMapel> dataMapelList;
     private String[] tipe = {
@@ -67,7 +68,7 @@ public class UtsFragment extends Fragment {
     public UtsFragment() {
         // Required empty public constructor
     }
-    SpinKitView spinKitView;
+    private SpinKitView spinKitView;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -86,7 +87,6 @@ public class UtsFragment extends Fragment {
         tv_semester     = view.findViewById(R.id.semester);
         start           = view.findViewById(R.id.startku);
         spinKitView     = view.findViewById(R.id.spin_kits);
-
 
 
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
@@ -261,7 +261,7 @@ public class UtsFragment extends Fragment {
             @Override
             public void onFailure(Call<JSONResponse.ListSemester> call, Throwable t) {
                 Log.d("onFailure", t.toString());
-                Toast.makeText(getApplicationContext(), t.toString(), Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(), t.toString(), Toast.LENGTH_LONG).show();
             }
 
         });

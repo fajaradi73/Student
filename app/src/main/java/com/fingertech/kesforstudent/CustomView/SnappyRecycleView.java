@@ -1,9 +1,10 @@
 package com.fingertech.kesforstudent.CustomView;
 
 import android.content.Context;
-import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
+
+import androidx.recyclerview.widget.RecyclerView;
 
 public final class SnappyRecycleView extends RecyclerView {
 
@@ -21,7 +22,7 @@ public final class SnappyRecycleView extends RecyclerView {
 
     @Override
     public boolean fling(int velocityX, int velocityY) {
-        final LayoutManager lm = getLayoutManager();
+        final RecyclerView.LayoutManager lm = getLayoutManager();
 
         if (lm instanceof SnappyLayoutManager) {
             super.smoothScrollToPosition(((SnappyLayoutManager) getLayoutManager())

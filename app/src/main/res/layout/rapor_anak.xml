@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <android.support.v7.widget.Toolbar
+    <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar_rapor"
         android:minHeight="?attr/actionBarSize"
         android:background="@color/colorPrimary"
@@ -16,320 +16,364 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:orientation="vertical"
-        android:background="@color/birurapor">
+        android:layout_height="wrap_content"
+        android:background="@color/bluerapor"
+        android:orientation="vertical">
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/bluerapor"
-            android:orientation="vertical">
-            <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal">
+            <com.rey.material.widget.Spinner
+                style="@style/Material.Widget.Spinner"
+                android:id="@+id/sp_semester"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="2"
-                android:layout_marginLeft="15dp"
-                android:layout_marginRight="15dp"
+                android:layout_height="30dp"
                 android:layout_gravity="center"
                 android:gravity="center"
-                android:layout_marginTop="10dp"
-                android:orientation="horizontal">
-                <com.rey.material.widget.Spinner
-                    style="@style/Material.Widget.Spinner"
-                    android:id="@+id/sp_semester"
-                    android:layout_width="wrap_content"
-                    android:layout_height="30dp"
-                    android:layout_gravity="center"
-                    android:gravity="center"
-                    android:background="@android:color/transparent"
-                    android:spinnerMode="dropdown"
-                    app:rd_style="@style/Material.Drawable.Ripple.Wave"
-                    app:spn_arrowAnimClockwise="true"
-                    app:spn_dividerColor="@color/white"
-                    app:spn_dividerHeight="1dp"
-                    app:spn_arrowColor="@color/white"
-                    app:spn_arrowSwitchMode="true"
-                    app:spn_arrowAnimDuration="3"/>
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="2.2"
-                android:layout_margin="5dp"
-                android:orientation="horizontal">
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    tools:text="mulai"
-                    android:gravity="center"
-                    android:id="@+id/tv_tanggal_semester"
-                    android:textColor="@color/white"/>
-            </LinearLayout>
+                android:background="@android:color/transparent"
+                android:spinnerMode="dropdown"
+                app:rd_style="@style/Material.Drawable.Ripple.Wave"
+                app:spn_arrowAnimClockwise="true"
+                app:spn_dividerColor="@color/white"
+                app:spn_dividerHeight="1dp"
+                app:spn_arrowColor="@color/white"
+                app:spn_arrowSwitchMode="true"
+                app:spn_arrowAnimDuration="3"/>
         </LinearLayout>
-
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="115dp"
-            android:background="@color/fourty_eight_transparency_white"
-            android:elevation="50dp"
-            android:orientation="vertical">
-            <LinearLayout
+            android:layout_height="match_parent"
+            android:layout_weight="2.2"
+            android:layout_margin="5dp"
+            android:orientation="horizontal">
+            <TextView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:orientation="horizontal"
-                tools:ignore="DisableBaselineAlignment,UselessParent">
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="3.1">
-                    <android.support.v7.widget.CardView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:id="@+id/cardView"
-                        android:layout_marginEnd="10dp"
-                        android:layout_marginStart="10dp"
-                        android:layout_marginTop="10dp"
-                        android:layout_marginBottom="5dp"
-                        app:cardCornerRadius="5dp">
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:background="@drawable/ic_background"
-                            android:orientation="vertical">
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:background="@drawable/ic_piala">
-                                <TextView
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    tools:text="10"
-                                    android:layout_marginTop="-10dp"
-                                    android:textColor="@color/black"
-                                    android:id="@+id/peringkat"
-                                    android:textSize="16sp"
-                                    android:layout_gravity="center"
-                                    android:gravity="center"/>
-                            </LinearLayout>
-                        </LinearLayout>
-                    </android.support.v7.widget.CardView>
-                </RelativeLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="2"
-                    android:layout_marginTop="5dp"
-                    android:orientation="vertical">
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/ll_status"
-                        android:orientation="vertical">
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:textColor="@color/black"
-                            android:text="Status"
-                            android:textSize="13sp"/>
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:id="@+id/status_raport"
-                            tools:text="Naik kelas"
-                            android:textSize="16sp"
-                            android:singleLine="true"
-                            android:textColor="@color/sixty_percent_transparency_green"/>
-                    </LinearLayout>
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/ll_kritik"
-                        android:layout_marginTop="5dp"
-                        android:orientation="vertical">
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="Kritik &amp; Saran"
-                            android:textColor="@color/black"
-                            android:textSize="13sp"/>
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            tools:text="Naik kelas"
-                            android:id="@+id/kritik_saran"
-                            android:textColor="@color/sixty_percent_transparency_bluerapor"
-                            android:singleLine="true"
-                            android:textSize="13sp"/>
-                    </LinearLayout>
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="3.2"
-                    android:layout_marginTop="5dp"
-                    android:orientation="vertical">
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1.6"
-                        android:orientation="horizontal"
-                        tools:ignore="NestedWeights">
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            tools:text="SD 2"
-                            android:textColor="@color/white"
-                            android:gravity="center"
-                            android:id="@+id/tv_naik"
-                            android:layout_weight="1"/>
-                        <ImageView
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:gravity="center"
-                            android:background="@drawable/ic_circle_green"
-                            android:layout_margin="4dp"
-                            android:layout_weight="3"/>
-                    </LinearLayout>
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="horizontal"
-                        android:layout_weight="1">
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1"/>
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_weight="3"
-                            android:layout_height="match_parent"
-                            android:gravity="center">
-                            <LinearLayout
-                                android:layout_width="1dp"
-                                android:layout_height="match_parent"
-                                android:background="@color/grey_300"/>
-                        </LinearLayout>
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1.6"
-                        android:orientation="horizontal">
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            tools:text="SD 2"
-                            android:textColor="@color/white"
-                            android:gravity="center"
-                            android:id="@+id/tv_kelas"
-                            android:layout_weight="1"/>
-                        <ImageView
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:gravity="center"
-                            android:background="@drawable/ic_circle_red"
-                            android:layout_margin="4dp"
-                            android:layout_weight="3"/>
-                    </LinearLayout>
-                </LinearLayout>
-            </LinearLayout>
+                android:layout_height="match_parent"
+                tools:text="mulai"
+                android:gravity="center"
+                android:id="@+id/tv_tanggal_semester"
+                android:textColor="@color/white"/>
         </LinearLayout>
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/blues"
-        android:orientation="horizontal">
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Mata Pelajaran"
-            android:gravity="center"
-            android:layout_margin="6.5dp"
-            android:layout_gravity="center"
-            android:textColor="@color/white"
-            android:textSize="12sp"
-            android:layout_weight="2.5"/>
-        <View
-            android:layout_width="0.7dp"
-            android:background="@color/black"
-            android:layout_height="match_parent"/>
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="KKM"
-            android:gravity="center"
-            android:textColor="@color/white"
-            android:layout_margin="6.5dp"
-            android:textSize="12sp"
-            android:layout_gravity="center"
-            android:layout_weight="3.2"/>
-        <View
-            android:layout_width="0.7dp"
-            android:background="@color/black"
-            android:layout_height="match_parent"/>
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Nilai Akhir"
-            android:textColor="@color/white"
-            android:layout_gravity="center"
-            android:layout_margin="6.5dp"
-            android:textSize="12sp"
-            android:gravity="center"
-            android:layout_weight="3.2"/>
-        <View
-            android:layout_width="0.7dp"
-            android:background="@color/black"
-            android:layout_height="match_parent"/>
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="6.5dp"
-            android:gravity="center"
-            android:layout_gravity="center"
-            android:textColor="@color/white"
-            android:text="Rata-rata Kelas"
-            android:textSize="12sp"
-            android:layout_weight="3.1"/>
-        <View
-            android:layout_width="0.7dp"
-            android:background="@color/black"
-            android:layout_height="match_parent"/>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_margin="6.5dp"
-            android:layout_weight="3.1"
-            android:gravity="center"
-            android:text="Rata-rata Angkatan"
-            android:textColor="@color/white"
-            android:textSize="12sp" />
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:layout_gravity="center"
+        android:visibility="gone"
+        android:id="@+id/hint_raport"
+        android:gravity="center">
+        <ImageView
+            android:layout_width="300dp"
+            android:layout_height="200dp"
+            android:src="@drawable/ic_no_raport"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="-20dp"
+            android:scaleType="centerCrop"/>
         <TextView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/hint_raport"
+            android:layout_height="wrap_content"
             android:text="Rapor belum diterbitkan oleh wali kelas"
             android:layout_gravity="center"
             android:gravity="center"
             android:textSize="20sp"
-            android:visibility="gone"/>
-        <android.support.v7.widget.RecyclerView
+            android:visibility="visible"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_gravity="center"
+        android:visibility="gone"
+        android:id="@+id/hint_ajaran"
+        android:gravity="center">
+        <ImageView
+            android:layout_width="300dp"
+            android:layout_height="200dp"
+            android:src="@drawable/ic_no_raport"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="-20dp"
+            android:scaleType="centerCrop"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Tahun ajaran telah selesai"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:textSize="20sp"
+            android:visibility="visible"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/rapor_view"
+        android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="130dp"
+            android:orientation="vertical"
+            android:background="@color/birurapor">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="115dp"
+                android:background="@color/fourty_eight_transparency_white"
+                android:elevation="50dp"
+                android:orientation="vertical">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:orientation="horizontal"
+                    tools:ignore="DisableBaselineAlignment,UselessParent">
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="3.1">
+                        <androidx.cardview.widget.CardView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:id="@+id/cardView"
+                            android:layout_marginEnd="10dp"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginBottom="5dp"
+                            app:cardCornerRadius="5dp">
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:background="@drawable/ic_background"
+                                android:orientation="vertical">
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:background="@drawable/ic_piala">
+                                    <TextView
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        tools:text="10"
+                                        android:layout_marginTop="-10dp"
+                                        android:textColor="@color/black"
+                                        android:id="@+id/peringkat"
+                                        android:textSize="16sp"
+                                        android:layout_gravity="center"
+                                        android:gravity="center"/>
+                                </LinearLayout>
+                            </LinearLayout>
+                        </androidx.cardview.widget.CardView>
+                    </RelativeLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="2"
+                        android:layout_marginTop="5dp"
+                        android:orientation="vertical">
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/ll_status"
+                            android:orientation="vertical">
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/black"
+                                android:text="Status"
+                                android:textSize="13sp"/>
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:id="@+id/status_raport"
+                                tools:text="Naik kelas"
+                                android:textSize="16sp"
+                                android:singleLine="true"
+                                android:textColor="@color/sixty_percent_transparency_green"/>
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/ll_kritik"
+                            android:layout_marginTop="5dp"
+                            android:orientation="vertical">
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="Kritik &amp; Saran"
+                                android:textColor="@color/black"
+                                android:textSize="13sp"/>
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                tools:text="Naik kelas"
+                                android:id="@+id/kritik_saran"
+                                android:textColor="@color/sixty_percent_transparency_bluerapor"
+                                android:singleLine="true"
+                                android:textSize="13sp"/>
+                        </LinearLayout>
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="3.2"
+                        android:layout_marginTop="5dp"
+                        android:orientation="vertical">
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1.6"
+                            android:orientation="horizontal"
+                            tools:ignore="NestedWeights">
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                tools:text="SD 2"
+                                android:textColor="@color/white"
+                                android:gravity="center"
+                                android:id="@+id/tv_naik"
+                                android:layout_weight="1"/>
+                            <ImageView
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:gravity="center"
+                                android:background="@drawable/ic_circle_green"
+                                android:layout_margin="4dp"
+                                android:layout_weight="3"/>
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="horizontal"
+                            android:layout_weight="1">
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"/>
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_weight="3"
+                                android:layout_height="match_parent"
+                                android:gravity="center">
+                                <LinearLayout
+                                    android:layout_width="1dp"
+                                    android:layout_height="match_parent"
+                                    android:background="@color/grey_300"/>
+                            </LinearLayout>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1.6"
+                            android:orientation="horizontal">
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                tools:text="SD 2"
+                                android:textColor="@color/white"
+                                android:gravity="center"
+                                android:id="@+id/tv_kelas"
+                                android:layout_weight="1"/>
+                            <ImageView
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:gravity="center"
+                                android:background="@drawable/ic_circle_red"
+                                android:layout_margin="4dp"
+                                android:layout_weight="3"/>
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/blues"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Mata Pelajaran"
+                android:gravity="center"
+                android:layout_margin="6.5dp"
+                android:layout_gravity="center"
+                android:textColor="@color/white"
+                android:textSize="12sp"
+                android:layout_weight="2.5"/>
+            <View
+                android:layout_width="0.7dp"
+                android:background="@color/black"
+                android:layout_height="match_parent"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="KKM"
+                android:gravity="center"
+                android:textColor="@color/white"
+                android:layout_margin="6.5dp"
+                android:textSize="12sp"
+                android:layout_gravity="center"
+                android:layout_weight="3.2"/>
+            <View
+                android:layout_width="0.7dp"
+                android:background="@color/black"
+                android:layout_height="match_parent"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Nilai Akhir"
+                android:textColor="@color/white"
+                android:layout_gravity="center"
+                android:layout_margin="6.5dp"
+                android:textSize="12sp"
+                android:gravity="center"
+                android:layout_weight="3.2"/>
+            <View
+                android:layout_width="0.7dp"
+                android:background="@color/black"
+                android:layout_height="match_parent"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="6.5dp"
+                android:gravity="center"
+                android:layout_gravity="center"
+                android:textColor="@color/white"
+                android:text="Rata-rata Kelas"
+                android:textSize="12sp"
+                android:layout_weight="3.1"/>
+            <View
+                android:layout_width="0.7dp"
+                android:background="@color/black"
+                android:layout_height="match_parent"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="6.5dp"
+                android:layout_weight="3.1"
+                android:gravity="center"
+                android:text="Rata-rata Angkatan"
+                android:textColor="@color/white"
+                android:textSize="12sp" />
+        </LinearLayout>
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/rv_raport">
-        </android.support.v7.widget.RecyclerView>
+            android:orientation="vertical">
+            <androidx.recyclerview.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/rv_raport">
+            </androidx.recyclerview.widget.RecyclerView>
+        </LinearLayout>
     </LinearLayout>
 </LinearLayout>

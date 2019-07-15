@@ -6,15 +6,15 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.ColorDrawable;
-import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.CardView;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.LinearSmoothScroller;
-import android.support.v7.widget.LinearSnapHelper;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
+import androidx.cardview.widget.CardView;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.LinearSmoothScroller;
+import androidx.recyclerview.widget.LinearSnapHelper;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.appcompat.widget.Toolbar;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Menu;
@@ -96,6 +96,7 @@ public class AgendaAnak extends AppCompatActivity {
     Long times_awal,times_akhir,times_sekarang,times_picker;
     CardView btn_pilih;
     String tanggals,calendardate;
+    LinearLayout ll_agenda,hint_ajaran;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -113,6 +114,8 @@ public class AgendaAnak extends AppCompatActivity {
         datePicker                  = findViewById(R.id.datePicker);
         btn_pilih                   = findViewById(R.id.btn_pilih);
         tv_hint_agenda_hari         = findViewById(R.id.hint_harian);
+        ll_agenda                   = findViewById(R.id.ll_agenda);
+        hint_ajaran                 = findViewById(R.id.hint_ajaran);
         mApiInterface               = ApiClient.getClient().create(Auth.class);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -206,6 +209,8 @@ public class AgendaAnak extends AppCompatActivity {
             }
         });
         btn_pilih.setOnClickListener(v -> {
+            ll_agenda.setVisibility(View.VISIBLE);
+            hint_ajaran.setVisibility(View.GONE);
             if (times_sekarang.equals(times_picker)){
                 rvtanggal.smoothScrollToPosition(Integer.parseInt(tanggal)-1);
             }else {
@@ -339,8 +344,17 @@ public class AgendaAnak extends AppCompatActivity {
 
                     status = resource.status;
                     code = resource.code;
-                    semester_id = response.body().getData();
-                    dapat_semester();
+                    if (status == 1 && code.equals("DTS_SCS_0001")) {
+                        semester_id = response.body().getData();
+                        dapat_semester();
+                        if (semester_id.equals("0")){
+                            ll_agenda.setVisibility(View.GONE);
+                            hint_ajaran.setVisibility(View.VISIBLE);
+                        }else {
+                            ll_agenda.setVisibility(View.VISIBLE);
+                            hint_ajaran.setVisibility(View.GONE);
+                        }
+                    }
                 }
             }
 

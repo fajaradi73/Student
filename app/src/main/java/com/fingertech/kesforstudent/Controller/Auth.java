@@ -34,7 +34,9 @@ public interface Auth {
     @POST("auth/kes_login")
     Call<JSONResponse>login_post(@Field("school_code") String school_code,
                                  @Field("username") String username,
-                                 @Field("password") String password);
+                                 @Field("password") String password,
+                                 @Field("firebase_token") String firebase_token,
+                                 @Field("device_id") String device_id);
 
     //////// Forgot password
     @FormUrlEncoded
@@ -194,8 +196,8 @@ public interface Auth {
                                                     @Query("teacher_id") String teacher_id,
                                                     @Query("scyear_id") String  scyear_id );
 
-                                                            ///// Jadwal Guru
-    @GET("teachers/kes_")
+    ///// Jadwal Guru
+    @GET("teachers/kes_get_edulevel")
     Call<JSONResponse.ListEdulevel>kes_get_edulevel_get(@Header("Authorization") String authorization,
                                                         @Query("school_code") String school_code,
                                                         @Query("teacher_id") String teacher_id,
@@ -214,6 +216,14 @@ public interface Auth {
                                                                 @Query("school_code") String school_code,
                                                                 @Query("teacher_id") String teacher_id,
                                                                 @Query("classroom_id") String classroom_id,
+                                                                @Query("scyear_id") String scyear_id);
+
+    ///// List Mapel
+    @GET("teachers/kes_get_edulevel_cources")
+    Call<JSONResponse.ListMapelEdu>kes_get_edulevel_cource_get(@Header("Authorization") String authorization,
+                                                                @Query("school_code") String school_code,
+                                                                @Query("teacher_id") String teacher_id,
+                                                                @Query("edulevel_id") String edulevel_id,
                                                                 @Query("scyear_id") String scyear_id);
 
     //// List Silabus
@@ -364,7 +374,7 @@ public interface Auth {
                                           @Query("teacher_id") String teacher_id,
                                           @Query("scyear_id") String scyear_id);
 
-    ///Tambah Agenda
+    ///Kirim Pesan
     @FormUrlEncoded
     @POST("teachers/kes_send_message")
     Call<JSONResponse.KirimPesanGuru>kes_send_message(@Header("Authorization") String authorization,

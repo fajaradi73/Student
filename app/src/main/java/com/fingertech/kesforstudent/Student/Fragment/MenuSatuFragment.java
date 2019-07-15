@@ -5,22 +5,19 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v7.widget.CardView;
+import androidx.fragment.app.Fragment;
+import androidx.cardview.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.fingertech.kesforstudent.Student.Activity.AbsenAnak;
 import com.fingertech.kesforstudent.Student.Activity.AgendaAnak;
 import com.fingertech.kesforstudent.Student.Activity.JadwalPelajaran;
-import com.fingertech.kesforstudent.Student.Activity.JadwalUjian;
 import com.fingertech.kesforstudent.Student.Activity.KalendarKelas;
 import com.fingertech.kesforstudent.Student.Activity.MenuUtama;
 import com.fingertech.kesforstudent.Student.Activity.PesanAnak;
 import com.fingertech.kesforstudent.Student.Activity.RaporAnak;
-import com.fingertech.kesforstudent.Student.Activity.TugasAnak;
 import com.fingertech.kesforstudent.R;
 
 /**

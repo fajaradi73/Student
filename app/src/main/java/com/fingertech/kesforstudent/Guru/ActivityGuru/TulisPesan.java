@@ -2,19 +2,19 @@ package com.fingertech.kesforstudent.Guru.ActivityGuru;
 
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.ColorDrawable;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
+import androidx.appcompat.widget.Toolbar;
+
+import android.text.InputType;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.fingertech.kesforstudent.Controller.Auth;
@@ -92,6 +92,9 @@ public class TulisPesan extends AppCompatActivity {
 
         kt_judul = findViewById(R.id.kt_judul);
         kt_pesan = findViewById(R.id.kt_pesan);
+
+        kt_judul.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
+        kt_pesan.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
 
         toolbar = findViewById(R.id.toolbarTulisPesan);
         setSupportActionBar(toolbar);

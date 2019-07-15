@@ -53,20 +53,32 @@
                 android:visibility="gone"
                 android:layout_gravity="center"
                 app:SpinKit_Color="@color/colorPrimary" />
-            <TextView
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:id="@+id/hint_ujian"
-                android:text="Tidak ada Ujian"
+                android:orientation="vertical"
                 android:layout_gravity="center"
                 android:gravity="center"
-                android:textSize="20sp"
-                android:visibility="gone"/>
-            <android.support.v7.widget.RecyclerView
+                android:id="@+id/hint_ujian"
+                android:layout_marginTop="-70dp"
+                android:visibility="gone">
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:src="@drawable/ic_no_ujian"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Tidak ada Ujian"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:textSize="20sp"/>
+            </LinearLayout>
+            <androidx.recyclerview.widget.RecyclerView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:id="@+id/recycleview_ujian">
-            </android.support.v7.widget.RecyclerView>
+            </androidx.recyclerview.widget.RecyclerView>
         </LinearLayout>
     </LinearLayout>
 </FrameLayout>

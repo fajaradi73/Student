@@ -7,12 +7,12 @@ import android.content.SharedPreferences;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.CardView;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
+import androidx.cardview.widget.CardView;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.appcompat.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -81,7 +81,7 @@ public class PenilaianDetail extends AppCompatActivity {
     List<ModelPenilaian> modelPenilaianList = new ArrayList<>();
     AdapterPenilaian adapterPenilaian;
 
-    TextView hint_penilaian;
+    LinearLayout hint_penilaian;
     LinearLayout ll_penilaian;
     ProgressDialog dialog;
 
@@ -363,7 +363,7 @@ public class PenilaianDetail extends AppCompatActivity {
                                             }
                                             adapterPenilaian = new AdapterPenilaian(PenilaianDetail.this, modelPenilaianList);
                                             LinearLayoutManager layoutManager1 = new LinearLayoutManager(PenilaianDetail.this);
-                                            layoutManager1.setOrientation(LinearLayoutManager.VERTICAL);
+                                            layoutManager1.setOrientation(RecyclerView.VERTICAL);
                                             rv_exam.setLayoutManager(layoutManager1);
                                             rv_exam.setAdapter(adapterPenilaian);
                                     }

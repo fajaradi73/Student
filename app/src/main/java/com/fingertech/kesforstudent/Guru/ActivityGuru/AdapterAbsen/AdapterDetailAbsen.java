@@ -2,10 +2,10 @@ package com.fingertech.kesforstudent.Guru.ActivityGuru.AdapterAbsen;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.support.annotation.NonNull;
-import android.support.v4.view.PagerAdapter;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.NonNull;
+import androidx.viewpager.widget.PagerAdapter;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,10 +14,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.fingertech.kesforstudent.Controller.Auth;
-import com.fingertech.kesforstudent.Guru.ActivityGuru.AbsenMurid;
 import com.fingertech.kesforstudent.Guru.ModelGuru.ModelAbsen.ModelDataAttidude;
 import com.fingertech.kesforstudent.Guru.ModelGuru.ModelAbsen.ModelDetailAbsen;
-import com.fingertech.kesforstudent.Masuk;
 import com.fingertech.kesforstudent.R;
 import com.fingertech.kesforstudent.Rest.ApiClient;
 import com.fingertech.kesforstudent.Rest.JSONResponse;
@@ -55,11 +53,6 @@ public class AdapterDetailAbsen extends PagerAdapter {
         this.context = context;
         this.modelDetailAbsenList = viewItemlist;
     }
-
-
-
-
-
     @Override
     public int getCount() {
         return modelDetailAbsenList.size();
@@ -87,10 +80,11 @@ public class AdapterDetailAbsen extends PagerAdapter {
 //        member_id                   = sharedPreferences.getString(TAG_MEMBER_ID,"");
 //        scyear_id                   = sharedPreferences.getString(TAG_YEAR_ID,"");
 //        school_code                 = sharedPreferences.getString(TAG_SCHOOL_CODE,"");
-        authorization               ="eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6ImZhamFyYWRpcHJhc3RAZ21haWwuY29tIiwibWVtYmVyX2lkIjoiODUzIiwiZnVsbG5hbWUiOiJNb25hbGlzYSIsIm1lbWJlcl90eXBlIjoiMyJ9.GDytEt9XgLGPzAMUUyC5YkDSE378H2i-T-b-q8_w4U4";
-        member_id                   ="777";
+        authorization               ="eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6ImFsd2lAZ21haWwuY29tIiwibWVtYmVyX2lkIjoiMyIsImZ1bGxuYW1lIjoiQWx3aSBIYXJhaGFwIiwibWVtYmVyX3R5cGUiOiIzIiwicGljdHVyZSI6IiIsInNjeWVhcl9pZCI6IjEifQ.KkNgySaq-uk_LJI5bu84_XpW6zJf4bWcK_cIc9ycgaY";
+        member_id                   ="3";
         scyear_id                   ="1";
-        school_code                 ="bpk02";
+        school_code                 ="bpk04";
+
         Call<JSONResponse.Attidude> Callat = mApiInterface.kes_attitude_get(authorization,school_code,member_id,scyear_id);
         Callat.enqueue(new Callback<JSONResponse.Attidude>() {
             @Override
@@ -101,42 +95,35 @@ public class AdapterDetailAbsen extends PagerAdapter {
                     JSONResponse.Attidude resourceattidude = response.body();
                     statusattidude = resourceattidude.statusattidude;
                     codeattidude   = resourceattidude.codeattidude;
-                    if (statusattidude==1 && codeattidude.equals("DTS_SCS_0001")){
+                    Log.d("status",statusattidude+"/"+codeattidude);
+                    if (statusattidude ==1 && codeattidude.equals("DTS_SCS_0001")){
                         for (int at = 0; at<response.body().getDataattidude().size();at++){
                             attidudename = response.body().getDataattidude().get(at).getAttitude_grade_name();
                             modelDataAttidude = new ModelDataAttidude();
                             modelDataAttidude.setAttitude_name(attidudename);
                             modelDataAttidudes.add(modelDataAttidude);
-                            Log.d("nama",attidudename.toString());
                             for (int i = 0; i < response.body().getDataattidude().get(at).getData().size();i++)
                             {
                                 attidudegradecode = response.body().getDataattidude().get(at).getData().get(i).getAttitude_grade_code();
-//
-
                             }
                         }
                         AdapterAttidudes    adapterAttidudes    = new AdapterAttidudes(context,modelDataAttidudes);
                         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
-                        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+                        linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
                         rv_attidude.setLayoutManager(linearLayoutManager);
                         rv_attidude.setAdapter(adapterAttidudes);
                     }
-
                 }
 
             }
 
             @Override
             public void onFailure(Call<JSONResponse.Attidude> call, Throwable t) {
-
+                Log.e("eror",t.toString());
             }
         });
 
-
-
-
         ModelDetailAbsen viewitem = modelDetailAbsenList.get(position);
-        Log.d("item",viewitem.getNis()+"");
         namaanak.setText(viewitem.getNama());
         nis.setText(viewitem.getNis());
         container.addView(view);

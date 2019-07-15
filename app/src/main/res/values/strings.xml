@@ -117,4 +117,10 @@
     <string name="error_resp_internet_con">Tidak ada koneksi internet, periksa dan hubungkan kembali</string>
     <string name="toast_cancel">Batalkan</string>
     <string name="bottom_dialog_lib_cancel">Batal</string>
+    <string name="alamat_kantor">Blok H1 Selatan No.80,, Jl. Pluit Karang Utara, RT.21/RW.2, Pluit, Penjaringan, Kota Jkt Utara, Daerah Khusus Ibukota Jakarta 14450</string>
+    <string name="no_kantor_1">+62216678519</string>
+    <string name="no_kantor_2">+622122661372</string>
+    <string name="no_handphone">+6285280298817</string>
+    <string name="email_kantor">kes.developer@gmail.com</string>
+    <string name="web_kantor">www.kes.co.id</string>
 </resources>

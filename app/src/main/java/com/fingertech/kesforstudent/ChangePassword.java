@@ -6,10 +6,10 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.ColorDrawable;
-import android.support.design.widget.TextInputLayout;
-import android.support.v7.app.AppCompatActivity;
+import com.google.android.material.textfield.TextInputLayout;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
+import androidx.appcompat.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -25,7 +25,7 @@ import com.fingertech.kesforstudent.Guru.ActivityGuru.MenuUtamaGuru;
 import com.fingertech.kesforstudent.Rest.ApiClient;
 import com.fingertech.kesforstudent.Rest.JSONResponse;
 import com.fingertech.kesforstudent.Service.Position;
-import com.fingertech.kesforstudent.Service.PositionTable;
+import com.fingertech.kesforstudent.Rest.PositionTable;
 import com.fingertech.kesforstudent.Student.Activity.MenuUtama;
 import com.shashank.sony.fancytoastlib.FancyToast;
 
@@ -61,7 +61,7 @@ public class ChangePassword extends AppCompatActivity {
     String authorization,memberid,username,member_type,fullname,school_code;
     TextInputLayout til_password_lama,til_password_baru,til_konfirmasi;
     PositionTable positionTable = new PositionTable();
-    Position position = new Position();
+    Position position;
     ArrayList<HashMap<String, String>> row;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -174,13 +174,14 @@ public class ChangePassword extends AppCompatActivity {
                 Log.i("ganti_password", response.code() + "");
                 if (response.isSuccessful()) {
                     JSONResponse.ChangePassword resource = response.body();
-                    status = resource.status;
-                    code = resource.code;
+                    status  = resource.status;
+                    code    = resource.code;
                     if (status == 1 && code.equals("CP_SCS_0001")) {
                         if (member_type.equals("3")) {
                             FancyToast.makeText(getApplicationContext(), "Kata sandi telah berubah", Toast.LENGTH_LONG, FancyToast.INFO, false).show();
                             Intent intent = new Intent(ChangePassword.this, MenuUtamaGuru.class);
                             if (row.size() <= 0) {
+                                position  = new Position();
                                 position.setName("guru");
                                 position.setStatus("1");
                                 positionTable.insert(position);
@@ -200,9 +201,8 @@ public class ChangePassword extends AppCompatActivity {
                         } else if (member_type.equals("4")) {
                             FancyToast.makeText(getApplicationContext(), "Kata sandi telah berubah", Toast.LENGTH_LONG, FancyToast.INFO, false).show();
                             Intent intent = new Intent(ChangePassword.this, MenuUtama.class);
-                            startActivity(intent);
-                            finish();
                             if (row.size() <= 0) {
+                                position  = new Position();
                                 position.setName("murid");
                                 position.setStatus("2");
                                 positionTable.insert(position);

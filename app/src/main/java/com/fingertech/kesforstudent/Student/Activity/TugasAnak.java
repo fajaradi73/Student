@@ -7,11 +7,11 @@ import android.content.Context;
 import android.graphics.PorterDuff;
 import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.appcompat.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -364,7 +364,7 @@ public class TugasAnak extends AppCompatActivity {
                         }
                         tugasAdapter = new TugasAdapter(itemTugasList,TugasAnak.this);
                         no_ujian.setVisibility(View.GONE);
-                        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(TugasAnak.this, LinearLayoutManager.VERTICAL, false);
+                        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(TugasAnak.this, RecyclerView.VERTICAL, false);
                         linearLayoutManager.setStackFromEnd(true);
                         linearLayoutManager.setReverseLayout(true);
                         rv_tugas.setLayoutManager(linearLayoutManager);

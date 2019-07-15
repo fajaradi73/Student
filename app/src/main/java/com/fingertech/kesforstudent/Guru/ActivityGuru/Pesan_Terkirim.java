@@ -5,15 +5,16 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.ColorDrawable;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.appcompat.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.fingertech.kesforstudent.Controller.Auth;
@@ -50,7 +51,7 @@ public class Pesan_Terkirim extends AppCompatActivity {
     public static final String my_viewpager_preferences = "my_viewpager_preferences";
 
     RecyclerView rv_pesan;
-    TextView tv_hint;
+    LinearLayout tv_hint;
     Auth mApiInterface;
     private SimpleDateFormat dateFormatForMonth = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
     String code, date_from, date_to, statusku;
@@ -66,19 +67,19 @@ public class Pesan_Terkirim extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pesan__terkirim);
 
-        toolbar = findViewById(R.id.toolbarPesanTerkirim);
-        rv_pesan = findViewById(R.id.rv_pesan_guru_terkirim);
-        tv_hint = findViewById(R.id.hint_pesan_terkirim);
-        mApiInterface = ApiClient.getClient().create(Auth.class);
+        toolbar         = findViewById(R.id.toolbarPesanTerkirim);
+        rv_pesan        = findViewById(R.id.rv_pesan_guru_terkirim);
+        tv_hint         = findViewById(R.id.hint_pesan);
+        mApiInterface   = ApiClient.getClient().create(Auth.class);
 
         sharedpreferences = this.getSharedPreferences(Masuk.my_shared_preferences, Context.MODE_PRIVATE);
-        authorization = sharedpreferences.getString(TAG_TOKEN, "");
-        memberid = sharedpreferences.getString(TAG_MEMBER_ID, "");
-        username = sharedpreferences.getString(TAG_EMAIL, "");
-        fullname = sharedpreferences.getString(TAG_FULLNAME, "");
-        member_type = sharedpreferences.getString(TAG_MEMBER_TYPE, "");
-        school_code = sharedpreferences.getString(TAG_SCHOOL_CODE, "");
-        scyear_id = sharedpreferences.getString("scyear_id", "");
+        authorization   = sharedpreferences.getString(TAG_TOKEN, "");
+        memberid        = sharedpreferences.getString(TAG_MEMBER_ID, "");
+        username        = sharedpreferences.getString(TAG_EMAIL, "");
+        fullname        = sharedpreferences.getString(TAG_FULLNAME, "");
+        member_type     = sharedpreferences.getString(TAG_MEMBER_TYPE, "");
+        school_code     = sharedpreferences.getString(TAG_SCHOOL_CODE, "");
+        scyear_id       = sharedpreferences.getString("scyear_id", "");
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -126,13 +127,13 @@ public class Pesan_Terkirim extends AppCompatActivity {
                         if (modelPesanGuruList != null) {
                             modelPesanGuruList.clear();
                             for (JSONResponse.DataPesanTerkirim dataPesanTerkirimGuru : response.body().getData()) {
-                                title = dataPesanTerkirimGuru.getMessage_title();
-                                isipesan = dataPesanTerkirimGuru.getMessage_cont();
-                                tanggal = dataPesanTerkirimGuru.getMessage_date();
-                                jam = dataPesanTerkirimGuru.getDatez();
-                                statusread = dataPesanTerkirimGuru.getRead_status();
-                                message_id = dataPesanTerkirimGuru.getMessageid();
-                                pengirim = dataPesanTerkirimGuru.getSender_name();
+                                title           = dataPesanTerkirimGuru.getMessage_title();
+                                isipesan        = dataPesanTerkirimGuru.getMessage_cont();
+                                tanggal         = dataPesanTerkirimGuru.getMessage_date();
+                                jam             = dataPesanTerkirimGuru.getDatez();
+                                statusread      = dataPesanTerkirimGuru.getRead_status();
+                                message_id      = dataPesanTerkirimGuru.getMessageid();
+                                pengirim        = dataPesanTerkirimGuru.getSender_name();
                                 reply_message_id = dataPesanTerkirimGuru.getReply_message_id();
                                 modelPesanGuru = new ModelPesanGuru();
                                 modelPesanGuru.setDari(pengirim);
@@ -147,7 +148,7 @@ public class Pesan_Terkirim extends AppCompatActivity {
                             }
                             adapterPesanGuru = new AdapterPesanGuru(modelPesanGuruList);
                             LinearLayoutManager layoutManager = new LinearLayoutManager(Pesan_Terkirim.this);
-                            layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+                            layoutManager.setOrientation(RecyclerView.VERTICAL);
                             rv_pesan.setLayoutManager(layoutManager);
                             rv_pesan.setAdapter(adapterPesanGuru);
                             adapterPesanGuru.setOnItemClickListener(new AdapterPesanGuru.OnItemClickListener() {

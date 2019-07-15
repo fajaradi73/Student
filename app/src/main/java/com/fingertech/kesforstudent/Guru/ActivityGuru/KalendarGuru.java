@@ -1,20 +1,29 @@
 package com.fingertech.kesforstudent.Guru.ActivityGuru;
 
+import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.os.Build;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
+
+import androidx.cardview.widget.CardView;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.appcompat.widget.Toolbar;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.ethanhua.skeleton.Skeleton;
@@ -86,9 +95,11 @@ public class KalendarGuru extends AppCompatActivity {
     public static final String TAG_TOKEN = "token";
     public static final String TAG_SCHOOL_CODE = "school_code";
 
-    JSONObject jsonObject,innerJsonObject;
+    JSONObject jsonObject,innerJsonObject,statusobject;
     JsonElement jsonElement;
     List<JSONObject> jsonObjectList = new ArrayList<>();
+    String tanggal,jam,deskripsi,judul,guru,warna;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -184,7 +195,6 @@ public class KalendarGuru extends AppCompatActivity {
 
             @Override
             public void onMonthScroll(Date firstDayOfNewMonth) {
-                Log.d("evenlist",eventList+"");
 //                compactCalendarView.removeAllEvents();
                 if (eventList != null){
                     compactCalendarView.removeAllEvents();
@@ -223,23 +233,18 @@ public class KalendarGuru extends AppCompatActivity {
                         .positiveText("Ok")
                         .show();
             }else {
-                calendar_date = calendarModelList.get(position).getCalendar_date();
-                calendar_time = calendarModelList.get(position).getCalendar_time();
-                calendar_id = calendarModelList.get(position).getCalendar_id();
+                calendar_date   = calendarModelList.get(position).getCalendar_date();
+                calendar_time   = calendarModelList.get(position).getCalendar_time();
+                calendar_id     = calendarModelList.get(position).getCalendar_id();
                 calendar_colour = calendarModelList.get(position).getCalendar_color();
-                Intent intent = new Intent(KalendarGuru.this, KalendarDetail.class);
-                intent.putExtra("authorization", authorization);
-                intent.putExtra("school_code", school_code);
-                intent.putExtra("calendar_id", calendar_id);
-                intent.putExtra("warna",calendar_colour);
-                startActivity(intent);
+                openBottomSheet();
             }
         });
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(KalendarGuru.this);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(calendarAdapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+        recyclerView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
         final SkeletonScreen skeletonScreen = Skeleton.bind(recyclerView)
                 .adapter(calendarAdapter)
                 .shimmer(true)
@@ -275,102 +280,114 @@ public class KalendarGuru extends AppCompatActivity {
                     recyclerView.setVisibility(View.VISIBLE);
                     jsonElement = response.body();
                     try {
-                        jsonObject = new JSONObject(String.valueOf(jsonElement.getAsJsonObject().get("data")));
+                        statusobject    = new JSONObject(String.valueOf(jsonElement.getAsJsonObject()));
+                        code            = statusobject.getString("code");
+                        status          = statusobject.getInt("status");
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-                    Iterator<String> iterator = jsonObject.keys();
-                    if (jsonObjectList!=null){
-                        jsonObjectList.clear();
-                        while (iterator.hasNext()){
-                            Object obj = iterator.next();
-                            innerJsonObject = null;
-                            try {
-                                innerJsonObject = jsonObject.getJSONObject(obj.toString());
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-                            jsonObjectList.add(innerJsonObject);
+                    if (status == 1 && code.equals("DTS_SCS_0001")) {
+                        try {
+                            jsonObject = new JSONObject(String.valueOf(jsonElement.getAsJsonObject().get("data")));
+                        } catch (JSONException e) {
+                            e.printStackTrace();
                         }
-                    }
-                    if (calendarModelList != null) {
-                        calendarModelList.clear();
-                        for (int i = 0 ; i < jsonObjectList.size();i++){
-                            Calendar cal = Calendar.getInstance();
-                            try {
-                                calendar_date       = jsonObjectList.get(i).getString("calendar_date");
-                                calendar_time       = jsonObjectList.get(i).getString("calendar_time");
-                                calendar_type       = jsonObjectList.get(i).getString("calendar_type");
-                                calendar_colour     = jsonObjectList.get(i).getString("calendar_colour");
-                                calendar_title      = jsonObjectList.get(i).getString("calendar_title");
-                                calendar_id         = jsonObjectList.get(i).getString("calendar_id");
-                                calendar_desc       = jsonObjectList.get(i).getString("calendar_desc");
-                            } catch (JSONException e) {
-                                e.printStackTrace();
+                        Iterator<String> iterator = jsonObject.keys();
+                        if (jsonObjectList != null) {
+                            jsonObjectList.clear();
+                            while (iterator.hasNext()) {
+                                Object obj = iterator.next();
+                                innerJsonObject = null;
+                                try {
+                                    innerJsonObject = jsonObject.getJSONObject(obj.toString());
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                                jsonObjectList.add(innerJsonObject);
                             }
-                            if (calendar_date.equals(hari)){
-                                if (calendar_date.equals(hari)){
-                                    if (calendar_type.equals("-1")) {
-                                        calendarModel = new CalendarModel();
-                                        calendarModel.setCalendar_id(calendar_id);
-                                        calendarModel.setCalendar_time("Seharian");
-                                        calendarModel.setCalendar_date(converDate(calendar_date));
-                                        String sentence = calendar_title;
-                                        String replaced = sentence.replace("Hari Libur - ", "");
-                                        calendarModel.setCalendar_title(replaced);
-                                        calendarModel.setCalendar_color(calendar_colour);
-                                        calendarModel.setCalendar_desc(calendar_desc);
-                                        calendarModel.setCalendar_type(calendar_type);
-                                        calendarModelList.add(calendarModel);
-                                    } else {
-                                        calendarModel = new CalendarModel();
-                                        calendarModel.setCalendar_id(calendar_id);
-                                        calendarModel.setCalendar_time(calendar_time);
-                                        calendarModel.setCalendar_date(converDate(calendar_date));
-                                        calendarModel.setCalendar_title(calendar_title);
-                                        calendarModel.setCalendar_desc(calendar_desc);
-                                        calendarModel.setCalendar_type(calendar_type);
-                                        calendarModel.setCalendar_color(calendar_colour);
-                                        calendarModelList.add(calendarModel);
+                        }
+                        if (calendarModelList != null) {
+                            calendarModelList.clear();
+                            for (int i = 0; i < jsonObjectList.size(); i++) {
+                                Calendar cal = Calendar.getInstance();
+                                try {
+                                    calendar_date = jsonObjectList.get(i).getString("calendar_date");
+                                    calendar_time = jsonObjectList.get(i).getString("calendar_time");
+                                    calendar_type = jsonObjectList.get(i).getString("calendar_type");
+                                    calendar_colour = jsonObjectList.get(i).getString("calendar_colour");
+                                    calendar_title = jsonObjectList.get(i).getString("calendar_title");
+                                    calendar_id = jsonObjectList.get(i).getString("calendar_id");
+                                    calendar_desc = jsonObjectList.get(i).getString("calendar_desc");
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                                if (calendar_date.equals(hari)) {
+                                    if (calendar_date.equals(hari)) {
+                                        if (calendar_type.equals("-1")) {
+                                            calendarModel = new CalendarModel();
+                                            calendarModel.setCalendar_id(calendar_id);
+                                            calendarModel.setCalendar_time("Seharian");
+                                            calendarModel.setCalendar_date(converDate(calendar_date));
+                                            String sentence = calendar_title;
+                                            String replaced = sentence.replace("Hari Libur - ", "");
+                                            calendarModel.setCalendar_title(replaced);
+                                            calendarModel.setCalendar_color(calendar_colour);
+                                            calendarModel.setCalendar_desc(calendar_desc);
+                                            calendarModel.setCalendar_type(calendar_type);
+                                            calendarModelList.add(calendarModel);
+                                        } else {
+                                            calendarModel = new CalendarModel();
+                                            calendarModel.setCalendar_id(calendar_id);
+                                            calendarModel.setCalendar_time(calendar_time);
+                                            calendarModel.setCalendar_date(converDate(calendar_date));
+                                            calendarModel.setCalendar_title(calendar_title);
+                                            calendarModel.setCalendar_desc(calendar_desc);
+                                            calendarModel.setCalendar_type(calendar_type);
+                                            calendarModel.setCalendar_color(calendar_colour);
+                                            calendarModelList.add(calendarModel);
+                                        }
+                                    }
+                                    calendarAdapter.notifyDataSetChanged();
+                                    if (compactCalendarView.getEvents(Calendar.getInstance().getTime()) != null) {
+                                        kalendar.setVisibility(View.GONE);
+                                        recyclerView.setVisibility(View.VISIBLE);
+                                    }
+                                } else {
+                                    if (compactCalendarView.getEvents(Calendar.getInstance().getTime()).size() == 0) {
+                                        kalendar.setVisibility(View.VISIBLE);
+                                        recyclerView.setVisibility(View.GONE);
                                     }
                                 }
-                                calendarAdapter.notifyDataSetChanged();
-                                if (compactCalendarView.getEvents(Calendar.getInstance().getTime())!=null){
-                                    kalendar.setVisibility(View.GONE);
-                                    recyclerView.setVisibility(View.VISIBLE);
+                                if (calendar_type.equals("-1")) {
+                                    DateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+                                    try {
+                                        date = format.parse(calendar_date);
+                                    } catch (ParseException e) {
+                                        e.printStackTrace();
+                                    }
+                                    cal.setTime(date);
+                                    setToMidnight(cal);
+                                    long times = cal.getTimeInMillis();
+                                    events = getEventList(calendar_colour, times);
+                                    compactCalendarView.addEvents(events);
+                                } else {
+                                    DateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm", Locale.getDefault());
+                                    try {
+                                        date = format.parse(calendar_date + " " + calendar_time);
+                                    } catch (ParseException e) {
+                                        e.printStackTrace();
+                                    }
+                                    cal.setTime(date);
+                                    setToMidnight(cal);
+                                    long timee = cal.getTimeInMillis();
+                                    eventList = getevent(calendar_colour, timee);
+                                    compactCalendarView.addEvents(eventList);
                                 }
-                            }else {
-                                if (compactCalendarView.getEvents(Calendar.getInstance().getTime()).size() == 0){
-                                    kalendar.setVisibility(View.VISIBLE);
-                                    recyclerView.setVisibility(View.GONE);
-                                }
-                            }
-                            if (calendar_type.equals("-1")) {
-                                DateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
-                                try {
-                                    date = format.parse(calendar_date);
-                                } catch (ParseException e) {
-                                    e.printStackTrace();
-                                }
-                                cal.setTime(date);
-                                setToMidnight(cal);
-                                long times = cal.getTimeInMillis();
-                                events = getEventList(calendar_colour,times);
-                                compactCalendarView.addEvents(events);
-                            }else {
-                                DateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm", Locale.getDefault());
-                                try {
-                                    date = format.parse(calendar_date + " " + calendar_time);
-                                } catch (ParseException e) {
-                                    e.printStackTrace();
-                                }
-                                cal.setTime(date);
-                                setToMidnight(cal);
-                                long timee = cal.getTimeInMillis();
-                                eventList = getevent(calendar_colour,timee);
-                                compactCalendarView.addEvents(eventList);
                             }
                         }
+                    }else if (status == 0 && code.equals("DTS_ERR_0001")){
+                        kalendar.setVisibility(View.VISIBLE);
+                        recyclerView.setVisibility(View.GONE);
                     }
                 }else {
                     kalendar.setVisibility(View.VISIBLE);
@@ -380,7 +397,7 @@ public class KalendarGuru extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<JsonElement> call, Throwable t) {
-                Log.d("erorKalendar",t.toString());
+                Log.e("erorKalendar",t.toString());
             }
         });
     }
@@ -415,6 +432,79 @@ public class KalendarGuru extends AppCompatActivity {
         SimpleDateFormat calendarDateFormat = new SimpleDateFormat("yyyy-MM-dd",Locale.getDefault());
 
         SimpleDateFormat newDateFormat = new SimpleDateFormat("dd",Locale.getDefault());
+        try {
+            return newDateFormat.format(calendarDateFormat.parse(tanggal));
+        } catch (java.text.ParseException e) {
+            e.printStackTrace();
+            return "";
+        }
+    }
+    private void openBottomSheet(){
+
+        View view = getLayoutInflater().inflate(R.layout.kalendar_detail, null);
+        TextView tv_tanggal       = view.findViewById(R.id.tanggal);
+        TextView tv_deskripsi     = view.findViewById(R.id.deskripsi);
+        TextView tv_judul         = view.findViewById(R.id.judul);
+        TextView tv_guru          = view.findViewById(R.id.dibuat);
+        ImageView iv_background   = view.findViewById(R.id.color_calendar);
+        ImageView iv_calendar     = view.findViewById(R.id.color_calender);
+        ImageView iv_people       = view.findViewById(R.id.color_people);
+        CardView iv_close         = view.findViewById(R.id.iv_close);
+
+        final Dialog mBottomSheetDialog = new Dialog(KalendarGuru.this,
+                R.style.MaterialDialogSheet);
+        mBottomSheetDialog.setContentView(view);
+        mBottomSheetDialog.setCancelable(true);
+        mBottomSheetDialog.getWindow().setLayout(LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.MATCH_PARENT);
+        mBottomSheetDialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        mBottomSheetDialog.getWindow().setStatusBarColor(getResources().getColor(R.color.white));
+        mBottomSheetDialog.getWindow().setGravity(Gravity.BOTTOM);
+        mBottomSheetDialog.show();
+
+        Call<JSONResponse.CalendarDetail> call = mApiInterface.kes_calendar_detail_get(authorization,school_code.toLowerCase(),calendar_id);
+        call.enqueue(new Callback<JSONResponse.CalendarDetail>() {
+            @SuppressLint("SetTextI18n")
+            @Override
+            public void onResponse(Call<JSONResponse.CalendarDetail> call, Response<JSONResponse.CalendarDetail> response) {
+                Log.i("onRespone",response.code()+"");
+                if (response.isSuccessful()) {
+                    JSONResponse.CalendarDetail resource = response.body();
+                    status = resource.status;
+                    code = resource.code;
+                    if (status == 1 && code.equals("DTS_SCS_0001")) {
+                        tanggal     = response.body().getData().getCalendar_date();
+                        jam         = response.body().getData().getTimez();
+                        deskripsi   = response.body().getData().getCalendar_desc();
+                        judul       = response.body().getData().getCalendar_title();
+                        guru        = response.body().getData().getCreated_by();
+                        iv_background.setColorFilter(Color.parseColor(calendar_colour));
+                        tv_tanggal.setText(converttanggal(tanggal)+" . "+jam);
+                        tv_deskripsi.setText(deskripsi);
+                        tv_judul.setText(judul);
+                        tv_guru.setText(guru);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JSONResponse.CalendarDetail> call, Throwable t) {
+                Log.e("calendarEror",t.toString());
+            }
+        });
+
+        iv_close.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mBottomSheetDialog.dismiss();
+            }
+        });
+    }
+
+    String converttanggal(String tanggal) {
+        SimpleDateFormat calendarDateFormat = new SimpleDateFormat("yyyy-MM-dd", new Locale("in", "ID"));
+
+        SimpleDateFormat newDateFormat = new SimpleDateFormat("EEEE, dd MMMM yyyy", new Locale("in", "ID"));
         try {
             return newDateFormat.format(calendarDateFormat.parse(tanggal));
         } catch (java.text.ParseException e) {

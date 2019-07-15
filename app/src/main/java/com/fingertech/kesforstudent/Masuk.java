@@ -1,14 +1,20 @@
 package com.fingertech.kesforstudent;
 
+import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
-import android.support.design.widget.TextInputLayout;
-import android.support.v7.app.AppCompatActivity;
+import com.google.android.material.textfield.TextInputLayout;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+
 import android.os.Bundle;
+import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -25,10 +31,11 @@ import com.fingertech.kesforstudent.Controller.Auth;
 import com.fingertech.kesforstudent.Rest.ApiClient;
 import com.fingertech.kesforstudent.Rest.JSONResponse;
 import com.fingertech.kesforstudent.Service.Position;
-import com.fingertech.kesforstudent.Service.PositionTable;
+import com.fingertech.kesforstudent.Rest.PositionTable;
 import com.fingertech.kesforstudent.Student.Activity.ForgotPassword;
 import com.fingertech.kesforstudent.Student.Activity.MenuUtama;
 import com.fingertech.kesforstudent.Util.JWTUtils;
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.shashank.sony.fancytoastlib.FancyToast;
 
 import org.json.JSONObject;
@@ -67,6 +74,8 @@ public class Masuk extends AppCompatActivity {
     Position position = new Position();
     ArrayList<HashMap<String, String>> row;
     TextView tv_lupa_sandi;
+    String deviceid,firebase_token;
+    private static final int PERMISSION_REQUEST_CODE = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,17 +94,49 @@ public class Masuk extends AppCompatActivity {
         sharedpreferences = getSharedPreferences(my_shared_preferences, Context.MODE_PRIVATE);
         row = positionTable.getAllData();
 
+        ////// check permission READ_PHONE_STATE for deviceid[imei] smartphone
+        if (ContextCompat.checkSelfPermission(Masuk.this, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(Masuk.this, Manifest.permission.READ_PHONE_STATE)) {
+            } else {
+                ActivityCompat.requestPermissions(Masuk.this, new String[]{Manifest.permission.READ_PHONE_STATE}, PERMISSION_REQUEST_CODE);
+            }
+        }
+
         btn_masuk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                getDeviceID();
                 submitForm();
             }
         });
+
         tv_lupa_sandi.setOnClickListener(v -> {
             Intent intent = new Intent(getApplicationContext(), ForgotPassword.class);
             startActivity(intent);
         });
+
+        FirebaseInstanceId.getInstance().getInstanceId()
+                .addOnCompleteListener(task -> {
+                    if (!task.isSuccessful()) {
+                        Log.w("coba", "getInstanceId failed", task.getException());
+                        return;
+                    }
+
+                    // Get new Instance ID token
+                    firebase_token = task.getResult().getToken();
+                    // Log and toast
+                    String msg = getString(R.string.msg_token_fmt, firebase_token);
+                    Log.d("Token", msg);
+                });
+
     }
+
+    public void getDeviceID(){
+        TelephonyManager tm = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
+        if (ActivityCompat.checkSelfPermission(Masuk.this, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) { return; }
+        deviceid = tm.getDeviceId();
+    }
+
     ///// check editext
     private void submitForm() {
         if (!validateEmail()) {
@@ -161,7 +202,8 @@ public class Masuk extends AppCompatActivity {
     public void login_post(){
         progressBar();
         showDialog();
-        Call<JSONResponse> call = mApiInterface.login_post(school_code.toString(), et_username.getText().toString(), et_password.getText().toString());
+        String device_id = "android_"+deviceid;
+        Call<JSONResponse> call = mApiInterface.login_post(school_code.toString(), et_username.getText().toString(), et_password.getText().toString(),firebase_token,device_id);
         call.enqueue(new Callback<JSONResponse>() {
             @Override
             public void onResponse(Call<JSONResponse> call, Response<JSONResponse> response) {
@@ -169,8 +211,8 @@ public class Masuk extends AppCompatActivity {
                 Log.d("Login",response.code()+"");
                 if (response.isSuccessful()) {
                     JSONResponse resource = response.body();
-                    status = resource.status;
-                    code = resource.code;
+                    status  = resource.status;
+                    code    = resource.code;
 
                     if (status == 1 && code.equals("LP_SCS_0001")) {
                         JSONResponse.Login_Data data = resource.login_data;
@@ -196,8 +238,8 @@ public class Masuk extends AppCompatActivity {
                             editor.putString("scyear_id", scyear_id);
                             editor.apply();
                             /// call session
-                            if (row.size() <= 0){
-                                Intent intent = new Intent(Masuk.this, ChangePassword.class);
+                            if (member_type.toString().equals("4")) {
+                                Intent intent = new Intent(Masuk.this, MenuUtama.class);
                                 intent.putExtra(TAG_EMAIL, username);
                                 intent.putExtra(TAG_MEMBER_ID, memberid);
                                 intent.putExtra(TAG_FULLNAME, fullname);
@@ -208,122 +250,19 @@ public class Masuk extends AppCompatActivity {
                                 intent.putExtra("scyear_id", scyear_id);
                                 finish();
                                 startActivity(intent);
-                            }else {
-                                if (member_type.toString().equals("4")) {
-                                    if (Objects.equals(row.get(0).get(Position.KEY_Name), "murid")){
-                                        if (Objects.equals(row.get(0).get(Position.KEY_Status), "2")) {
-                                            Intent intent = new Intent(Masuk.this, MenuUtama.class);
-                                            intent.putExtra(TAG_EMAIL, username);
-                                            intent.putExtra(TAG_MEMBER_ID, memberid);
-                                            intent.putExtra(TAG_FULLNAME, fullname);
-                                            intent.putExtra(TAG_MEMBER_TYPE, member_type);
-                                            intent.putExtra(TAG_SCHOOL_CODE, school_code);
-                                            intent.putExtra(TAG_SCHOLL_NAME, school_name);
-                                            intent.putExtra(TAG_TOKEN, token);
-                                            intent.putExtra("scyear_id", scyear_id);
-                                            finish();
-                                            startActivity(intent);
-                                        }else {
-                                            Intent intent = new Intent(Masuk.this, ChangePassword.class);
-                                            intent.putExtra(TAG_EMAIL, username);
-                                            intent.putExtra(TAG_MEMBER_ID, memberid);
-                                            intent.putExtra(TAG_FULLNAME, fullname);
-                                            intent.putExtra(TAG_MEMBER_TYPE, member_type);
-                                            intent.putExtra(TAG_SCHOOL_CODE, school_code);
-                                            intent.putExtra(TAG_SCHOLL_NAME, school_name);
-                                            intent.putExtra(TAG_TOKEN, token);
-                                            intent.putExtra("scyear_id", scyear_id);
-                                            finish();
-                                            startActivity(intent);
-                                        }
-                                    }else {
-                                        positionTable.updateName(row.get(0).get(Position.KEY_Name), "murid");
-                                        positionTable.updateStatus(row.get(0).get(Position.KEY_Status), "2");
-                                        if (Objects.equals(row.get(0).get(Position.KEY_Status), "2")) {
-                                            Intent intent = new Intent(Masuk.this, MenuUtama.class);
-                                            intent.putExtra(TAG_EMAIL, username);
-                                            intent.putExtra(TAG_MEMBER_ID, memberid);
-                                            intent.putExtra(TAG_FULLNAME, fullname);
-                                            intent.putExtra(TAG_MEMBER_TYPE, member_type);
-                                            intent.putExtra(TAG_SCHOOL_CODE, school_code);
-                                            intent.putExtra(TAG_SCHOLL_NAME, school_name);
-                                            intent.putExtra(TAG_TOKEN, token);
-                                            intent.putExtra("scyear_id", scyear_id);
-                                            finish();
-                                            startActivity(intent);
-                                        }else {
-                                            Intent intent = new Intent(Masuk.this, ChangePassword.class);
-                                            intent.putExtra(TAG_EMAIL, username);
-                                            intent.putExtra(TAG_MEMBER_ID, memberid);
-                                            intent.putExtra(TAG_FULLNAME, fullname);
-                                            intent.putExtra(TAG_MEMBER_TYPE, member_type);
-                                            intent.putExtra(TAG_SCHOOL_CODE, school_code);
-                                            intent.putExtra(TAG_SCHOLL_NAME, school_name);
-                                            intent.putExtra(TAG_TOKEN, token);
-                                            intent.putExtra("scyear_id", scyear_id);
-                                            finish();
-                                            startActivity(intent);
-                                        }
-                                    }
 
-                                } else if (member_type.equals("3")) {
-                                    if (Objects.equals(row.get(0).get(Position.KEY_Name), "guru")){
-                                        if (Objects.equals(row.get(0).get(Position.KEY_Status), "1")) {
-                                            Intent intent = new Intent(Masuk.this, MenuUtamaGuru.class);
-                                            intent.putExtra(TAG_EMAIL, username);
-                                            intent.putExtra(TAG_MEMBER_ID, memberid);
-                                            intent.putExtra(TAG_FULLNAME, fullname);
-                                            intent.putExtra(TAG_MEMBER_TYPE, member_type);
-                                            intent.putExtra(TAG_SCHOOL_CODE, school_code);
-                                            intent.putExtra(TAG_SCHOLL_NAME, school_name);
-                                            intent.putExtra(TAG_TOKEN, token);
-                                            intent.putExtra("scyear_id", scyear_id);
-                                            finish();
-                                            startActivity(intent);
-                                        }else {
-                                            Intent intent = new Intent(Masuk.this, ChangePassword.class);
-                                            intent.putExtra(TAG_EMAIL, username);
-                                            intent.putExtra(TAG_MEMBER_ID, memberid);
-                                            intent.putExtra(TAG_FULLNAME, fullname);
-                                            intent.putExtra(TAG_MEMBER_TYPE, member_type);
-                                            intent.putExtra(TAG_SCHOOL_CODE, school_code);
-                                            intent.putExtra(TAG_SCHOLL_NAME, school_name);
-                                            intent.putExtra(TAG_TOKEN, token);
-                                            intent.putExtra("scyear_id", scyear_id);
-                                            finish();
-                                            startActivity(intent);
-                                        }
-                                    }else {
-                                        positionTable.updateName(row.get(0).get(Position.KEY_Name), "guru");
-                                        positionTable.updateStatus(row.get(0).get(Position.KEY_Status), "1");
-                                        if (Objects.equals(row.get(0).get(Position.KEY_Status), "1")) {
-                                            Intent intent = new Intent(Masuk.this, MenuUtamaGuru.class);
-                                            intent.putExtra(TAG_EMAIL, username);
-                                            intent.putExtra(TAG_MEMBER_ID, memberid);
-                                            intent.putExtra(TAG_FULLNAME, fullname);
-                                            intent.putExtra(TAG_MEMBER_TYPE, member_type);
-                                            intent.putExtra(TAG_SCHOOL_CODE, school_code);
-                                            intent.putExtra(TAG_SCHOLL_NAME, school_name);
-                                            intent.putExtra(TAG_TOKEN, token);
-                                            intent.putExtra("scyear_id", scyear_id);
-                                            finish();
-                                            startActivity(intent);
-                                        }else {
-                                            Intent intent = new Intent(Masuk.this, ChangePassword.class);
-                                            intent.putExtra(TAG_EMAIL, username);
-                                            intent.putExtra(TAG_MEMBER_ID, memberid);
-                                            intent.putExtra(TAG_FULLNAME, fullname);
-                                            intent.putExtra(TAG_MEMBER_TYPE, member_type);
-                                            intent.putExtra(TAG_SCHOOL_CODE, school_code);
-                                            intent.putExtra(TAG_SCHOLL_NAME, school_name);
-                                            intent.putExtra(TAG_TOKEN, token);
-                                            intent.putExtra("scyear_id", scyear_id);
-                                            finish();
-                                            startActivity(intent);
-                                        }
-                                    }
-
-                                }
+                            } else if (member_type.equals("3")) {
+                                Intent intent = new Intent(Masuk.this, MenuUtamaGuru.class);
+                                intent.putExtra(TAG_EMAIL, username);
+                                intent.putExtra(TAG_MEMBER_ID, memberid);
+                                intent.putExtra(TAG_FULLNAME, fullname);
+                                intent.putExtra(TAG_MEMBER_TYPE, member_type);
+                                intent.putExtra(TAG_SCHOOL_CODE, school_code);
+                                intent.putExtra(TAG_SCHOLL_NAME, school_name);
+                                intent.putExtra(TAG_TOKEN, token);
+                                intent.putExtra("scyear_id", scyear_id);
+                                finish();
+                                startActivity(intent);
                             }
 
                         } catch (Exception e) {

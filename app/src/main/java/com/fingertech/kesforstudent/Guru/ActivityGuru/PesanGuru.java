@@ -3,11 +3,14 @@ package com.fingertech.kesforstudent.Guru.ActivityGuru;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.graphics.Color;
 import android.os.Bundle;
-import android.support.v7.widget.CardView;
-import android.support.v7.widget.Toolbar;
+import androidx.cardview.widget.CardView;
+import androidx.appcompat.widget.Toolbar;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.ImageView;
 
 import com.fingertech.kesforstudent.R;
@@ -27,7 +30,7 @@ public class PesanGuru extends AppCompatActivity {
     public static final String TAG_TOKEN = "token";
     public static final String TAG_SCHOOL_CODE = "school_code";
     public static final String my_viewpager_preferences = "my_viewpager_preferences";
-    ImageView iv_close;
+    CardView iv_close;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,13 +51,15 @@ public class PesanGuru extends AppCompatActivity {
         cv_pesanterkirim    = findViewById(R.id.btn_pesan_terkirim);
         iv_close            = findViewById(R.id.iv_close);
 
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        getWindow().setStatusBarColor(Color.parseColor("#FF5AC8F3"));
+
         iv_close.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
             }
         });
-
         cv_kirimpesan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -70,7 +75,6 @@ public class PesanGuru extends AppCompatActivity {
                 intent.putExtra("member_id",memberid);
                 intent.putExtra("scyear_id",scyear_id);
                 startActivity(intent);
-
             }
         });
         cv_pesanterkirim.setOnClickListener(new View.OnClickListener() {

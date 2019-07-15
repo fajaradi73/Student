@@ -1,25 +1,28 @@
 package com.fingertech.kesforstudent.Student.Activity;
 
-import android.app.ProgressDialog;
+import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
-import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
+
+import androidx.cardview.widget.CardView;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.appcompat.widget.Toolbar;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.ethanhua.skeleton.Skeleton;
 import com.ethanhua.skeleton.SkeletonScreen;
@@ -37,7 +40,6 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
@@ -78,6 +80,7 @@ public class KalendarKelas extends AppCompatActivity {
     LinearLayout kalendar;
     SharedPreferences sharedPreferences;
     String hari;
+    String tanggal,jam,deskripsi,judul,guru,warna;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -195,6 +198,8 @@ public class KalendarKelas extends AppCompatActivity {
         calendarAdapter = new CalendarAdapter(calendarModelList);
         calendarAdapter.setOnItemClickListener((view, position) -> {
             if (calendarModelList.get(position).getCalendar_type().equals("-1")) {
+                calendar_id     = calendarModelList.get(position).getCalendar_id();
+                Log.d("ids",calendar_id+"");
                 new MaterialDialog.Builder(KalendarKelas.this)
                         .title(calendarModelList.get(position).getCalendar_title())
                         .message("Seharian")
@@ -205,19 +210,14 @@ public class KalendarKelas extends AppCompatActivity {
                 calendar_time   = calendarModelList.get(position).getCalendar_time();
                 calendar_id     = calendarModelList.get(position).getCalendar_id();
                 calendar_colour = calendarModelList.get(position).getCalendar_color();
-                Intent intent = new Intent(KalendarKelas.this, KalendarDetail.class);
-                intent.putExtra("authorization", authorization);
-                intent.putExtra("school_code", school_code);
-                intent.putExtra("calendar_id", calendar_id);
-                intent.putExtra("warna",calendar_colour);
-                startActivity(intent);
+                openBottomSheet();
             }
         });
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(KalendarKelas.this);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(calendarAdapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+        recyclerView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
         final SkeletonScreen skeletonScreen = Skeleton.bind(recyclerView)
                 .adapter(calendarAdapter)
                 .shimmer(true)
@@ -333,7 +333,7 @@ public class KalendarKelas extends AppCompatActivity {
                         }
                     }
                 }
-                else if (status == 0 &&code.equals("DTS_ERR_0001")){
+                else if (status == 0 && code.equals("DTS_ERR_0001")){
                     kalendar.setVisibility(View.VISIBLE);
                     recyclerView.setVisibility(View.GONE);
                 }
@@ -372,6 +372,79 @@ public class KalendarKelas extends AppCompatActivity {
         SimpleDateFormat calendarDateFormat = new SimpleDateFormat("yyyy-MM-dd",Locale.getDefault());
 
         SimpleDateFormat newDateFormat = new SimpleDateFormat("dd",Locale.getDefault());
+        try {
+            return newDateFormat.format(calendarDateFormat.parse(tanggal));
+        } catch (java.text.ParseException e) {
+            e.printStackTrace();
+            return "";
+        }
+    }
+    private void openBottomSheet(){
+
+        View view = getLayoutInflater().inflate(R.layout.kalendar_detail, null);
+        TextView tv_tanggal       = view.findViewById(R.id.tanggal);
+        TextView tv_deskripsi     = view.findViewById(R.id.deskripsi);
+        TextView tv_judul         = view.findViewById(R.id.judul);
+        TextView tv_guru          = view.findViewById(R.id.dibuat);
+        ImageView iv_background   = view.findViewById(R.id.color_calendar);
+        ImageView iv_calendar     = view.findViewById(R.id.color_calender);
+        ImageView iv_people       = view.findViewById(R.id.color_people);
+        CardView iv_close         = view.findViewById(R.id.iv_close);
+
+        final Dialog mBottomSheetDialog = new Dialog(KalendarKelas.this,
+                R.style.MaterialDialogSheet);
+        mBottomSheetDialog.setContentView(view);
+        mBottomSheetDialog.setCancelable(true);
+        mBottomSheetDialog.getWindow().setLayout(LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.MATCH_PARENT);
+        mBottomSheetDialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        mBottomSheetDialog.getWindow().setStatusBarColor(getResources().getColor(R.color.white));
+        mBottomSheetDialog.getWindow().setGravity(Gravity.BOTTOM);
+        mBottomSheetDialog.show();
+
+        Call<JSONResponse.CalendarDetail> call = mApiInterface.kes_calendar_detail_get(authorization,school_code.toLowerCase(),calendar_id);
+        call.enqueue(new Callback<JSONResponse.CalendarDetail>() {
+            @SuppressLint("SetTextI18n")
+            @Override
+            public void onResponse(Call<JSONResponse.CalendarDetail> call, Response<JSONResponse.CalendarDetail> response) {
+                Log.i("onRespone",response.code()+"");
+                if (response.isSuccessful()) {
+                    JSONResponse.CalendarDetail resource = response.body();
+                    status = resource.status;
+                    code = resource.code;
+                    if (status == 1 && code.equals("DTS_SCS_0001")) {
+                        tanggal     = response.body().getData().getCalendar_date();
+                        jam         = response.body().getData().getTimez();
+                        deskripsi   = response.body().getData().getCalendar_desc();
+                        judul       = response.body().getData().getCalendar_title();
+                        guru        = response.body().getData().getCreated_by();
+                        iv_background.setColorFilter(Color.parseColor(calendar_colour));
+                        tv_tanggal.setText(converttanggal(tanggal)+" . "+jam);
+                        tv_deskripsi.setText(deskripsi);
+                        tv_judul.setText(judul);
+                        tv_guru.setText(guru);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JSONResponse.CalendarDetail> call, Throwable t) {
+                Log.e("calendarEror",t.toString());
+            }
+        });
+
+        iv_close.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mBottomSheetDialog.dismiss();
+            }
+        });
+    }
+
+    String converttanggal(String tanggal) {
+        SimpleDateFormat calendarDateFormat = new SimpleDateFormat("yyyy-MM-dd", new Locale("in", "ID"));
+
+        SimpleDateFormat newDateFormat = new SimpleDateFormat("EEEE, dd MMMM yyyy", new Locale("in", "ID"));
         try {
             return newDateFormat.format(calendarDateFormat.parse(tanggal));
         } catch (java.text.ParseException e) {

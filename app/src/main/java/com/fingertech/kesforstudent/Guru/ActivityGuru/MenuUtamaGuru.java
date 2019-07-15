@@ -6,16 +6,18 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.ColorDrawable;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentStatePagerAdapter;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentStatePagerAdapter;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.viewpager.widget.ViewPager;
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.os.Build;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.appcompat.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -32,6 +34,7 @@ import com.fingertech.kesforstudent.Rest.JSONResponse;
 import com.fingertech.kesforstudent.Masuk;
 import com.fingertech.kesforstudent.Controller.Auth;
 import com.fingertech.kesforstudent.R;
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.gson.JsonElement;
 import com.pixelcan.inkpageindicator.InkPageIndicator;
 import com.shashank.sony.fancygifdialoglib.FancyGifDialog;
@@ -51,21 +54,20 @@ import retrofit2.Response;
 
 public class MenuUtamaGuru extends AppCompatActivity {
 
-    SharedPreferences sharedpreferences,sharedViewpager;
+    SharedPreferences sharedpreferences;
     String picture, Base_anak;
     String authorization, memberid, username, member_type, fullname, school_code,scyear_id,classroom;
     Auth mApiInterface;
     int status;
     String code;
-    public static final String TAG_EMAIL = "email";
-    public static final String TAG_MEMBER_ID = "member_id";
-    public static final String TAG_FULLNAME = "fullname";
-    public static final String TAG_MEMBER_TYPE = "member_type";
-    public static final String TAG_TOKEN = "token";
-    public static final String TAG_SCHOOL_CODE = "school_code";
-    public static final String TAG_CLASS = "classroom_id";
+    public static final String TAG_EMAIL                = "email";
+    public static final String TAG_MEMBER_ID            = "member_id";
+    public static final String TAG_FULLNAME             = "fullname";
+    public static final String TAG_MEMBER_TYPE          = "member_type";
+    public static final String TAG_TOKEN                = "token";
+    public static final String TAG_SCHOOL_CODE          = "school_code";
+    public static final String TAG_CLASS                = "classroom_id";
     public static final String my_viewpager_preferences = "my_viewpager_preferences";
-    Toolbar toolbar;
     ImageView image_guru;
     String nama,nis,email,alamat,gender,tanggal,tempat,agama,no_hp,last_login,texttodolist,exam_type;
     ProgressDialog dialog;
@@ -74,14 +76,6 @@ public class MenuUtamaGuru extends AppCompatActivity {
     InkPageIndicator inkPageIndicator;
     public static int PAGE_COUNT = 2;
     FragmentAdapter fragmentAdapter;
-    TextView tv_hint;
-    RecyclerView rv_kegiatan;
-    JSONArray absenlist,nilailist;
-    JsonElement jsonElement;
-    JSONObject statusobject,dataObject;
-    ModelKegiatan modelKegiatan;
-    List<ModelKegiatan> modelKegiatanList = new ArrayList<>();
-    AdapterKegiatan adapterKegiatan;
     String status_profile;
 
 
@@ -89,15 +83,11 @@ public class MenuUtamaGuru extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.menu__utama__guru);
-        toolbar     = findViewById(R.id.toolbarJadwalGuru);
-
         inkPageIndicator    = findViewById(R.id.indicators);
         viewPager           = findViewById(R.id.PagerUtama);
         image_guru          = findViewById(R.id.image_guru);
         fragmentAdapter     = new FragmentAdapter(getSupportFragmentManager());
         tv_nama_guru        = findViewById(R.id.tv_nama_profil_guru);
-        tv_hint             = findViewById(R.id.hint_kegiatan);
-        rv_kegiatan         = findViewById(R.id.rv_kegiatan);
         mApiInterface       = ApiClient.getClient().create(Auth.class);
 
 
@@ -115,7 +105,6 @@ public class MenuUtamaGuru extends AppCompatActivity {
         viewPager.setAdapter(fragmentAdapter);
         inkPageIndicator.setViewPager(viewPager);
         get_profile();
-
         image_guru.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -157,8 +146,22 @@ public class MenuUtamaGuru extends AppCompatActivity {
 
             }
         });
+        FirebaseInstanceId.getInstance().getInstanceId()
+                .addOnCompleteListener(task -> {
+                    if (!task.isSuccessful()) {
+                        Log.w("coba", "getInstanceId failed", task.getException());
+                        return;
+                    }
+
+                    // Get new Instance ID token
+                    String token = task.getResult().getToken();
+                    // Log and toast
+                    String msg = getString(R.string.msg_token_fmt, token);
+                    Log.d("firebase_Token", msg);
+                });
 
     }
+
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         Log.e("onActivityResult", "requestCode " + requestCode + ", resultCode " + resultCode);
 
@@ -203,7 +206,6 @@ public class MenuUtamaGuru extends AppCompatActivity {
                         } else {
                             Glide.with(MenuUtamaGuru.this).load(Base_anak + picture).into(image_guru);
                         }
-                        dapat_kegiatan();
                     }
                 }
             }
@@ -331,92 +333,6 @@ public class MenuUtamaGuru extends AppCompatActivity {
         public int getItemPosition(Object object) {
             return POSITION_NONE;
         }
-    }
-
-    private void dapat_kegiatan(){
-        progressBar();
-        showDialog();
-        Call<JsonElement> call = mApiInterface.kes_whattodolist_get(authorization,school_code.toLowerCase(),memberid,scyear_id);
-        call.enqueue(new Callback<JsonElement>() {
-            @Override
-            public void onResponse(Call<JsonElement> call, Response<JsonElement> response) {
-                Log.d("sukses",response.code()+"");
-                hideDialog();
-                if (response.isSuccessful()){
-                    jsonElement = response.body();
-                    try {
-                        statusobject    = new JSONObject(String.valueOf(jsonElement.getAsJsonObject()));
-                        code            = statusobject.getString("code");
-                        status          = statusobject.getInt("status");
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                    if (status == 1 && code.equals("DTS_SCS_0001")){
-                        tv_hint.setVisibility(View.GONE);
-                        rv_kegiatan.setVisibility(View.VISIBLE);
-                        try {
-                            dataObject  = statusobject.getJSONObject("data");
-                            absenlist   = dataObject.getJSONArray("absents");
-                            nilailist   = dataObject.getJSONArray("exam_scores");
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                        if (absenlist.length() > 0) {
-                            for (int i = 0; i < 1; i++) {
-                                try {
-                                    texttodolist = absenlist.getJSONObject(i).getString("absent_todo_text");
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                }
-                                modelKegiatan = new ModelKegiatan();
-                                modelKegiatan.setExam_id(null);
-                                modelKegiatan.setText(texttodolist);
-                                modelKegiatanList.add(modelKegiatan);
-                            }
-                        }
-                        if (nilailist.length()>0) {
-                            for (int o = 0; o < 1; o++) {
-                                try {
-                                    texttodolist = nilailist.getJSONObject(o).getString("exam_todo_text");
-                                    exam_type = nilailist.getJSONObject(o).getString("exam_id");
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                }
-                                modelKegiatan = new ModelKegiatan();
-                                modelKegiatan.setText(texttodolist);
-                                modelKegiatan.setExam_id(exam_type);
-                                modelKegiatanList.add(modelKegiatan);
-                            }
-                        }
-                        adapterKegiatan = new AdapterKegiatan(modelKegiatanList);
-                        LinearLayoutManager layoutManager = new LinearLayoutManager(MenuUtamaGuru.this);
-                        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-                        rv_kegiatan.setLayoutManager(layoutManager);
-                        rv_kegiatan.setAdapter(adapterKegiatan);
-                        adapterKegiatan.setOnItemClickListener(new AdapterKegiatan.OnItemClickListener() {
-                            @Override
-                            public void onItemClick(View view, int position) {
-                                if (modelKegiatanList.get(position).getExam_id() == null){
-                                    Intent intent = new Intent(MenuUtamaGuru.this,AbsenMurid.class);
-                                    startActivity(intent);
-                                }else{
-                                    FancyToast.makeText(getApplicationContext(),"Harap untuk menambahkan nilai di website", Toast.LENGTH_LONG,FancyToast.INFO,false).show();
-                                }
-                            }
-                        });
-                    }else if (status == 0 && code.equals("DTS_ERR_0001")){
-                        tv_hint.setVisibility(View.VISIBLE);
-                        rv_kegiatan.setVisibility(View.GONE);
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(Call<JsonElement> call, Throwable t) {
-                Log.e("gagal",t.toString());
-                hideDialog();
-            }
-        });
     }
 
 

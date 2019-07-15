@@ -6,7 +6,7 @@
     android:orientation="vertical"
     tools:ignore="ButtonStyle,ContentDescription">
 
-    <android.support.v7.widget.Toolbar
+    <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar_pdf"
         android:minHeight="?attr/actionBarSize"
         android:background="@color/colorPrimary"

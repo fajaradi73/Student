@@ -3,9 +3,9 @@ package com.fingertech.kesforstudent.CustomView;
 import android.content.Context;
 import android.graphics.PointF;
 import android.hardware.SensorManager;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.LinearSmoothScroller;
-import android.support.v7.widget.RecyclerView;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.LinearSmoothScroller;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewConfiguration;
 
@@ -118,7 +118,7 @@ public class SnappyLinearLayoutManager extends LinearLayoutManager implements Sn
                 && Math.abs(child.getLeft()) > child.getMeasuredWidth() / 2) {
             // Scrolled first view more than halfway offscreen
             return childPos + 1;
-        } else if (getOrientation() == VERTICAL
+        } else if (getOrientation() == RecyclerView.VERTICAL
                 && Math.abs(child.getTop()) > child.getMeasuredWidth() / 2) {
             // Scrolled first view more than halfway offscreen
             return childPos + 1;

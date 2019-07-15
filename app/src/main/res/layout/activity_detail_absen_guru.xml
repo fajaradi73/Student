@@ -2,66 +2,85 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_centerInParent="true"
     android:layout_gravity="center"
+    android:background="@color/white"
     android:layout_height="match_parent">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:id="@+id/iv_close"
+        android:foreground="?android:attr/selectableItemBackground"
+        android:clickable="true"
+        android:focusable="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:elevation="10dp"
+        android:layout_margin="10dp">
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_clear_black"
+            android:padding="5dp"
+            tools:ignore="ContentDescription" />
+    </androidx.cardview.widget.CardView>
+    <LinearLayout
+        android:layout_width="100dp"
+        android:layout_gravity="center"
+        android:layout_alignParentBottom="true"
+        android:layout_centerInParent="true"
+        android:layout_marginBottom="30dp"
+        android:elevation="10dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="15dp"
+        android:orientation="horizontal">
+        <androidx.cardview.widget.CardView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:layout_margin="5dp"
+            app:cardBackgroundColor="@color/colorPrimaryDark"
+            app:cardCornerRadius="5dp"
+            android:id="@+id/btnback"
+            >
+            <ImageView
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_arrow_left" />
+
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="15dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:layout_margin="5dp"
+            app:cardBackgroundColor="@color/colorPrimaryDark"
+            app:cardCornerRadius="5dp"
+            android:id="@+id/btnnext">
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_arrow" />
+
+        </androidx.cardview.widget.CardView>
+    </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:layout_margin="15dp"
-        android:gravity="center"
-        >
+        android:layout_margin="15dp">
 
-      <android.support.v4.view.ViewPager
+      <androidx.viewpager.widget.ViewPager
           android:layout_width="match_parent"
           android:id="@+id/pagerabsen"
+          android:layout_marginTop="40dp"
+          android:layout_gravity="center"
           android:layout_height="450dp">
 
-      </android.support.v4.view.ViewPager>
-
-        <LinearLayout
-            android:layout_width="100dp"
-            android:layout_height="40dp"
-            android:layout_marginTop="15dp"
-            android:orientation="horizontal">
-            <android.support.v7.widget.CardView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:layout_margin="5dp"
-                app:cardBackgroundColor="@color/colorPrimaryDark"
-                app:cardCornerRadius="5dp"
-                android:id="@+id/btnback"
-                >
-                <ImageView
-                    android:layout_width="15dp"
-                    android:layout_height="15dp"
-                    android:layout_gravity="center"
-                    android:src="@drawable/ic_arrow_left"
-                    />
-
-            </android.support.v7.widget.CardView>
-
-            <android.support.v7.widget.CardView
-                android:layout_width="15dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:layout_margin="5dp"
-                app:cardBackgroundColor="@color/colorPrimaryDark"
-                app:cardCornerRadius="5dp"
-                android:id="@+id/btnnext"
-                >
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:src="@drawable/ic_arrow"
-                    />
-
-            </android.support.v7.widget.CardView>
-        </LinearLayout>
+      </androidx.viewpager.widget.ViewPager>
     </LinearLayout>
-
-
-
 </RelativeLayout>

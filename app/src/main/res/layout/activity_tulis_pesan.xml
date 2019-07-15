@@ -9,7 +9,7 @@
     android:focusableInTouchMode="true"
     tools:context=".Guru.ActivityGuru.TulisPesan">
 
-    <android.support.v7.widget.Toolbar
+    <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbarTulisPesan"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -18,14 +18,13 @@
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
 
-    <ScrollView
-        android:id="@+id/scroll_pesan"
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent" >
+        android:layout_height="wrap_content" >
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent">
 
             <com.rey.material.widget.Spinner
                 android:id="@+id/sp_kirim_kepada"
@@ -159,24 +158,21 @@
                 android:layout_marginStart="10dp"
                 android:layout_marginBottom="-10dp"/>
 
-            <android.support.v7.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="40sp"
-                android:layout_margin="5dp">
-
-            <EditText
-                android:id="@+id/kt_judul"
+            <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:theme="@style/TextLabelView"
-                android:background="@android:color/transparent"
-                android:textSize="15dp"
-                android:layout_gravity="start"
-                android:padding="10dp"
-                android:inputType="textMultiLine"
-                android:gravity="start"
-                tools:ignore="Autofill,LabelFor" />
-            </android.support.v7.widget.CardView>
+                android:layout_margin="5dp">
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="10dp"
+                    android:gravity="start"
+                    android:textSize="14sp"
+                    android:id="@+id/kt_judul"
+                    android:background="@drawable/tab_semester"
+                    android:theme="@style/TextLabelView"
+                    tools:ignore="Autofill,LabelFor,TextFields" />
+            </androidx.cardview.widget.CardView>
 
             <TextView
                 android:layout_width="match_parent"
@@ -189,29 +185,24 @@
                 android:layout_marginStart="10dp"
                 android:layout_marginBottom="-10dp"/>
 
-            <android.support.v7.widget.CardView
+            <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_margin="5dp"
-                >
-
-            <EditText
-                android:id="@+id/kt_pesan"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:theme="@style/TextLabelView"
-                android:background="@android:color/transparent"
-                android:textSize="15dp"
-                android:layout_gravity="start"
-                android:padding="10dp"
-                android:inputType="textMultiLine"
-                android:gravity="start"
-                tools:ignore="Autofill,LabelFor" />
-
-        </android.support.v7.widget.CardView>
+                android:layout_margin="5dp">
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="10dp"
+                    android:gravity="start"
+                    android:textSize="14sp"
+                    android:id="@+id/kt_pesan"
+                    android:background="@drawable/tab_semester"
+                    android:theme="@style/TextLabelView"
+                    tools:ignore="Autofill,LabelFor,TextFields" />
+            </androidx.cardview.widget.CardView>
 
         </LinearLayout>
-    </ScrollView>
+    </androidx.core.widget.NestedScrollView>
 
 </LinearLayout>
 

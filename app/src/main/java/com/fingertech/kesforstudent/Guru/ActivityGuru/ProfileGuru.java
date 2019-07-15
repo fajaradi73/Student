@@ -16,14 +16,14 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.support.design.widget.AppBarLayout;
-import android.support.design.widget.CollapsingToolbarLayout;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v4.content.FileProvider;
-import android.support.v7.app.AppCompatActivity;
+import com.google.android.material.appbar.AppBarLayout;
+import com.google.android.material.appbar.CollapsingToolbarLayout;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import androidx.core.content.FileProvider;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.CardView;
-import android.support.v7.widget.Toolbar;
+import androidx.cardview.widget.CardView;
+import androidx.appcompat.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -146,7 +146,7 @@ public class ProfileGuru extends AppCompatActivity {
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
             getWindow().setStatusBarColor(Color.parseColor("#00FFFFFF"));
             getWindow().setFlags(WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_SHORT_EDGES,WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_SHORT_EDGES);
-            getWindow().getDecorView().setSystemUiVisibility( View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
+            getWindow().getDecorView().setSystemUiVisibility( View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
         }
         get_profile();
 
@@ -272,42 +272,44 @@ public class ProfileGuru extends AppCompatActivity {
             public void onResponse(Call<JSONResponse.GetProfile> call, Response<JSONResponse.GetProfile> response) {
                 Log.d("onRespone",response.code()+"");
                 hideDialog();
-                JSONResponse.GetProfile resource = response.body();
-                status = resource.status;
-                if (status == 1){
-                    nama        = response.body().getData().getFullname();
-                    nis         = response.body().getData().getMember_code();
-                    email       = response.body().getData().getEmail();
-                    alamat      = response.body().getData().getAddress();
-                    gender      = response.body().getData().getGender();
-                    tanggal     = response.body().getData().getBirth_date();
-                    tempat      = response.body().getData().getBirth_place();
-                    agama       = response.body().getData().getReligion();
-                    picture     = response.body().getData().getPicture();
-                    no_hp       = response.body().getData().getMobile_phone();
-                    last_login  = response.body().getData().getLast_login();
+                if (response.isSuccessful()) {
+                    JSONResponse.GetProfile resource = response.body();
+                    status = resource.status;
+                    if (status == 1) {
+                        nama = response.body().getData().getFullname();
+                        nis = response.body().getData().getMember_code();
+                        email = response.body().getData().getEmail();
+                        alamat = response.body().getData().getAddress();
+                        gender = response.body().getData().getGender();
+                        tanggal = response.body().getData().getBirth_date();
+                        tempat = response.body().getData().getBirth_place();
+                        agama = response.body().getData().getReligion();
+                        picture = response.body().getData().getPicture();
+                        no_hp = response.body().getData().getMobile_phone();
+                        last_login = response.body().getData().getLast_login();
 
-                    setTitle(nama);
-                    tv_nis.setText(nis);
-                    tv_email.setText(email);
-                    tv_alamat.setText(alamat);
-                    tv_gender.setText(gender);
-                    tv_tanggal.setText(converDate(tanggal));
-                    tv_agama.setText(agama);
-                    tv_no_hp.setText(no_hp);
-                    tv_last_login.setText(last_login);
-                    if (picture.equals("")){
-                        Glide.with(ProfileGuru.this).load(R.drawable.ic_logo).into(imageView);
-                    }else {
-                        Glide.with(ProfileGuru.this).load(Base_anak + picture).into(imageView);
+                        setTitle(nama);
+                        tv_nis.setText(nis);
+                        tv_email.setText(email);
+                        tv_alamat.setText(alamat);
+                        tv_gender.setText(gender);
+                        tv_tanggal.setText(converDate(tanggal));
+                        tv_agama.setText(agama);
+                        tv_no_hp.setText(no_hp);
+                        tv_last_login.setText(last_login);
+                        if (picture.equals("")) {
+                            Glide.with(ProfileGuru.this).load(R.drawable.ic_logo).into(imageView);
+                        } else {
+                            Glide.with(ProfileGuru.this).load(Base_anak + picture).into(imageView);
+                        }
+
                     }
-
                 }
             }
 
             @Override
             public void onFailure(Call<JSONResponse.GetProfile> call, Throwable t) {
-                Log.d("onfailure",t.toString());
+                Log.e("onfailure",t.toString());
                 hideDialog();
             }
         });
@@ -357,8 +359,7 @@ public class ProfileGuru extends AppCompatActivity {
                 editor.putString(TAG_FULLNAME, null);
                 editor.putString(TAG_MEMBER_TYPE, null);
                 editor.putString(TAG_TOKEN, null);
-                editor.commit();
-
+                editor.apply();
                 Intent intent = new Intent(ProfileGuru.this, MainActivity.class);
                 finish();
                 startActivity(intent);
@@ -443,17 +444,17 @@ public class ProfileGuru extends AppCompatActivity {
                 UploadImage(file);
             }
             else if (requestCode == 1) {
-                authorization = data.getStringExtra("authorization");
-                school_code   = data.getStringExtra("school_code");
-                memberid      = data.getStringExtra("member_id");
+                authorization   = data.getStringExtra("authorization");
+                school_code     = data.getStringExtra("school_code");
+                memberid        = data.getStringExtra("member_id");
                 status_profile  = data.getStringExtra("status");
                 get_profile();
             }else if (requestCode == 2){
-                authorization = data.getStringExtra("authorization");
-                school_code   = data.getStringExtra("school_code");
-                memberid      = data.getStringExtra("member_id");
-                mCurrentPhotoPath = data.getStringExtra("picture");
-                status_profile  = data.getStringExtra("status");
+                authorization       = data.getStringExtra("authorization");
+                school_code         = data.getStringExtra("school_code");
+                memberid            = data.getStringExtra("member_id");
+                mCurrentPhotoPath   = data.getStringExtra("picture");
+                status_profile      = data.getStringExtra("status");
                 File file = new File(mCurrentPhotoPath);
                 Glide.with(ProfileGuru.this).load(mCurrentPhotoPath).into(imageView);
                 UploadImage(file);
@@ -562,13 +563,12 @@ public class ProfileGuru extends AppCompatActivity {
     private void UploadImage(File file){
         progressBar();
         showDialog();
-        String pic_type = "png";
-        RequestBody photoBody = RequestBody.create(MediaType.parse("multipart/form-data"), file);
-        MultipartBody.Part photoPart = MultipartBody.Part.createFormData("picture",
-                file.getName(), photoBody);
-        RequestBody ids = RequestBody.create(MediaType.parse("multipart/form-data"), memberid);
-        RequestBody picss = RequestBody.create(MediaType.parse("multipart/form-data"), pic_type);
-        RequestBody schoolcode= RequestBody.create(MediaType.parse("multipart/form-data"), school_code);
+        String pic_type                 = "png";
+        RequestBody photoBody           = RequestBody.create(MediaType.parse("multipart/form-data"), file);
+        MultipartBody.Part photoPart    = MultipartBody.Part.createFormData("picture", file.getName(), photoBody);
+        RequestBody ids                 = RequestBody.create(MediaType.parse("multipart/form-data"), memberid);
+        RequestBody picss               = RequestBody.create(MediaType.parse("multipart/form-data"), pic_type);
+        RequestBody schoolcode          = RequestBody.create(MediaType.parse("multipart/form-data"), school_code);
 
         Call<JSONResponse.UpdatePicture> call = mApiInterface.kes_update_picture_post(authorization.toString(),schoolcode,ids,photoPart,picss);
 

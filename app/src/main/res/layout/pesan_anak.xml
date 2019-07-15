@@ -7,7 +7,7 @@
     tools:context=".Student.Activity.PesanAnak"
     android:orientation="vertical">
 
-    <android.support.v7.widget.Toolbar
+    <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar_pesan_anak"
         android:minHeight="?attr/actionBarSize"
         android:background="@color/colorPrimary"
@@ -20,12 +20,12 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <android.support.v7.widget.RecyclerView
+        <androidx.recyclerview.widget.RecyclerView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/rv_pesan_anak">
 
-        </android.support.v7.widget.RecyclerView>
+        </androidx.recyclerview.widget.RecyclerView>
         <TextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"

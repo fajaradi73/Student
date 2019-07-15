@@ -8,9 +8,11 @@ import android.content.SharedPreferences;
 import android.graphics.PorterDuff;
 import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
+import androidx.appcompat.widget.Toolbar;
+
+import android.text.InputType;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -62,6 +64,7 @@ public class TambahAgenda extends AppCompatActivity {
     String cources_name;
     List<String> listMapel              = new ArrayList<String>();
     private List<JSONResponse.DataMapelEdu> dataMapelEduList;
+    Long times_awal,times_akhir;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -83,11 +86,15 @@ public class TambahAgenda extends AppCompatActivity {
         scyear_id           = sharedpreferences.getString("scyear_id","");
         school_code         = sharedpreferences.getString(TAG_SCHOOL_CODE,"");
         edulevel_id         = sharedpreferences.getString("classroom_id","");
+        times_awal          = sharedpreferences.getLong("times_awal",0);
+        times_akhir         = sharedpreferences.getLong("times_akhir",0);
 
         Calendar mcurrentDate = Calendar.getInstance();
         int mYear = mcurrentDate.get(Calendar.YEAR);
         int mMonth = mcurrentDate.get(Calendar.MONTH);
         int mDay = mcurrentDate.get(Calendar.DAY_OF_MONTH);
+
+        et_keterangan.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
 
         final DatePickerDialog mDatePicker;
 
@@ -96,6 +103,8 @@ public class TambahAgenda extends AppCompatActivity {
                 et_tanggal.setText(convertDate(selectedyear, selectedmonth, selectedday));
             }
         }, mYear, mMonth, mDay);
+        mDatePicker.getDatePicker().setMinDate(times_awal);
+        mDatePicker.getDatePicker().setMaxDate(times_akhir);
 
 
         et_tanggal.setOnClickListener(new View.OnClickListener() {

@@ -5,16 +5,17 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.ColorDrawable;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v7.app.AppCompatActivity;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.appcompat.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.fingertech.kesforstudent.Controller.Auth;
@@ -51,7 +52,7 @@ public class PesanMasukGuru extends AppCompatActivity {
     public static final String my_viewpager_preferences = "my_viewpager_preferences";
 
     RecyclerView rv_pesan;
-    TextView tv_hint;
+    LinearLayout tv_hint;
     Auth mApiInterface;
     private SimpleDateFormat dateFormatForMonth = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
     String code,date_from,date_to,statusku;
@@ -134,14 +135,14 @@ public class PesanMasukGuru extends AppCompatActivity {
                         if (modelPesanGuruList!=null) {
                             modelPesanGuruList.clear();
                             for (JSONResponse.DataPesanGuru dataPesanGuru : response.body().getData()) {
-                                title = dataPesanGuru.getMessage_title();
-                                isipesan = dataPesanGuru.getMessage_cont();
-                                tanggal = dataPesanGuru.getMessage_date();
-                                jam = dataPesanGuru.getDatez();
-                                statusread = dataPesanGuru.getRead_status();
-                                message_id = dataPesanGuru.getMessageid();
-                                pengirim = dataPesanGuru.getSender_name();
-                                reply_message_id = dataPesanGuru.getReply_message_id();
+                                title               = dataPesanGuru.getMessage_title();
+                                isipesan            = dataPesanGuru.getMessage_cont();
+                                tanggal             = dataPesanGuru.getMessage_date();
+                                jam                 = dataPesanGuru.getDatez();
+                                statusread          = dataPesanGuru.getRead_status();
+                                message_id          = dataPesanGuru.getMessageid();
+                                pengirim            = dataPesanGuru.getSender_name();
+                                reply_message_id    = dataPesanGuru.getReply_message_id();
                                 modelPesanGuru = new ModelPesanGuru();
                                 modelPesanGuru.setDari(pengirim);
                                 modelPesanGuru.setJam(jam);
@@ -155,7 +156,7 @@ public class PesanMasukGuru extends AppCompatActivity {
                             }
                             adapterPesanGuru = new AdapterPesanGuru(modelPesanGuruList);
                             LinearLayoutManager layoutManager = new LinearLayoutManager(PesanMasukGuru.this);
-                            layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+                            layoutManager.setOrientation(RecyclerView.VERTICAL);
                             rv_pesan.setLayoutManager(layoutManager);
                             rv_pesan.setAdapter(adapterPesanGuru);
                             adapterPesanGuru.setOnItemClickListener(new AdapterPesanGuru.OnItemClickListener() {

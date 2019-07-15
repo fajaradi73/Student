@@ -8,12 +8,14 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.ColorDrawable;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.LinearSnapHelper;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
+
+import androidx.cardview.widget.CardView;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.LinearSnapHelper;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.appcompat.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -90,7 +92,7 @@ public class DetailRaport extends AppCompatActivity {
     String detail;
     Dialog myDialog;
     List<JSONResponse.DataDetailRapor> detailRaporList;
-    ImageView iv_close;
+    CardView iv_close;
     RecyclerView rv_detail;
     DetailRaporAdapter detailRaporAdapter;
     List<DetailRaporModel> detailRaporModelList = new ArrayList<>();
@@ -119,13 +121,16 @@ public class DetailRaport extends AppCompatActivity {
         sharedPreferences   = getSharedPreferences(MenuUtama.my_viewpager_preferences, Context.MODE_PRIVATE);
         authorization       = getIntent().getStringExtra("authorization");
         school_code         = getIntent().getStringExtra("school_code");
-        student_id          = getIntent().getStringExtra("member_id");
+        student_id          = getIntent().getStringExtra("student_id");
         classroom_id        = getIntent().getStringExtra("classroom_id");
-        posisi = getIntent().getIntExtra("posisi",0);
-        DateFormat df = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
-        date = df.format(Calendar.getInstance().getTime());
+        posisi              = getIntent().getIntExtra("posisi",0);
+        semester_id         = getIntent().getStringExtra("semester_id");
+        DateFormat df       = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+        date                = df.format(Calendar.getInstance().getTime());
 
-        Check_Semester();
+        if (semester_id != null){
+            RaportAnak();
+        }
 
         slidingUpPanelLayout.setFadeOnClickListener(view -> {
             slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
@@ -181,7 +186,6 @@ public class DetailRaport extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "Internet bermasalah", Toast.LENGTH_LONG).show();
 
             }
-
         });
     }
 
@@ -363,7 +367,9 @@ public class DetailRaport extends AppCompatActivity {
                             snapHelper.attachToRecyclerView(rv_mapel);
                             rv_mapel.setLayoutManager(layoutManager);
                             rv_mapel.setAdapter(raporAdapter);
+                            rv_mapel.scrollToPosition(posisi);
                             rv_mapel.smoothScrollToPosition(posisi);
+                            rv_mapel.smoothScrollBy(1, 0);
                             rv_mapel.addOnScrollListener(new RecyclerView.OnScrollListener() {
                                 @Override
                                 public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
@@ -380,7 +386,7 @@ public class DetailRaport extends AppCompatActivity {
                                     currentItem = (currentItem >= raportModelList.size()) ? raportModelList.size() - 1 : currentItem;
                                     try {
                                         cources_id  = detailScore.getJSONObject(currentItem).getString("courcesid");
-                                        type_exam = detailScore.getJSONObject(currentItem).getJSONObject("type_exam");
+                                        type_exam   = detailScore.getJSONObject(currentItem).getJSONObject("type_exam");
                                     } catch (JSONException e) {
                                         e.printStackTrace();
                                     }
@@ -406,7 +412,7 @@ public class DetailRaport extends AppCompatActivity {
                                         }
                                         detailAdapter = new DetailAdapter(detailModelList);
                                         LinearLayoutManager layoutManager1 = new LinearLayoutManager(DetailRaport.this);
-                                        layoutManager1.setOrientation(LinearLayoutManager.VERTICAL);
+                                        layoutManager1.setOrientation(RecyclerView.VERTICAL);
                                         rv_nilai.setLayoutManager(layoutManager1);
                                         rv_nilai.setAdapter(detailAdapter);
                                         detailAdapter.setOnItemClickListener(new DetailAdapter.OnItemClickListener() {
@@ -506,7 +512,7 @@ public class DetailRaport extends AppCompatActivity {
                     JSONResponse.ListDetailRapor listDetailRapor = response.body();
                     status  = listDetailRapor.status;
                     code    = listDetailRapor.code;
-                    if (status == 1 && code.equals("CSD_SCS_0001")){
+                    if (status == 1 && code.equals("CSD_SCS_0001") || status == 1 && code.equals("DTS_SCS_0001")){
                         detailRaporList = response.body().getData();
                         myDialog.setContentView(R.layout.custom_popup);
                         iv_close    = myDialog.findViewById(R.id.btn_close);
@@ -523,7 +529,7 @@ public class DetailRaport extends AppCompatActivity {
                             }
                             detailRaporAdapter = new DetailRaporAdapter(detailRaporModelList);
                             LinearLayoutManager layoutManager = new LinearLayoutManager(DetailRaport.this);
-                            layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+                            layoutManager.setOrientation(RecyclerView.VERTICAL);
                             rv_detail.setLayoutManager(layoutManager);
                             rv_detail.setAdapter(detailRaporAdapter);
                             iv_close.setOnClickListener(new View.OnClickListener() {

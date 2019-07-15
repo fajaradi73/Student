@@ -5,11 +5,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.ColorDrawable;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.appcompat.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -139,7 +139,7 @@ public class KegiatanGuru extends AppCompatActivity {
                         }
                         adapterKegiatan = new AdapterKegiatan(modelKegiatanList);
                         LinearLayoutManager layoutManager = new LinearLayoutManager(KegiatanGuru.this);
-                        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+                        layoutManager.setOrientation(RecyclerView.VERTICAL);
                         rv_kegiatan.setLayoutManager(layoutManager);
                         rv_kegiatan.setAdapter(adapterKegiatan);
                         adapterKegiatan.setOnItemClickListener(new AdapterKegiatan.OnItemClickListener() {

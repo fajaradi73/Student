@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".Guru.ActivityGuru.LihatFile"
     android:orientation="vertical"
     tools:ignore="ContentDescription">
@@ -10,21 +11,41 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/colorPrimary">
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:background="@drawable/ic_clear"
-            android:layout_margin="10dp"
+        <androidx.cardview.widget.CardView
+            android:layout_width="25dp"
+            android:layout_height="25dp"
             android:id="@+id/iv_close"
-            android:layout_gravity="center_vertical"
-             />
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/ic_download"
-            android:layout_margin="10dp"
+            android:layout_gravity="start"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:clickable="true"
+            app:cardBackgroundColor="@color/transparent"
+            app:cardElevation="0dp"
+            android:focusable="true"
+            android:layout_margin="10dp">
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="5dp"
+                android:src="@drawable/ic_clear_white"
+                tools:ignore="ContentDescription" />
+        </androidx.cardview.widget.CardView>
+        <androidx.cardview.widget.CardView
+            android:layout_width="25dp"
+            android:layout_height="25dp"
             android:id="@+id/iv_download"
-            android:layout_gravity="end"/>
+            android:layout_gravity="end"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:clickable="true"
+            app:cardBackgroundColor="@color/transparent"
+            app:cardElevation="0dp"
+            android:focusable="true"
+            android:layout_margin="10dp">
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_download_white"
+                tools:ignore="ContentDescription" />
+        </androidx.cardview.widget.CardView>
     </FrameLayout>
     <LinearLayout
         android:layout_width="match_parent"

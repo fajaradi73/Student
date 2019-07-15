@@ -7,14 +7,14 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.ColorDrawable;
-import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.CardView;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.LinearSnapHelper;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
+import androidx.cardview.widget.CardView;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.LinearSnapHelper;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.appcompat.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -140,6 +140,12 @@ public class AgendaDetail extends AppCompatActivity {
 
         date = df.format(Calendar.getInstance().getTime());
         bulan_sekarang = bulanFormat.format(Calendar.getInstance().getTime());
+        try {
+            bulannow    = dateFormat.parse(bulan_sekarang);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        times_sekarang = bulannow.getTime();
         Calendar calendar = Calendar.getInstance();
         day  = calendar.get(Calendar.DAY_OF_WEEK);
         dapat_Agenda();
@@ -150,9 +156,6 @@ public class AgendaDetail extends AppCompatActivity {
         tahun   = tahunformat.format(Calendar.getInstance().getTime());
         tanggalawalan   = formattanggal.format(Calendar.getInstance().getTime());
         tanggals        = fmt.format(Calendar.getInstance().getTime());
-
-
-
 
         slidingUpPanelLayout.setFadeOnClickListener(view -> {
             slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
@@ -334,7 +337,6 @@ public class AgendaDetail extends AppCompatActivity {
                 Log.i("KES", response.code() + "");
                 if (response.isSuccessful()) {
                     JSONResponse.CheckSemester resource = response.body();
-
                     status = resource.status;
                     code = resource.code;
                     semester_id = response.body().getData();
@@ -383,6 +385,9 @@ public class AgendaDetail extends AppCompatActivity {
 
                             times_awal  = dateawal.getTime();
                             times_akhir = dateakhir.getTime();
+                            if (times_sekarang > times_akhir){
+                                datePicker.updateDate(Integer.parseInt(convertTahun(tanggal_akhir)),Integer.parseInt(convertBulan(tanggal_akhir))-1,Integer.parseInt(convertDate(tanggal_akhir)));
+                            }
                             datePicker.setMaxDate(times_akhir);
                             datePicker.setMinDate(times_awal);
 
@@ -392,6 +397,9 @@ public class AgendaDetail extends AppCompatActivity {
                                 end_date    = response.body().getData().get(i).getEnd_date();
                                 tvsemester.setText("Semester "+semester);
                                 tvtanggalsemester.setText(converttanggal(start_date)+" sampai "+converttanggal(end_date));
+                            }else if (semester_id == null){
+                                tvsemester.setText("");
+                                tvtanggalsemester.setText("Tahun ajaran telah selesai");
                             }
                         }
                     }
@@ -600,6 +608,8 @@ public class AgendaDetail extends AppCompatActivity {
                 editor.putString("school_code",school_code);
                 editor.putString("scyear_id",scyear_id);
                 editor.putString("classroom_id",edulevel_id);
+                editor.putLong("times_awal",times_awal);
+                editor.putLong("times_akhir",times_akhir);
                 editor.apply();
                 Intent intent = new Intent(AgendaDetail.this,TambahAgenda.class);
                 intent.putExtra("authorization",authorization);
@@ -607,6 +617,8 @@ public class AgendaDetail extends AppCompatActivity {
                 intent.putExtra("school_code",school_code);
                 intent.putExtra("scyear_id",scyear_id);
                 intent.putExtra("classroom_id",edulevel_id);
+                intent.putExtra("times_awal",times_awal);
+                intent.putExtra("times_akhir",times_akhir);
                 startActivityForResult(intent,1);
                 return true;
         }
@@ -625,6 +637,36 @@ public class AgendaDetail extends AppCompatActivity {
             if(resultCode == RESULT_OK) {
                 dapat_Agenda();
             }
+        }
+    }
+    String convertBulan(String date) {
+        SimpleDateFormat calendarDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+        SimpleDateFormat newDateFormat = new SimpleDateFormat("MM",Locale.getDefault());
+        try {
+            return newDateFormat.format(calendarDateFormat.parse(date));
+        } catch (java.text.ParseException e) {
+            e.printStackTrace();
+            return "";
+        }
+    }
+    String convertTahun(String date) {
+        SimpleDateFormat calendarDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+        SimpleDateFormat newDateFormat = new SimpleDateFormat("yyyy",Locale.getDefault());
+        try {
+            return newDateFormat.format(calendarDateFormat.parse(date));
+        } catch (java.text.ParseException e) {
+            e.printStackTrace();
+            return "";
+        }
+    }
+    String convertDate(String date) {
+        SimpleDateFormat calendarDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+        SimpleDateFormat newDateFormat = new SimpleDateFormat("dd",Locale.getDefault());
+        try {
+            return newDateFormat.format(calendarDateFormat.parse(date));
+        } catch (java.text.ParseException e) {
+            e.printStackTrace();
+            return "";
         }
     }
 

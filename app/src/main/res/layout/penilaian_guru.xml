@@ -12,13 +12,21 @@
         android:orientation="vertical"
         tools:ignore="UselessParent,ContentDescription">
 
-        <ImageView
+        <androidx.cardview.widget.CardView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:layout_margin="10dp"
-            android:background="@drawable/ic_left_arrow"
+            app:cardCornerRadius="25dp"
             android:id="@+id/iv_close"
-            android:layout_gravity="start"/>
+            android:foreground="?android:attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_left_arrow"
+                android:layout_margin="10dp"/>
+        </androidx.cardview.widget.CardView>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -70,7 +78,7 @@
                 app:spn_dividerHeight="0dp"
                 app:spn_labelTextColor="@color/colorPrimary" />
 
-            <android.support.v7.widget.CardView
+            <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
@@ -86,7 +94,7 @@
                     android:gravity="center"
                     android:layout_margin="10dp"
                     android:textColor="@color/white" />
-            </android.support.v7.widget.CardView>
+            </androidx.cardview.widget.CardView>
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>
