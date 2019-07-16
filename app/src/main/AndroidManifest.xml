@@ -29,6 +29,7 @@
         tools:ignore="AllowBackup,GoogleAppIndexingWarning,InnerclassSeparator"
         tools:targetApi="n">
 
+
         <uses-library
             android:name="org.apache.http.legacy"
             android:required="false" />
@@ -279,8 +280,13 @@
             android:label="Tentang Kami"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".Guru.ActivityGuru.PilihKelas"
+        <activity
+            android:name=".Guru.ActivityGuru.PilihKelas"
             android:label="Kelas"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".Guru.ActivityGuru.TambahTugas"
+            android:label="Tambah Tugas"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"/>
     </application>

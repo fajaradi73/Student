@@ -3,6 +3,7 @@ package com.fingertech.kesforstudent.Guru.ActivityGuru;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.ColorDrawable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,6 +16,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -87,7 +89,33 @@ public class Silabus extends AppCompatActivity {
         listMapel.add("Semua Mata Pelajaran");
         dapat_edulevel();
 
-        final ArrayAdapter<String> adapterRaport = new ArrayAdapter<String>(Silabus.this,R.layout.spinner_full,listEdulevel);
+        final ArrayAdapter<String> adapterRaport = new ArrayAdapter<String>(
+                Silabus.this, R.layout.spinner_full, listEdulevel) {
+            @Override
+            public boolean isEnabled(int position) {
+                if (position == 0) {
+                    // Disable the first item from Spinner
+                    // First item will be use for hint
+                    return false;
+                } else {
+                    return true;
+                }
+            }
+
+            @Override
+            public View getDropDownView(int position, View convertView,
+                                        ViewGroup parent) {
+                View view = super.getDropDownView(position, convertView, parent);
+                TextView tv = (TextView) view;
+                if (position == 0) {
+                    // Set the hint text color gray
+                    tv.setTextColor(Color.GRAY);
+                } else {
+                    tv.setTextColor(Color.BLACK);
+                }
+                return view;
+            }
+        };
         int spinnerPosition = adapterRaport.getPosition("Semua Tingkatan Kelas");
         adapterRaport.setDropDownViewResource(R.layout.simple_spinner_dropdown);
         sp_edulevel.setAdapter(adapterRaport);
@@ -111,7 +139,33 @@ public class Silabus extends AppCompatActivity {
             sp_mapel.setEnabled(false);
         }
 
-        final ArrayAdapter<String> adapterMapel = new ArrayAdapter<String>(Silabus.this,R.layout.spinner_full,listMapel);
+        final ArrayAdapter<String> adapterMapel = new ArrayAdapter<String>(
+                Silabus.this, R.layout.spinner_full, listMapel) {
+            @Override
+            public boolean isEnabled(int position) {
+                if (position == 0) {
+                    // Disable the first item from Spinner
+                    // First item will be use for hint
+                    return false;
+                } else {
+                    return true;
+                }
+            }
+
+            @Override
+            public View getDropDownView(int position, View convertView,
+                                        ViewGroup parent) {
+                View view = super.getDropDownView(position, convertView, parent);
+                TextView tv = (TextView) view;
+                if (position == 0) {
+                    // Set the hint text color gray
+                    tv.setTextColor(Color.GRAY);
+                } else {
+                    tv.setTextColor(Color.BLACK);
+                }
+                return view;
+            }
+        };
         adapterMapel.setDropDownViewResource(R.layout.simple_spinner_dropdown);
         sp_mapel.setAdapter(adapterMapel);
         sp_mapel.setOnItemSelectedListener((parent, view, position, id) ->{
@@ -120,7 +174,6 @@ public class Silabus extends AppCompatActivity {
             }else {
                 cources_id = dataMapelEduList.get(position - 1).getCourcesid();
             }
-            Log.d("position",cources_id+"");
         });
         dapat_silabus();
         btn_go.setOnClickListener(new View.OnClickListener() {

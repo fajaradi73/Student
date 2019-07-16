@@ -11,9 +11,11 @@ import android.os.Bundle;
 import androidx.cardview.widget.CardView;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.fingertech.kesforstudent.Controller.Auth;
@@ -124,7 +126,33 @@ public class PenilaianGuru extends AppCompatActivity {
                         for (int i = 0; i < dataEdulevelList.size(); i++) {
                             edulevel_name = dataEdulevelList.get(i).getClassroom_name();
                             listEdulevel.add(edulevel_name);
-                            final ArrayAdapter<String> adapterRaport = new ArrayAdapter<String>(PenilaianGuru.this, R.layout.spinner_full, listEdulevel);
+                            final ArrayAdapter<String> adapterRaport = new ArrayAdapter<String>(
+                                    PenilaianGuru.this, R.layout.spinner_full, listEdulevel) {
+                                @Override
+                                public boolean isEnabled(int position) {
+                                    if (position == 0) {
+                                        // Disable the first item from Spinner
+                                        // First item will be use for hint
+                                        return false;
+                                    } else {
+                                        return true;
+                                    }
+                                }
+
+                                @Override
+                                public View getDropDownView(int position, View convertView,
+                                                            ViewGroup parent) {
+                                    View view = super.getDropDownView(position, convertView, parent);
+                                    TextView tv = (TextView) view;
+                                    if (position == 0) {
+                                        // Set the hint text color gray
+                                        tv.setTextColor(Color.GRAY);
+                                    } else {
+                                        tv.setTextColor(Color.BLACK);
+                                    }
+                                    return view;
+                                }
+                            };
                             adapterRaport.setDropDownViewResource(R.layout.simple_spinner_dropdown);
                             sp_edulevel.setAdapter(adapterRaport);
                             sp_edulevel.setOnItemSelectedListener((parent, view, position, id) -> {
@@ -170,7 +198,33 @@ public class PenilaianGuru extends AppCompatActivity {
                             for (int i = 0; i < response.body().getData().size(); i++) {
                                 cources_name = response.body().getData().get(i).getCources_name();
                                 listMapel.add(cources_name);
-                                final ArrayAdapter<String> adapterMapel = new ArrayAdapter<String>(PenilaianGuru.this, R.layout.spinner_full, listMapel);
+                                final ArrayAdapter<String> adapterMapel = new ArrayAdapter<String>(
+                                        PenilaianGuru.this, R.layout.spinner_full, listMapel) {
+                                    @Override
+                                    public boolean isEnabled(int position) {
+                                        if (position == 0) {
+                                            // Disable the first item from Spinner
+                                            // First item will be use for hint
+                                            return false;
+                                        } else {
+                                            return true;
+                                        }
+                                    }
+
+                                    @Override
+                                    public View getDropDownView(int position, View convertView,
+                                                                ViewGroup parent) {
+                                        View view = super.getDropDownView(position, convertView, parent);
+                                        TextView tv = (TextView) view;
+                                        if (position == 0) {
+                                            // Set the hint text color gray
+                                            tv.setTextColor(Color.GRAY);
+                                        } else {
+                                            tv.setTextColor(Color.BLACK);
+                                        }
+                                        return view;
+                                    }
+                                };
                                 adapterMapel.setDropDownViewResource(R.layout.simple_spinner_dropdown);
                                 sp_mapel.setAdapter(adapterMapel);
                                 sp_mapel.setOnItemSelectedListener((parent, view, position, id) -> {

@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.ColorDrawable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,8 +15,10 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.fingertech.kesforstudent.Controller.Auth;
@@ -91,6 +94,7 @@ public class AgendaGuru extends AppCompatActivity {
                     editor.putString("scyear_id",scyear_id);
                     editor.putString("cources_id",cources_id);
                     editor.putString("classroom_id", classroom_id);
+                    editor.putString("cources_name",cources_name);
                     editor.apply();
                     Intent intent = new Intent(AgendaGuru.this,AgendaDetail.class);
                     intent.putExtra("authorization",authorization);
@@ -99,6 +103,7 @@ public class AgendaGuru extends AppCompatActivity {
                     intent.putExtra("scyear_id",scyear_id);
                     intent.putExtra("cources_id",cources_id);
                     intent.putExtra("classroom_id", classroom_id);
+                    intent.putExtra("cources_name",cources_name);
                     startActivity(intent);
                 }
             }
@@ -134,7 +139,33 @@ public class AgendaGuru extends AppCompatActivity {
                         for (int i = 0; i < dataEdulevelList.size(); i++) {
                             edulevel_name = dataEdulevelList.get(i).getClassroom_name();
                             listEdulevel.add(edulevel_name);
-                            final ArrayAdapter<String> adapterRaport = new ArrayAdapter<String>(AgendaGuru.this, R.layout.spinner_full, listEdulevel);
+                            final ArrayAdapter<String> adapterRaport = new ArrayAdapter<String>(
+                                    AgendaGuru.this, R.layout.spinner_full, listEdulevel) {
+                                @Override
+                                public boolean isEnabled(int position) {
+                                    if (position == 0) {
+                                        // Disable the first item from Spinner
+                                        // First item will be use for hint
+                                        return false;
+                                    } else {
+                                        return true;
+                                    }
+                                }
+
+                                @Override
+                                public View getDropDownView(int position, View convertView,
+                                                            ViewGroup parent) {
+                                    View view = super.getDropDownView(position, convertView, parent);
+                                    TextView tv = (TextView) view;
+                                    if (position == 0) {
+                                        // Set the hint text color gray
+                                        tv.setTextColor(Color.GRAY);
+                                    } else {
+                                        tv.setTextColor(Color.BLACK);
+                                    }
+                                    return view;
+                                }
+                            };
                             adapterRaport.setDropDownViewResource(R.layout.simple_spinner_dropdown);
                             sp_edulevel.setAdapter(adapterRaport);
                             sp_edulevel.setOnItemSelectedListener((parent, view, position, id) -> {
@@ -180,14 +211,41 @@ public class AgendaGuru extends AppCompatActivity {
                             for (int i = 0; i < response.body().getData().size(); i++) {
                                 cources_name = response.body().getData().get(i).getCources_name();
                                 listMapel.add(cources_name);
-                                final ArrayAdapter<String> adapterMapel = new ArrayAdapter<String>(AgendaGuru.this, R.layout.spinner_full, listMapel);
+                                final ArrayAdapter<String> adapterMapel = new ArrayAdapter<String>(
+                                        AgendaGuru.this, R.layout.spinner_full, listMapel) {
+                                    @Override
+                                    public boolean isEnabled(int position) {
+                                        if (position == 0) {
+                                            // Disable the first item from Spinner
+                                            // First item will be use for hint
+                                            return false;
+                                        } else {
+                                            return true;
+                                        }
+                                    }
+
+                                    @Override
+                                    public View getDropDownView(int position, View convertView,
+                                                                ViewGroup parent) {
+                                        View view = super.getDropDownView(position, convertView, parent);
+                                        TextView tv = (TextView) view;
+                                        if (position == 0) {
+                                            // Set the hint text color gray
+                                            tv.setTextColor(Color.GRAY);
+                                        } else {
+                                            tv.setTextColor(Color.BLACK);
+                                        }
+                                        return view;
+                                    }
+                                };
                                 adapterMapel.setDropDownViewResource(R.layout.simple_spinner_dropdown);
                                 sp_mapel.setAdapter(adapterMapel);
                                 sp_mapel.setOnItemSelectedListener((parent, view, position, id) -> {
                                     if (position == 0) {
                                         cources_id = null;
                                     } else {
-                                        cources_id = dataMapelEduList.get(position - 1).getCourcesid();
+                                        cources_id      = dataMapelEduList.get(position - 1).getCourcesid();
+                                        cources_name    = dataMapelEduList.get(position - 1).getCources_name();
                                     }
                                 });
                             }

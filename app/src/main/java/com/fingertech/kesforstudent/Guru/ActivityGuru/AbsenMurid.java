@@ -288,7 +288,6 @@ public class AbsenMurid extends AppCompatActivity {
 //                                        mBottomSheetDialog.dismiss();
 //                                    }
 //                                });
-//
 //                            }
 //                        });
 

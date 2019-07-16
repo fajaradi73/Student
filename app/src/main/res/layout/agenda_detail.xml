@@ -4,51 +4,70 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Guru.ActivityGuru.AgendaDetail"
-    android:orientation="vertical"
-    android:background="@color/background_color">
+    android:background="#D2F0FC"
+    android:orientation="vertical">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar_agenda"
+        android:minHeight="?attr/actionBarSize"
+        android:background="@color/colorPrimary"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="?attr/colorPrimary"
-        android:minHeight="?attr/actionBarSize"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
+        android:theme="@style/AppTheme.AppBarOverlay" />
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:gravity="center"
+        android:layout_height="match_parent"
         android:orientation="vertical"
-        android:background="#075677">
+        android:layout_gravity="center"
+        android:visibility="gone"
+        android:id="@+id/hint_ajaran"
+        android:gravity="center">
+        <ImageView
+            android:layout_width="300dp"
+            android:layout_height="200dp"
+            android:src="@drawable/ic_no_raport"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="-20dp"
+            android:scaleType="centerCrop"/>
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            tools:text="SEMESTER GENAP"
-            android:id="@+id/tv_semestersagenda"
-            android:textColor="@color/colorPrimary"
-            android:visibility="visible"
-            />
-        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                tools:text="9 Juli 2018"
-                android:id="@+id/tvtanggalagenda"
-                android:textColor="@color/white"
-                android:visibility="visible"
-                />
-        </LinearLayout>
+            android:text="Tahun ajaran telah selesai"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:textSize="20sp"
+            android:visibility="visible"/>
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:id="@+id/ll_agenda"
+        tools:ignore="UselessLeaf"
         android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:background="#075677">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="SEMESTER GENAP"
+                android:id="@+id/tv_semestersagenda"
+                android:textColor="@color/colorPrimary"
+                android:visibility="visible"
+                />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                tools:text="9 Juli 2018"
+                android:id="@+id/tvtanggalagenda"
+                android:textColor="@color/ic_logo_background"
+                android:visibility="visible"
+                />
+        </LinearLayout>
         <com.rbrooks.indefinitepagerindicator.IndefinitePagerIndicator
             android:id="@+id/recyclerview_pager_indicator"
             android:layout_width="wrap_content"
@@ -61,8 +80,7 @@
         <androidx.recyclerview.widget.RecyclerView
             android:layout_width="match_parent"
             android:layout_height="85dp"
-            android:id="@+id/rv_tanggalrv">
-        </androidx.recyclerview.widget.RecyclerView>
+            android:id="@+id/rv_tanggalrv"/>
 
         <androidx.recyclerview.widget.RecyclerView
             android:layout_width="match_parent"
