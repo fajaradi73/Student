@@ -1,10 +1,9 @@
 package com.fingertech.kesforstudent.Guru.ActivityGuru;
 
-import android.app.Dialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.PorterDuff;
-import androidx.viewpager.widget.ViewPager;
+
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
@@ -13,20 +12,16 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.appcompat.widget.Toolbar;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.fingertech.kesforstudent.Controller.Auth;
-import com.fingertech.kesforstudent.Guru.ActivityGuru.AdapterAbsen.AdapterAttidudes;
-import com.fingertech.kesforstudent.Guru.ActivityGuru.AdapterAbsen.AdapterCodeAbsen;
-import com.fingertech.kesforstudent.Guru.ActivityGuru.AdapterAbsen.AdapterDetailAbsen;
+import com.fingertech.kesforstudent.Guru.AdapterGuru.AdapterAbsensi.AdapterCodeAbsen;
 import com.fingertech.kesforstudent.Guru.AdapterGuru.AdapterAbsen;
 import com.fingertech.kesforstudent.Guru.ModelGuru.ModelAbsen.ModelAbsenGuru;
 import com.fingertech.kesforstudent.Guru.ModelGuru.ModelAbsen.ModelArrayAbsen;
@@ -39,11 +34,13 @@ import com.fingertech.kesforstudent.Rest.JSONResponse;
 import com.google.gson.JsonElement;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -66,7 +63,7 @@ public class AbsenMurid extends AppCompatActivity {
     AdapterCodeAbsen adapterCodeAbsen;
     Toolbar toolbar;
     Auth mApiInterface;
-    String  schedule_id,authorization,school_code,member_id,scyear_id, classroom,code,nama,absent,bgcolor,attidude,absentcode,absentwarna;
+    String  schedule_id,authorization,school_code,member_id,scyear_id, classroom,code,nama,id_kelas,bgcolor,attidude,absentcode,absentwarna;
     int status,statusattidude;
     SharedPreferences sharedpreferences;
 
@@ -78,11 +75,10 @@ public class AbsenMurid extends AppCompatActivity {
     public static final String TAG_SCHOOL_CODE  = "school_code";
     public static final String TAG_CLASS_ID     = "classroom_id";
     public static final String TAG_YEAR_ID      = "scyear_id";
-    String nis;
-
-    JsonElement jsonElement;
-    JSONObject jsonObject,dataobject;
-    JSONArray absenObject,absenArray,attendanceArray;
+    String nis,days_name,day;
+    SimpleDateFormat dateFormat = new SimpleDateFormat("EEEE", new Locale("in","ID"));
+    LinearLayout ll_nojadwal,ll_absen,ll_loading;
+    List<JSONResponse.DataAttidude> dataAttidudeList;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -90,6 +86,9 @@ public class AbsenMurid extends AppCompatActivity {
         btninfo             = findViewById(R.id.Cv_informasi);
         rv_absen            = findViewById(R.id.rv_absenguru);
         toolbar             = findViewById(R.id.toolbarAbsen);
+        ll_nojadwal         = findViewById(R.id.no_jadwal);
+        ll_absen            = findViewById(R.id.ll_absen);
+        ll_loading          = findViewById(R.id.spin_kits);
         mApiInterface       = ApiClient.getClient().create(Auth.class);
 
         setSupportActionBar(toolbar);
@@ -102,11 +101,64 @@ public class AbsenMurid extends AppCompatActivity {
         scyear_id           = sharedpreferences.getString(TAG_YEAR_ID,"");
         school_code         = sharedpreferences.getString(TAG_SCHOOL_CODE,"");
         classroom           = sharedpreferences.getString(TAG_CLASS_ID,"");
-        schedule_id = "500";
-        classroom   = "1";
-        GetStudent();
-        Dialog();
 
+        getAtitude();
+        Dialog();
+        day = dateFormat.format(Calendar.getInstance().getTime());
+        getMapel();
+
+    }
+    private void getMapel(){
+
+        Call<JSONResponse.JadwalGuru> call = mApiInterface.kes_class_schedule_teacher_get(authorization,school_code.toLowerCase(),member_id,scyear_id);
+        call.enqueue(new Callback<JSONResponse.JadwalGuru>() {
+            @Override
+            public void onResponse(Call<JSONResponse.JadwalGuru> call, Response<JSONResponse.JadwalGuru> response) {
+                Log.d("MapelSukses",response.code()+"");
+                ll_loading.setVisibility(View.GONE);
+                if (response.isSuccessful()){
+                    if (response.body() != null){
+                        status  = response.body().status;
+                        code    = response.body().code;
+                        if (status == 1 && code.equals("DTS_SCS_0001")){
+                            for (JSONResponse.JadwalDataGuru jadwalDataGuru : response.body().getData().getSchedule_class()){
+                                days_name   = jadwalDataGuru.getDay_name();
+                                if (days_name.equals(day)){
+                                    for (JSONResponse.JadwalKelasGuru jadwalKelasGuru : jadwalDataGuru.getSchedule_class()){
+                                        id_kelas = jadwalKelasGuru.getClassroom_id();
+                                        if (contains(jadwalDataGuru.getSchedule_class(),classroom)) {
+                                            if (id_kelas.equals(classroom)) {
+                                                ll_loading.setVisibility(View.VISIBLE);
+                                                schedule_id = jadwalKelasGuru.getCscheduletimeid();
+                                                GetStudent();
+                                            }
+                                        }else {
+                                            ll_nojadwal.setVisibility(View.VISIBLE);
+                                            ll_absen.setVisibility(View.GONE);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JSONResponse.JadwalGuru> call, Throwable t) {
+                Log.e("eror",t.toString());
+                ll_loading.setVisibility(View.GONE);
+            }
+        });
+    }
+
+    boolean contains(List<JSONResponse.JadwalKelasGuru> list,String id_kelas) {
+        for (JSONResponse.JadwalKelasGuru item : list) {
+            if (item.getClassroom_id().equals(id_kelas)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public void Dialog(){
@@ -132,17 +184,15 @@ public class AbsenMurid extends AppCompatActivity {
                         dialog.dismiss();
                     }
                 });
-
             }
         });
     }
-
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                onBackPressed();
+                finish();
                 return true;
         }
 
@@ -159,28 +209,47 @@ public class AbsenMurid extends AppCompatActivity {
             @Override
             public void onResponse(Call<JSONResponse.Absen> call, Response<JSONResponse.Absen> response) {
                 Log.d("suksesabsent",response.code()+"");
-
+                ll_loading.setVisibility(View.GONE);
                 if (response.isSuccessful()){
                     JSONResponse.Absen resource = response.body();
                     status                      = resource.status;
                     code                        = resource.code;
                     if (status==1 && code.equals("DTS_SCS_0001")){
+                        ll_nojadwal.setVisibility(View.GONE);
+                        ll_absen.setVisibility(View.VISIBLE);
                         modelAbsenGuruList.clear();
                         for (JSONResponse.StudentAbsentItem studentAbsentItem : response.body().getData().getStudentAbsent()){
                             nama    = studentAbsentItem.getFullname();
                             nis     = studentAbsentItem.getMemberCode();
-                            for (JSONResponse.AbsenDetailItem dataAbsen : studentAbsentItem.getAbsenDetail()){
-                                for (JSONResponse.AttendanceDetailItem attendanceDetailItem : dataAbsen.getAttendanceDetail()){
-                                    absentcode  = attendanceDetailItem.getTypeText();
-                                    absentwarna = attendanceDetailItem.getBgcolor();
+                            if (studentAbsentItem.getAbsenDetail() != null) {
+                                for (JSONResponse.AbsenDetailItem dataAbsen : studentAbsentItem.getAbsenDetail()) {
+                                    for (JSONResponse.AttendanceDetailItem attendanceDetailItem : dataAbsen.getAttendanceDetail()) {
+                                        absentcode = attendanceDetailItem.getTypeText();
+                                        absentwarna = attendanceDetailItem.getBgcolor();
+                                        modelArrayAbsen = new ModelArrayAbsen();
+                                        modelArrayAbsen.setCodeabsen(absentcode);
+                                        modelArrayAbsen.setWarna(absentwarna);
+                                        modelArrayAbsen.setNis(nis);
+                                        modelArrayAbsenList.add(modelArrayAbsen);
+                                    }
+                                }
+                            }else {
+                                if (dataAttidudeList != null){
                                     modelArrayAbsen = new ModelArrayAbsen();
-                                    modelArrayAbsen.setCodeabsen(absentcode);
-                                    modelArrayAbsen.setWarna(absentwarna);
+                                    modelArrayAbsen.setCodeabsen("H");
+                                    modelArrayAbsen.setWarna("#B6F883");
                                     modelArrayAbsen.setNis(nis);
                                     modelArrayAbsenList.add(modelArrayAbsen);
+                                    for (JSONResponse.DataAttidude attendanceDetailItem : dataAttidudeList) {
+                                        absentwarna = attendanceDetailItem.getColour_code();
+                                        modelArrayAbsen = new ModelArrayAbsen();
+                                        modelArrayAbsen.setCodeabsen("B");
+                                        modelArrayAbsen.setWarna(absentwarna);
+                                        modelArrayAbsen.setNis(nis);
+                                        modelArrayAbsenList.add(modelArrayAbsen);
+                                    }
                                 }
                             }
-
                             modelAbsenGuru = new ModelAbsenGuru();
                             modelAbsenGuru.setNama(nama);
                             modelAbsenGuru.setNis(nis);
@@ -232,9 +301,33 @@ public class AbsenMurid extends AppCompatActivity {
             @Override
             public void onFailure(Call<JSONResponse.Absen> call, Throwable t) {
                 Log.e("eror_absen",t.toString());
+                ll_loading.setVisibility(View.GONE);
             }
         });
+    }
 
+    private void getAtitude(){
+        Call<JSONResponse.Attidude> call = mApiInterface.kes_attitude_get(authorization,school_code.toLowerCase(),classroom,scyear_id);
+        call.enqueue(new Callback<JSONResponse.Attidude>() {
+            @Override
+            public void onResponse(Call<JSONResponse.Attidude> call, Response<JSONResponse.Attidude> response) {
+                Log.d("attitude_sukses",response.code()+"");
+                if (response.isSuccessful()){
+                    if (response.body() != null){
+                        status  = response.body().statusattidude;
+                        code    = response.body().codeattidude;
+                        if (status == 1 && code.equals("DTS_SCS_0001")){
+                            dataAttidudeList = response.body().getDataattidude();
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JSONResponse.Attidude> call, Throwable t) {
+                Log.e("erorAtitude",t.toString());
+            }
+        });
     }
 
 }

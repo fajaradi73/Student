@@ -1,4 +1,4 @@
-package com.fingertech.kesforstudent.Guru.ActivityGuru.AdapterAbsen;
+package com.fingertech.kesforstudent.Guru.AdapterGuru.AdapterAbsensi;
 
 import android.content.Context;
 import android.content.SharedPreferences;

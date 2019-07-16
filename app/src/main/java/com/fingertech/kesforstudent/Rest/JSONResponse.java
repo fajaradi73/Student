@@ -5281,6 +5281,7 @@ public class JSONResponse {
 
         @SerializedName("schedule_religion_class")
         List<JadwalAgamaKelas> schedule_religion_class;
+
         public List<JadwalDataGuru> getSchedule_class() {
             return schedule_class;
         }
@@ -5366,6 +5367,8 @@ public class JSONResponse {
     public class JadwalAgamaKelas {
     }
     public class JadwalKelasGuru {
+        @SerializedName("cscheduletimeid")
+        String cscheduletimeid;
         @SerializedName("schedule_time")
         String schedule_time;
         @SerializedName("teacher_id")
@@ -5391,6 +5394,14 @@ public class JSONResponse {
 
         public String getSchedule_time() {
             return schedule_time;
+        }
+
+        public String getCscheduletimeid() {
+            return cscheduletimeid;
+        }
+
+        public void setCscheduletimeid(String cscheduletimeid) {
+            this.cscheduletimeid = cscheduletimeid;
         }
 
         public void setSchedule_time(String schedule_time) {

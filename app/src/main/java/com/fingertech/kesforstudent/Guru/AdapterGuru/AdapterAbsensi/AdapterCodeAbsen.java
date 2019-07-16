@@ -1,4 +1,4 @@
-package com.fingertech.kesforstudent.Guru.ActivityGuru.AdapterAbsen;
+package com.fingertech.kesforstudent.Guru.AdapterGuru.AdapterAbsensi;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -11,7 +11,6 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.fingertech.kesforstudent.Guru.ModelGuru.ModelAbsen.ModelArrayAbsen;
 import com.fingertech.kesforstudent.Guru.ModelGuru.ModelAttendance;
 import com.fingertech.kesforstudent.R;
 

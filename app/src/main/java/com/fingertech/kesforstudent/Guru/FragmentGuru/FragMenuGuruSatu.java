@@ -18,6 +18,7 @@ import com.fingertech.kesforstudent.Guru.ActivityGuru.JadwalGuru;
 import com.fingertech.kesforstudent.Guru.ActivityGuru.KegiatanGuru;
 import com.fingertech.kesforstudent.Guru.ActivityGuru.PenilaianGuru;
 import com.fingertech.kesforstudent.Guru.ActivityGuru.PesanGuru;
+import com.fingertech.kesforstudent.Guru.ActivityGuru.PilihKelas;
 import com.fingertech.kesforstudent.R;
 import com.fingertech.kesforstudent.Masuk;
 
@@ -170,7 +171,7 @@ public class FragMenuGuruSatu extends Fragment {
                 editor.putString("scyear_id",scyear_id);
                 editor.putString("classroom_id",classroom);
                 editor.apply();
-                Intent intent = new Intent(getContext(), AbsenMurid.class);
+                Intent intent = new Intent(getContext(), PilihKelas.class);
                 intent.putExtra("authorization",authorization);
                 intent.putExtra("school_code",school_code);
                 intent.putExtra("member_id",memberid);

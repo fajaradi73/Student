@@ -191,7 +191,7 @@ public interface Auth {
                                                      @Query("scyear_id") String scyear_id,
                                                      @Query("classroom_id") String classroom_id,
                                                      @Query ("schedule_time_id") String schedule_time_id);
-    
+
     //absenmurid
     @GET("teachers/kes_get_student")
     Call<JSONResponse.ListMurid>kes_get_student_get(@Header("Authorization") String authorization,
@@ -202,9 +202,9 @@ public interface Auth {
     //DataAttidude
     @GET("teachers/kes_attitude")
     Call<JSONResponse.Attidude>kes_attitude_get(@Header("Authorization") String authorization,
-                                                    @Query("school_code") String school_code,
-                                                    @Query("teacher_id") String teacher_id,
-                                                    @Query("scyear_id") String  scyear_id );
+                                                @Query("school_code") String school_code,
+                                                @Query("teacher_id") String teacher_id,
+                                                @Query("scyear_id") String  scyear_id );
 
     ///// Jadwal Guru
     @GET("teachers/kes_get_edulevel")
