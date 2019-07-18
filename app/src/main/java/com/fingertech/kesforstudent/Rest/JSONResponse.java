@@ -1070,7 +1070,20 @@ public class JSONResponse {
         }
     }
 
+    ////// Response Tambah Silabus
     public class UploadSilabus{
+        @SerializedName("status")
+        public Integer status;
+
+        @SerializedName("code")
+        public String code;
+        @SerializedName("data")
+        public String data;
+
+    }
+
+    ////// Response Tambah Tugas
+    public class UploadTugas{
         @SerializedName("status")
         public Integer status;
 
@@ -7364,6 +7377,638 @@ public class JSONResponse {
 
         public void setData(String data) {
             this.data = data;
+        }
+    }
+
+    //// Response Lesson Review
+    public class LessonReview{
+        @SerializedName("status")
+        public int status;
+
+        @SerializedName("code")
+        public String code;
+
+        @SerializedName("data")
+        public DataLesson data;
+
+        public int getStatus() {
+            return status;
+        }
+
+        public void setStatus(int status) {
+            this.status = status;
+        }
+
+        public String getCode() {
+            return code;
+        }
+
+        public void setCode(String code) {
+            this.code = code;
+        }
+
+        public DataLesson getData() {
+            return data;
+        }
+
+        public void setData(DataLesson data) {
+            this.data = data;
+        }
+    }
+
+    public class DataLesson{
+        @SerializedName("lesson")
+        public List<LessonData> lessonData;
+
+        public List<LessonData> getLessonData() {
+            return lessonData;
+        }
+
+        public void setLessonData(List<LessonData> data) {
+            this.lessonData = data;
+        }
+    }
+
+    public class LessonData{
+        @SerializedName("reviewid")
+        public String reviewid;
+        @SerializedName("cources_id")
+        public String cources_id;
+        @SerializedName("review_date")
+        public String review_date;
+        @SerializedName("review_status")
+        public String review_status;
+        @SerializedName("datez")
+        public String datez;
+        @SerializedName("member_id")
+        public String member_id;
+        @SerializedName("classroom_id")
+        public String classroom_id;
+        @SerializedName("edulevel_id")
+        public String edulevel_id;
+        @SerializedName("review_desc")
+        public String review_desc;
+        @SerializedName("review_title")
+        public String review_title;
+        @SerializedName("review_materi")
+        public String review_materi;
+        @SerializedName("review_file")
+        public String review_file;
+        @SerializedName("courcesreligion_id")
+        public String courcesreligion_id;
+        @SerializedName("courcesid")
+        public String courcesid;
+        @SerializedName("cources_code")
+        public String cources_code;
+        @SerializedName("cources_name")
+        public String cources_name;
+        @SerializedName("cources_publish")
+        public String cources_publish;
+        @SerializedName("cources_type")
+        public String cources_type;
+        @SerializedName("lastupdate")
+        public String lastupdate;
+        @SerializedName("colour_id")
+        public String colour_id;
+        @SerializedName("cources_spec")
+        public String cources_spec;
+        @SerializedName("religion_type")
+        public String religion_type;
+        @SerializedName("cources_kkm")
+        public String cources_kkm;
+        @SerializedName("memberid")
+        public String memberid;
+        @SerializedName("member_code")
+        public String member_code;
+        @SerializedName("fullname")
+        public String fullname;
+        @SerializedName("username")
+        public String username;
+        @SerializedName("password")
+        public String password;
+        @SerializedName("email")
+        public String email;
+        @SerializedName("mobile_phone")
+        public String mobile_phone;
+        @SerializedName("address")
+        public String address;
+        @SerializedName("description")
+        public String description;
+        @SerializedName("picture")
+        public String picture;
+        @SerializedName("publish")
+        public String publish;
+        @SerializedName("lastlogin")
+        public String lastlogin;
+        @SerializedName("member_type")
+        public String member_type;
+        @SerializedName("quez")
+        public String quez;
+        @SerializedName("teacher_count")
+        public String teacher_count;
+        @SerializedName("student_count")
+        public String student_count;
+        @SerializedName("student_quez")
+        public String student_quez;
+        @SerializedName("parent_name")
+        public String parent_name;
+        @SerializedName("parent_email")
+        public String parent_email;
+        @SerializedName("parent_phone")
+        public String parent_phone;
+        @SerializedName("operator_id")
+        public String operator_id;
+        @SerializedName("gender")
+        public String gender;
+        @SerializedName("religion")
+        public String religion;
+        @SerializedName("birth_date")
+        public String birth_date;
+        @SerializedName("principal_stat")
+        public String principal_stat;
+        @SerializedName("birth_place")
+        public String birth_place;
+        @SerializedName("nik")
+        public String nik;
+        @SerializedName("citizen_status")
+        public String citizen_status;
+        @SerializedName("nisn")
+        public String nisn;
+        @SerializedName("scyear_id")
+        public String scyear_id;
+        @SerializedName("cources_stat")
+        public String cources_stat;
+        @SerializedName("member_point")
+        public String member_point;
+        @SerializedName("address_map")
+        public String address_map;
+        @SerializedName("firebase_token")
+        public String firebase_token;
+        @SerializedName("device_id")
+        public String device_id;
+
+        public String getReviewid() {
+            return reviewid;
+        }
+
+        public void setReviewid(String reviewid) {
+            this.reviewid = reviewid;
+        }
+
+        public String getCources_id() {
+            return cources_id;
+        }
+
+        public void setCources_id(String cources_id) {
+            this.cources_id = cources_id;
+        }
+
+        public String getReview_date() {
+            return review_date;
+        }
+
+        public void setReview_date(String review_date) {
+            this.review_date = review_date;
+        }
+
+        public String getReview_status() {
+            return review_status;
+        }
+
+        public void setReview_status(String review_status) {
+            this.review_status = review_status;
+        }
+
+        public String getDatez() {
+            return datez;
+        }
+
+        public void setDatez(String datez) {
+            this.datez = datez;
+        }
+
+        public String getMember_id() {
+            return member_id;
+        }
+
+        public void setMember_id(String member_id) {
+            this.member_id = member_id;
+        }
+
+        public String getClassroom_id() {
+            return classroom_id;
+        }
+
+        public void setClassroom_id(String classroom_id) {
+            this.classroom_id = classroom_id;
+        }
+
+        public String getEdulevel_id() {
+            return edulevel_id;
+        }
+
+        public void setEdulevel_id(String edulevel_id) {
+            this.edulevel_id = edulevel_id;
+        }
+
+        public String getReview_desc() {
+            return review_desc;
+        }
+
+        public void setReview_desc(String review_desc) {
+            this.review_desc = review_desc;
+        }
+
+        public String getReview_title() {
+            return review_title;
+        }
+
+        public void setReview_title(String review_title) {
+            this.review_title = review_title;
+        }
+
+        public String getReview_materi() {
+            return review_materi;
+        }
+
+        public void setReview_materi(String review_materi) {
+            this.review_materi = review_materi;
+        }
+
+        public String getReview_file() {
+            return review_file;
+        }
+
+        public void setReview_file(String review_file) {
+            this.review_file = review_file;
+        }
+
+        public String getCourcesreligion_id() {
+            return courcesreligion_id;
+        }
+
+        public void setCourcesreligion_id(String courcesreligion_id) {
+            this.courcesreligion_id = courcesreligion_id;
+        }
+
+        public String getCourcesid() {
+            return courcesid;
+        }
+
+        public void setCourcesid(String courcesid) {
+            this.courcesid = courcesid;
+        }
+
+        public String getCources_code() {
+            return cources_code;
+        }
+
+        public void setCources_code(String cources_code) {
+            this.cources_code = cources_code;
+        }
+
+        public String getCources_name() {
+            return cources_name;
+        }
+
+        public void setCources_name(String cources_name) {
+            this.cources_name = cources_name;
+        }
+
+        public String getCources_publish() {
+            return cources_publish;
+        }
+
+        public void setCources_publish(String cources_publish) {
+            this.cources_publish = cources_publish;
+        }
+
+        public String getCources_type() {
+            return cources_type;
+        }
+
+        public void setCources_type(String cources_type) {
+            this.cources_type = cources_type;
+        }
+
+        public String getLastupdate() {
+            return lastupdate;
+        }
+
+        public void setLastupdate(String lastupdate) {
+            this.lastupdate = lastupdate;
+        }
+
+        public String getColour_id() {
+            return colour_id;
+        }
+
+        public void setColour_id(String colour_id) {
+            this.colour_id = colour_id;
+        }
+
+        public String getCources_spec() {
+            return cources_spec;
+        }
+
+        public void setCources_spec(String cources_spec) {
+            this.cources_spec = cources_spec;
+        }
+
+        public String getReligion_type() {
+            return religion_type;
+        }
+
+        public void setReligion_type(String religion_type) {
+            this.religion_type = religion_type;
+        }
+
+        public String getCources_kkm() {
+            return cources_kkm;
+        }
+
+        public void setCources_kkm(String cources_kkm) {
+            this.cources_kkm = cources_kkm;
+        }
+
+        public String getMemberid() {
+            return memberid;
+        }
+
+        public void setMemberid(String memberid) {
+            this.memberid = memberid;
+        }
+
+        public String getMember_code() {
+            return member_code;
+        }
+
+        public void setMember_code(String member_code) {
+            this.member_code = member_code;
+        }
+
+        public String getFullname() {
+            return fullname;
+        }
+
+        public void setFullname(String fullname) {
+            this.fullname = fullname;
+        }
+
+        public String getUsername() {
+            return username;
+        }
+
+        public void setUsername(String username) {
+            this.username = username;
+        }
+
+        public String getPassword() {
+            return password;
+        }
+
+        public void setPassword(String password) {
+            this.password = password;
+        }
+
+        public String getEmail() {
+            return email;
+        }
+
+        public void setEmail(String email) {
+            this.email = email;
+        }
+
+        public String getMobile_phone() {
+            return mobile_phone;
+        }
+
+        public void setMobile_phone(String mobile_phone) {
+            this.mobile_phone = mobile_phone;
+        }
+
+        public String getAddress() {
+            return address;
+        }
+
+        public void setAddress(String address) {
+            this.address = address;
+        }
+
+        public String getDescription() {
+            return description;
+        }
+
+        public void setDescription(String description) {
+            this.description = description;
+        }
+
+        public String getPicture() {
+            return picture;
+        }
+
+        public void setPicture(String picture) {
+            this.picture = picture;
+        }
+
+        public String getPublish() {
+            return publish;
+        }
+
+        public void setPublish(String publish) {
+            this.publish = publish;
+        }
+
+        public String getLastlogin() {
+            return lastlogin;
+        }
+
+        public void setLastlogin(String lastlogin) {
+            this.lastlogin = lastlogin;
+        }
+
+        public String getMember_type() {
+            return member_type;
+        }
+
+        public void setMember_type(String member_type) {
+            this.member_type = member_type;
+        }
+
+        public String getQuez() {
+            return quez;
+        }
+
+        public void setQuez(String quez) {
+            this.quez = quez;
+        }
+
+        public String getTeacher_count() {
+            return teacher_count;
+        }
+
+        public void setTeacher_count(String teacher_count) {
+            this.teacher_count = teacher_count;
+        }
+
+        public String getStudent_count() {
+            return student_count;
+        }
+
+        public void setStudent_count(String student_count) {
+            this.student_count = student_count;
+        }
+
+        public String getStudent_quez() {
+            return student_quez;
+        }
+
+        public void setStudent_quez(String student_quez) {
+            this.student_quez = student_quez;
+        }
+
+        public String getParent_name() {
+            return parent_name;
+        }
+
+        public void setParent_name(String parent_name) {
+            this.parent_name = parent_name;
+        }
+
+        public String getParent_email() {
+            return parent_email;
+        }
+
+        public void setParent_email(String parent_email) {
+            this.parent_email = parent_email;
+        }
+
+        public String getParent_phone() {
+            return parent_phone;
+        }
+
+        public void setParent_phone(String parent_phone) {
+            this.parent_phone = parent_phone;
+        }
+
+        public String getOperator_id() {
+            return operator_id;
+        }
+
+        public void setOperator_id(String operator_id) {
+            this.operator_id = operator_id;
+        }
+
+        public String getGender() {
+            return gender;
+        }
+
+        public void setGender(String gender) {
+            this.gender = gender;
+        }
+
+        public String getReligion() {
+            return religion;
+        }
+
+        public void setReligion(String religion) {
+            this.religion = religion;
+        }
+
+        public String getBirth_date() {
+            return birth_date;
+        }
+
+        public void setBirth_date(String birth_date) {
+            this.birth_date = birth_date;
+        }
+
+        public String getPrincipal_stat() {
+            return principal_stat;
+        }
+
+        public void setPrincipal_stat(String principal_stat) {
+            this.principal_stat = principal_stat;
+        }
+
+        public String getBirth_place() {
+            return birth_place;
+        }
+
+        public void setBirth_place(String birth_place) {
+            this.birth_place = birth_place;
+        }
+
+        public String getNik() {
+            return nik;
+        }
+
+        public void setNik(String nik) {
+            this.nik = nik;
+        }
+
+        public String getCitizen_status() {
+            return citizen_status;
+        }
+
+        public void setCitizen_status(String citizen_status) {
+            this.citizen_status = citizen_status;
+        }
+
+        public String getNisn() {
+            return nisn;
+        }
+
+        public void setNisn(String nisn) {
+            this.nisn = nisn;
+        }
+
+        public String getScyear_id() {
+            return scyear_id;
+        }
+
+        public void setScyear_id(String scyear_id) {
+            this.scyear_id = scyear_id;
+        }
+
+        public String getCources_stat() {
+            return cources_stat;
+        }
+
+        public void setCources_stat(String cources_stat) {
+            this.cources_stat = cources_stat;
+        }
+
+        public String getMember_point() {
+            return member_point;
+        }
+
+        public void setMember_point(String member_point) {
+            this.member_point = member_point;
+        }
+
+        public String getAddress_map() {
+            return address_map;
+        }
+
+        public void setAddress_map(String address_map) {
+            this.address_map = address_map;
+        }
+
+        public String getFirebase_token() {
+            return firebase_token;
+        }
+
+        public void setFirebase_token(String firebase_token) {
+            this.firebase_token = firebase_token;
+        }
+
+        public String getDevice_id() {
+            return device_id;
+        }
+
+        public void setDevice_id(String device_id) {
+            this.device_id = device_id;
         }
     }
 }

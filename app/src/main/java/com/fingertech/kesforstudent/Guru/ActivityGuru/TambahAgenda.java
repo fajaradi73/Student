@@ -227,6 +227,7 @@ public class TambahAgenda extends AppCompatActivity {
                     code    = resource.code;
                     if (status == 1 && code.equals("DTS_SCS_0001")){
                         Intent intent = new Intent(TambahAgenda.this,AgendaDetail.class);
+                        intent.putExtra("date",convertTanggal(et_tanggal.getText().toString()));
                         setResult(RESULT_OK,intent);
                         FancyToast.makeText(getApplicationContext(),"Sukses Menyimpan", Toast.LENGTH_LONG,FancyToast.SUCCESS,false).show();
                         finish();

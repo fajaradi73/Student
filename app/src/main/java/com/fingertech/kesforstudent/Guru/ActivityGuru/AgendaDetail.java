@@ -600,7 +600,7 @@ public class AgendaDetail extends AppCompatActivity {
 
     private void datatanggal(int tahun,int bulan){
         Calendar cal = Calendar.getInstance();
-        cal.set(tahun,bulan-1, 1);
+        cal.set(tahun,bulan - 1, 1);
         int daysInMonth = cal.getActualMaximum(Calendar.DAY_OF_MONTH);
         if (agendaModelTanggalList!=null) {
             agendaModelTanggalList.clear();
@@ -687,12 +687,45 @@ public class AgendaDetail extends AppCompatActivity {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         Log.d("request_code",requestCode+"/"+resultCode);
-        if (requestCode == 1) {
+        if (requestCode == 1 || requestCode == 2) {
             if(resultCode == RESULT_OK) {
-                dapat_Agenda();
+                ll_agenda.setVisibility(View.VISIBLE);
+                no_ajaran.setVisibility(View.GONE);
+                String agenda_date = data.getStringExtra("date");
+                Calendar cal = Calendar.getInstance();
+                try {
+                    cal.setTime(formattanggal.parse(agenda_date));
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                bulan_sekarang = bulanFormat.format(cal.getTime());
+                try {
+                    bulanpicker    = dateFormat.parse(bulan_sekarang);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                times_picker   = bulanpicker.getTime();
+                day     = cal.get(Calendar.DAY_OF_WEEK);
+                tanggal = tanggalformat.format(cal.getTime());
+                bulan   = bulanformat.format(cal.getTime());
+                tahun   = tahunformat.format(cal.getTime());
+                tanggals        = fmt.format(cal.getTime());
+                if (times_sekarang.equals(times_picker)){
+                    rvtanggal.smoothScrollToPosition(Integer.parseInt(tanggal) - 1);
+                }else {
+                    datatanggal(Integer.parseInt(tahun),Integer.parseInt(bulan));
+                    if (Integer.parseInt(tanggal)-5 < 0){
+                        rvtanggal.smoothScrollToPosition(0);
+                    }else {
+                        rvtanggal.smoothScrollToPosition(Integer.parseInt(tanggal)-5);
+                    }
+                    bulan_sekarang = convertDate(Integer.parseInt(tahun),Integer.parseInt(bulan)-1);
+                    dapat_Agenda();
+                }
             }
         }
     }
+
     String convertBulan(String date) {
         SimpleDateFormat calendarDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
         SimpleDateFormat newDateFormat = new SimpleDateFormat("MM",Locale.getDefault());

@@ -265,6 +265,20 @@ public interface Auth {
                                                           @Part("title") RequestBody title,
                                                           @Part("scyear_id") RequestBody scyear_id);
 
+    ///// Tambah Tugas
+    @Multipart
+    @POST("teachers/kes_add_exercises")
+    Call<JSONResponse.UploadTugas> kes_add_exercises_post(@Header("Authorization") String authorization,
+                                                            @Part ("school_code") RequestBody school_code,
+                                                            @Part("teacher_id") RequestBody teacher_id,
+                                                            @Part("classroom_id") RequestBody classroom_id,
+                                                            @Part ("cources_id") RequestBody cources_id,
+                                                            @Part("exam_date") RequestBody exam_date,
+                                                            @Part MultipartBody.Part filename,
+                                                            @Part("exam_type") RequestBody exam_type,
+                                                            @Part("exam_desc") RequestBody exam_desc,
+                                                            @Part("scyear_id") RequestBody scyear_id);
+
     ///// Kalendar Guru
     @GET("teachers/kes_dashboard_calendar")
     Call<JSONResponse.DashboardCalendar>kes_dashboard_get(@Header("Authorization") String authorization,
@@ -397,4 +411,14 @@ public interface Auth {
                                                       @Field("cources_id") String cources_id,
                                                       @Field("message_title") String message_title,
                                                       @Field("message") String message);
+
+    ////// Lesson Review
+    @GET("teachers/kes_dashboard_lesson")
+    Call<JSONResponse.LessonReview>kes_lesson_review_get(@Header("Authorization") String authorization,
+                                                      @Query("school_code") String school_code,
+                                                      @Query("teacher_id") String teacher_id,
+                                                      @Query("cources_id") String cources_id,
+                                                      @Query("classroom_id") String classroom_id,
+                                                      @Query("scyear_id") String scyear_id);
+
 }

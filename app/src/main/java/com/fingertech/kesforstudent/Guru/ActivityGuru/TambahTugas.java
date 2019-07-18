@@ -1,5 +1,6 @@
 package com.fingertech.kesforstudent.Guru.ActivityGuru;
 
+import android.Manifest;
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -10,8 +11,11 @@ import android.graphics.PorterDuff;
 import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.net.Uri;
 import android.os.Bundle;
 import androidx.appcompat.widget.Toolbar;
+import androidx.cardview.widget.CardView;
 
 import android.text.InputType;
 import android.util.Log;
@@ -33,15 +37,22 @@ import com.fingertech.kesforstudent.R;
 import com.fingertech.kesforstudent.Rest.ApiClient;
 import com.fingertech.kesforstudent.Rest.JSONResponse;
 import com.fingertech.kesforstudent.Masuk;
+import com.fingertech.kesforstudent.Util.FileUtils;
+import com.gun0912.tedpermission.PermissionListener;
+import com.gun0912.tedpermission.TedPermission;
 import com.rey.material.widget.Spinner;
 import com.shashank.sony.fancytoastlib.FancyToast;
 
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -53,7 +64,7 @@ public class TambahTugas extends AppCompatActivity {
     Auth mApiInterface;
     Spinner sp_exam;
     Button btn_simpan;
-    String authorization,school_code,member_id,scyear_id,edulevel_id,semester_id,type_id,exam_name,code;
+    String authorization,school_code,member_id,scyear_id,edulevel_id,semester_id,type_id,exam_name,code,files;
     public static final String TAG_EMAIL        = "email";
     public static final String TAG_MEMBER_ID    = "member_id";
     public static final String TAG_FULLNAME     = "fullname";
@@ -68,7 +79,14 @@ public class TambahTugas extends AppCompatActivity {
     private List<JSONResponse.DataExam> dataExamList;
     Long times_awal,times_akhir;
     String cources_id,cources_name;
-    TextView tv_mapel;
+    TextView tv_mapel,tv_file;
+    CardView btn_upload;
+    File file;
+    public final int SELECT_FILE = 12;
+    Uri uri;
+    RequestBody fileBody;
+    MultipartBody.Part photoPart;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -79,6 +97,8 @@ public class TambahTugas extends AppCompatActivity {
         tv_mapel        = findViewById(R.id.tv_mapel);
         sp_exam         = findViewById(R.id.sp_mapel);
         btn_simpan      = findViewById(R.id.btn_simpan);
+        btn_upload      = findViewById(R.id.btn_upload);
+        tv_file         = findViewById(R.id.tv_file);
         mApiInterface   = ApiClient.getClient().create(Auth.class);
 
         setSupportActionBar(toolbar);
@@ -129,6 +149,30 @@ public class TambahTugas extends AppCompatActivity {
             }
         });
         dapat_tugas();
+        btn_upload.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                PermissionListener permissionlistener = new PermissionListener() {
+                    @Override
+                    public void onPermissionGranted() {
+                        Intent intent = new Intent();
+                        intent.setType("documents/*");
+                        intent.setAction(Intent.ACTION_GET_CONTENT);
+                        startActivityForResult(Intent.createChooser(intent, "Select File"), SELECT_FILE);
+                    }
+                    @Override
+                    public void onPermissionDenied(List<String> deniedPermissions) {
+                        Toast.makeText(TambahTugas.this, "Permission Denied\n" + deniedPermissions.toString(), Toast.LENGTH_SHORT).show();
+                    }
+                };
+                //check all needed permissions together
+                TedPermission.with(TambahTugas.this)
+                        .setPermissionListener(permissionlistener)
+                        .setDeniedMessage("Jika Anda menolak izin, Anda tidak dapat menggunakan layanan ini\n\nSilakan aktifkan izin di [Pengaturan] > [Izin]")
+                        .setPermissions(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                        .check();
+            }
+        });
 
         btn_simpan.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -144,6 +188,17 @@ public class TambahTugas extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == RESULT_OK) {
+            if (requestCode == SELECT_FILE && data != null && data.getData() != null) {
+                uri = data.getData();
+                file = FileUtils.getFile(TambahTugas.this, uri);
+                files   = String.valueOf(file);
+                tv_file.setText(files);
+            }
+        }
     }
 
     //Konversi tanggal dari date dialog ke format yang kita inginkan
@@ -256,6 +311,7 @@ public class TambahTugas extends AppCompatActivity {
                                 }
                                 else if (position > 0) {
                                     type_id = dataExamList.get(position - 1).getTypeid();
+                                    exam_name = dataExamList.get(position - 1).getType_name();
                                 }
                             }
                         });
@@ -289,7 +345,54 @@ public class TambahTugas extends AppCompatActivity {
     private void add_agenda(){
         progressBar();
         showDialog();
+        if (file != null) {
+            fileBody = RequestBody.create(MediaType.parse("multipart/form-data"), file);
+            photoPart = MultipartBody.Part.createFormData("filename",
+                    file.getName(), fileBody);
+        }else {
+            fileBody = RequestBody.create(MediaType.parse("multipart/form-data"), "");
+            photoPart = MultipartBody.Part.createFormData("filename",
+                    "", fileBody);
+        }
 
+        RequestBody memberid    = RequestBody.create(MediaType.parse("multipart/form-data"), member_id);
+        RequestBody courcesid   = RequestBody.create(MediaType.parse("multipart/form-data"), cources_id);
+        RequestBody schoolcode  = RequestBody.create(MediaType.parse("multipart/form-data"), school_code);
+        RequestBody scyearid    = RequestBody.create(MediaType.parse("multipart/form-data"), scyear_id);
+        RequestBody exam_type   = RequestBody.create(MediaType.parse("multipart/form-data"), type_id);
+        RequestBody clasroom_id = RequestBody.create(MediaType.parse("multipart/form-data"), edulevel_id);
+        RequestBody exam_date   = RequestBody.create(MediaType.parse("multipart/form-data"), convertTanggal(et_tanggal.getText().toString()));
+        RequestBody examdesc    = RequestBody.create(MediaType.parse("multipart/form-data"), et_keterangan.getText().toString());
+
+        Call<JSONResponse.UploadTugas> call = mApiInterface.kes_add_exercises_post(authorization.toString(),schoolcode,memberid,clasroom_id,courcesid,exam_date,photoPart,exam_type,examdesc,scyearid);
+        call.enqueue(new Callback<JSONResponse.UploadTugas>() {
+            @Override
+            public void onResponse(retrofit2.Call<JSONResponse.UploadTugas> call, final Response<JSONResponse.UploadTugas> response) {
+                hideDialog();
+                Log.i("Upload", response.code() + "");
+                if (response.isSuccessful()) {
+                    JSONResponse.UploadTugas resource = response.body();
+                    status  = resource.status;
+                    code    = resource.code;
+                    if (status == 1&& code.equals("DTS_SCS_0001")) {
+                        Intent intent = new Intent(TambahTugas.this,AgendaDetail.class);
+                        intent.putExtra("date",convertTanggal(et_tanggal.getText().toString()));
+                        setResult(RESULT_OK,intent);
+                        FancyToast.makeText(getApplicationContext(),"Sukses Menyimpan", Toast.LENGTH_LONG,FancyToast.SUCCESS,false).show();
+                        finish();
+                    }
+                }else {
+                    FancyToast.makeText(getApplicationContext(), "File gagal diupload", FancyToast.LENGTH_LONG, FancyToast.ERROR, false).show();
+                }
+            }
+
+            @Override
+            public void onFailure(retrofit2.Call<JSONResponse.UploadTugas> call, Throwable t) {
+                hideDialog();
+                Log.d("onFailure", t.toString());
+            }
+
+        });
     }
 }
 

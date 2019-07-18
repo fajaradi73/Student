@@ -14,6 +14,7 @@ public class ApiClient {
     public static final String BASE_URL     = "http://genpin.co.id/ztapi2/";
     public static final String BASE_IMAGE   = "http://genpin.co.id/schoolc/assets/images/profile/mm_";
     public static final String BASE_SILABUS = "http://genpin.co.id/schoolc/assets/images/silabus/";
+    public static final String BASE_LESSON  = "http://genpin.co.id/schoolc/assets/images/lesson/";
     private static Retrofit retrofit = null;
 
     public static Retrofit getClient() {
