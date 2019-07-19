@@ -11,7 +11,15 @@ public class JadwalJumat {
     public String getCources_color() {
         return cources_color;
     }
+    public String cources_id;
 
+    public String getCources_id() {
+        return cources_id;
+    }
+
+    public void setCources_id(String cources_id) {
+        this.cources_id = cources_id;
+    }
     public void setCources_color(String cources_color) {
         this.cources_color = cources_color;
     }

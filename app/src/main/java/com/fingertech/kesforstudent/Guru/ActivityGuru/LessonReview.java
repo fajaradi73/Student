@@ -6,7 +6,6 @@ import androidx.core.app.NotificationManagerCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.app.NotificationManager;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -16,7 +15,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.developer.kalert.KAlertDialog;
@@ -86,7 +84,7 @@ public class LessonReview extends AppCompatActivity {
     private void get_lesson(){
         progressBar();
         showDialog();
-        Call<JSONResponse.LessonReview> call = mApiInterface.kes_lesson_review_get(authorization,school_code.toLowerCase(),teacher_id,cources_id,classroom_id,scyear_id);
+        Call<JSONResponse.LessonReview> call = mApiInterface.kes_dashboard_lesson_get(authorization,school_code.toLowerCase(),teacher_id,cources_id,classroom_id,scyear_id);
         call.enqueue(new Callback<JSONResponse.LessonReview>() {
             @Override
             public void onResponse(Call<JSONResponse.LessonReview> call, Response<JSONResponse.LessonReview> response) {
@@ -97,17 +95,17 @@ public class LessonReview extends AppCompatActivity {
                         status  = response.body().status;
                         code    = response.body().code;
                         if (status == 1 && code.equals("DTS_SCS_0001")) {
-                            if (response.body().getData().getLessonData().size() > 0) {
+                            if (response.body().getData().getListLessonData().size() > 0) {
                                 tv_no_lesson.setVisibility(View.GONE);
                                 rv_lesson.setVisibility(View.VISIBLE);
-                                for (JSONResponse.LessonData lessonData : response.body().getData().getLessonData()) {
-                                    tanggal     = lessonData.getReview_date();
-                                    nama        = lessonData.getFullname();
-                                    mapel       = lessonData.getCources_name();
-                                    title       = lessonData.getReview_title();
-                                    lampiran    = lessonData.getReview_file();
-                                    desc        = lessonData.getReview_desc();
-                                    materi      = lessonData.getReview_materi();
+                                for (JSONResponse.ListLesson listLesson : response.body().getData().getListLessonData()) {
+                                    tanggal     = listLesson.getReview_date();
+                                    nama        = listLesson.getFullname();
+                                    mapel       = listLesson.getCources_name();
+                                    title       = listLesson.getReview_title();
+                                    lampiran    = listLesson.getReview_file();
+                                    desc        = listLesson.getReview_desc();
+                                    materi      = listLesson.getReview_materi();
                                     modelLesson = new ModelLesson();
                                     modelLesson.setTanggal(convertTanggal(tanggal));
                                     modelLesson.setNama(nama);

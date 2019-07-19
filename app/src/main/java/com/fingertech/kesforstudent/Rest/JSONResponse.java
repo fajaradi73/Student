@@ -13,7 +13,6 @@ public class JSONResponse {
     @SerializedName("code")
     public String code;
 
-
     @SerializedName("token")
     public String token;
 
@@ -63,6 +62,7 @@ public class JSONResponse {
             this.token = token;
         }
     }
+    ////--------------------------------///
 
     //////// Response Search School
     public class School{
@@ -819,6 +819,7 @@ public class JSONResponse {
         }
 
     }
+    ////--------------------------------///
 
     /////// Response Ganti Password
     public class ChangePassword{
@@ -855,6 +856,7 @@ public class JSONResponse {
             this.data = data;
         }
     }
+    ////--------------------------------///
 
     ////// Response GetProfile
     public class GetProfile{
@@ -1046,6 +1048,7 @@ public class JSONResponse {
             this.birth_place = birth_place;
         }
     }
+    ////--------------------------------///
 
     ////// Response Ganti Foto
     public class UpdatePicture{
@@ -1069,6 +1072,7 @@ public class JSONResponse {
             return path;
         }
     }
+    ////--------------------------------///
 
     ////// Response Tambah Silabus
     public class UploadSilabus{
@@ -1081,6 +1085,7 @@ public class JSONResponse {
         public String data;
 
     }
+    ////--------------------------------///
 
     ////// Response Tambah Tugas
     public class UploadTugas{
@@ -1093,6 +1098,7 @@ public class JSONResponse {
         public String data;
 
     }
+    ////--------------------------------///
 
     //// dapat jadwal pelajaran
     public class JadwalPelajaran{
@@ -1357,6 +1363,7 @@ public class JSONResponse {
             return timezFinish;
         }
     }
+    ////--------------------------------///
 
     ////// Response Jadwal Ujian
     public class  JadwalUjian{
@@ -1621,6 +1628,7 @@ public class JSONResponse {
             this.courcesreligion_id = courcesreligion_id;
         }
     }
+    ////--------------------------------///
 
     //absen
     public class ListMurid{
@@ -1695,6 +1703,8 @@ public class JSONResponse {
 
 
     }
+    ////--------------------------------///
+
     //attidude
     public class Attidude{
         @SerializedName("status")
@@ -1835,8 +1845,9 @@ public class JSONResponse {
             this.attitude_grade_to = attitude_grade_to;
         }
     }
+    ////--------------------------------///
 
-    //    revisiabsen
+    //revisiabsen
     public class Absen{
 
         @SerializedName("code")
@@ -1872,7 +1883,6 @@ public class JSONResponse {
             this.status = status;
         }
     }
-
     public class DataAbsen{
 
 
@@ -1909,7 +1919,6 @@ public class JSONResponse {
             this.infodetails = infodetails;
         }
     }
-
     public class AttitudesItem{
         @SerializedName("colour_code")
         public String colourCode;
@@ -1955,7 +1964,6 @@ public class JSONResponse {
             this.attitudeid = attitudeid;
         }
     }
-
     public class GradeItem{
 
         @SerializedName("attitude_grade_code")
@@ -2013,8 +2021,6 @@ public class JSONResponse {
             this.attitudeGradeTo = attitudeGradeTo;
         }
     }
-
-
     public class Infodetails{
         @SerializedName("classroom_id")
         public String classroomId;
@@ -2104,7 +2110,6 @@ public class JSONResponse {
             this.timezFinish = timezFinish;
         }
     }
-
     public class StudentAbsentItem{
         @SerializedName("absen_detail")
         public List<AbsenDetailItem> absenDetail;
@@ -2172,7 +2177,6 @@ public class JSONResponse {
             this.memberid = memberid;
         }
     }
-
     public class AbsenDetailItem{
         @SerializedName("attendanceDetail")
         public List<AttendanceDetailItem> attendanceDetail;
@@ -2218,7 +2222,6 @@ public class JSONResponse {
             this.attendanceid = attendanceid;
         }
     }
-
     public class AttendanceDetailItem{
         @SerializedName("attendancedetail_absentType")
         public String attendancedetailAbsentType;
@@ -2286,6 +2289,7 @@ public class JSONResponse {
             this.bgcolor = bgcolor;
         }
     }
+    ////--------------------------------///
 
     ///// Response Check Semester
     public class CheckSemester{
@@ -2322,6 +2326,7 @@ public class JSONResponse {
             this.data = data;
         }
     }
+    ////--------------------------------///
 
     ///// Response List Semester
     public class ListSemester{
@@ -2504,6 +2509,7 @@ public class JSONResponse {
             this.semester_name = semester_name;
         }
     }
+    ////--------------------------------///
 
     ///// Response List Mata Pelajaran
     public class ListMapel{
@@ -2664,7 +2670,7 @@ public class JSONResponse {
             this.religion_type = religion_type;
         }
     }
-
+////--------------------------------///
 
     ///// Response Tugas Anak
     public class TugasAnak{
@@ -2936,6 +2942,7 @@ public class JSONResponse {
             return examTypeName;
         }
     }
+    ////--------------------------------///
 
     ///// Response Raport Anak
     public class Raport{
@@ -3751,6 +3758,7 @@ public class JSONResponse {
             this.edulevel_name = edulevel_name;
         }
     }
+    ////--------------------------------///
 
     //// Response Pesan Anak
     public class PesanAnak{
@@ -4074,6 +4082,7 @@ public class JSONResponse {
             this.reply_status = reply_status;
         }
     }
+    ////--------------------------------///
 
     /// pesan detail
     public class PesanDetail{
@@ -4685,6 +4694,8 @@ public class JSONResponse {
             this.cources_name = cources_name;
         }
     }
+    ////--------------------------------///
+
     //// Response Absen Anak
     public class AbsenSiswa{
         @SerializedName("status")
@@ -4842,6 +4853,7 @@ public class JSONResponse {
             this.absen_status = absen_status;
         }
     }
+    ////--------------------------------///
 
     ///// Response Calendar Anak
     public class ClassCalendar{
@@ -4958,6 +4970,7 @@ public class JSONResponse {
             this.calendar_type = calendar_type;
         }
     }
+    ////--------------------------------///
 
     ///// Response Calendar Detail
     public class CalendarDetail{
@@ -5248,6 +5261,7 @@ public class JSONResponse {
             this.classroom_name = classroom_name;
         }
     }
+    ////--------------------------------///
 
     //// Response Jadwal Guru
     public class JadwalGuru{
@@ -5501,6 +5515,7 @@ public class JSONResponse {
             this.timez_finish = timez_finish;
         }
     }
+    ////--------------------------------///
 
     //// Response List Edulevel
     public class ListEdulevel{
@@ -5568,6 +5583,7 @@ public class JSONResponse {
         }
 
     }
+    ////--------------------------------///
 
     //// Response List Kelas
     public class ListKelas{
@@ -5756,6 +5772,7 @@ public class JSONResponse {
             this.viceleader_mbr = viceleader_mbr;
         }
     }
+    ////--------------------------------///
 
     //// Response List Mapel Edulevel
     public class ListMapelEdu{
@@ -5904,6 +5921,7 @@ public class JSONResponse {
             this.religion_type = religion_type;
         }
     }
+    ////--------------------------------///
 
     //// Response List Silabus
     public class ListSilabus{
@@ -6082,6 +6100,7 @@ public class JSONResponse {
             this.del_stat = del_stat;
         }
     }
+    ////--------------------------------///
 
     //// Response List Dashboard
     public class Dashboard{
@@ -6208,6 +6227,7 @@ public class JSONResponse {
             this.cources_score_not_completed = cources_score_not_completed;
         }
     }
+    ////--------------------------------///
 
     //// Response List exam
     public class ListExam{
@@ -6296,6 +6316,7 @@ public class JSONResponse {
             this.type_sort = type_sort;
         }
     }
+    ////--------------------------------///
 
     ///Response Agenda
     public class ListAgenda{
@@ -6415,6 +6436,7 @@ public class JSONResponse {
             this.agenda_time = agenda_time;
         }
     }
+    ////--------------------------------///
 
     //// Response Detail Raport
     public class ListDetailRapor{
@@ -6513,6 +6535,7 @@ public class JSONResponse {
             this.score_value = score_value;
         }
     }
+    ////--------------------------------///
 
     ///Response Tambah Agenda
     public class AddAgenda{
@@ -6549,6 +6572,7 @@ public class JSONResponse {
             this.data = data;
         }
     }
+    ////--------------------------------///
 
     ///Response Pesan Guru
     public class ListPesanGuru{
@@ -6837,6 +6861,7 @@ public class JSONResponse {
             this.reply_status = reply_status;
         }
     }
+    ////--------------------------------///
 
     ///Response List Whattodolist
     public class ListWhattodolist{
@@ -7005,6 +7030,7 @@ public class JSONResponse {
             this.exam_todo_text = exam_todo_text;
         }
     }
+    ////--------------------------------///
 
     //Response Pesan Terkirim Guru
     public class ListPesanTerkirimGuru {
@@ -7285,6 +7311,7 @@ public class JSONResponse {
         }
 
     }
+    ////--------------------------------///
 
     //// Response List admin
     public class ListAdmin{
@@ -7343,6 +7370,7 @@ public class JSONResponse {
             this.fullname = fullname;
         }
     }
+    ////--------------------------------///
 
     //// Response Kirim Pesan{
     public class KirimPesanGuru{
@@ -7379,6 +7407,7 @@ public class JSONResponse {
             this.data = data;
         }
     }
+    ////--------------------------------///
 
     //// Response Lesson Review
     public class LessonReview{
@@ -7415,21 +7444,63 @@ public class JSONResponse {
             this.data = data;
         }
     }
-
     public class DataLesson{
-        @SerializedName("lesson")
-        public List<LessonData> lessonData;
+        @SerializedName("classroom_name")
+        public String classroom_name;
+        @SerializedName("cources_name")
+        public String cources_name;
 
-        public List<LessonData> getLessonData() {
-            return lessonData;
+        @SerializedName("lesson")
+        public List<ListLesson> listLessonData;
+
+        @SerializedName("last_event")
+        public List<ListLastEvent> last_event;
+
+        @SerializedName("materi")
+        public List<ListLesson> listLessons;
+
+        public List<ListLesson> getListLessons() {
+            return listLessons;
         }
 
-        public void setLessonData(List<LessonData> data) {
-            this.lessonData = data;
+        public void setListLessons(List<ListLesson> listLessons) {
+            this.listLessons = listLessons;
+        }
+
+        public String getClassroom_name() {
+            return classroom_name;
+        }
+
+        public void setClassroom_name(String classroom_name) {
+            this.classroom_name = classroom_name;
+        }
+
+        public String getCources_name() {
+            return cources_name;
+        }
+
+        public void setCources_name(String cources_name) {
+            this.cources_name = cources_name;
+        }
+
+        public List<ListLastEvent> getLast_event() {
+            return last_event;
+        }
+
+        public void setLast_event(List<ListLastEvent> last_event) {
+            this.last_event = last_event;
+        }
+
+        public List<ListLesson> getListLessonData() {
+            return listLessonData;
+        }
+
+        public void setListLessonData(List<ListLesson> data) {
+            this.listLessonData = data;
         }
     }
 
-    public class LessonData{
+    public class ListLesson {
         @SerializedName("reviewid")
         public String reviewid;
         @SerializedName("cources_id")
@@ -8011,4 +8082,97 @@ public class JSONResponse {
             this.device_id = device_id;
         }
     }
+    public class ListLastEvent{
+        @SerializedName("classid")
+        public String classid;
+        @SerializedName("classroom_name")
+        public String classroom_name;
+        @SerializedName("courcesid")
+        public String courcesid;
+        @SerializedName("cources_name")
+        public String cources_name;
+        @SerializedName("exam_date")
+        public String exam_date;
+        @SerializedName("exam_desc")
+        public String exam_desc;
+        @SerializedName("exam_tipe")
+        public String exam_tipe;
+        @SerializedName("exam_id")
+        public String exam_id;
+        @SerializedName("exam_tipe_id")
+        public String exam_tipe_id;
+
+        public String getClassid() {
+            return classid;
+        }
+
+        public void setClassid(String classid) {
+            this.classid = classid;
+        }
+
+        public String getClassroom_name() {
+            return classroom_name;
+        }
+
+        public void setClassroom_name(String classroom_name) {
+            this.classroom_name = classroom_name;
+        }
+
+        public String getCourcesid() {
+            return courcesid;
+        }
+
+        public void setCourcesid(String courcesid) {
+            this.courcesid = courcesid;
+        }
+
+        public String getCources_name() {
+            return cources_name;
+        }
+
+        public void setCources_name(String cources_name) {
+            this.cources_name = cources_name;
+        }
+
+        public String getExam_date() {
+            return exam_date;
+        }
+
+        public void setExam_date(String exam_date) {
+            this.exam_date = exam_date;
+        }
+
+        public String getExam_desc() {
+            return exam_desc;
+        }
+
+        public void setExam_desc(String exam_desc) {
+            this.exam_desc = exam_desc;
+        }
+
+        public String getExam_tipe() {
+            return exam_tipe;
+        }
+
+        public void setExam_tipe(String exam_tipe) {
+            this.exam_tipe = exam_tipe;
+        }
+
+        public String getExam_id() {
+            return exam_id;
+        }
+
+        public void setExam_id(String exam_id) {
+            this.exam_id = exam_id;
+        }
+
+        public String getExam_tipe_id() {
+            return exam_tipe_id;
+        }
+
+        public void setExam_tipe_id(String exam_tipe_id) {
+            this.exam_tipe_id = exam_tipe_id;
+        }
+    }
+    ////--------------------------------///
 }

@@ -412,13 +412,20 @@ public interface Auth {
                                                       @Field("message_title") String message_title,
                                                       @Field("message") String message);
 
-    ////// Lesson Review
+    ////// Lesson Review Guru
     @GET("teachers/kes_dashboard_lesson")
-    Call<JSONResponse.LessonReview>kes_lesson_review_get(@Header("Authorization") String authorization,
-                                                      @Query("school_code") String school_code,
-                                                      @Query("teacher_id") String teacher_id,
-                                                      @Query("cources_id") String cources_id,
-                                                      @Query("classroom_id") String classroom_id,
-                                                      @Query("scyear_id") String scyear_id);
+    Call<JSONResponse.LessonReview> kes_dashboard_lesson_get(@Header("Authorization") String authorization,
+                                                             @Query("school_code") String school_code,
+                                                             @Query("teacher_id") String teacher_id,
+                                                             @Query("cources_id") String cources_id,
+                                                             @Query("classroom_id") String classroom_id,
+                                                             @Query("scyear_id") String scyear_id);
 
+    //// lesson review Murid
+    @GET("students/kes_lesson_review")
+    Call<JSONResponse.LessonReview> kes_lesson_review_get(@Header("Authorization") String authorization,
+                                                          @Query("school_code") String school_code,
+                                                          @Query("student_id") String student_id,
+                                                          @Query("classroom_id") String classroom_id,
+                                                          @Query("cources_id") String cources_id);
 }

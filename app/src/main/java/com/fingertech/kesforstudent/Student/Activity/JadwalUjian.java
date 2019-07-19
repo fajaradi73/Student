@@ -7,6 +7,8 @@ import android.graphics.Color;
 import android.graphics.PorterDuff;
 
 import androidx.annotation.Nullable;
+
+import com.fingertech.kesforstudent.CustomView.viewpageradapter;
 import com.google.android.material.tabs.TabLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -94,37 +96,4 @@ public class JadwalUjian extends AppCompatActivity {
         viewPager.setAdapter(adapter);
     }
 
-    class viewpageradapter extends FragmentPagerAdapter {
-
-        private final List<Fragment> mFragment = new ArrayList<>();
-        private final List<String> mFragmentTittlelist = new ArrayList<>();
-
-
-        public viewpageradapter(FragmentManager fm){
-            super(fm);
-
-        }
-
-        @Override
-        public Fragment getItem(int i) {
-            return mFragment.get(i);
-        }
-
-
-        @Override
-        public int getCount() {
-            return mFragmentTittlelist.size();
-        }
-
-        public void addFragment (Fragment fragment,String title){
-            mFragment.add(fragment);
-            mFragmentTittlelist.add(title);
-        }
-
-        @Nullable
-        @Override
-        public CharSequence getPageTitle(int position) {
-            return mFragmentTittlelist.get(position);
-        }
-    }
 }

@@ -96,6 +96,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:visibility="gone"
+                        android:layout_marginBottom="5dp"
                         android:id="@+id/senin">
 
                     </androidx.recyclerview.widget.RecyclerView>
@@ -176,6 +177,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:visibility="gone"
+                        android:layout_marginBottom="5dp"
                         android:id="@+id/selasa">
 
                     </androidx.recyclerview.widget.RecyclerView>
@@ -255,6 +257,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:visibility="gone"
+                        android:layout_marginBottom="5dp"
                         android:id="@+id/rabu">
 
                     </androidx.recyclerview.widget.RecyclerView>
@@ -334,6 +337,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:visibility="gone"
+                        android:layout_marginBottom="5dp"
                         android:id="@+id/kamis">
 
                     </androidx.recyclerview.widget.RecyclerView>
@@ -416,6 +420,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:visibility="gone"
+                        android:layout_marginBottom="5dp"
                         android:id="@+id/jumat">
 
                     </androidx.recyclerview.widget.RecyclerView>
@@ -497,16 +502,12 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:visibility="gone"
+                        android:layout_marginBottom="5dp"
                         android:id="@+id/sabtu">
 
                     </androidx.recyclerview.widget.RecyclerView>
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
-
         </LinearLayout>
-
     </androidx.core.widget.NestedScrollView>
-
-
-
 </LinearLayout>

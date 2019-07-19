@@ -290,7 +290,12 @@
             android:label="Tambah Tugas"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".Guru.ActivityGuru.LessonReview"
+        <activity
+            android:name=".Guru.ActivityGuru.LessonReview"
+            android:label="Riwayat Pelajaran"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".Student.Activity.LessonReview"
             android:label="Riwayat Pelajaran"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"/>

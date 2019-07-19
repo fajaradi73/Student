@@ -3,6 +3,7 @@ package com.fingertech.kesforstudent.Student.Activity;
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.ColorDrawable;
@@ -96,7 +97,9 @@ public class JadwalPelajaran extends AppCompatActivity {
     private boolean isExpandedSabtu     = false;
     private boolean isExpandedSenin     = false;
     String cources_id,warna_mapel;
-    SharedPreferences sharedPreferences;
+    SharedPreferences sharedPreferences,sharedLesson;
+    public static final String my_lesson_preferences = "my_lesson_preferences";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -139,6 +142,8 @@ public class JadwalPelajaran extends AppCompatActivity {
         school_code         = sharedPreferences.getString("school_code",null);
         memberid            = sharedPreferences.getString("member_id",null);
         classroom_id        = sharedPreferences.getString("classroom_id",null);
+        sharedLesson        = getSharedPreferences(my_lesson_preferences,Context.MODE_PRIVATE);
+
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         toolbar.getNavigationIcon().setColorFilter(getResources().getColor(R.color.white), PorterDuff.Mode.SRC_ATOP);
@@ -157,7 +162,6 @@ public class JadwalPelajaran extends AppCompatActivity {
         SimpleDateFormat outFormat = new SimpleDateFormat("EEEE", Locale.getDefault());
         day = outFormat.format(dater);
         Jadwal_pelajaran();
-        Log.d("hari",day+"");
 
         itemlist    = new ArrayList<JadwalSenin>();
         itemselasa  = new ArrayList<JadwalSelasa>();
@@ -407,22 +411,22 @@ public class JadwalPelajaran extends AppCompatActivity {
                                 switch (days_name.toString()) {
                                     case "Senin": {
                                         for (int o = 0; o < response.body().getData().getClass_schedule().get(i).getScheduleClass().size(); o++) {
-                                            mapel = response.body().getData().getClass_schedule().get(i).getScheduleClass().get(o).getCourcesName();
-                                            jam_mulai = response.body().getData().getClass_schedule().get(i).getScheduleClass().get(o).getTimezOk();
+                                            mapel       = response.body().getData().getClass_schedule().get(i).getScheduleClass().get(o).getCourcesName();
+                                            jam_mulai   = response.body().getData().getClass_schedule().get(i).getScheduleClass().get(o).getTimezOk();
                                             jam_selesai = response.body().getData().getClass_schedule().get(i).getScheduleClass().get(o).getTimezFinish();
-                                            jamber = response.body().getData().getClass_schedule().get(i).getScheduleClass().get(o).getScheduleTime();
-                                            lamber = response.body().getData().getClass_schedule().get(i).getScheduleClass().get(o).getLessonDuration();
-                                            guru = response.body().getData().getClass_schedule().get(i).getScheduleClass().get(o).getTeacherName();
+                                            jamber      = response.body().getData().getClass_schedule().get(i).getScheduleClass().get(o).getScheduleTime();
+                                            lamber      = response.body().getData().getClass_schedule().get(i).getScheduleClass().get(o).getLessonDuration();
+                                            guru        = response.body().getData().getClass_schedule().get(i).getScheduleClass().get(o).getTeacherName();
                                             warna_mapel = response.body().getData().getClass_schedule().get(i).getScheduleClass().get(o).getCources_colour();
-                                            cources_id = response.body().getData().getClass_schedule().get(i).getScheduleClass().get(o).getCourcesId();
-
+                                            cources_id  = response.body().getData().getClass_schedule().get(i).getScheduleClass().get(o).getCourcesId();
                                             jadwalSenin = new JadwalSenin();
                                             jadwalSenin.setDay_name(days_name);
                                             jadwalSenin.setFullname(guru);
-                                            jadwalSenin.setCources_color(warna_mapel);
                                             jadwalSenin.setCources_name(mapel);
                                             jadwalSenin.setDuration(String.valueOf(lamber));
                                             jadwalSenin.setJam_mulai(jam_mulai);
+                                            jadwalSenin.setCources_id(cources_id);
+                                            jadwalSenin.setCources_color(warna_mapel);
                                             jadwalSenin.setJam_selesai(jam_selesai);
                                             itemlist.add(jadwalSenin);
                                         }
@@ -430,27 +434,46 @@ public class JadwalPelajaran extends AppCompatActivity {
                                         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(JadwalPelajaran.this);
                                         rv_senin.setLayoutManager(layoutManager);
                                         rv_senin.setAdapter(seninAdapter);
-
+                                        seninAdapter.setOnItemClickListener(new SeninAdapter.OnItemClickListener() {
+                                            @Override
+                                            public void onItemClick(View view, int position) {
+                                                cources_id = itemlist.get(position).getCources_id();
+                                                SharedPreferences.Editor editor = sharedLesson.edit();
+                                                editor.putString("school_code", school_code);
+                                                editor.putString("authorization", authorization);
+                                                editor.putString("classroom_id", classroom_id);
+                                                editor.putString("student_id", memberid);
+                                                editor.putString("cources_id", cources_id);
+                                                editor.apply();
+                                                Intent intent = new Intent(JadwalPelajaran.this, LessonReview.class);
+                                                intent.putExtra("authorization", authorization);
+                                                intent.putExtra("school_code", school_code.toLowerCase());
+                                                intent.putExtra("student_id", memberid);
+                                                intent.putExtra("classroom_id", classroom_id);
+                                                intent.putExtra("cources_id", cources_id);
+                                                startActivity(intent);
+                                            }
+                                        });
                                         break;
                                     }
                                     case "Selasa": {
                                         for (int o = 0; o < response.body().getData().getClass_schedule().get(i).getScheduleClass().size(); o++) {
-                                            mapel = response.body().getData().getClass_schedule().get(i).getScheduleClass().get(o).getCourcesName();
-                                            jam_mulai = response.body().getData().getClass_schedule().get(i).getScheduleClass().get(o).getTimezOk();
+                                            mapel       = response.body().getData().getClass_schedule().get(i).getScheduleClass().get(o).getCourcesName();
+                                            jam_mulai   = response.body().getData().getClass_schedule().get(i).getScheduleClass().get(o).getTimezOk();
                                             jam_selesai = response.body().getData().getClass_schedule().get(i).getScheduleClass().get(o).getTimezFinish();
-                                            jamber = response.body().getData().getClass_schedule().get(i).getScheduleClass().get(o).getScheduleTime();
-                                            lamber = response.body().getData().getClass_schedule().get(i).getScheduleClass().get(o).getLessonDuration();
-                                            guru = response.body().getData().getClass_schedule().get(i).getScheduleClass().get(o).getTeacherName();
+                                            jamber      = response.body().getData().getClass_schedule().get(i).getScheduleClass().get(o).getScheduleTime();
+                                            lamber      = response.body().getData().getClass_schedule().get(i).getScheduleClass().get(o).getLessonDuration();
+                                            guru        = response.body().getData().getClass_schedule().get(i).getScheduleClass().get(o).getTeacherName();
                                             warna_mapel = response.body().getData().getClass_schedule().get(i).getScheduleClass().get(o).getCources_colour();
-                                            cources_id = response.body().getData().getClass_schedule().get(i).getScheduleClass().get(o).getCourcesId();
-
+                                            cources_id  = response.body().getData().getClass_schedule().get(i).getScheduleClass().get(o).getCourcesId();
                                             jadwalSelasa = new JadwalSelasa();
                                             jadwalSelasa.setFullname(guru);
                                             jadwalSelasa.setDay_name(days_name);
                                             jadwalSelasa.setCources_name(mapel);
-                                            jadwalSelasa.setCources_color(warna_mapel);
                                             jadwalSelasa.setDuration(String.valueOf(lamber));
                                             jadwalSelasa.setJam_mulai(jam_mulai);
+                                            jadwalSelasa.setCources_id(cources_id);
+                                            jadwalSelasa.setCources_color(warna_mapel);
                                             jadwalSelasa.setJam_selesai(jam_selesai);
                                             itemselasa.add(jadwalSelasa);
                                         }
@@ -458,24 +481,44 @@ public class JadwalPelajaran extends AppCompatActivity {
                                         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(JadwalPelajaran.this);
                                         rv_selasa.setLayoutManager(layoutManager);
                                         rv_selasa.setAdapter(selasaAdapter);
+                                        selasaAdapter.setOnItemClickListener(new SelasaAdapter.OnItemClickListener() {
+                                            @Override
+                                            public void onItemClick(View view, int position) {
+                                                cources_id = itemselasa.get(position).getCources_id();
+                                                SharedPreferences.Editor editor = sharedLesson.edit();
+                                                editor.putString("school_code", school_code);
+                                                editor.putString("authorization", authorization);
+                                                editor.putString("classroom_id", classroom_id);
+                                                editor.putString("student_id", memberid);
+                                                editor.putString("cources_id", cources_id);
+                                                editor.apply();
+                                                Intent intent = new Intent(JadwalPelajaran.this, LessonReview.class);
+                                                intent.putExtra("authorization", authorization);
+                                                intent.putExtra("school_code", school_code.toLowerCase());
+                                                intent.putExtra("student_id", memberid);
+                                                intent.putExtra("classroom_id", classroom_id);
+                                                intent.putExtra("cources_id", cources_id);
+                                                startActivity(intent);
+                                            }
+                                        });
                                         break;
                                     }
                                     case "Rabu": {
                                         for (int o = 0; o < response.body().getData().getClass_schedule().get(i).getScheduleClass().size(); o++) {
-                                            mapel = response.body().getData().getClass_schedule().get(i).getScheduleClass().get(o).getCourcesName();
-                                            jam_mulai = response.body().getData().getClass_schedule().get(i).getScheduleClass().get(o).getTimezOk();
+                                            mapel       = response.body().getData().getClass_schedule().get(i).getScheduleClass().get(o).getCourcesName();
+                                            jam_mulai   = response.body().getData().getClass_schedule().get(i).getScheduleClass().get(o).getTimezOk();
                                             jam_selesai = response.body().getData().getClass_schedule().get(i).getScheduleClass().get(o).getTimezFinish();
-                                            jamber = response.body().getData().getClass_schedule().get(i).getScheduleClass().get(o).getScheduleTime();
-                                            lamber = response.body().getData().getClass_schedule().get(i).getScheduleClass().get(o).getLessonDuration();
-                                            guru = response.body().getData().getClass_schedule().get(i).getScheduleClass().get(o).getTeacherName();
+                                            jamber      = response.body().getData().getClass_schedule().get(i).getScheduleClass().get(o).getScheduleTime();
+                                            lamber      = response.body().getData().getClass_schedule().get(i).getScheduleClass().get(o).getLessonDuration();
+                                            guru        = response.body().getData().getClass_schedule().get(i).getScheduleClass().get(o).getTeacherName();
                                             warna_mapel = response.body().getData().getClass_schedule().get(i).getScheduleClass().get(o).getCources_colour();
-                                            cources_id = response.body().getData().getClass_schedule().get(i).getScheduleClass().get(o).getCourcesId();
-
+                                            cources_id  = response.body().getData().getClass_schedule().get(i).getScheduleClass().get(o).getCourcesId();
                                             jadwalRabu = new JadwalRabu();
                                             jadwalRabu.setFullname(guru);
                                             jadwalRabu.setDay_name(days_name);
                                             jadwalRabu.setCources_name(mapel);
                                             jadwalRabu.setCources_color(warna_mapel);
+                                            jadwalRabu.setCources_id(cources_id);
                                             jadwalRabu.setDuration(String.valueOf(lamber));
                                             jadwalRabu.setJam_mulai(jam_mulai);
                                             jadwalRabu.setJam_selesai(jam_selesai);
@@ -485,19 +528,38 @@ public class JadwalPelajaran extends AppCompatActivity {
                                         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(JadwalPelajaran.this);
                                         rv_rabu.setLayoutManager(layoutManager);
                                         rv_rabu.setAdapter(rabuAdapter);
+                                        rabuAdapter.setOnItemClickListener(new RabuAdapter.OnItemClickListener() {
+                                            @Override
+                                            public void onItemClick(View view, int position) {
+                                                cources_id = itemRabu.get(position).getCources_id();
+                                                SharedPreferences.Editor editor = sharedLesson.edit();
+                                                editor.putString("school_code", school_code);
+                                                editor.putString("authorization", authorization);
+                                                editor.putString("classroom_id", classroom_id);
+                                                editor.putString("student_id", memberid);
+                                                editor.putString("cources_id", cources_id);
+                                                editor.apply();
+                                                Intent intent = new Intent(JadwalPelajaran.this, LessonReview.class);
+                                                intent.putExtra("authorization", authorization);
+                                                intent.putExtra("school_code", school_code.toLowerCase());
+                                                intent.putExtra("student_id", memberid);
+                                                intent.putExtra("classroom_id", classroom_id);
+                                                intent.putExtra("cources_id", cources_id);
+                                                startActivity(intent);
+                                            }
+                                        });
                                         break;
                                     }
                                     case "Kamis": {
                                         for (int o = 0; o < response.body().getData().getClass_schedule().get(i).getScheduleClass().size(); o++) {
-                                            mapel = response.body().getData().getClass_schedule().get(i).getScheduleClass().get(o).getCourcesName();
-                                            jam_mulai = response.body().getData().getClass_schedule().get(i).getScheduleClass().get(o).getTimezOk();
+                                            mapel       = response.body().getData().getClass_schedule().get(i).getScheduleClass().get(o).getCourcesName();
+                                            jam_mulai   = response.body().getData().getClass_schedule().get(i).getScheduleClass().get(o).getTimezOk();
                                             jam_selesai = response.body().getData().getClass_schedule().get(i).getScheduleClass().get(o).getTimezFinish();
-                                            jamber = response.body().getData().getClass_schedule().get(i).getScheduleClass().get(o).getScheduleTime();
-                                            lamber = response.body().getData().getClass_schedule().get(i).getScheduleClass().get(o).getLessonDuration();
-                                            guru = response.body().getData().getClass_schedule().get(i).getScheduleClass().get(o).getTeacherName();
+                                            jamber      = response.body().getData().getClass_schedule().get(i).getScheduleClass().get(o).getScheduleTime();
+                                            lamber      = response.body().getData().getClass_schedule().get(i).getScheduleClass().get(o).getLessonDuration();
+                                            guru        = response.body().getData().getClass_schedule().get(i).getScheduleClass().get(o).getTeacherName();
                                             warna_mapel = response.body().getData().getClass_schedule().get(i).getScheduleClass().get(o).getCources_colour();
-                                            cources_id = response.body().getData().getClass_schedule().get(i).getScheduleClass().get(o).getCourcesId();
-
+                                            cources_id  = response.body().getData().getClass_schedule().get(i).getScheduleClass().get(o).getCourcesId();
                                             jadwalKamis = new JadwalKamis();
                                             jadwalKamis.setFullname(guru);
                                             jadwalKamis.setDay_name(days_name);
@@ -505,6 +567,7 @@ public class JadwalPelajaran extends AppCompatActivity {
                                             jadwalKamis.setCources_color(warna_mapel);
                                             jadwalKamis.setDuration(String.valueOf(lamber));
                                             jadwalKamis.setJam_mulai(jam_mulai);
+                                            jadwalKamis.setCources_id(cources_id);
                                             jadwalKamis.setJam_selesai(jam_selesai);
                                             itemKamis.add(jadwalKamis);
                                         }
@@ -512,20 +575,39 @@ public class JadwalPelajaran extends AppCompatActivity {
                                         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(JadwalPelajaran.this);
                                         rv_kamis.setLayoutManager(layoutManager);
                                         rv_kamis.setAdapter(kamisAdapter);
+                                        kamisAdapter.setOnItemClickListener(new KamisAdapter.OnItemClickListener() {
+                                            @Override
+                                            public void onItemClick(View view, int position) {
+                                                cources_id = itemKamis.get(position).getCources_id();
+                                                SharedPreferences.Editor editor = sharedLesson.edit();
+                                                editor.putString("school_code", school_code);
+                                                editor.putString("authorization", authorization);
+                                                editor.putString("classroom_id", classroom_id);
+                                                editor.putString("student_id", memberid);
+                                                editor.putString("cources_id", cources_id);
+                                                editor.apply();
+                                                Intent intent = new Intent(JadwalPelajaran.this, LessonReview.class);
+                                                intent.putExtra("authorization", authorization);
+                                                intent.putExtra("school_code", school_code.toLowerCase());
+                                                intent.putExtra("student_id", memberid);
+                                                intent.putExtra("classroom_id", classroom_id);
+                                                intent.putExtra("cources_id", cources_id);
+                                                startActivity(intent);
+                                            }
+                                        });
 
                                         break;
                                     }
                                     case "Jumat": {
                                         for (int o = 0; o < response.body().getData().getClass_schedule().get(i).getScheduleClass().size(); o++) {
-                                            mapel = response.body().getData().getClass_schedule().get(i).getScheduleClass().get(o).getCourcesName();
-                                            jam_mulai = response.body().getData().getClass_schedule().get(i).getScheduleClass().get(o).getTimezOk();
+                                            mapel       = response.body().getData().getClass_schedule().get(i).getScheduleClass().get(o).getCourcesName();
+                                            jam_mulai   = response.body().getData().getClass_schedule().get(i).getScheduleClass().get(o).getTimezOk();
                                             jam_selesai = response.body().getData().getClass_schedule().get(i).getScheduleClass().get(o).getTimezFinish();
-                                            jamber = response.body().getData().getClass_schedule().get(i).getScheduleClass().get(o).getScheduleTime();
-                                            lamber = response.body().getData().getClass_schedule().get(i).getScheduleClass().get(o).getLessonDuration();
-                                            guru = response.body().getData().getClass_schedule().get(i).getScheduleClass().get(o).getTeacherName();
+                                            jamber      = response.body().getData().getClass_schedule().get(i).getScheduleClass().get(o).getScheduleTime();
+                                            lamber      = response.body().getData().getClass_schedule().get(i).getScheduleClass().get(o).getLessonDuration();
+                                            guru        = response.body().getData().getClass_schedule().get(i).getScheduleClass().get(o).getTeacherName();
                                             warna_mapel = response.body().getData().getClass_schedule().get(i).getScheduleClass().get(o).getCources_colour();
-                                            cources_id = response.body().getData().getClass_schedule().get(i).getScheduleClass().get(o).getCourcesId();
-
+                                            cources_id  = response.body().getData().getClass_schedule().get(i).getScheduleClass().get(o).getCourcesId();
                                             jadwalJumat = new JadwalJumat();
                                             jadwalJumat.setFullname(guru);
                                             jadwalJumat.setDay_name(days_name);
@@ -533,6 +615,7 @@ public class JadwalPelajaran extends AppCompatActivity {
                                             jadwalJumat.setCources_color(warna_mapel);
                                             jadwalJumat.setDuration(String.valueOf(lamber));
                                             jadwalJumat.setJam_mulai(jam_mulai);
+                                            jadwalJumat.setCources_id(cources_id);
                                             jadwalJumat.setJam_selesai(jam_selesai);
                                             itemJumat.add(jadwalJumat);
                                         }
@@ -540,25 +623,45 @@ public class JadwalPelajaran extends AppCompatActivity {
                                         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(JadwalPelajaran.this);
                                         rv_jumat.setLayoutManager(layoutManager);
                                         rv_jumat.setAdapter(jumatAdapter);
+                                        jumatAdapter.setOnItemClickListener(new JumatAdapter.OnItemClickListener() {
+                                            @Override
+                                            public void onItemClick(View view, int position) {
+                                                cources_id = itemJumat.get(position).getCources_id();
+                                                SharedPreferences.Editor editor = sharedLesson.edit();
+                                                editor.putString("school_code", school_code);
+                                                editor.putString("authorization", authorization);
+                                                editor.putString("classroom_id", classroom_id);
+                                                editor.putString("student_id", memberid);
+                                                editor.putString("cources_id", cources_id);
+                                                editor.apply();
+                                                Intent intent = new Intent(JadwalPelajaran.this, LessonReview.class);
+                                                intent.putExtra("authorization", authorization);
+                                                intent.putExtra("school_code", school_code.toLowerCase());
+                                                intent.putExtra("student_id", memberid);
+                                                intent.putExtra("classroom_id", classroom_id);
+                                                intent.putExtra("cources_id", cources_id);
+                                                startActivity(intent);
+                                            }
+                                        });
 
                                         break;
                                     }
                                     case "Sabtu": {
                                         for (int o = 0; o < response.body().getData().getClass_schedule().get(i).getScheduleClass().size(); o++) {
-                                            mapel = response.body().getData().getClass_schedule().get(i).getScheduleClass().get(o).getCourcesName();
-                                            jam_mulai = response.body().getData().getClass_schedule().get(i).getScheduleClass().get(o).getTimezOk();
+                                            mapel       = response.body().getData().getClass_schedule().get(i).getScheduleClass().get(o).getCourcesName();
+                                            jam_mulai   = response.body().getData().getClass_schedule().get(i).getScheduleClass().get(o).getTimezOk();
                                             jam_selesai = response.body().getData().getClass_schedule().get(i).getScheduleClass().get(o).getTimezFinish();
-                                            jamber = response.body().getData().getClass_schedule().get(i).getScheduleClass().get(o).getScheduleTime();
-                                            lamber = response.body().getData().getClass_schedule().get(i).getScheduleClass().get(o).getLessonDuration();
-                                            guru = response.body().getData().getClass_schedule().get(i).getScheduleClass().get(o).getTeacherName();
+                                            jamber      = response.body().getData().getClass_schedule().get(i).getScheduleClass().get(o).getScheduleTime();
+                                            lamber      = response.body().getData().getClass_schedule().get(i).getScheduleClass().get(o).getLessonDuration();
+                                            guru        = response.body().getData().getClass_schedule().get(i).getScheduleClass().get(o).getTeacherName();
                                             warna_mapel = response.body().getData().getClass_schedule().get(i).getScheduleClass().get(o).getCources_colour();
-                                            cources_id = response.body().getData().getClass_schedule().get(i).getScheduleClass().get(o).getCourcesId();
-
+                                            cources_id  = response.body().getData().getClass_schedule().get(i).getScheduleClass().get(o).getCourcesId();
                                             jadwalSabtu = new JadwalSabtu();
                                             jadwalSabtu.setFullname(guru);
                                             jadwalSabtu.setDay_name(days_name);
-                                            jadwalSabtu.setCources_name(mapel);
                                             jadwalSabtu.setCources_color(warna_mapel);
+                                            jadwalSabtu.setCources_name(mapel);
+                                            jadwalSabtu.setCources_id(cources_id);
                                             jadwalSabtu.setDuration(String.valueOf(lamber));
                                             jadwalSabtu.setJam_mulai(jam_mulai);
                                             jadwalSabtu.setJam_selesai(jam_selesai);
@@ -568,6 +671,26 @@ public class JadwalPelajaran extends AppCompatActivity {
                                         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(JadwalPelajaran.this);
                                         rv_sabtu.setLayoutManager(layoutManager);
                                         rv_sabtu.setAdapter(sabtuAdapter);
+                                        sabtuAdapter.setOnItemClickListener(new SabtuAdapter.OnItemClickListener() {
+                                            @Override
+                                            public void onItemClick(View view, int position) {
+                                                cources_id = itemSabtu.get(position).getCources_id();
+                                                SharedPreferences.Editor editor = sharedLesson.edit();
+                                                editor.putString("school_code", school_code);
+                                                editor.putString("authorization", authorization);
+                                                editor.putString("classroom_id", classroom_id);
+                                                editor.putString("student_id", memberid);
+                                                editor.putString("cources_id", cources_id);
+                                                editor.apply();
+                                                Intent intent = new Intent(JadwalPelajaran.this, LessonReview.class);
+                                                intent.putExtra("authorization", authorization);
+                                                intent.putExtra("school_code", school_code.toLowerCase());
+                                                intent.putExtra("student_id", memberid);
+                                                intent.putExtra("classroom_id", classroom_id);
+                                                intent.putExtra("cources_id", cources_id);
+                                                startActivity(intent);
+                                            }
+                                        });
                                         break;
                                     }
                                 }

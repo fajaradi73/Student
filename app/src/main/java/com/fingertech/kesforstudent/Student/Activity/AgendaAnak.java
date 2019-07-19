@@ -3,6 +3,7 @@ package com.fingertech.kesforstudent.Student.Activity;
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.ColorDrawable;
@@ -95,8 +96,9 @@ public class AgendaAnak extends AppCompatActivity {
     Date dateawal,dateakhir,bulannow,bulanpicker,datenow,datejam;
     Long times_awal,times_akhir,times_sekarang,times_picker;
     CardView btn_pilih;
-    String tanggals,calendardate;
-    LinearLayout ll_agenda,hint_ajaran;
+    String tanggals,calendardate,click;
+    int id_notif;
+    LinearLayout ll_agenda,no_ajaran;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -115,7 +117,7 @@ public class AgendaAnak extends AppCompatActivity {
         btn_pilih                   = findViewById(R.id.btn_pilih);
         tv_hint_agenda_hari         = findViewById(R.id.hint_harian);
         ll_agenda                   = findViewById(R.id.ll_agenda);
-        hint_ajaran                 = findViewById(R.id.hint_ajaran);
+        no_ajaran                   = findViewById(R.id.hint_ajaran);
         mApiInterface               = ApiClient.getClient().create(Auth.class);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -129,6 +131,7 @@ public class AgendaAnak extends AppCompatActivity {
         calendardate        = getIntent().getStringExtra("calendar");
         date = df.format(Calendar.getInstance().getTime());
 
+
         if (calendardate != null){
             Calendar calendar = Calendar.getInstance();
             try {
@@ -137,10 +140,15 @@ public class AgendaAnak extends AppCompatActivity {
                 e.printStackTrace();
             }
             bulan_sekarang = bulanFormat.format(calendar.getTime());
-
+            try {
+                bulannow    = dateFormat.parse(bulan_sekarang);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            times_sekarang = bulannow.getTime();
             day  = calendar.get(Calendar.DAY_OF_WEEK);
-            dapat_Agenda();
             Check_Semester();
+            dapat_Agenda();
             tanggal         = tanggalformat.format(calendar.getTime());
             bulan           = bulanformat.format(calendar.getTime());
             tahun           = tahunformat.format(calendar.getTime());
@@ -148,10 +156,16 @@ public class AgendaAnak extends AppCompatActivity {
             tanggals        = fmt.format(calendar.getTime());
         }else {
             bulan_sekarang = bulanFormat.format(Calendar.getInstance().getTime());
+            try {
+                bulannow    = dateFormat.parse(bulan_sekarang);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            times_sekarang = bulannow.getTime();
             Calendar calendar = Calendar.getInstance();
             day  = calendar.get(Calendar.DAY_OF_WEEK);
-            dapat_Agenda();
             Check_Semester();
+            dapat_Agenda();
             tanggal         = tanggalformat.format(Calendar.getInstance().getTime());
             bulan           = bulanformat.format(Calendar.getInstance().getTime());
             tahun           = tahunformat.format(Calendar.getInstance().getTime());
@@ -210,7 +224,7 @@ public class AgendaAnak extends AppCompatActivity {
         });
         btn_pilih.setOnClickListener(v -> {
             ll_agenda.setVisibility(View.VISIBLE);
-            hint_ajaran.setVisibility(View.GONE);
+            no_ajaran.setVisibility(View.GONE);
             if (times_sekarang.equals(times_picker)){
                 rvtanggal.smoothScrollToPosition(Integer.parseInt(tanggal)-1);
             }else {
@@ -221,6 +235,7 @@ public class AgendaAnak extends AppCompatActivity {
                     rvtanggal.smoothScrollToPosition(Integer.parseInt(tanggal)-5);
                 }
                 bulan_sekarang = convertDate(Integer.parseInt(tahun),Integer.parseInt(bulan)-1);
+                dapat_semester();
                 dapat_Agenda();
             }
             slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
@@ -338,21 +353,20 @@ public class AgendaAnak extends AppCompatActivity {
         call.enqueue(new Callback<JSONResponse.CheckSemester>() {
             @Override
             public void onResponse(Call<JSONResponse.CheckSemester> call, final Response<JSONResponse.CheckSemester> response) {
-                Log.i("KES", response.code() + "");
+                Log.i("check_semester", response.code() + "");
                 if (response.isSuccessful()) {
                     JSONResponse.CheckSemester resource = response.body();
-
-                    status = resource.status;
-                    code = resource.code;
-                    if (status == 1 && code.equals("DTS_SCS_0001")) {
+                    status  = resource.status;
+                    code    = resource.code;
+                    if (status == 1 && code.equals("DTS_SCS_0001")){
                         semester_id = response.body().getData();
                         dapat_semester();
                         if (semester_id.equals("0")){
                             ll_agenda.setVisibility(View.GONE);
-                            hint_ajaran.setVisibility(View.VISIBLE);
+                            no_ajaran.setVisibility(View.VISIBLE);
                         }else {
                             ll_agenda.setVisibility(View.VISIBLE);
-                            hint_ajaran.setVisibility(View.GONE);
+                            no_ajaran.setVisibility(View.GONE);
                         }
                     }
                 }
@@ -371,7 +385,7 @@ public class AgendaAnak extends AppCompatActivity {
             @SuppressLint("SetTextI18n")
             @Override
             public void onResponse(Call<JSONResponse.ListSemester> call, final Response<JSONResponse.ListSemester> response) {
-                Log.i("KES", response.code() + "");
+                Log.i("dapat_semester", response.code() + "");
 
                 if (response.isSuccessful()) {
                     JSONResponse.ListSemester resource = response.body();
@@ -398,8 +412,13 @@ public class AgendaAnak extends AppCompatActivity {
 
                             times_awal  = dateawal.getTime();
                             times_akhir = dateakhir.getTime();
+                            if (times_sekarang > times_akhir){
+                                datePicker.updateDate(Integer.parseInt(convertTahun(tanggal_akhir)),Integer.parseInt(convertBulan(tanggal_akhir))-1,Integer.parseInt(convertDate(tanggal_akhir)));
+                            }
+
                             datePicker.setMaxDate(times_akhir);
                             datePicker.setMinDate(times_awal);
+
 
                             if (response.body().getData().get(i).getSemester_id().equals(semester_id)) {
                                 semester    = response.body().getData().get(i).getSemester_name();
@@ -407,6 +426,9 @@ public class AgendaAnak extends AppCompatActivity {
                                 end_date    = response.body().getData().get(i).getEnd_date();
                                 tvsemester.setText("Semester "+semester);
                                 tvtanggalsemester.setText(converttanggal(start_date)+" sampai "+converttanggal(end_date));
+                            }else if (semester_id.equals("0")){
+                                tvsemester.setText("");
+                                tvtanggalsemester.setText("Tahun ajaran telah selesai");
                             }
                         }
                     }
@@ -421,6 +443,7 @@ public class AgendaAnak extends AppCompatActivity {
 
         });
     }
+
     private void dapat_Agenda(){
         progressBar();
         showDialog();
@@ -428,7 +451,7 @@ public class AgendaAnak extends AppCompatActivity {
         call.enqueue(new Callback<JSONResponse.ListAgenda>() {
             @Override
             public void onResponse(Call<JSONResponse.ListAgenda> call, Response<JSONResponse.ListAgenda> response) {
-                Log.d("sukses",response.code()+"");
+                Log.d("sukses_agenda",response.code()+"");
                 hideDialog();
                 if (response.isSuccessful()){
                     JSONResponse.ListAgenda resource = response.body();
@@ -555,25 +578,6 @@ public class AgendaAnak extends AppCompatActivity {
         });
     }
 
-    LinearLayoutManager layoutManager = new LinearLayoutManager(this) {
-
-        @Override
-        public void smoothScrollToPosition(RecyclerView recyclerView, RecyclerView.State state, int position) {
-            LinearSmoothScroller smoothScroller = new LinearSmoothScroller(AgendaAnak.this) {
-
-                private static final float SPEED = 300f;// Change this value (default=25f)
-
-                @Override
-                protected float calculateSpeedPerPixel(DisplayMetrics displayMetrics) {
-                    return SPEED / displayMetrics.densityDpi;
-                }
-
-            };
-            smoothScroller.setTargetPosition(position);
-            startSmoothScroll(smoothScroller);
-        }
-    };
-
     String converttanggal(String tanggal) {
         SimpleDateFormat calendarDateFormat = new SimpleDateFormat("yyyy-MM-dd", new Locale("in", "ID"));
 
@@ -608,12 +612,31 @@ public class AgendaAnak extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                finish();
+                if (click != null){
+                    Intent intent = new Intent(AgendaAnak.this,MenuUtama.class);
+                    setResult(RESULT_OK,intent);
+                    finish();
+                }else {
+                    finish();
+                }
                 return true;
         }
 
         return super.onOptionsItemSelected(item);
     }
+
+    @Override
+    public void onBackPressed(){
+        if (click != null){
+            Intent intent = new Intent(AgendaAnak.this,MenuUtama.class);
+            setResult(RESULT_OK,intent);
+            finish();
+        }else {
+            finish();
+        }
+        super.onBackPressed();
+    }
+
     public boolean onCreateOptionsMenu(Menu menu) {
         return true;
     }
@@ -631,6 +654,39 @@ public class AgendaAnak extends AppCompatActivity {
                 agendaTanggalModel.setDate(tanggalagenda);
                 agendaTanggalModelList.add(agendaTanggalModel);
             }
+        }
+    }
+    String convertBulan(String date) {
+        SimpleDateFormat calendarDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+        SimpleDateFormat newDateFormat = new SimpleDateFormat("MM",Locale.getDefault());
+        try {
+            String e = newDateFormat.format(calendarDateFormat.parse(date));
+            return e;
+        } catch (java.text.ParseException e) {
+            e.printStackTrace();
+            return "";
+        }
+    }
+    String convertTahun(String date) {
+        SimpleDateFormat calendarDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+        SimpleDateFormat newDateFormat = new SimpleDateFormat("yyyy",Locale.getDefault());
+        try {
+            String e = newDateFormat.format(calendarDateFormat.parse(date));
+            return e;
+        } catch (java.text.ParseException e) {
+            e.printStackTrace();
+            return "";
+        }
+    }
+    String convertDate(String date) {
+        SimpleDateFormat calendarDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+        SimpleDateFormat newDateFormat = new SimpleDateFormat("dd",Locale.getDefault());
+        try {
+            String e = newDateFormat.format(calendarDateFormat.parse(date));
+            return e;
+        } catch (java.text.ParseException e) {
+            e.printStackTrace();
+            return "";
         }
     }
 }
