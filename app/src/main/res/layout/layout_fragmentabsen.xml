@@ -5,27 +5,21 @@
     android:orientation="vertical"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@color/colorGrey_level3"
-    >
-    <TextView
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:text="Sikap Spiritual"
-        android:id="@+id/tv_attidude"
-    />
-    </LinearLayout>
-  <androidx.cardview.widget.CardView
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content">
-    <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/rv_code"
+        android:background="@color/colorGrey_level3"
         >
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Sikap Spiritual"
+            android:id="@+id/tv_attidude"/>
+    </LinearLayout>
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:id="@+id/rv_code">
 
     </androidx.recyclerview.widget.RecyclerView>
-    </androidx.cardview.widget.CardView>
 
 </LinearLayout>

@@ -45,8 +45,7 @@ public class AdapterAbsen extends RecyclerView.Adapter<AdapterAbsen.MyHolder> {
 
         View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_murid, parent, false);
 
-        MyHolder myHolder = new MyHolder(itemView,onItemClickListener);
-        return myHolder;
+        return new MyHolder(itemView,onItemClickListener);
     }
 
 
@@ -88,8 +87,8 @@ public class AdapterAbsen extends RecyclerView.Adapter<AdapterAbsen.MyHolder> {
             super(itemView);
             nama       = itemView.findViewById(R.id.tv_nama_murid);
             recyclerView   = itemView.findViewById(R.id.rv_hasil_absen);
-//            itemView.setOnClickListener(this);
-//            this.onItemClickListener = onItemClickListener;
+            itemView.setOnClickListener(this);
+            this.onItemClickListener = onItemClickListener;
         }
 
         @Override

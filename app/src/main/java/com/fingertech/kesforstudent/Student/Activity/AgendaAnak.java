@@ -210,7 +210,7 @@ public class AgendaAnak extends AppCompatActivity {
             @Override
             public void onDateChanged(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                 tahun           = String.valueOf(year);
-                bulan           = String.valueOf(monthOfYear+1);
+                bulan           = String.valueOf(monthOfYear + 1);
                 tanggal         = String.valueOf(dayOfMonth);
                 try {
                     bulannow    = dateFormat.parse(bulan_sekarang);
@@ -226,15 +226,15 @@ public class AgendaAnak extends AppCompatActivity {
             ll_agenda.setVisibility(View.VISIBLE);
             no_ajaran.setVisibility(View.GONE);
             if (times_sekarang.equals(times_picker)){
-                rvtanggal.smoothScrollToPosition(Integer.parseInt(tanggal)-1);
+                rvtanggal.smoothScrollToPosition(Integer.parseInt(tanggal) - 1);
             }else {
                 datatanggal(Integer.parseInt(tahun),Integer.parseInt(bulan));
                 if (Integer.parseInt(tanggal)-5 < 0){
                     rvtanggal.smoothScrollToPosition(0);
                 }else {
-                    rvtanggal.smoothScrollToPosition(Integer.parseInt(tanggal)-5);
+                    rvtanggal.smoothScrollToPosition(Integer.parseInt(tanggal) - 5);
                 }
-                bulan_sekarang = convertDate(Integer.parseInt(tahun),Integer.parseInt(bulan)-1);
+                bulan_sekarang = convertDate(Integer.parseInt(tahun),Integer.parseInt(bulan) - 1);
                 dapat_semester();
                 dapat_Agenda();
             }
@@ -318,8 +318,8 @@ public class AgendaAnak extends AppCompatActivity {
 
     String convertDate(int year, int month) {
         String temp = year + "-" + (month + 1);
-        SimpleDateFormat calendarDateFormat = new SimpleDateFormat("yyyy-MM");
-        SimpleDateFormat newDateFormat = new SimpleDateFormat("yyyy-MM");
+        SimpleDateFormat calendarDateFormat = new SimpleDateFormat("yyyy-MM",Locale.getDefault());
+        SimpleDateFormat newDateFormat = new SimpleDateFormat("yyyy-MM",Locale.getDefault());
         try {
             return newDateFormat.format(calendarDateFormat.parse(temp));
         } catch (java.text.ParseException e) {
@@ -348,6 +348,7 @@ public class AgendaAnak extends AppCompatActivity {
         }
         return false;
     }
+
     private void Check_Semester() {
         Call<JSONResponse.CheckSemester> call = mApiInterface.kes_check_semester_get(authorization.toString(), school_code.toString().toLowerCase(), classroom_id.toString(), date.toString());
         call.enqueue(new Callback<JSONResponse.CheckSemester>() {
@@ -418,7 +419,6 @@ public class AgendaAnak extends AppCompatActivity {
 
                             datePicker.setMaxDate(times_akhir);
                             datePicker.setMinDate(times_awal);
-
 
                             if (response.body().getData().get(i).getSemester_id().equals(semester_id)) {
                                 semester    = response.body().getData().get(i).getSemester_name();
@@ -596,6 +596,7 @@ public class AgendaAnak extends AppCompatActivity {
             dialog.show();
         dialog.setContentView(R.layout.progressbar);
     }
+
     private void hideDialog() {
         if (dialog.isShowing())
             dialog.dismiss();

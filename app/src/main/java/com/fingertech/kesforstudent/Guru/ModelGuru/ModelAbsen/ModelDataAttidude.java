@@ -1,7 +1,28 @@
 package com.fingertech.kesforstudent.Guru.ModelGuru.ModelAbsen;
 
+import java.util.List;
+
 public class ModelDataAttidude {
     private String attitudeid,attitude_name,attidude_desc,colour_code,attitude_grade_code,attitude_grade_name,attitude_grade_desc,attitude_grade_from,attitude_grade_to;
+    private String nis;
+
+    public String getNis() {
+        return nis;
+    }
+
+    public void setNis(String nis) {
+        this.nis = nis;
+    }
+
+    private List<ModelAtitude> modelAttidudeList;
+
+    public List<ModelAtitude> getModelAttidudeList() {
+        return modelAttidudeList;
+    }
+
+    public void setModelAttidudeList(List<ModelAtitude> modelAttidudeList) {
+        this.modelAttidudeList = modelAttidudeList;
+    }
 
     public String getAttitudeid() {
         return attitudeid;

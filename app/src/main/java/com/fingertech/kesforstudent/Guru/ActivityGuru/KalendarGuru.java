@@ -153,7 +153,7 @@ public class KalendarGuru extends AppCompatActivity {
                         }
                         if (calendar_date.equals(hari)){
                             if (calendar_date.equals(hari)){
-                                if (calendar_type.equals("-1")) {
+                                if (calendar_type.equals("-1") || calendar_type.equals("-2")) {
                                     calendarModel = new CalendarModel();
                                     calendarModel.setCalendar_id(calendar_id);
                                     calendarModel.setCalendar_time("Seharian");
@@ -230,6 +230,13 @@ public class KalendarGuru extends AppCompatActivity {
                 new MaterialDialog.Builder(KalendarGuru.this)
                         .title(calendarModelList.get(position).getCalendar_title())
                         .message("Seharian")
+                        .positiveText("Ok")
+                        .show();
+            }
+            else if (calendarModelList.get(position).getCalendar_type().equals("-2")){
+                new MaterialDialog.Builder(KalendarGuru.this)
+                        .title(calendarModelList.get(position).getCalendar_title())
+                        .message(calendarModelList.get(position).getCalendar_desc())
                         .positiveText("Ok")
                         .show();
             }else {
@@ -311,19 +318,19 @@ public class KalendarGuru extends AppCompatActivity {
                             for (int i = 0; i < jsonObjectList.size(); i++) {
                                 Calendar cal = Calendar.getInstance();
                                 try {
-                                    calendar_date = jsonObjectList.get(i).getString("calendar_date");
-                                    calendar_time = jsonObjectList.get(i).getString("calendar_time");
-                                    calendar_type = jsonObjectList.get(i).getString("calendar_type");
+                                    calendar_date   = jsonObjectList.get(i).getString("calendar_date");
+                                    calendar_time   = jsonObjectList.get(i).getString("calendar_time");
+                                    calendar_type   = jsonObjectList.get(i).getString("calendar_type");
                                     calendar_colour = jsonObjectList.get(i).getString("calendar_colour");
-                                    calendar_title = jsonObjectList.get(i).getString("calendar_title");
-                                    calendar_id = jsonObjectList.get(i).getString("calendar_id");
-                                    calendar_desc = jsonObjectList.get(i).getString("calendar_desc");
+                                    calendar_title  = jsonObjectList.get(i).getString("calendar_title");
+                                    calendar_id     = jsonObjectList.get(i).getString("calendar_id");
+                                    calendar_desc   = jsonObjectList.get(i).getString("calendar_desc");
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                 }
                                 if (calendar_date.equals(hari)) {
                                     if (calendar_date.equals(hari)) {
-                                        if (calendar_type.equals("-1")) {
+                                        if (calendar_type.equals("-1") || calendar_type.equals("-2")) {
                                             calendarModel = new CalendarModel();
                                             calendarModel.setCalendar_id(calendar_id);
                                             calendarModel.setCalendar_time("Seharian");
@@ -358,7 +365,7 @@ public class KalendarGuru extends AppCompatActivity {
                                         recyclerView.setVisibility(View.GONE);
                                     }
                                 }
-                                if (calendar_type.equals("-1")) {
+                                if (calendar_type.equals("-1") || calendar_type.equals("-2")) {
                                     DateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
                                     try {
                                         date = format.parse(calendar_date);

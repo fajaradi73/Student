@@ -38,33 +38,38 @@
                 android:layout_margin="10dp"
                 android:textColor="@color/black"/>
 
-            <com.fingertech.kesforstudent.CustomView.SnappyRecycleView
+            <androidx.recyclerview.widget.RecyclerView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="80dp"
                 android:visibility="gone"
                 android:background="@drawable/border_biru"
                 android:id="@+id/rv_senin"/>
-            <com.fingertech.kesforstudent.CustomView.SnappyRecycleView                android:layout_width="match_parent"
+            <androidx.recyclerview.widget.RecyclerView
+                android:layout_width="match_parent"
                 android:layout_height="80dp"
                 android:visibility="gone"
                 android:background="@drawable/border_biru"
                 android:id="@+id/rv_selasa"/>
-            <com.fingertech.kesforstudent.CustomView.SnappyRecycleView                android:layout_width="match_parent"
+            <androidx.recyclerview.widget.RecyclerView
+                android:layout_width="match_parent"
                 android:layout_height="80dp"
                 android:visibility="gone"
                 android:background="@drawable/border_biru"
                 android:id="@+id/rv_rabu"/>
-            <com.fingertech.kesforstudent.CustomView.SnappyRecycleView                android:layout_width="match_parent"
+            <androidx.recyclerview.widget.RecyclerView
+                android:layout_width="match_parent"
                 android:layout_height="80dp"
                 android:visibility="gone"
                 android:background="@drawable/border_biru"
                 android:id="@+id/rv_kamis"/>
-            <com.fingertech.kesforstudent.CustomView.SnappyRecycleView                android:layout_width="match_parent"
+            <androidx.recyclerview.widget.RecyclerView
+                android:layout_width="match_parent"
                 android:layout_height="80dp"
                 android:visibility="gone"
                 android:background="@drawable/border_biru"
                 android:id="@+id/rv_jumat"/>
-            <com.fingertech.kesforstudent.CustomView.SnappyRecycleView                android:layout_width="match_parent"
+            <androidx.recyclerview.widget.RecyclerView
+                android:layout_width="match_parent"
                 android:layout_height="80dp"
                 android:visibility="gone"
                 android:background="@drawable/border_biru"

@@ -3,9 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.fingertech.kes.Activity.MainActivity">
     <item
-        android:id="@+id/item_download"
-        android:icon="@drawable/ic_download"
-        android:title="Unduh"
+        android:id="@+id/item_info"
+        android:icon="@drawable/ic_info_white"
+        android:title="Info"
         app:showAsAction="ifRoom"/>
 
 </menu>

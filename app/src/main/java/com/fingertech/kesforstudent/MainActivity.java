@@ -83,6 +83,8 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setHasFixedSize(true);
 
+        sharedpreferences = getSharedPreferences(my_shared_preferences, Context.MODE_PRIVATE);
+
         floatingSearchView.setSearchHint("Pilih Sekolah anda");
 
         floatingSearchView.setOnQueryChangeListener(new FloatingSearchView.OnQueryChangeListener() {
@@ -125,6 +127,10 @@ public class MainActivity extends AppCompatActivity {
 
         btn_selanjutnya.setOnClickListener(v -> {
             if (sekolah_kode!=null) {
+                SharedPreferences.Editor editor = sharedpreferences.edit();
+                editor.putString("school_code",sekolah_kode.toLowerCase());
+                editor.putString("school_name",school_name);
+                editor.apply();
                 Intent intent = new Intent(MainActivity.this, Masuk.class);
                 intent.putExtra("school_code", sekolah_kode.toLowerCase());
                 intent.putExtra("school_name", school_name);
@@ -197,44 +203,41 @@ public class MainActivity extends AppCompatActivity {
         postCall.enqueue(new Callback<JSONResponse.School>() {
             @Override
             public void onResponse(Call<JSONResponse.School> call, final Response<JSONResponse.School> response) {
-                Log.d("TAG",response.code()+"");
+                Log.d("TAG", response.code() + "");
                 floatingSearchView.hideProgress();
-                JSONResponse.School resource = response.body();
-                status = resource.status;
-                code = resource.code;
-
-                if (status == 1 && code.equals("SS_SCS_0001")) {
-                    arraylist = response.body().getData();
-                    searchAdapter = new SearchAdapter(arraylist, MainActivity.this);
-                    recyclerView.setAdapter(searchAdapter);
-                    searchAdapter.notifyDataSetChanged();
-                    searchAdapter.getFilter(key).filter(key);
-                    searchAdapter.setOnItemClickListener(new SearchAdapter.OnItemClickListener() {
-                        @Override
-                        public void onItemClick(View view, int position) {
-                            school_name         = arraylist.get(position).getSchool_name();
-                            sekolah_kode        = arraylist.get(position).getSchool_code();
-                            school_id           = arraylist.get(position).getSchool_id();
-                            sekolah_kode        = sekolah_kode.toLowerCase();
-                            floatingSearchView.setSearchText(school_name);
-                            floatingSearchView.clearSearchFocus();
-                            recyclerView.setVisibility(View.GONE);
-                            logo.setVisibility(View.VISIBLE);
-                            footer.setVisibility(View.VISIBLE);
-                            tv_sekolah.setVisibility(View.VISIBLE);
-                            hideKeyboard(MainActivity.this);
-                        }
-                    });
-                } else {
-                    if(status == 0 && code.equals("SS_ERR_0001")){
-
+                if (response.isSuccessful()) {
+                    JSONResponse.School resource = response.body();
+                    status = resource.status;
+                    code = resource.code;
+                    if (status == 1 && code.equals("SS_SCS_0001")) {
+                        arraylist       = response.body().getData();
+                        searchAdapter   = new SearchAdapter(arraylist, MainActivity.this);
+                        recyclerView.setAdapter(searchAdapter);
+                        searchAdapter.notifyDataSetChanged();
+                        searchAdapter.getFilter(key).filter(key);
+                        searchAdapter.setOnItemClickListener(new SearchAdapter.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(View view, int position) {
+                                school_name     = arraylist.get(position).getSchool_name();
+                                sekolah_kode    = arraylist.get(position).getSchool_code();
+                                school_id       = arraylist.get(position).getSchool_id();
+                                sekolah_kode    = sekolah_kode.toLowerCase();
+                                floatingSearchView.setSearchText(school_name);
+                                floatingSearchView.clearSearchFocus();
+                                recyclerView.setVisibility(View.GONE);
+                                logo.setVisibility(View.VISIBLE);
+                                footer.setVisibility(View.VISIBLE);
+                                tv_sekolah.setVisibility(View.VISIBLE);
+                                hideKeyboard(MainActivity.this);
+                            }
+                        });
                     }
                 }
             }
             @Override
             public void onFailure(Call<JSONResponse.School> call, Throwable t) {
                 floatingSearchView.hideProgress();
-                Log.i("onFailure",t.toString());
+                Log.e("onFailure",t.toString());
             }
         });
     }

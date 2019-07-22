@@ -4893,7 +4893,7 @@ public class JSONResponse {
     public class DataCalendar{
 
         @SerializedName("calendar_id")
-        public int calendar_id;
+        public String calendar_id;
 
         @SerializedName("calendar_title")
         public String calendar_title;
@@ -4922,11 +4922,11 @@ public class JSONResponse {
             this.calendar_colour = calendar_colour;
         }
 
-        public int getCalendar_id() {
+        public String getCalendar_id() {
             return calendar_id;
         }
 
-        public void setCalendar_id(int calendar_id) {
+        public void setCalendar_id(String calendar_id) {
             this.calendar_id = calendar_id;
         }
 

@@ -31,9 +31,9 @@ public class AbsensiAdapter extends RecyclerView.Adapter<AbsensiAdapter.MyHolder
     private OnItemClickListener onItemClickListener;
     public int row_index = 0;
     private Date date,date_now,date_mulai,date_selesai;
-    private SimpleDateFormat jamformat  = new SimpleDateFormat("HH:mm:ss",Locale.getDefault());
+    private SimpleDateFormat jamformat      = new SimpleDateFormat("HH:mm:ss",Locale.getDefault());
     private SimpleDateFormat tanggalFormat  = new SimpleDateFormat("yyyy-MM-dd",Locale.getDefault());
-    private DateFormat times_format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+    private DateFormat times_format         = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
     public AbsensiAdapter(List<AbsensiModel> viewItemList,List<AbsenModel> absenModels) {
         this.viewItemList = viewItemList;
         this.absenModels = absenModels;
@@ -57,8 +57,7 @@ public class AbsensiAdapter extends RecyclerView.Adapter<AbsensiAdapter.MyHolder
 
         View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_absensi, parent, false);
 
-        MyHolder myHolder = new MyHolder(itemView,onItemClickListener);
-        return myHolder;
+        return new MyHolder(itemView,onItemClickListener);
     }
 
 
@@ -101,29 +100,30 @@ public class AbsensiAdapter extends RecyclerView.Adapter<AbsensiAdapter.MyHolder
         if (times_start.equals(times_mulai)){
             switch (absenModel.getDay_id()) {
                 case "0":
-                    Glide.with(getContext()).load(R.drawable.ic_kuning).into(holder.image_absen);
+                    Glide.with(getContext()).load("https://ui-avatars.com/api/?name=!&background=FFDE17&color=000&length=1").into(holder.image_absen);
                     break;
                 case "1":
-                    Glide.with(getContext()).load(R.drawable.ic_true).into(holder.image_absen);
+                    Glide.with(getContext()).load("https://ui-avatars.com/api/?name=Dikeluarkan&background=317FA1&color=fff&length=1").into(holder.image_absen);
                     break;
                 case "2":
-                    Glide.with(getContext()).load(R.drawable.ic_false).into(holder.image_absen);
+                    Glide.with(getContext()).load("https://ui-avatars.com/api/?name=Telat&background=2C3039&color=fff&length=1").into(holder.image_absen);
+                    break;
+                case "3":
+                    Glide.with(getContext()).load("https://ui-avatars.com/api/?name=Izin&background=EFE138&color=000&length=1").into(holder.image_absen);
+                    break;
+                case "4":
+                    Glide.with(getContext()).load("https://ui-avatars.com/api/?name=Sakit&background=1FA3DE&color=fff&length=1").into(holder.image_absen);
+                    break;
+                case "5":
+                    Glide.with(getContext()).load("https://ui-avatars.com/api/?name=Alpa&background=CF1D35&color=fff&length=1").into(holder.image_absen);
+                    break;
+                case "6":
+                    Glide.with(getContext()).load("https://ui-avatars.com/api/?name=Hadir&background=B6F883&color=000&length=1").into(holder.image_absen);
                     break;
             }
         }else {
-            Glide.with(getContext()).load(R.drawable.ic_kuning).into(holder.image_absen);
+            Glide.with(getContext()).load("https://ui-avatars.com/api/?name=!&background=FFDE17&color=000&length=1").into(holder.image_absen);
         }
-//        if (times_now >= times_start){
-//            if (viewItem.getDay_id().equals("0")) {
-//                Glide.with(getContext()).load(R.drawable.ic_false).into(holder.image_absen);
-//            }else if (viewItem.getDay_id().equals("1")){
-//                Glide.with(getContext()).load(R.drawable.ic_true).into(holder.image_absen);
-//            }else if (viewItem.getDay_id().equals("2")){
-//                Glide.with(getContext()).load(R.drawable.ic_kuning).into(holder.image_absen);
-//            }
-//        }else {
-//            Glide.with(getContext()).load(R.drawable.ic_kuning).into(holder.image_absen);
-//        }
     }
 
     @Override

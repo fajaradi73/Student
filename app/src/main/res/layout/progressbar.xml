@@ -18,6 +18,7 @@
     <ImageView
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
+        android:id="@+id/image_progress"
         android:layout_width="77dp"
         android:layout_height="77dp"
         android:src="@drawable/ic_logo_progressbar"/>

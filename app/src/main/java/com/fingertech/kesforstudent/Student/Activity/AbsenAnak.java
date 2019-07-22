@@ -5,6 +5,9 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import com.google.android.material.appbar.AppBarLayout;
+
+import androidx.appcompat.app.AlertDialog;
+import androidx.cardview.widget.CardView;
 import androidx.core.view.ViewCompat;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
@@ -14,6 +17,8 @@ import androidx.appcompat.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -84,7 +89,6 @@ public class AbsenAnak extends AppCompatActivity{
 
     AbsensiAdapter absensiAdapter;
     TextView tv_absen;
-    LinearLayout hint;
     ProgressDialog dialog;
     SharedPreferences sharedPreferences;
     String days_name;
@@ -115,7 +119,6 @@ public class AbsenAnak extends AppCompatActivity{
         mApiInterface       = ApiClient.getClient().create(Auth.class);
         recyclerView        = findViewById(R.id.rv_absen);
         tv_absen            = findViewById(R.id.hint_absen);
-        hint                = findViewById(R.id.hint);
         no_absen            = findViewById(R.id.no_absen);
         arrow               = findViewById(R.id.date_picker_arrow);
         datePickerButton    = findViewById(R.id.date_picker_button);
@@ -178,17 +181,13 @@ public class AbsenAnak extends AppCompatActivity{
                 }
                 tanggals = formattanggal.format(dateClicked);
 
-                compactCalendarView.setCurrentDayBackgroundColor(Color.parseColor("#0Dffffff"));
-
                 if (hari.equals("Sabtu") || hari.equals("Minggu")){
                     tv_absen.setVisibility(VISIBLE);
                     recyclerView.setVisibility(GONE);
-                    hint.setVisibility(GONE);
                     no_absen.setVisibility(GONE);
                 }else {
                     tv_absen.setVisibility(GONE);
                     recyclerView.setVisibility(VISIBLE);
-                    hint.setVisibility(VISIBLE);
                     no_absen.setVisibility(GONE);
                     if (absensiModels != null) {
                         absensiModels.clear();
@@ -280,11 +279,31 @@ public class AbsenAnak extends AppCompatActivity{
             case android.R.id.home:
                 finish();
                 return true;
-        }
+            case R.id.item_info:
+                AlertDialog.Builder showdialog = new AlertDialog.Builder(AbsenAnak.this);
+                CardView btnclose;
+                View view = getLayoutInflater().inflate(R.layout.layout_info_absensi,null);
+                btnclose = view.findViewById(R.id.iv_close);
 
+                showdialog.setView(view);
+                AlertDialog dialog = showdialog.create();
+                dialog.show();
+                Window window = dialog.getWindow();
+
+                window.setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                btnclose.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.dismiss();
+                    }
+                });
+
+                return true;
+        }
         return super.onOptionsItemSelected(item);
     }
     public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_absen, menu);
         return true;
     }
 
@@ -337,18 +356,15 @@ public class AbsenAnak extends AppCompatActivity{
                                 if (hari.equals("Sabtu") || hari.equals("Minggu")) {
                                     tv_absen.setVisibility(VISIBLE);
                                     recyclerView.setVisibility(GONE);
-                                    hint.setVisibility(GONE);
                                     no_absen.setVisibility(GONE);
                                 } else {
                                     if (scheduleClassItemList.size() == 0) {
                                         tv_absen.setVisibility(GONE);
                                         no_absen.setVisibility(VISIBLE);
                                         recyclerView.setVisibility(GONE);
-                                        hint.setVisibility(GONE);
                                     } else {
                                         tv_absen.setVisibility(GONE);
                                         recyclerView.setVisibility(VISIBLE);
-                                        hint.setVisibility(VISIBLE);
                                         no_absen.setVisibility(GONE);
                                         if (absensiModels != null) {
                                             absensiModels.clear();

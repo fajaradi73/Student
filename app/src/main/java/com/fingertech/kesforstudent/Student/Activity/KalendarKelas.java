@@ -130,7 +130,7 @@ public class KalendarKelas extends AppCompatActivity {
                         calendar_colour = calendar.getCalendar_colour();
                         if (calendar_date.equals(hari)){
                             if (calendar_date.equals(hari)){
-                                if (calendar_type.equals("-1")) {
+                                if (calendar_type.equals("-1") || calendar_type.equals("-2")) {
                                     calendarModel = new CalendarModel();
                                     calendarModel.setCalendar_id(String.valueOf(calendar.getCalendar_id()));
                                     calendarModel.setCalendar_time("Seharian");
@@ -198,11 +198,16 @@ public class KalendarKelas extends AppCompatActivity {
         calendarAdapter = new CalendarAdapter(calendarModelList);
         calendarAdapter.setOnItemClickListener((view, position) -> {
             if (calendarModelList.get(position).getCalendar_type().equals("-1")) {
-                calendar_id     = calendarModelList.get(position).getCalendar_id();
-                Log.d("ids",calendar_id+"");
                 new MaterialDialog.Builder(KalendarKelas.this)
                         .title(calendarModelList.get(position).getCalendar_title())
                         .message("Seharian")
+                        .positiveText("Ok")
+                        .show();
+            }
+            else if (calendarModelList.get(position).getCalendar_type().equals("-2")){
+                new MaterialDialog.Builder(KalendarKelas.this)
+                        .title(calendarModelList.get(position).getCalendar_title())
+                        .message(calendarModelList.get(position).getCalendar_desc())
                         .positiveText("Ok")
                         .show();
             }else {
@@ -266,7 +271,7 @@ public class KalendarKelas extends AppCompatActivity {
                                 calendar_colour = calendar.getCalendar_colour();
                                 if (calendar_date.equals(hari)){
                                     if (calendar_date.equals(hari)){
-                                        if (calendar_type.equals("-1")) {
+                                        if (calendar_type.equals("-1") || calendar_type.equals("-2")) {
                                             calendarModel = new CalendarModel();
                                             calendarModel.setCalendar_id(String.valueOf(calendar.getCalendar_id()));
                                             calendarModel.setCalendar_time("Seharian");
@@ -301,7 +306,7 @@ public class KalendarKelas extends AppCompatActivity {
                                     }
                                 }
                                 calendarAdapter.notifyDataSetChanged();
-                                if (calendar_type.equals("-1")) {
+                                if (calendar_type.equals("-1") || calendar_type.equals("-2")) {
                                     DateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
                                     try {
                                         date = format.parse(calendar_date);

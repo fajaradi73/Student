@@ -75,7 +75,7 @@
                     app:compactCalendarBackgroundColor="@color/colorPrimary"
                     app:compactCalendarTextColor="@color/white"
                     app:compactCalendarCurrentSelectedDayBackgroundColor="@color/white"
-                    app:compactCalendarCurrentDayBackgroundColor="@color/white"
+                    app:compactCalendarCurrentDayBackgroundColor="@color/red_500"
                     app:compactCalendarMultiEventIndicatorColor="#fff"
                     app:compactCalendarCurrentDayTextColor="@color/black"
                     app:compactCalendarCurrentSelectedDayTextColor="@color/colorPrimary"

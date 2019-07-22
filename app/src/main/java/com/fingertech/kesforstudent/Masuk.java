@@ -88,10 +88,10 @@ public class Masuk extends AppCompatActivity {
         til_password    = findViewById(R.id.til_kata_sandi);
         tv_lupa_sandi   = findViewById(R.id.tvb_lupa_pass);
         mApiInterface   = ApiClient.getClient().create(Auth.class);
-        school_code     = getIntent().getStringExtra("school_code");
-        school_name     = getIntent().getStringExtra("school_name");
 
-        sharedpreferences = getSharedPreferences(my_shared_preferences, Context.MODE_PRIVATE);
+        sharedpreferences   = getSharedPreferences(my_shared_preferences, Context.MODE_PRIVATE);
+        school_code         = sharedpreferences.getString("school_code",null);
+        school_name         = sharedpreferences.getString("school_name",null);
         row = positionTable.getAllData();
 
         ////// check permission READ_PHONE_STATE for deviceid[imei] smartphone
