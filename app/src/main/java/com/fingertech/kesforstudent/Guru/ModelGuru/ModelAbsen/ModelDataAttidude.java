@@ -1,5 +1,8 @@
 package com.fingertech.kesforstudent.Guru.ModelGuru.ModelAbsen;
 
+import com.fingertech.kesforstudent.Rest.JSONResponse;
+
+import java.util.ArrayList;
 import java.util.List;
 
 public class ModelDataAttidude {
@@ -12,6 +15,16 @@ public class ModelDataAttidude {
 
     public void setNis(String nis) {
         this.nis = nis;
+    }
+
+    private ArrayList<ModelDataAttidude> modelDataAttidudeArrayList;
+
+    public ArrayList<ModelDataAttidude> getModelDataAttidudeArrayList() {
+        return modelDataAttidudeArrayList;
+    }
+
+    public void setModelDataAttidudeArrayList(ArrayList<ModelDataAttidude> modelDataAttidudeArrayList) {
+        this.modelDataAttidudeArrayList = modelDataAttidudeArrayList;
     }
 
     private List<ModelAtitude> modelAttidudeList;

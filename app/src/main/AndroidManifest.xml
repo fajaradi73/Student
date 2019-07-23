@@ -184,7 +184,7 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".Guru.ActivityGuru.AbsenMurid"
-            android:label="Absen Murid"
+            android:label="Absen, Penilaian sikap"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity

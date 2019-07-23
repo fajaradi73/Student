@@ -1793,7 +1793,10 @@ public class JSONResponse {
             this.details = details;
         }
     }
+
     public class Detail{
+        @SerializedName("attitudegradeid")
+        public String attitudegradeid;
         @SerializedName("attitude_grade_code")
         public String attitude_grade_code;
         @SerializedName("attitude_grade_name")
@@ -1804,6 +1807,14 @@ public class JSONResponse {
         public String attitude_grade_from;
         @SerializedName("attitude_grade_to")
         public String attitude_grade_to;
+
+        public String getAttitudegradeid() {
+            return attitudegradeid;
+        }
+
+        public void setAttitudegradeid(String attitudegradeid) {
+            this.attitudegradeid = attitudegradeid;
+        }
 
         public String getAttitude_grade_code() {
             return attitude_grade_code;

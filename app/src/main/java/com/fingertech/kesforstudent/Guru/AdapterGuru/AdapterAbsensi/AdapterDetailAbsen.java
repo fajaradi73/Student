@@ -75,9 +75,9 @@ public class AdapterDetailAbsen extends PagerAdapter {
         namaanak            = view.findViewById(R.id.tv_nama);
         nis                 = view.findViewById(R.id.tv_nis);
         rv_attidude         = view.findViewById(R.id.rv_absen);
-        btn_back            = views.findViewById(R.id.btnback);
-        btn_next            = views.findViewById(R.id.btnnext);
-        btn_simpan          = views.findViewById(R.id.btn_simpan);
+        btn_back            = view.findViewById(R.id.btnback);
+        btn_next            = view.findViewById(R.id.btnnext);
+        btn_simpan          = view.findViewById(R.id.btn_simpan);
 
         ModelDetailAbsen viewitem = modelDetailAbsenList.get(position);
         namaanak.setText(viewitem.getNama());
@@ -85,11 +85,12 @@ public class AdapterDetailAbsen extends PagerAdapter {
         AdapterAttidudes adapterAttidudes = new AdapterAttidudes(context,viewitem.getModelDataAttidudeList(),modelAtitudeList);
         LinearLayoutManager layoutManager = new LinearLayoutManager(context);
         layoutManager.setOrientation(RecyclerView.VERTICAL);
+        rv_attidude.setHasFixedSize(true);
         rv_attidude.setLayoutManager(layoutManager);
         rv_attidude.setAdapter(adapterAttidudes);
-
         container.addView(view);
-        if (viewPager.getCurrentItem() == 0){
+
+        if (position == 0){
             btn_back.setVisibility(View.INVISIBLE);
         }else if (position == modelDetailAbsenList.size()-1){
             btn_back.setVisibility(View.GONE);
@@ -104,16 +105,15 @@ public class AdapterDetailAbsen extends PagerAdapter {
         btn_next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                viewPager.setCurrentItem(viewPager.getCurrentItem() + 1, true);
+                viewPager.setCurrentItem(position + 1, true);
             }
         });
         btn_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                viewPager.setCurrentItem(viewPager.getCurrentItem()-1, true);
+                viewPager.setCurrentItem(position - 1, true);
             }
         });
-
 
         return view;
     }
@@ -122,10 +122,4 @@ public class AdapterDetailAbsen extends PagerAdapter {
     public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
         container.removeView((RelativeLayout)object);
     }
-
-    private int getItem(int i) {
-        return viewPager.getCurrentItem() + i;
-    }
-
-
 }

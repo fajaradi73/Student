@@ -2,6 +2,8 @@ package com.fingertech.kesforstudent.Guru.ActivityGuru;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.PorterDuff;
 
@@ -12,7 +14,6 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.appcompat.widget.Toolbar;
-import androidx.viewpager.widget.ViewPager;
 
 import android.util.Log;
 import android.view.Gravity;
@@ -24,10 +25,9 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.arlib.floatingsearchview.FloatingSearchView;
 import com.fingertech.kesforstudent.Controller.Auth;
 import com.fingertech.kesforstudent.CustomView.CustomViewPager;
-import com.fingertech.kesforstudent.Guru.AdapterGuru.AdapterAbsensi.AdapterAttidudes;
-import com.fingertech.kesforstudent.Guru.AdapterGuru.AdapterAbsensi.AdapterCodeAbsen;
 import com.fingertech.kesforstudent.Guru.AdapterGuru.AdapterAbsen;
 import com.fingertech.kesforstudent.Guru.AdapterGuru.AdapterAbsensi.AdapterDetailAbsen;
 import com.fingertech.kesforstudent.Guru.ModelGuru.ModelAbsen.ModelAbsenGuru;
@@ -35,14 +35,11 @@ import com.fingertech.kesforstudent.Guru.ModelGuru.ModelAbsen.ModelArrayAbsen;
 import com.fingertech.kesforstudent.Guru.ModelGuru.ModelAbsen.ModelAtitude;
 import com.fingertech.kesforstudent.Guru.ModelGuru.ModelAbsen.ModelDataAttidude;
 import com.fingertech.kesforstudent.Guru.ModelGuru.ModelAbsen.ModelDetailAbsen;
+import com.fingertech.kesforstudent.MainActivity;
 import com.fingertech.kesforstudent.Masuk;
 import com.fingertech.kesforstudent.R;
 import com.fingertech.kesforstudent.Rest.ApiClient;
 import com.fingertech.kesforstudent.Rest.JSONResponse;
-import com.google.gson.JsonElement;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -57,7 +54,7 @@ import retrofit2.Response;
 public class AbsenMurid extends AppCompatActivity {
     CardView btninfo;
     RecyclerView rv_absen;
-    List<ModelDataAttidude> modelDataAttidudes = new ArrayList<>();
+    List<ModelDataAttidude> modelDataAttidudes;
     AdapterAbsen adapterAbsen;
     List<ModelAbsenGuru> modelAbsenGuruList = new ArrayList<>();
 //    List<ModelCodeAttidude> modelCodeAttidudes = new ArrayList<>();
@@ -69,7 +66,6 @@ public class AbsenMurid extends AppCompatActivity {
     ModelDataAttidude modelDataAttidude;
 //    ModelCodeAttidude modelCodeAttidude;
     ModelArrayAbsen modelArrayAbsen;
-    AdapterCodeAbsen adapterCodeAbsen;
     Toolbar toolbar;
     Auth mApiInterface;
     String  schedule_id,authorization,school_code,member_id,scyear_id, classroom,code,nama,id_kelas,bgcolor,attidude,absentcode,absentwarna;
@@ -89,7 +85,7 @@ public class AbsenMurid extends AppCompatActivity {
     LinearLayout ll_nojadwal,ll_absen,ll_loading;
     List<JSONResponse.DataAttidude> dataAttidudeList,listAttitude;
     List<JSONResponse.Detail> detailList;
-    private List<ModelAtitude> modelAtitudeList = new ArrayList<>();
+    private List<ModelAtitude> modelAtitudeList;
     private ModelAtitude modelAtitude;
     private String attidudename,attidude_id,attidude_color,grade_code;
 
@@ -98,7 +94,7 @@ public class AbsenMurid extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.absen_murid);
-        btninfo             = findViewById(R.id.Cv_informasi);
+
         rv_absen            = findViewById(R.id.rv_absenguru);
         toolbar             = findViewById(R.id.toolbarAbsen);
         ll_nojadwal         = findViewById(R.id.no_jadwal);
@@ -118,12 +114,6 @@ public class AbsenMurid extends AppCompatActivity {
         classroom           = sharedpreferences.getString(TAG_CLASS_ID,"");
 
         getAtitude();
-        btninfo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Dialog();
-            }
-        });
         day = dateFormat.format(Calendar.getInstance().getTime());
         getMapel();
 
@@ -186,8 +176,6 @@ public class AbsenMurid extends AppCompatActivity {
         TextView btnclose;
         View view = getLayoutInflater().inflate(R.layout.layout_info_absen,null);
         btnclose = view.findViewById(R.id.btnclose);
-
-
         showdialog.setView(view);
         AlertDialog dialog = showdialog.create();
         dialog.show();
@@ -207,12 +195,16 @@ public class AbsenMurid extends AppCompatActivity {
             case android.R.id.home:
                 finish();
                 return true;
+            case R.id.item_info:
+                Dialog();
+                return true;
         }
 
         return super.onOptionsItemSelected(item);
     }
 
     public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_absen_guru, menu);
         return true;
     }
 
@@ -237,7 +229,7 @@ public class AbsenMurid extends AppCompatActivity {
                             if (studentAbsentItem.getAbsenDetail() != null) {
                                 for (JSONResponse.AbsenDetailItem dataAbsen : studentAbsentItem.getAbsenDetail()) {
                                     for (JSONResponse.AttendanceDetailItem attendanceDetailItem : dataAbsen.getAttendanceDetail()) {
-                                        absentcode = attendanceDetailItem.getTypeText();
+                                        absentcode  = attendanceDetailItem.getTypeText();
                                         absentwarna = attendanceDetailItem.getBgcolor();
                                         modelArrayAbsen = new ModelArrayAbsen();
                                         modelArrayAbsen.setCodeabsen(absentcode);
@@ -246,7 +238,7 @@ public class AbsenMurid extends AppCompatActivity {
                                         modelArrayAbsenList.add(modelArrayAbsen);
                                     }
                                 }
-                            }else {
+                            } else {
                                 if (dataAttidudeList != null){
                                     modelArrayAbsen = new ModelArrayAbsen();
                                     modelArrayAbsen.setCodeabsen("H");
@@ -274,91 +266,101 @@ public class AbsenMurid extends AppCompatActivity {
                         layoutManager.setOrientation(RecyclerView.VERTICAL);
                         rv_absen.setLayoutManager(layoutManager);
                         rv_absen.setAdapter(adapterAbsen);
+                        adapterAbsen.setOnItemClickListener((view, position) -> {
+                            CardView iv_close,btn_info;
+                            CustomViewPager viewpager;
+                            AdapterDetailAbsen adapterDetailAbsen;
 
-                        adapterAbsen.setOnItemClickListener(new AdapterAbsen.OnItemClickListener() {
-                            @Override
-                            public void onItemClick(View view, int position) {
-                                CardView iv_close,btn_info;
-                                CustomViewPager viewpager;
-                                AdapterDetailAbsen adapterDetailAbsen;
+                            view        = getLayoutInflater().inflate(R.layout.activity_detail_absen_guru,null);
+                            viewpager   = view.findViewById(R.id.pagerabsen);
+                            iv_close    = view.findViewById(R.id.iv_close);
+                            btn_info    = view.findViewById(R.id.cv_informasi);
+                            final Dialog mBottomSheetDialog = new Dialog(AbsenMurid.this);
+                            mBottomSheetDialog.setContentView(view);
+                            mBottomSheetDialog.setCancelable(true);
+                            mBottomSheetDialog.getWindow().setLayout(LinearLayout.LayoutParams.MATCH_PARENT,
+                                    LinearLayout.LayoutParams.MATCH_PARENT);
+                            mBottomSheetDialog.getWindow().setGravity(Gravity.CENTER);
+                            mBottomSheetDialog.show();
+                            if (modelDetailAbsenList != null){
+                                modelDetailAbsenList.clear();
+                            }
 
-                                view        = getLayoutInflater().inflate(R.layout.activity_detail_absen_guru,null);
-                                viewpager   = view.findViewById(R.id.pagerabsen);
-                                iv_close    = view.findViewById(R.id.iv_close);
-                                btn_info    = view.findViewById(R.id.cv_informasi);
-                                final Dialog mBottomSheetDialog = new Dialog(AbsenMurid.this);
-                                mBottomSheetDialog.setContentView(view);
-                                mBottomSheetDialog.setCancelable(true);
-                                mBottomSheetDialog.getWindow().setLayout(LinearLayout.LayoutParams.MATCH_PARENT,
-                                        LinearLayout.LayoutParams.MATCH_PARENT);
-                                mBottomSheetDialog.getWindow().setGravity(Gravity.CENTER);
-                                mBottomSheetDialog.show();
-                                if (modelDetailAbsenList != null){
-                                    modelDetailAbsenList.clear();
-                                }
-
-                                for (JSONResponse.StudentAbsentItem studentAbsentItem : response.body().getData().getStudentAbsent()) {
-                                    nama    = studentAbsentItem.getFullname();
-                                    nis     = studentAbsentItem.getMemberCode();
-                                    if (modelDataAttidudes != null){
-                                        modelDataAttidudes.clear();
-                                    }
-                                    modelDataAttidude   = new ModelDataAttidude();
-                                    modelDataAttidude.setColour_code("#A2FB5E");
-                                    modelDataAttidude.setAttitude_name("Kehadiran");
-                                    modelDataAttidude.setNis(nis);
-                                    modelDataAttidude.setAttitudeid("0");
-                                    modelDataAttidudes.add(modelDataAttidude);
-                                    for (JSONResponse.DataAttidude dataAttidude : dataAttidudeList){
-                                        attidudename        = dataAttidude.getAttitude_grade_name();
-                                        attidude_id         = dataAttidude.getAttitudeid();
-                                        attidude_color      = dataAttidude.getColour_code();
-                                        modelDataAttidude   = new ModelDataAttidude();
+                            for (JSONResponse.StudentAbsentItem studentAbsentItem : response.body().getData().getStudentAbsent()) {
+                                nama    = studentAbsentItem.getFullname();
+                                nis     = studentAbsentItem.getMemberCode();
+                                modelDataAttidudes = new ArrayList<>();
+                                modelDataAttidude   = new ModelDataAttidude();
+                                modelDataAttidude.setColour_code("#A2FB5E");
+                                modelDataAttidude.setAttitude_name("Kehadiran");
+                                modelDataAttidude.setNis(nis);
+                                modelDataAttidude.setAttitudeid("0");
+                                modelDataAttidudes.add(modelDataAttidude);
+                                if (dataAttidudeList != null && detailList != null) {
+                                    for (JSONResponse.DataAttidude dataAttidude : dataAttidudeList) {
+                                        attidudename    = dataAttidude.getAttitude_grade_name();
+                                        attidude_id     = dataAttidude.getAttitudeid();
+                                        attidude_color  = dataAttidude.getColour_code();
+                                        modelAtitudeList = new ArrayList<>();
+                                        for (JSONResponse.Detail detail : detailList) {
+                                            grade_code = detail.getAttitude_grade_code();
+                                            modelAtitude = new ModelAtitude();
+                                            modelAtitude.setColor(attidude_color);
+                                            modelAtitude.setId(attidude_id);
+                                            modelAtitude.setId_atitude(detail.getAttitudegradeid());
+                                            modelAtitude.setNama(grade_code);
+                                            modelAtitude.setNis(nis);
+                                            modelAtitudeList.add(modelAtitude);
+                                        }
+                                        modelDataAttidude = new ModelDataAttidude();
                                         modelDataAttidude.setColour_code(attidude_color);
                                         modelDataAttidude.setAttitude_name(attidudename);
                                         modelDataAttidude.setNis(nis);
                                         modelDataAttidude.setAttitudeid(attidude_id);
+                                        modelDataAttidude.setModelAttidudeList(modelAtitudeList);
                                         modelDataAttidudes.add(modelDataAttidude);
                                     }
-                                    modelDetailAbsen = new ModelDetailAbsen();
-                                    modelDetailAbsen.setNama(nama);
-                                    modelDetailAbsen.setNis(nis);
-                                    modelDetailAbsen.setModelDataAttidudeList(modelDataAttidudes);
-                                    modelDetailAbsenList.add(modelDetailAbsen);
                                 }
-                                if (modelAtitudeList != null){
-                                    modelAtitudeList.clear();
-                                }
-                                for (JSONResponse.Detail detail : detailList){
-                                    grade_code  = detail.getAttitude_grade_code();
-                                    modelAtitude = new ModelAtitude();
-                                    modelAtitude.setColor(attidude_color);
-                                    modelAtitude.setId(attidude_id);
-                                    modelAtitude.setNama(grade_code);
-                                    modelAtitude.setNis(nis);
-                                    modelAtitudeList.add(modelAtitude);
-                                }
-                                adapterDetailAbsen = new AdapterDetailAbsen(AbsenMurid.this,modelDetailAbsenList,viewpager,modelAtitudeList,view);
-                                viewpager.setAdapter(adapterDetailAbsen);
-                                viewpager.setCurrentItem(position);
-                                iv_close.setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-                                        mBottomSheetDialog.dismiss();
-                                    }
-                                });
-                                btn_info.setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-                                        Dialog();
-                                    }
-                                });
+                                modelDetailAbsen = new ModelDetailAbsen();
+                                modelDetailAbsen.setNama(nama);
+                                modelDetailAbsen.setNis(nis);
+                                modelDetailAbsen.setModelDataAttidudeList(modelDataAttidudes);
+                                modelDetailAbsenList.add(modelDetailAbsen);
                             }
+                            adapterDetailAbsen = new AdapterDetailAbsen(AbsenMurid.this,modelDetailAbsenList,viewpager,modelAtitudeList,view);
+                            viewpager.setAdapter(adapterDetailAbsen);
+                            viewpager.setCurrentItem(position);
+                            iv_close.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(AbsenMurid.this,R.style.DialogTheme);
+                                    builder.setTitle("Apakah anda ingin keluar?");
+                                    builder.setMessage("Jika anda keluar, absen yang sudah anda input akan hilang.");
+                                    builder.setIcon(R.drawable.ic_info_kes);
+                                    builder.setPositiveButton("Ya", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            dialog.dismiss();
+                                            mBottomSheetDialog.dismiss();
+                                        }
+                                    });
+                                    builder.setNegativeButton("Tidak", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            dialog.dismiss();
+                                        }
+                                    });
+                                    builder.show();
+                                }
+                            });
+                            btn_info.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    Dialog();
+                                }
+                            });
                         });
-
-
                     }
-
                 }
             }
 

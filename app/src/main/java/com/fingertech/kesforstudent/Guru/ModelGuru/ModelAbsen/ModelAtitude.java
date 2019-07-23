@@ -1,10 +1,19 @@
 package com.fingertech.kesforstudent.Guru.ModelGuru.ModelAbsen;
 
 public class ModelAtitude {
-    String nama;
-    String id;
-    String color;
+    private String nama;
+    private String id;
+    private String color;
+    private String nis;
+    private String id_atitude;
 
+    public String getId_atitude() {
+        return id_atitude;
+    }
+
+    public void setId_atitude(String id_atitude) {
+        this.id_atitude = id_atitude;
+    }
 
     public String getNis() {
         return nis;
@@ -14,7 +23,7 @@ public class ModelAtitude {
         this.nis = nis;
     }
 
-    String nis;
+
 
     public String getNama() {
         return nama;

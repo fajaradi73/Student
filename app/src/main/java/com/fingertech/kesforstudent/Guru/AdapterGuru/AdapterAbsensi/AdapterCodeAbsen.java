@@ -1,5 +1,6 @@
 package com.fingertech.kesforstudent.Guru.AdapterGuru.AdapterAbsensi;
 
+
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
@@ -11,6 +12,7 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.fingertech.kesforstudent.Guru.ModelGuru.ModelAbsen.ModelAtitude;
 import com.fingertech.kesforstudent.Guru.ModelGuru.ModelAttendance;
 import com.fingertech.kesforstudent.R;
 
@@ -19,7 +21,7 @@ import java.util.List;
 public class AdapterCodeAbsen extends RecyclerView.Adapter<AdapterCodeAbsen.MyHolder>  {
     private List<ModelAttendance> modelCodeAttidudes;
     Context context;
-    int statusattidude;
+    int row_index;
 
 
     private OnItemClickListener onItemClickListener;
@@ -36,10 +38,9 @@ public class AdapterCodeAbsen extends RecyclerView.Adapter<AdapterCodeAbsen.MyHo
     @Override
     public  MyHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
-        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_code, parent, false);
+        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_code_absen, parent, false);
 
-        AdapterCodeAbsen.MyHolder myHolder = new AdapterCodeAbsen.MyHolder(itemView,onItemClickListener);
-        return myHolder;
+        return new MyHolder(itemView,onItemClickListener);
     }
 
 
@@ -51,17 +52,19 @@ public class AdapterCodeAbsen extends RecyclerView.Adapter<AdapterCodeAbsen.MyHo
 
         holder.tv_code.setText(viewItem.getCodeabsen());
         holder.bgcolor.setBackgroundColor(Color.parseColor(viewItem.getWarna()));
-
     }
 
     @Override
     public int getItemCount() {
-        return modelCodeAttidudes.size();
+        if (modelCodeAttidudes.size() != 0)
+            return modelCodeAttidudes.size();
+        else return 0;
     }
 
     class MyHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView tv_code;
         LinearLayout bgcolor;
+        View view;
 
         OnItemClickListener onItemClickListener;
 
@@ -69,6 +72,8 @@ public class AdapterCodeAbsen extends RecyclerView.Adapter<AdapterCodeAbsen.MyHo
             super(itemView);
             tv_code       = itemView.findViewById(R.id.tv_code);
             bgcolor       = itemView.findViewById(R.id.ll_color);
+            itemView.setOnClickListener(this);
+            this.onItemClickListener = onItemClickListener;
         }
 
         @Override
@@ -76,9 +81,15 @@ public class AdapterCodeAbsen extends RecyclerView.Adapter<AdapterCodeAbsen.MyHo
             onItemClickListener.onItemClick(v, getAdapterPosition());
         }
     }
+
     public interface OnItemClickListener {
 
         void onItemClick(View view, int position);
+    }
+
+    public void selectRow(int index){
+        row_index=index;
+        notifyDataSetChanged();
     }
 
 }

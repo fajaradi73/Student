@@ -9,13 +9,16 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.fingertech.kesforstudent.Guru.AdapterGuru.AdapterAbsensi.AdapterCode;
 import com.fingertech.kesforstudent.Guru.AdapterGuru.AdapterAbsensi.AdapterCodeAbsen;
 import com.fingertech.kesforstudent.Guru.ModelGuru.ModelAbsen.ModelAbsenGuru;
 import com.fingertech.kesforstudent.Guru.ModelGuru.ModelAttendance;
 import com.fingertech.kesforstudent.R;
+import com.fingertech.kesforstudent.Rest.JSONResponse;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,12 +26,13 @@ import java.util.List;
 public class AdapterAbsen extends RecyclerView.Adapter<AdapterAbsen.MyHolder> {
 
     private List<ModelAbsenGuru> modelAbsenGuruList;
-    private List<ModelAttendance> modelArrayAbsenList = new ArrayList<>();
-    ModelAttendance modelAttendance;
+    private List<ModelAttendance> modelArrayAbsenList ;
+    private ModelAttendance modelAttendance;
 
-    Context context;
+    private Context context;
     private OnItemClickListener onItemClickListener;
-    AdapterCodeAbsen adapterCodeAbsen;
+    private AdapterCodeAbsen adapterCodeAbsen;
+    private String searchString;
 
 
     public AdapterAbsen(Context context,List<ModelAbsenGuru> viewItemList) {
@@ -55,9 +59,7 @@ public class AdapterAbsen extends RecyclerView.Adapter<AdapterAbsen.MyHolder> {
 
         ModelAbsenGuru viewItem = modelAbsenGuruList.get(position);
         holder.nama.setText(viewItem.getNama());
-        if (modelArrayAbsenList != null){
-            modelArrayAbsenList.clear();
-        }
+        modelArrayAbsenList = new ArrayList<>();
         for (int i = 0 ; i < viewItem.getModelArrayAbsenList().size();i++){
             if (viewItem.getModelArrayAbsenList().get(i).getNis().equals(viewItem.getNis())){
                 modelAttendance = new ModelAttendance();
@@ -100,4 +102,6 @@ public class AdapterAbsen extends RecyclerView.Adapter<AdapterAbsen.MyHolder> {
 
         void onItemClick(View view, int position);
     }
+
+
 }

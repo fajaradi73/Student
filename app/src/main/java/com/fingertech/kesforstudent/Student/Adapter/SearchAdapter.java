@@ -26,12 +26,14 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.MyHolder> 
     private List<JSONResponse.SData> mArrayList;
     private Context context;
     private OnItemClickListener onItemClickListener;
-    String searchString = "";
+    private String searchString = "";
+
     public SearchAdapter(List<JSONResponse.SData> viewItemList, Context context) {
         this.viewItemList = viewItemList;
         this.mArrayList = viewItemList;
         this.context = context;
     }
+
     public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
         this.onItemClickListener = onItemClickListener;
     }
@@ -41,8 +43,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.MyHolder> 
 
         View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.itemsearch, parent, false);
 
-        MyHolder myHolder = new MyHolder(itemView,onItemClickListener);
-        return myHolder;
+        return new MyHolder(itemView,onItemClickListener);
     }
 
 

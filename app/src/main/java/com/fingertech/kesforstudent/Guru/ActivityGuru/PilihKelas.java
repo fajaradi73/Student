@@ -66,7 +66,7 @@ public class PilihKelas extends AppCompatActivity {
             finish();
         });
         cv_absen.setOnClickListener(v -> {
-            if (id_kelas!=null){
+            if (id_kelas != null){
                 SharedPreferences.Editor editor = sharedpreferences.edit();
                 editor.putString("authorization",authorization);
                 editor.putString("member_id",member_id);
