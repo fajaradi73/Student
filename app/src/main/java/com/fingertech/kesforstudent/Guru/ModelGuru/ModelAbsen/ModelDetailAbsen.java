@@ -3,7 +3,27 @@ package com.fingertech.kesforstudent.Guru.ModelGuru.ModelAbsen;
 import java.util.List;
 
 public class ModelDetailAbsen {
-    private  String nama,nis,attitudeid,attitude_name,attidude_desc,colour_code,attitude_grade_code,attitude_grade_name,attitude_grade_desc,attitude_grade_from,attitude_grade_to;
+    private  String nama;
+    private String nis;
+    private String id;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    private String attitudeid;
+    private String attitude_name;
+    private String attidude_desc;
+    private String colour_code;
+    private String attitude_grade_code;
+    private String attitude_grade_name;
+    private String attitude_grade_desc;
+    private String attitude_grade_from;
+    private String attitude_grade_to;
 
     private List<ModelDataAttidude> modelDataAttidudeList;
 

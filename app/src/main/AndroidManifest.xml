@@ -63,12 +63,6 @@
                 android:resource="@xml/provider_paths" />
         </provider>
 
-        <service android:name=".Service.FirebaseIdService">
-            <intent-filter>
-                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
-            </intent-filter>
-        </service>
-
         <activity
             android:name=".SplashScreen"
             android:label="@string/app_name"
@@ -130,7 +124,7 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".Guru.ActivityGuru.MenuUtamaGuru"
-            android:label=""
+            android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity

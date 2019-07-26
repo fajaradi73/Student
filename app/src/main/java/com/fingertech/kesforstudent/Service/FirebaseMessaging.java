@@ -44,12 +44,9 @@ public class FirebaseMessaging extends FirebaseMessagingService {
         String title       = remotemsg.getData().get("title");
         String body        = remotemsg.getData().get("body");
 
-        Log.d("notifikasi",remotemsg.getNotification().getBody()+"/"+remotemsg.getNotification().getTitle());
         Log.d("data_notifikasi",remotemsg.getData()+"");
         if (remotemsg.getData().size() > 0) {
             sendnotification(title, body);
-        }else {
-            sendnotification(remotemsg.getNotification().getTitle(), remotemsg.getNotification().getBody());
         }
 
     }

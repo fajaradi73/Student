@@ -26,6 +26,17 @@
         <item name="colorControlNormal">@color/colorPrimary</item>
         <item name="colorControlActivated">@color/colorPrimary</item>
     </style>
+    <style name="TextLabelKes" parent="TextAppearance.AppCompat">
+        <!-- Hint color and label color in FALSE state -->
+        <item name="android:textColorHint">@color/default_textHint</item>
+        <item name="android:textColorHighlight">@color/colorPrimary</item>
+        <item name="android:textColorLink">@color/colorPrimary</item>
+        <item name="android:textSize">20sp</item>
+        <!-- Label color in TRUE state and bar color FALSE and TRUE State -->
+        <item name="colorAccent">@color/ic_logo_background</item>
+        <item name="colorControlNormal">@color/colorPrimary</item>
+        <item name="colorControlActivated">@color/colorPrimary</item>
+    </style>
 
 
     <style name="AppDialogTheme" parent="Theme.AppCompat.Light.Dialog">

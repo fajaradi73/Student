@@ -72,8 +72,8 @@ public class AdapterCodeAbsen extends RecyclerView.Adapter<AdapterCodeAbsen.MyHo
             super(itemView);
             tv_code       = itemView.findViewById(R.id.tv_code);
             bgcolor       = itemView.findViewById(R.id.ll_color);
-            itemView.setOnClickListener(this);
-            this.onItemClickListener = onItemClickListener;
+//            itemView.setOnClickListener(this);
+//            this.onItemClickListener = onItemClickListener;
         }
 
         @Override

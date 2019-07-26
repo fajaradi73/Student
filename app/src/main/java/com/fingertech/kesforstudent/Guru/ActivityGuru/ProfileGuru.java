@@ -9,6 +9,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.ColorDrawable;
@@ -165,15 +166,16 @@ public class ProfileGuru extends AppCompatActivity {
                 intent.putExtra("member_id",memberid);
                 intent.putExtra("picture",Base_anak+picture);
                 startActivityForResult(intent,2);
-                overridePendingTransition(android.R.anim.fade_in,android.R.anim.fade_out);
             }
         });
+
         btn_logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 pilihan();
             }
         });
+
         btn_katasandi.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -276,17 +278,17 @@ public class ProfileGuru extends AppCompatActivity {
                     JSONResponse.GetProfile resource = response.body();
                     status = resource.status;
                     if (status == 1) {
-                        nama = response.body().getData().getFullname();
-                        nis = response.body().getData().getMember_code();
-                        email = response.body().getData().getEmail();
-                        alamat = response.body().getData().getAddress();
-                        gender = response.body().getData().getGender();
-                        tanggal = response.body().getData().getBirth_date();
-                        tempat = response.body().getData().getBirth_place();
-                        agama = response.body().getData().getReligion();
-                        picture = response.body().getData().getPicture();
-                        no_hp = response.body().getData().getMobile_phone();
-                        last_login = response.body().getData().getLast_login();
+                        nama        = response.body().getData().getFullname();
+                        nis         = response.body().getData().getMember_code();
+                        email       = response.body().getData().getEmail();
+                        alamat      = response.body().getData().getAddress();
+                        gender      = response.body().getData().getGender();
+                        tanggal     = response.body().getData().getBirth_date();
+                        tempat      = response.body().getData().getBirth_place();
+                        agama       = response.body().getData().getReligion();
+                        picture     = response.body().getData().getPicture();
+                        no_hp       = response.body().getData().getMobile_phone();
+                        last_login  = response.body().getData().getLast_login();
 
                         setTitle(nama);
                         tv_nis.setText(nis);
@@ -336,13 +338,13 @@ public class ProfileGuru extends AppCompatActivity {
 
         SimpleDateFormat newDateFormat = new SimpleDateFormat("dd MMMM yyyy",Locale.getDefault());
         try {
-            String e = newDateFormat.format(calendarDateFormat.parse(tanggal));
-            return e;
+            return newDateFormat.format(calendarDateFormat.parse(tanggal));
         } catch (java.text.ParseException e) {
             e.printStackTrace();
             return "";
         }
     }
+
     private void pilihan() {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(ProfileGuru.this,R.style.DialogTheme);

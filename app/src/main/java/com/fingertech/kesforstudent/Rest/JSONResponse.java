@@ -3,6 +3,8 @@ package com.fingertech.kesforstudent.Rest;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import org.json.JSONObject;
+
 import java.util.List;
 
 public class JSONResponse {
@@ -2139,6 +2141,17 @@ public class JSONResponse {
 
         @SerializedName("memberid")
         public String memberid;
+
+        @SerializedName("picture")
+        public String picture;
+
+        public String getPicture() {
+            return picture;
+        }
+
+        public void setPicture(String picture) {
+            this.picture = picture;
+        }
 
         public List<AbsenDetailItem> getAbsenDetail() {
             return absenDetail;
@@ -7510,7 +7523,6 @@ public class JSONResponse {
             this.listLessonData = data;
         }
     }
-
     public class ListLesson {
         @SerializedName("reviewid")
         public String reviewid;
@@ -8186,4 +8198,41 @@ public class JSONResponse {
         }
     }
     ////--------------------------------///
+
+
+    //// Response insert data
+    public class InsertData{
+        @SerializedName("status")
+        public int status;
+
+        @SerializedName("code")
+        public String code;
+
+        @SerializedName("data")
+        public List<JSONObject> data;
+
+        public int getStatus() {
+            return status;
+        }
+
+        public void setStatus(int status) {
+            this.status = status;
+        }
+
+        public String getCode() {
+            return code;
+        }
+
+        public void setCode(String code) {
+            this.code = code;
+        }
+
+        public List<JSONObject> getData() {
+            return data;
+        }
+
+        public void setData(List<JSONObject> data) {
+            this.data = data;
+        }
+    }
 }

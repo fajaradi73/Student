@@ -3,7 +3,15 @@ package com.fingertech.kesforstudent.Guru.ModelGuru;
 public class ModelAttendance {
     private String codeabsen;
     private String warna;
-    private String id;
+    private String id,id_attitude;
+
+    public String getId_attitude() {
+        return id_attitude;
+    }
+
+    public void setId_attitude(String id_attitude) {
+        this.id_attitude = id_attitude;
+    }
 
     public String getId() {
         return id;

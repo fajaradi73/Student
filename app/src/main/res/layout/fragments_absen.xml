@@ -6,6 +6,8 @@
     android:layout_centerInParent="true"
     android:layout_gravity="center"
     android:background="@color/white"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
     android:layout_height="match_parent">
 
     <LinearLayout
@@ -124,6 +126,33 @@
         android:id="@+id/rv_absen"
         android:layout_height="match_parent"
         android:layout_below="@id/ll_nama"
-        android:layout_above="@id/button">
+        android:layout_above="@id/cv_komentar">
     </androidx.recyclerview.widget.RecyclerView>
+
+    <com.github.florent37.shapeofview.shapes.RoundRectView
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:id="@+id/cv_komentar"
+        android:layout_margin="10dp"
+        android:layout_above="@id/button"
+        app:shape_roundRect_borderWidth="1dp"
+        app:shape_roundRect_borderColor="@color/black"
+        app:shape_roundRect_bottomLeftRadius="10dp"
+        app:shape_roundRect_bottomRightRadius="10dp"
+        app:shape_roundRect_topLeftRadius="10dp"
+        app:shape_roundRect_topRightRadius="10dp">
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:theme="@style/TextLabelKes"
+                android:background="@drawable/edt_no_bg"
+                android:hint="Silahkan masukkan komentar"
+                android:textSize="14sp"
+                android:padding="10dp"
+                android:id="@+id/et_komentar"/>
+        </ScrollView>
+    </com.github.florent37.shapeofview.shapes.RoundRectView>
 </RelativeLayout>

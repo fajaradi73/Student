@@ -3,13 +3,17 @@ package com.fingertech.kesforstudent.Controller;
 import com.fingertech.kesforstudent.Rest.JSONResponse;
 import com.google.gson.JsonElement;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
 
 import io.reactivex.Observable;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
+import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
@@ -79,9 +83,6 @@ public interface Auth {
                                       @Field("gender") String gender,
                                       @Field("religion") String religion,
                                       @Field("birth_date") String birth_date);
-
-//
-
 
     ////// Jadwal Pelajaran
     @GET("students/kes_class_schedule")
@@ -199,12 +200,20 @@ public interface Auth {
                                                     @Query("teacher_id") String teacher_id,
                                                     @Query("scyear_id") String scyear_id,
                                                     @Query("classroom_id") String classroom_id);
+
     //DataAttidude
     @GET("teachers/kes_attitude")
     Call<JSONResponse.Attidude>kes_attitude_get(@Header("Authorization") String authorization,
                                                 @Query("school_code") String school_code,
                                                 @Query("teacher_id") String teacher_id,
                                                 @Query("scyear_id") String  scyear_id );
+
+    //DataAttidude
+    @GET("teachers/kes_attitude")
+    Call<JsonElement>kes_attitudes_get(@Header("Authorization") String authorization,
+                                        @Query("school_code") String school_code,
+                                        @Query("teacher_id") String teacher_id,
+                                        @Query("scyear_id") String  scyear_id );
 
     ///// Jadwal Guru
     @GET("teachers/kes_get_edulevel")
@@ -428,4 +437,16 @@ public interface Auth {
                                                           @Query("student_id") String student_id,
                                                           @Query("classroom_id") String classroom_id,
                                                           @Query("cources_id") String cources_id);
-}
+
+
+    //// insert absen
+    @FormUrlEncoded
+    @POST("teachers/kes_insertdb_student_attendance")
+    Call<JSONResponse.InsertData>kes_insertdb_student_attendance_post(@Header("Authorization") String authorization,
+                                                           @Field("school_code") String school_code,
+                                                           @Field("teacher_id") String teacher_id,
+                                                           @Field("classroom_id") String classroom_id,
+                                                           @Field("schedule_time_id") String schedule_time_id,
+                                                           @Field("schedule_date") String schedule_date,
+                                                           @Body ArrayList<JSONObject> jsonObjects);
+    }

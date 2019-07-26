@@ -1,12 +1,20 @@
 package com.fingertech.kesforstudent.Guru.ActivityGuru;
 
 import android.Manifest;
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.Point;
+import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
@@ -16,6 +24,8 @@ import androidx.core.content.FileProvider;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -57,7 +67,10 @@ public class FullPicture extends AppCompatActivity {
     File image;
     Intent intent;
     String mCurrentPhotoPath,authorization,school_code,memberid;
+    private Animator mCurrentAnimatorEffect;
+    private int mShortAnimationDurationEffect;
 
+    ProfileGuru profileGuru;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,12 +82,16 @@ public class FullPicture extends AppCompatActivity {
         authorization   = getIntent().getStringExtra("authorization");
         school_code     = getIntent().getStringExtra("school_code");
         memberid        = getIntent().getStringExtra("member_id");
-        Glide.with(this).load(picture).into(imageView);
+
         btn_ubah.setOnClickListener(v -> {
             selectImage();
         });
         btn_exit.setOnClickListener(v -> finish());
+        Glide.with(FullPicture.this).load(picture).into(imageView);
+
     }
+
+
     private void selectImage() {
         final CharSequence[] items = {"Buka kamera", "Pilih foto",
                 "Batal"};

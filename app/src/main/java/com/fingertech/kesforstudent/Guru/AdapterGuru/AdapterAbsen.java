@@ -10,14 +10,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Filter;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.fingertech.kesforstudent.Guru.AdapterGuru.AdapterAbsensi.AdapterCode;
 import com.fingertech.kesforstudent.Guru.AdapterGuru.AdapterAbsensi.AdapterCodeAbsen;
 import com.fingertech.kesforstudent.Guru.ModelGuru.ModelAbsen.ModelAbsenGuru;
 import com.fingertech.kesforstudent.Guru.ModelGuru.ModelAttendance;
 import com.fingertech.kesforstudent.R;
+import com.fingertech.kesforstudent.Rest.ApiClient;
 import com.fingertech.kesforstudent.Rest.JSONResponse;
 
 import java.util.ArrayList;
@@ -73,6 +76,12 @@ public class AdapterAbsen extends RecyclerView.Adapter<AdapterAbsen.MyHolder> {
         layoutManager.setOrientation(RecyclerView.HORIZONTAL);
         holder.recyclerView.setLayoutManager(layoutManager);
         holder.recyclerView.setAdapter(adapterCodeAbsen);
+
+        if (viewItem.getPicture().equals(ApiClient.BASE_IMAGE)){
+            Glide.with(context).load(R.drawable.ic_logo).into(holder.imageView);
+        }else {
+            Glide.with(context).load(viewItem.getPicture()).into(holder.imageView);
+        }
     }
 
     @Override
@@ -84,11 +93,13 @@ public class AdapterAbsen extends RecyclerView.Adapter<AdapterAbsen.MyHolder> {
         TextView nama,nis,nilai;
         RecyclerView recyclerView;
         OnItemClickListener onItemClickListener;
+        ImageView imageView;
         LinearLayout linearLayout;
-        public MyHolder(View itemView,OnItemClickListener onItemClickListener) {
+        MyHolder(View itemView, OnItemClickListener onItemClickListener) {
             super(itemView);
-            nama       = itemView.findViewById(R.id.tv_nama_murid);
-            recyclerView   = itemView.findViewById(R.id.rv_hasil_absen);
+            nama            = itemView.findViewById(R.id.tv_nama_murid);
+            recyclerView    = itemView.findViewById(R.id.rv_hasil_absen);
+            imageView       = itemView.findViewById(R.id.img_photo_murid);
             itemView.setOnClickListener(this);
             this.onItemClickListener = onItemClickListener;
         }

@@ -4,8 +4,25 @@ import java.util.List;
 
 public class ModelAbsenGuru {
 
-private  String nama,nis;
-private List<ModelArrayAbsen> modelArrayAbsenList;
+    private  String nama,nis,picture,id;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    private List<ModelArrayAbsen> modelArrayAbsenList;
+
+    public String getPicture() {
+        return picture;
+    }
+
+    public void setPicture(String picture) {
+        this.picture = picture;
+    }
 
     public List<ModelArrayAbsen> getModelArrayAbsenList() {
         return modelArrayAbsenList;

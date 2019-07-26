@@ -20,6 +20,7 @@ import com.fingertech.kesforstudent.R;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.List;
 
@@ -28,8 +29,10 @@ public class AdapterCode extends RecyclerView.Adapter<AdapterCode.MyHolder>  {
     Context context;
     int row_index;
     private int focusedItem = 0;
+    private String id_grade;
 
     private OnItemClickListener onItemClickListener;
+    private JSONArray jsonArray;
 
     public AdapterCode(Context context,List<ModelAttendance> viewItemList) {
         this.context = context;
@@ -63,7 +66,6 @@ public class AdapterCode extends RecyclerView.Adapter<AdapterCode.MyHolder>  {
         }else {
             holder.view.setVisibility(View.GONE);
         }
-
     }
 
     @Override
@@ -93,7 +95,34 @@ public class AdapterCode extends RecyclerView.Adapter<AdapterCode.MyHolder>  {
             notifyItemChanged(focusedItem);
             focusedItem = getLayoutPosition();
             notifyItemChanged(focusedItem);
-            Log.d("datas",modelCodeAttidudes.get(focusedItem).getId()+"");
+            if (modelCodeAttidudes.get(focusedItem).getId().equals("0")){
+                if (modelCodeAttidudes.get(focusedItem).getCodeabsen().equals("H")||modelCodeAttidudes.get(focusedItem).getCodeabsen().equals("T")||modelCodeAttidudes.get(focusedItem).getCodeabsen().equals("D")){
+                    id_grade    = modelCodeAttidudes.get(focusedItem).getId_attitude();
+                    JSONObject jsonObject = new JSONObject();
+                    try {
+                        jsonObject.put("absentStatus","1");
+                        jsonObject.put("absentType",id_grade);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    jsonArray   = new JSONArray();
+                    jsonArray.put(jsonObject);
+                }
+                else {
+                    id_grade    = modelCodeAttidudes.get(focusedItem).getId_attitude();
+                    JSONObject jsonObject = new JSONObject();
+                    try {
+                        jsonObject.put("absentStatus", "0");
+                        jsonObject.put("absentType", id_grade);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    jsonArray   = new JSONArray();
+                    jsonArray.put(jsonObject);
+                }
+            }
+            Log.d("json",jsonArray+"");
+
         }
     }
 

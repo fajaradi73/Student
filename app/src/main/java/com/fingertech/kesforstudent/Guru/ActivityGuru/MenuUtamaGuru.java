@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.PorterDuff;
 import android.graphics.drawable.ColorDrawable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -77,6 +78,8 @@ public class MenuUtamaGuru extends AppCompatActivity {
     public static int PAGE_COUNT = 2;
     FragmentAdapter fragmentAdapter;
     String status_profile;
+    Toolbar toolbar;
+
 
 
     @Override
@@ -84,12 +87,14 @@ public class MenuUtamaGuru extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.menu__utama__guru);
         inkPageIndicator    = findViewById(R.id.indicators);
+        toolbar             = findViewById(R.id.toolbar_guru);
         viewPager           = findViewById(R.id.PagerUtama);
         image_guru          = findViewById(R.id.image_guru);
         fragmentAdapter     = new FragmentAdapter(getSupportFragmentManager());
         tv_nama_guru        = findViewById(R.id.tv_nama_profil_guru);
         mApiInterface       = ApiClient.getClient().create(Auth.class);
 
+        setSupportActionBar(toolbar);
 
         sharedpreferences   = getSharedPreferences(Masuk.my_shared_preferences, Context.MODE_PRIVATE);
         authorization       = sharedpreferences.getString(TAG_TOKEN, "");

@@ -35,11 +35,17 @@ import com.fingertech.kesforstudent.Guru.ModelGuru.ModelAbsen.ModelArrayAbsen;
 import com.fingertech.kesforstudent.Guru.ModelGuru.ModelAbsen.ModelAtitude;
 import com.fingertech.kesforstudent.Guru.ModelGuru.ModelAbsen.ModelDataAttidude;
 import com.fingertech.kesforstudent.Guru.ModelGuru.ModelAbsen.ModelDetailAbsen;
+import com.fingertech.kesforstudent.Guru.ModelGuru.ModelAttendance;
 import com.fingertech.kesforstudent.MainActivity;
 import com.fingertech.kesforstudent.Masuk;
 import com.fingertech.kesforstudent.R;
 import com.fingertech.kesforstudent.Rest.ApiClient;
 import com.fingertech.kesforstudent.Rest.JSONResponse;
+import com.google.gson.JsonElement;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -58,9 +64,9 @@ public class AbsenMurid extends AppCompatActivity {
     AdapterAbsen adapterAbsen;
     List<ModelAbsenGuru> modelAbsenGuruList = new ArrayList<>();
 //    List<ModelCodeAttidude> modelCodeAttidudes = new ArrayList<>();
-    List<ModelArrayAbsen> modelArrayAbsenList = new ArrayList<>();
+    List<ModelArrayAbsen> modelArrayAbsenList;
     ModelDetailAbsen modelDetailAbsen;
-    List<ModelDetailAbsen> modelDetailAbsenList = new ArrayList<>();
+    List<ModelDetailAbsen> modelDetailAbsenList;
     ModelAbsenGuru modelAbsenGuru;
     EditText et_search;
     ModelDataAttidude modelDataAttidude;
@@ -68,7 +74,7 @@ public class AbsenMurid extends AppCompatActivity {
     ModelArrayAbsen modelArrayAbsen;
     Toolbar toolbar;
     Auth mApiInterface;
-    String  schedule_id,authorization,school_code,member_id,scyear_id, classroom,code,nama,id_kelas,bgcolor,attidude,absentcode,absentwarna;
+    String  schedule_id,authorization,school_code,member_id,scyear_id, classroom,code,nama,id_kelas,student_id,attidude,absentcode,absentwarna;
     int status,statusattidude;
     SharedPreferences sharedpreferences;
 
@@ -87,9 +93,13 @@ public class AbsenMurid extends AppCompatActivity {
     List<JSONResponse.Detail> detailList;
     private List<ModelAtitude> modelAtitudeList;
     private ModelAtitude modelAtitude;
-    private String attidudename,attidude_id,attidude_color,grade_code;
-
-
+    private String attidudename,attidude_id,attidude_color,grade_code,grade_id,picture;
+    private String[] namaabsen  = new String[]{"H","A","I","S","T","D"};
+    private String[] idabsen     = new String[]{"6","5","3","4","2","1"};
+    private String[] colorabsen     = new String[]{"#A2FB5E","#CF2138","#EFE138","#36B2E9","#2C3039","#529FBF"};
+    JSONObject jsonObject;
+    JSONArray jsonArray,arrayDetails;
+    Dialog mBottomSheetDialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -112,14 +122,17 @@ public class AbsenMurid extends AppCompatActivity {
         scyear_id           = sharedpreferences.getString(TAG_YEAR_ID,"");
         school_code         = sharedpreferences.getString(TAG_SCHOOL_CODE,"");
         classroom           = sharedpreferences.getString(TAG_CLASS_ID,"");
+        mBottomSheetDialog  = new Dialog(AbsenMurid.this);
 
         getAtitude();
+        getatitude();
         day = dateFormat.format(Calendar.getInstance().getTime());
         getMapel();
 
-    }
-    private void getMapel(){
 
+    }
+
+    private void getMapel(){
         Call<JSONResponse.JadwalGuru> call = mApiInterface.kes_class_schedule_teacher_get(authorization,school_code.toLowerCase(),member_id,scyear_id);
         call.enqueue(new Callback<JSONResponse.JadwalGuru>() {
             @Override
@@ -139,7 +152,7 @@ public class AbsenMurid extends AppCompatActivity {
                                         if (contains(jadwalDataGuru.getSchedule_class(),classroom)) {
                                             if (id_kelas.equals(classroom)) {
                                                 ll_loading.setVisibility(View.VISIBLE);
-                                                schedule_id = jadwalKelasGuru.getCscheduletimeid();
+                                                schedule_id     = jadwalKelasGuru.getCscheduletimeid();
                                                 GetStudent();
                                             }
                                         }else {
@@ -208,6 +221,32 @@ public class AbsenMurid extends AppCompatActivity {
         return true;
     }
 
+    @Override
+    public void onBackPressed(){
+        super.onBackPressed();
+        if (mBottomSheetDialog.isShowing()){
+            AlertDialog.Builder builder = new AlertDialog.Builder(AbsenMurid.this,R.style.DialogTheme);
+            builder.setTitle("Apakah anda ingin keluar?");
+            builder.setMessage("Jika anda keluar, absen yang sudah anda input akan hilang.");
+            builder.setIcon(R.drawable.ic_info_kes);
+            builder.setPositiveButton("Ya", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                    mBottomSheetDialog.dismiss();
+                }
+            });
+            builder.setNegativeButton("Tidak", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+            builder.show();
+        }
+    }
+
+
     private void GetStudent(){
         Call<JSONResponse.Absen> call = mApiInterface.kes_classroom_absent_get(authorization,school_code,member_id,scyear_id,classroom,schedule_id);
         call.enqueue(new Callback<JSONResponse.Absen>() {
@@ -219,15 +258,18 @@ public class AbsenMurid extends AppCompatActivity {
                     JSONResponse.Absen resource = response.body();
                     status                      = resource.status;
                     code                        = resource.code;
-                    if (status==1 && code.equals("DTS_SCS_0001")){
+                    if (status == 1 && code.equals("DTS_SCS_0001")){
                         ll_nojadwal.setVisibility(View.GONE);
                         ll_absen.setVisibility(View.VISIBLE);
                         modelAbsenGuruList.clear();
-                        for (JSONResponse.StudentAbsentItem studentAbsentItem : response.body().getData().getStudentAbsent()){
-                            nama    = studentAbsentItem.getFullname();
-                            nis     = studentAbsentItem.getMemberCode();
-                            if (studentAbsentItem.getAbsenDetail() != null) {
-                                for (JSONResponse.AbsenDetailItem dataAbsen : studentAbsentItem.getAbsenDetail()) {
+                        for (int i = 0 ;i < response.body().getData().getStudentAbsent().size();i++){
+                            nama        = response.body().getData().getStudentAbsent().get(i).getFullname();
+                            nis         = response.body().getData().getStudentAbsent().get(i).getMemberCode();
+                            picture     = response.body().getData().getStudentAbsent().get(i).getPicture();
+                            student_id  = response.body().getData().getStudentAbsent().get(i).getMemberid();
+                            if (response.body().getData().getStudentAbsent().get(i).getAbsenDetail() != null) {
+                                modelArrayAbsenList = new ArrayList<>();
+                                for (JSONResponse.AbsenDetailItem dataAbsen : response.body().getData().getStudentAbsent().get(i).getAbsenDetail()) {
                                     for (JSONResponse.AttendanceDetailItem attendanceDetailItem : dataAbsen.getAttendanceDetail()) {
                                         absentcode  = attendanceDetailItem.getTypeText();
                                         absentwarna = attendanceDetailItem.getBgcolor();
@@ -240,6 +282,7 @@ public class AbsenMurid extends AppCompatActivity {
                                 }
                             } else {
                                 if (dataAttidudeList != null){
+                                    modelArrayAbsenList = new ArrayList<>();
                                     modelArrayAbsen = new ModelArrayAbsen();
                                     modelArrayAbsen.setCodeabsen("H");
                                     modelArrayAbsen.setWarna("#B6F883");
@@ -257,7 +300,9 @@ public class AbsenMurid extends AppCompatActivity {
                             }
                             modelAbsenGuru = new ModelAbsenGuru();
                             modelAbsenGuru.setNama(nama);
+                            modelAbsenGuru.setId(student_id);
                             modelAbsenGuru.setNis(nis);
+                            modelAbsenGuru.setPicture(ApiClient.BASE_IMAGE+picture);
                             modelAbsenGuru.setModelArrayAbsenList(modelArrayAbsenList);
                             modelAbsenGuruList.add(modelAbsenGuru);
                         }
@@ -275,39 +320,57 @@ public class AbsenMurid extends AppCompatActivity {
                             viewpager   = view.findViewById(R.id.pagerabsen);
                             iv_close    = view.findViewById(R.id.iv_close);
                             btn_info    = view.findViewById(R.id.cv_informasi);
-                            final Dialog mBottomSheetDialog = new Dialog(AbsenMurid.this);
+
                             mBottomSheetDialog.setContentView(view);
-                            mBottomSheetDialog.setCancelable(true);
+                            mBottomSheetDialog.setCancelable(false);
                             mBottomSheetDialog.getWindow().setLayout(LinearLayout.LayoutParams.MATCH_PARENT,
                                     LinearLayout.LayoutParams.MATCH_PARENT);
                             mBottomSheetDialog.getWindow().setGravity(Gravity.CENTER);
                             mBottomSheetDialog.show();
-                            if (modelDetailAbsenList != null){
-                                modelDetailAbsenList.clear();
-                            }
 
+                            modelDetailAbsenList = new ArrayList<>();
                             for (JSONResponse.StudentAbsentItem studentAbsentItem : response.body().getData().getStudentAbsent()) {
                                 nama    = studentAbsentItem.getFullname();
                                 nis     = studentAbsentItem.getMemberCode();
-                                modelDataAttidudes = new ArrayList<>();
-                                modelDataAttidude   = new ModelDataAttidude();
-                                modelDataAttidude.setColour_code("#A2FB5E");
-                                modelDataAttidude.setAttitude_name("Kehadiran");
-                                modelDataAttidude.setNis(nis);
-                                modelDataAttidude.setAttitudeid("0");
-                                modelDataAttidudes.add(modelDataAttidude);
+                                student_id  = studentAbsentItem.getMemberid();
                                 if (dataAttidudeList != null && detailList != null) {
-                                    for (JSONResponse.DataAttidude dataAttidude : dataAttidudeList) {
-                                        attidudename    = dataAttidude.getAttitude_grade_name();
-                                        attidude_id     = dataAttidude.getAttitudeid();
-                                        attidude_color  = dataAttidude.getColour_code();
-                                        modelAtitudeList = new ArrayList<>();
-                                        for (JSONResponse.Detail detail : detailList) {
-                                            grade_code = detail.getAttitude_grade_code();
+                                    modelAtitudeList = new ArrayList<>();
+                                    for (int o = 0; o < namaabsen.length; o++) {
+                                        modelAtitude = new ModelAtitude();
+                                        modelAtitude.setId("0");
+                                        modelAtitude.setId_atitude(idabsen[o]);
+                                        modelAtitude.setNama(namaabsen[o]);
+                                        modelAtitude.setColor(colorabsen[o]);
+                                        modelAtitudeList.add(modelAtitude);
+                                    }
+                                    modelDataAttidudes = new ArrayList<>();
+                                    modelDataAttidude   = new ModelDataAttidude();
+                                    modelDataAttidude.setColour_code("#A2FB5E");
+                                    modelDataAttidude.setAttitude_name("Kehadiran");
+                                    modelDataAttidude.setNis(nis);
+                                    modelDataAttidude.setAttitudeid("0");
+                                    modelDataAttidude.setModelAttidudeList(modelAtitudeList);
+                                    modelDataAttidudes.add(modelDataAttidude);
+                                    for (int i = 0 ; i < jsonArray.length();i++){
+                                        try {
+                                            attidudename    = jsonArray.getJSONObject(i).getString("attitude_name");
+                                            attidude_id     = jsonArray.getJSONObject(i).getString("attitudeid");
+                                            attidude_color  = jsonArray.getJSONObject(i).getString("colour_code");
+                                            arrayDetails    = jsonArray.getJSONObject(i).getJSONArray("details");
+                                        } catch (JSONException e) {
+                                            e.printStackTrace();
+                                        }
+                                        for (int o = 0 ; o < arrayDetails.length() ; o++){
+                                            try {
+                                                grade_code  = arrayDetails.getJSONObject(o).getString("attitude_grade_code");
+                                                grade_id    = arrayDetails.getJSONObject(o).getString("attitudegradeid");
+                                            } catch (JSONException e) {
+                                                e.printStackTrace();
+                                            }
                                             modelAtitude = new ModelAtitude();
                                             modelAtitude.setColor(attidude_color);
                                             modelAtitude.setId(attidude_id);
-                                            modelAtitude.setId_atitude(detail.getAttitudegradeid());
+                                            modelAtitude.setId_atitude(grade_id);
                                             modelAtitude.setNama(grade_code);
                                             modelAtitude.setNis(nis);
                                             modelAtitudeList.add(modelAtitude);
@@ -323,17 +386,19 @@ public class AbsenMurid extends AppCompatActivity {
                                 }
                                 modelDetailAbsen = new ModelDetailAbsen();
                                 modelDetailAbsen.setNama(nama);
+                                modelDetailAbsen.setId(student_id);
                                 modelDetailAbsen.setNis(nis);
                                 modelDetailAbsen.setModelDataAttidudeList(modelDataAttidudes);
                                 modelDetailAbsenList.add(modelDetailAbsen);
                             }
-                            adapterDetailAbsen = new AdapterDetailAbsen(AbsenMurid.this,modelDetailAbsenList,viewpager,modelAtitudeList,view);
+                            adapterDetailAbsen = new AdapterDetailAbsen(AbsenMurid.this,modelDetailAbsenList,viewpager,view,schedule_id,mBottomSheetDialog,AbsenMurid.this);
                             viewpager.setAdapter(adapterDetailAbsen);
                             viewpager.setCurrentItem(position);
+                            viewpager.setOffscreenPageLimit(modelDetailAbsenList.size());
                             iv_close.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
-                                    android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(AbsenMurid.this,R.style.DialogTheme);
+                                    AlertDialog.Builder builder = new AlertDialog.Builder(AbsenMurid.this,R.style.DialogTheme);
                                     builder.setTitle("Apakah anda ingin keluar?");
                                     builder.setMessage("Jika anda keluar, absen yang sudah anda input akan hilang.");
                                     builder.setIcon(R.drawable.ic_info_kes);
@@ -395,6 +460,38 @@ public class AbsenMurid extends AppCompatActivity {
             @Override
             public void onFailure(Call<JSONResponse.Attidude> call, Throwable t) {
                 Log.e("erorAtitude",t.toString());
+            }
+        });
+    }
+    private void getatitude(){
+
+        Call<JsonElement> call = mApiInterface.kes_attitudes_get(authorization,school_code.toLowerCase(),classroom,scyear_id);
+        call.enqueue(new Callback<JsonElement>() {
+            @Override
+            public void onResponse(Call<JsonElement> call, Response<JsonElement> response) {
+                Log.d("sukses",response.code()+"");
+                if (response.isSuccessful()){
+                    JsonElement jsonElement = response.body();
+                    try {
+                        jsonObject    = new JSONObject(String.valueOf(jsonElement.getAsJsonObject()));
+                        code          = jsonObject.getString("code");
+                        status        = jsonObject.getInt("status");
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    if (status == 1 && code.equals("DTS_SCS_0001")){
+                        try {
+                            jsonArray = new JSONArray(String.valueOf(jsonElement.getAsJsonObject().get("data")));
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonElement> call, Throwable t) {
+                Log.e("gagal",t.toString());
             }
         });
     }

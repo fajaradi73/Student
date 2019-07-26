@@ -19,6 +19,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.fingertech.kesforstudent.Student.Adapter.PesanAdapter;
@@ -55,7 +56,7 @@ public class PesanAnak extends AppCompatActivity {
     PesanModel pesanAnakModel;
     ProgressDialog dialog;
     String tanggal,jam,mapel,pesan,guru,classroom_id,message_id,title,read_status,nama_anak;
-    TextView no_pesan;
+    LinearLayout no_pesan;
 
     ArrayList<HashMap<String, String>> contactList;
     String date_from,date_to;
@@ -69,7 +70,7 @@ public class PesanAnak extends AppCompatActivity {
         rv_pesan        = findViewById(R.id.rv_pesan_anak);
         mApiInterface   = ApiClient.getClient().create(Auth.class);
         mApi            = UtilsApi.getAPIService();
-        no_pesan        = findViewById(R.id.tv_no_pesan);
+        no_pesan        = findViewById(R.id.hint_pesan);
 
 
         sharedPreferences   = getSharedPreferences(MenuUtama.my_viewpager_preferences, Context.MODE_PRIVATE);
@@ -202,7 +203,7 @@ public class PesanAnak extends AppCompatActivity {
                 Calendar calendar = Calendar.getInstance();
                 calendar.add(Calendar.MONTH,-2);
                 date_from   = formattanggal.format(calendar.getTime());
-                date_to     =formattanggal.format(Calendar.getInstance().getTime());
+                date_to     = formattanggal.format(Calendar.getInstance().getTime());
                 dapat();
             }
         }

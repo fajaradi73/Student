@@ -19,19 +19,33 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
-
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:id="@+id/hint_pesan"
+            android:visibility="gone"
+            android:layout_marginTop="-20dp"
+            android:orientation="vertical">
+            <ImageView
+                android:layout_width="300dp"
+                android:layout_height="250dp"
+                android:src="@drawable/ic_no_pesan"/>
+            <TextView
+                android:layout_marginTop="-30dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Tidak ada pesan masuk"
+                android:textAlignment="center"
+                android:textSize="16sp"
+                android:textColor="@color/black"/>
+        </LinearLayout>
         <androidx.recyclerview.widget.RecyclerView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/rv_pesan_anak">
-
         </androidx.recyclerview.widget.RecyclerView>
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:text="Tidak ada pesan masuk"
-            android:visibility="gone"
-            android:id="@+id/tv_no_pesan"/>
+
     </LinearLayout>
 </LinearLayout>
