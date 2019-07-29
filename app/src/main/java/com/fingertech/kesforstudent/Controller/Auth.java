@@ -146,6 +146,14 @@ public interface Auth {
                                                       @Query("date_from") String date_from,
                                                       @Query("date_to") String date_to);
 
+    ///// Pesan Anak
+    @GET("students/kes_message_inbox")
+    Call<JSONResponse.PesanAnak> kes_message_anak_get(@Header("Authorization") String authorization,
+                                                       @Query("school_code") String school_code,
+                                                       @Query("student_id") String member_id,
+                                                       @Query("date_from") String date_from,
+                                                       @Query("date_to") String date_to);
+
     //// Pesan Detail
     @GET("students/kes_message_detail")
     Call<JSONResponse.PesanDetail>kes_message_detail_get(@Header("Authorization") String authorization,
@@ -449,4 +457,12 @@ public interface Auth {
                                                            @Field("schedule_time_id") String schedule_time_id,
                                                            @Field("schedule_date") String schedule_date,
                                                            @Body ArrayList<JSONObject> jsonObjects);
-    }
+
+    ///// Logout
+    @FormUrlEncoded
+    @POST("auth/kes_logout")
+    Call<JSONResponse.Logout> kes_logout_post(@Header("Authorization") String authorization,
+                                               @Field("school_code") String school_code,
+                                               @Field("member_id") String member_id);
+
+}

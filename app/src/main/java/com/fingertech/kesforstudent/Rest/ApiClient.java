@@ -11,10 +11,11 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ApiClient {
     //////////// http://192.168.43.182/apikes/
-    public static final String BASE_URL     = "http://genpin.co.id/ztapi2/";
-    public static final String BASE_IMAGE   = "http://genpin.co.id/schoolc/assets/images/profile/mm_";
-    public static final String BASE_SILABUS = "http://genpin.co.id/schoolc/assets/images/silabus/";
-    public static final String BASE_LESSON  = "http://genpin.co.id/schoolc/assets/images/lesson/";
+    public static final String MASTER_URL   = "http://genpin.co.id/";
+    public static final String BASE_API     = MASTER_URL + "ztapi2/";
+    public static final String BASE_IMAGE   = MASTER_URL + "schoolc/assets/images/profile/mm_";
+    public static final String BASE_SILABUS = MASTER_URL + "schoolc/assets/images/silabus/";
+    public static final String BASE_LESSON  = MASTER_URL + "schoolc/assets/images/lesson/";
     private static Retrofit retrofit = null;
 
     public static Retrofit getClient() {
@@ -30,7 +31,7 @@ public class ApiClient {
 
         if (retrofit==null) {
             retrofit = new Retrofit.Builder()
-                    .baseUrl(BASE_URL)
+                    .baseUrl(BASE_API)
                     .client(client)
                     .addConverterFactory(GsonConverterFactory.create(gson))
                     .build();

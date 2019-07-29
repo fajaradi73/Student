@@ -2,17 +2,26 @@ package com.fingertech.kesforstudent.Student.Activity;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+
+import androidx.cardview.widget.CardView;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
 import com.azoft.carousellayoutmanager.CarouselLayoutManager;
 import com.azoft.carousellayoutmanager.CarouselZoomPostLayoutListener;
 import com.azoft.carousellayoutmanager.CenterScrollListener;
+import com.fingertech.kesforstudent.MainActivity;
+import com.fingertech.kesforstudent.NotifikasiActivity;
+import com.fingertech.kesforstudent.Service.FirebaseMessaging;
 import com.fingertech.kesforstudent.TentangKami;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
@@ -20,10 +29,12 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 import androidx.recyclerview.widget.LinearSnapHelper;
+
+import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
 import com.google.android.material.navigation.NavigationView;
@@ -39,7 +50,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.fingertech.kesforstudent.Masuk;
-import com.fingertech.kesforstudent.Student.Activity.Setting.Setting_Activity;
+import com.fingertech.kesforstudent.Setting.Setting_Activity;
 import com.fingertech.kesforstudent.Student.Adapter.HariAdapter.JumatAdapter;
 import com.fingertech.kesforstudent.Student.Adapter.HariAdapter.KamisAdapter;
 import com.fingertech.kesforstudent.Student.Adapter.HariAdapter.RabuAdapter;
@@ -56,7 +67,6 @@ import com.fingertech.kesforstudent.Student.Model.HariModel.JadwalSabtu;
 import com.fingertech.kesforstudent.Student.Model.HariModel.JadwalSelasa;
 import com.fingertech.kesforstudent.Student.Model.HariModel.JadwalSenin;
 import com.fingertech.kesforstudent.R;
-import com.fingertech.kesforstudent.CustomView.SnappyRecycleView;
 import com.fingertech.kesforstudent.Rest.ApiClient;
 import com.fingertech.kesforstudent.Rest.JSONResponse;
 import com.google.firebase.iid.FirebaseInstanceId;
@@ -141,6 +151,13 @@ public class MenuUtama extends AppCompatActivity
     RecyclerView rv_senin, rv_selasa, rv_rabu, rv_kamis, rv_jumat, rv_sabtu;
     CoordinatorLayout coordinatorLayout;
     TextView tv_hint;
+    CardView btn_logout;
+    int mNotifCount = 0;
+    View actionView;
+    TextView countmenu;
+    private BroadcastReceiver statusReceiver;
+    private IntentFilter mIntent;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -165,6 +182,7 @@ public class MenuUtama extends AppCompatActivity
         rv_sabtu            = findViewById(R.id.rv_sabtu);
         coordinatorLayout   = findViewById(R.id.menu_utama);
         title_jadwal        = findViewById(R.id.title_jadwal);
+        btn_logout          = findViewById(R.id.btn_logout);
 
         Base_anak           = ApiClient.BASE_IMAGE;
 
@@ -221,7 +239,6 @@ public class MenuUtama extends AppCompatActivity
         day = outFormat.format(dater);
 
 
-
         FirebaseInstanceId.getInstance().getInstanceId()
                 .addOnCompleteListener(task -> {
                     if (!task.isSuccessful()) {
@@ -235,7 +252,77 @@ public class MenuUtama extends AppCompatActivity
                     String msg = getString(R.string.msg_token_fmt, token);
                     Log.d("firebase_Token", msg);
                 });
+
+        btn_logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                pilihan();
+            }
+        });
     }
+
+    private void pilihan() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(MenuUtama.this,R.style.DialogTheme);
+        builder.setTitle("Log out");
+        builder.setMessage("Apakah anda ingin keluar?");
+        builder.setIcon(R.drawable.ic_alarm);
+        builder.setPositiveButton("Ya", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                logout();
+            }
+        });
+        builder.setNegativeButton("Tidak", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        builder.show();
+    }
+
+
+    private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String counting = intent.getStringExtra("counting");
+            if (counting != null){
+                if (counting.equals("true")){
+                    SharedPreferences.Editor editor = sharedpreferences.edit();
+                    editor.putInt("counting",mNotifCount);
+                    editor.apply();
+                    mNotifCount++;
+                    invalidateOptionsMenu();
+                }
+            }
+        }
+    };
+
+    @Override
+    protected void onStart(){
+        super.onStart();
+        startService(new Intent(getBaseContext(), FirebaseMessaging.class));
+    }
+
+    @Override
+    protected void onResume(){
+        super.onResume();
+        LocalBroadcastManager.getInstance(MenuUtama.this).registerReceiver(broadcastReceiver, new IntentFilter("NOW"));
+    }
+
+    @Override
+    protected void onPause() {
+        if(mIntent != null) {
+            unregisterReceiver(statusReceiver);
+            mIntent = null;
+        }
+        super.onPause();
+    }
+//    @Override
+//    protected void onDestroy(){
+//        super.onDestroy();
+//        stopService(new Intent(getBaseContext(), MyService.class));
+//    }
 
     @Override
     public void onBackPressed() {
@@ -250,7 +337,22 @@ public class MenuUtama extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-
+        getMenuInflater().inflate(R.menu.menu_utama, menu);
+        final MenuItem menuItem = menu.findItem(R.id.action_cart);
+        actionView  = menu.findItem(R.id.action_cart).getActionView();
+        countmenu   = actionView.findViewById(R.id.cart_badge);
+        if (mNotifCount == 0){
+            countmenu.setVisibility(View.GONE);
+        }else {
+            countmenu.setVisibility(View.VISIBLE);
+            countmenu.setText(String.valueOf(mNotifCount));
+        }
+        actionView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onOptionsItemSelected(menuItem);
+            }
+        });
         return true;
     }
 
@@ -262,7 +364,14 @@ public class MenuUtama extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_cart) {
+            mNotifCount = 0;
+            SharedPreferences.Editor editor = sharedpreferences.edit();
+            editor.putInt("counting",0);
+            editor.apply();
+            Intent intent = new Intent(MenuUtama.this, NotifikasiActivity.class);
+            intent.putExtra("counting", mNotifCount);
+            startActivityForResult(intent,1234);
             return true;
         }
 
@@ -334,7 +443,6 @@ public class MenuUtama extends AppCompatActivity
         }
     }
 
-
     public void get_profile() {
         progressBar();
         showDialog();
@@ -400,6 +508,7 @@ public class MenuUtama extends AppCompatActivity
             Toast.makeText(MenuUtama.this,"harap refresh kembali",Toast.LENGTH_LONG).show();
         }
     }
+
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         outState.putString("WORKAROUND_FOR_BUG_19917_KEY", "WORKAROUND_FOR_BUG_19917_VALUE");
@@ -959,5 +1068,39 @@ public class MenuUtama extends AppCompatActivity
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
         dialog.setIndeterminate(true);
         dialog.setCancelable(false);
+    }
+
+    public void logout(){
+        Call<JSONResponse.Logout> call = mApiInterface.kes_logout_post(authorization,school_code.toLowerCase(),memberid);
+        call.enqueue(new Callback<JSONResponse.Logout>() {
+            @Override
+            public void onResponse(Call<JSONResponse.Logout> call, Response<JSONResponse.Logout> response) {
+                Log.d("Sukses",response.code()+"");
+                if (response.isSuccessful()){
+                    if (response.body() != null) {
+                        status  = response.body().status;
+                        code    = response.body().code;
+                        if (status == 1 && code.equals("DTS_SCS_0001")) {
+                            SharedPreferences.Editor editor = sharedpreferences.edit();
+                            editor.putBoolean(Masuk.session_status, false);
+                            editor.putString(TAG_EMAIL, null);
+                            editor.putString(TAG_MEMBER_ID, null);
+                            editor.putString(TAG_FULLNAME, null);
+                            editor.putString(TAG_MEMBER_TYPE, null);
+                            editor.putString(TAG_TOKEN, null);
+                            editor.apply();
+                            Intent intent = new Intent(MenuUtama.this, MainActivity.class);
+                            finish();
+                            startActivity(intent);
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JSONResponse.Logout> call, Throwable t) {
+                Log.e("gagal",t.toString());
+            }
+        });
     }
 }

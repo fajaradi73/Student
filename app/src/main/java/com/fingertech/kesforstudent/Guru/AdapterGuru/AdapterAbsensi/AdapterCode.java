@@ -33,10 +33,15 @@ public class AdapterCode extends RecyclerView.Adapter<AdapterCode.MyHolder>  {
 
     private OnItemClickListener onItemClickListener;
     private JSONArray jsonArray;
+    private AdapterDetailAbsen adapterDetailAbsen;
+    private JSONObject jsonObject;
+    private OnImageClickListener onImageClickListener;
 
-    public AdapterCode(Context context,List<ModelAttendance> viewItemList) {
+
+    AdapterCode(Context context, List<ModelAttendance> viewItemList,OnImageClickListener onImageClickListener) {
         this.context = context;
         this.modelCodeAttidudes = viewItemList;
+        this.onImageClickListener = onImageClickListener;
     }
 
     public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
@@ -48,8 +53,7 @@ public class AdapterCode extends RecyclerView.Adapter<AdapterCode.MyHolder>  {
 
         View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_code, parent, false);
 
-        MyHolder myHolder = new MyHolder(itemView,onItemClickListener);
-        return myHolder;
+        return new MyHolder(itemView,onItemClickListener);
     }
 
 
@@ -85,6 +89,7 @@ public class AdapterCode extends RecyclerView.Adapter<AdapterCode.MyHolder>  {
             tv_code       = itemView.findViewById(R.id.tv_code);
             bgcolor       = itemView.findViewById(R.id.ll_color);
             view          = itemView.findViewById(R.id.ll_border);
+
             itemView.setOnClickListener(this);
             this.onItemClickListener = onItemClickListener;
         }
@@ -98,31 +103,36 @@ public class AdapterCode extends RecyclerView.Adapter<AdapterCode.MyHolder>  {
             if (modelCodeAttidudes.get(focusedItem).getId().equals("0")){
                 if (modelCodeAttidudes.get(focusedItem).getCodeabsen().equals("H")||modelCodeAttidudes.get(focusedItem).getCodeabsen().equals("T")||modelCodeAttidudes.get(focusedItem).getCodeabsen().equals("D")){
                     id_grade    = modelCodeAttidudes.get(focusedItem).getId_attitude();
-                    JSONObject jsonObject = new JSONObject();
+                    jsonObject = new JSONObject();
                     try {
                         jsonObject.put("absentStatus","1");
                         jsonObject.put("absentType",id_grade);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-                    jsonArray   = new JSONArray();
-                    jsonArray.put(jsonObject);
                 }
                 else {
                     id_grade    = modelCodeAttidudes.get(focusedItem).getId_attitude();
-                    JSONObject jsonObject = new JSONObject();
+                    jsonObject = new JSONObject();
                     try {
                         jsonObject.put("absentStatus", "0");
                         jsonObject.put("absentType", id_grade);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-                    jsonArray   = new JSONArray();
-                    jsonArray.put(jsonObject);
+                }
+            }else {
+                id_grade    = modelCodeAttidudes.get(focusedItem).getId_attitude();
+                jsonObject = new JSONObject();
+                try {
+                    jsonObject.put("absentStatus", "0");
+                    jsonObject.put("absentType", id_grade);
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
             }
-            Log.d("json",jsonArray+"");
-
+            Log.d("Json",jsonObject+"");
+            onImageClickListener.onImageClick(jsonObject);
         }
     }
 
@@ -164,5 +174,10 @@ public class AdapterCode extends RecyclerView.Adapter<AdapterCode.MyHolder>  {
 
         return false;
     }
+
+    public interface OnImageClickListener {
+        void onImageClick(JSONObject jsonObject);
+    }
+
 
 }

@@ -34,6 +34,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import com.developer.kalert.KAlertDialog;
 import com.fingertech.kesforstudent.Controller.Auth;
 import com.fingertech.kesforstudent.Student.Adapter.RaportAdapter;
 import com.fingertech.kesforstudent.Student.Model.RaporModel;
@@ -97,9 +98,10 @@ public class RaporAnak extends AppCompatActivity {
     String folder;
     private boolean isDownloaded;
     LinearLayout ll_kritik,ll_status,no_rapor;
-    List<String> listSpinner = new ArrayList<String>();
+    List<String> listSpinner ;
     int spinnerPosition;
     LinearLayout raport_view,ll_ajaran;
+    ArrayAdapter<String> adapterRaport;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -180,6 +182,7 @@ public class RaporAnak extends AppCompatActivity {
                     status  = resource.status;
                     code    = resource.code;
                     if (status == 1 && code.equals("DTS_SCS_0001")) {
+                        listSpinner = new ArrayList<>();
                         dataSemesters = response.body().getData();
                         listSpinner.add("Pilih Semester...");
                         for (int i = 0; i < dataSemesters.size(); i++) {
@@ -192,9 +195,8 @@ public class RaporAnak extends AppCompatActivity {
                             start_year  = converTahun(dataSemesters.get(0).getStart_date());
                             start_end   = converTahun(dataSemesters.get(dataSemesters.size()-1).getEnd_date());
                             listSpinner.add("Semester "+dataSemesters.get(i).getSemester_name()+" "+start_year+"/"+start_end);
-
                         }
-                        final ArrayAdapter<String> adapterRaport = new ArrayAdapter<String>(
+                        adapterRaport = new ArrayAdapter<String>(
                                 RaporAnak.this, R.layout.spinner_white, listSpinner) {
                             @Override
                             public boolean isEnabled(int position) {
@@ -416,7 +418,7 @@ public class RaporAnak extends AppCompatActivity {
                 return true;
             case R.id.item_download:
                 if (detailScoreItemList != null){
-                    new DownloadFile().execute(ApiClient.BASE_URL+"students/kes_rapor_pdf?school_code="+school_code.toLowerCase()+"&student_id="+student_id+"&classroom_id="+classroom_id+"&semester_id="+semester_id);
+                    new DownloadFiles().execute(ApiClient.BASE_API+"students/kes_rapor_pdf?school_code="+school_code.toLowerCase()+"&student_id="+student_id+"&classroom_id="+classroom_id+"&semester_id="+semester_id);
                 }else {
                     FancyToast.makeText(getApplicationContext(),"Rapor Belum diterbitkan oleh guru",Toast.LENGTH_LONG,FancyToast.ERROR,false).show();
                 }
@@ -432,7 +434,9 @@ public class RaporAnak extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
-    private class DownloadFile extends AsyncTask<String, String, String> {
+
+    @SuppressLint("StaticFieldLeak")
+    private class DownloadFiles extends AsyncTask<String, String, String> {
         private ProgressDialog progressDialog;
 
         /**
@@ -447,16 +451,6 @@ public class RaporAnak extends AppCompatActivity {
             this.progressDialog.setTitle("Sedang Mendowload");
             this.progressDialog.setCancelable(false);
             this.progressDialog.show();
-
-            notification = new NotificationCompat.Builder(RaporAnak.this, ANDROID_CHANNEL_ID)
-                    .setSmallIcon(R.drawable.ic_logo_grey)
-                    .setContentTitle("Download")
-                    .setContentText("Download in progress")
-                    .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                    .setOngoing(true)
-                    .setOnlyAlertOnce(true)
-                    .setProgress(progressMax, 0, true);
-            notificationManager.notify(2, notification.build());
 
         }
 
@@ -532,61 +526,47 @@ public class RaporAnak extends AppCompatActivity {
         protected void onProgressUpdate(String... progress) {
             // setting progress percentage
             progressDialog.setProgress(Integer.parseInt(progress[0]));
-            notification.setContentText(Integer.parseInt(progress[0])+" %")
-                    .setProgress(progressMax, Integer.parseInt(progress[0]), false);
-            notificationManager.notify(2, notification.build());
-//            SystemClock.sleep(1000);
         }
-
 
         @Override
         protected void onPostExecute(String message) {
             // dismiss the dialog after the file was downloaded
             this.progressDialog.dismiss();
             // Display File path after downloading
-            if (message.equals("Something went wrong")){
-                notification.setContentText("Download Gagal")
-                        .setProgress(0, 0, false)
-                        .setOngoing(false)
-                        .setContentIntent(pendingIntent);
-                notificationManager.notify(2, notification.build());
-            }else {
-                Intent intent = new Intent(RaporAnak.this, LihatPdf.class);
-                intent.putExtra("file", fileName);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                pendingIntent = PendingIntent.getActivity(RaporAnak.this, (int) (Math.random() * 100), intent,
-                        PendingIntent.FLAG_ONE_SHOT);
-
-                notification.setContentText("Download selesai")
-                        .setProgress(0, 0, false)
-                        .setOngoing(false)
-                        .setContentIntent(pendingIntent);
-                notificationManager.notify(2, notification.build());
-                pilihan();
+            if (message.equals("Something went wrong")) {
+                new KAlertDialog(RaporAnak.this, KAlertDialog.ERROR_TYPE)
+                        .setTitleText("Oops...")
+                        .setContentText("Download gagal")
+                        .show();
+            } else {
+                new KAlertDialog(RaporAnak.this, KAlertDialog.SUCCESS_TYPE)
+                        .setTitleText("Download selesai")
+                        .setContentText("Apakah anda ingin membuka file ?")
+                        .setCancelText("Tidak")
+                        .setConfirmText("Lihat")
+                        .showCancelButton(true)
+                        .confirmButtonColor(R.color.colorPrimary)
+                        .cancelButtonColor(R.color.colorAccent)
+                        .setConfirmClickListener(new KAlertDialog.KAlertClickListener() {
+                            @Override
+                            public void onClick(KAlertDialog kAlertDialog) {
+                                Intent intent = new Intent(RaporAnak.this, LihatPdf.class);
+                                intent.putExtra("file",fileName);
+                                startActivity(intent);
+                                kAlertDialog.dismiss();
+                            }
+                        })
+                        .setCancelClickListener(new KAlertDialog.KAlertClickListener() {
+                            @Override
+                            public void onClick(KAlertDialog kAlertDialog) {
+                                kAlertDialog.dismiss();
+                            }
+                        })
+                        .show();
             }
         }
     }
-    private void pilihan(){
-        AlertDialog.Builder builder = new AlertDialog.Builder(RaporAnak.this,R.style.DialogTheme);
-        builder.setTitle("Download Selesai");
-        builder.setMessage("Apakah anda ingin melihat file yang sudah didownload?");
-        builder.setIcon(R.drawable.ic_pdf);
-        builder.setPositiveButton("Ya", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                Intent intent = new Intent(RaporAnak.this, LihatPdf.class);
-                intent.putExtra("file",fileName);
-                startActivity(intent);
-            }
-        });
-        builder.setNegativeButton("Tidak", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-            }
-        });
-        builder.show();
-    }
+
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -600,8 +580,11 @@ public class RaporAnak extends AppCompatActivity {
                     Log.d("rapor","semester sama");
                 }else {
                     semester_id     = data.getStringExtra("semester_id");
-                    dapat_semester();
-                    dapat_rapor();
+                    semester_nama   = data.getStringExtra("semester_nama");
+                    spinnerPosition = adapterRaport.getPosition("Semester "+semester_nama+" "+start_year+"/"+start_end);
+                    sp_semester.setSelection(spinnerPosition);
+//                    dapat_semester();
+//                    dapat_rapor();
                 }
             }
         }

@@ -148,5 +148,12 @@
         <item name="android:windowEnterAnimation">@anim/popup_show</item>
         <item name="android:windowExitAnimation">@anim/popup_hide</item>
     </style>
+
+    <style name="SwitchCompatStyle" >
+        <item name="android:colorControlActivated">@color/default_background</item>
+        <item name="thumbTint">@color/colorPrimaryDark</item>
+        <item name="trackTint">@color/colorPrimary</item>
+    </style>
+
 </resources>
 

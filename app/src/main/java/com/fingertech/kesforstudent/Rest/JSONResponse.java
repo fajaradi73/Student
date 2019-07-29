@@ -3898,6 +3898,17 @@ public class JSONResponse {
         @SerializedName("message_title")
         public String message_title;
 
+        @SerializedName("picture")
+        public String picture;
+
+        public String getPicture() {
+            return picture;
+        }
+
+        public void setPicture(String picture) {
+            this.picture = picture;
+        }
+
         public String getMessage_title() {
             return message_title;
         }
@@ -8232,6 +8243,43 @@ public class JSONResponse {
         }
 
         public void setData(List<JSONObject> data) {
+            this.data = data;
+        }
+    }
+    ////-------------------------------///
+
+    ///// Response Logout
+    public class Logout{
+        @SerializedName("status")
+        public Integer status;
+
+        @SerializedName("code")
+        public String code;
+
+        @SerializedName("data")
+        public String data;
+
+        public Integer getStatus() {
+            return status;
+        }
+
+        public void setStatus(Integer status) {
+            this.status = status;
+        }
+
+        public String getCode() {
+            return code;
+        }
+
+        public void setCode(String code) {
+            this.code = code;
+        }
+
+        public String getData() {
+            return data;
+        }
+
+        public void setData(String data) {
             this.data = data;
         }
     }

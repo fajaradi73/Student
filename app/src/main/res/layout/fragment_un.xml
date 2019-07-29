@@ -10,22 +10,18 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        >
+        android:orientation="vertical">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:gravity="center"
-            android:orientation="vertical"
-            >
-
+            android:orientation="vertical">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 tools:text="SEMESTER GENAP"
                 android:id="@+id/tv_semesters"
-                android:textColor="@color/colorPrimary"
-                />
+                android:textColor="@color/colorPrimary" />
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -37,7 +33,6 @@
                     tools:text="9 Juli 2018"
                     android:id="@+id/tv_tanggal"/>
             </LinearLayout>
-
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
@@ -53,6 +48,30 @@
                 android:visibility="gone"
                 android:layout_gravity="center"
                 app:SpinKit_Color="@color/colorPrimary" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:layout_gravity="center"
+                android:visibility="gone"
+                android:id="@+id/hint_ajaran"
+                android:gravity="center">
+                <ImageView
+                    android:layout_width="300dp"
+                    android:layout_height="200dp"
+                    android:src="@drawable/ic_no_ujian"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginTop="-20dp"
+                    android:scaleType="centerCrop"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Tahun ajaran telah selesai"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:textSize="20sp"
+                    android:visibility="visible"/>
+            </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"

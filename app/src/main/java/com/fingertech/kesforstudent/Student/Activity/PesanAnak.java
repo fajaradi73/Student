@@ -41,6 +41,9 @@ import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class PesanAnak extends AppCompatActivity {
 
@@ -52,10 +55,10 @@ public class PesanAnak extends AppCompatActivity {
     String code;
     SharedPreferences sharedPreferences;
     PesanAdapter pesanAnakAdapter;
-    List<PesanModel> pesanAnakModelList = new ArrayList<>();
+    List<PesanModel> pesanAnakModelList ;
     PesanModel pesanAnakModel;
     ProgressDialog dialog;
-    String tanggal,jam,mapel,pesan,guru,classroom_id,message_id,title,read_status,nama_anak;
+    String tanggal,jam,mapel,pesan,guru,classroom_id,message_id,title,read_status,nama_anak,picture;
     LinearLayout no_pesan;
 
     ArrayList<HashMap<String, String>> contactList;
@@ -87,37 +90,36 @@ public class PesanAnak extends AppCompatActivity {
         calendar.add(Calendar.MONTH,-2);
         date_from = formattanggal.format(calendar.getTime());
         date_to   = formattanggal.format(Calendar.getInstance().getTime());
-        dapat();
+        dapat_pesan();
 
     }
 
-    void dapat(){
+
+    private void dapat_pesan(){
         progressBar();
         showDialog();
-        mApi.kes_message_get(authorization,school_code.toLowerCase(),student_id,date_from,date_to)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<JSONResponse.PesanAnak>() {
-
-                    @Override
-                    public void onSubscribe(Disposable d) {
-
-                    }
-
-                    @Override
-                    public void onNext(JSONResponse.PesanAnak response) {
-                        status = response.status;
-                        code   = response.code;
+        Call<JSONResponse.PesanAnak> call = mApi.kes_message_anak_get(authorization,school_code.toLowerCase(),student_id,date_from,date_to);
+        call.enqueue(new Callback<JSONResponse.PesanAnak>() {
+            @Override
+            public void onResponse(Call<JSONResponse.PesanAnak> call, Response<JSONResponse.PesanAnak> response) {
+                Log.d("sukses",response.code()+"");
+                hideDialog();
+                if (response.isSuccessful()){
+                    if (response.body() != null){
+                        status  = response.body().status;
+                        code    = response.body().code;
                         if (status == 1 && code.equals("DTS_SCS_0001")){
-                            for (int i = 0; i<response.getData().size();i++){
-                                jam     = response.getData().get(i).getDatez();
-                                tanggal     = response.getData().get(i).getMessage_date();
-                                mapel       = response.getData().get(i).getCources_name();
-                                pesan       = response.getData().get(i).getMessage_cont();
-                                guru        = response.getData().get(i).getSender_name();
-                                title       = response.getData().get(i).getMessage_title();
-                                read_status = response.getData().get(i).getRead_status();
-                                message_id  = response.getData().get(i).getMessageid();
+                            pesanAnakModelList = new ArrayList<>();
+                            for (int i = 0; i<response.body().getData().size();i++){
+                                jam     = response.body().getData().get(i).getDatez();
+                                tanggal     = response.body().getData().get(i).getMessage_date();
+                                mapel       = response.body().getData().get(i).getCources_name();
+                                pesan       = response.body().getData().get(i).getMessage_cont();
+                                guru        = response.body().getData().get(i).getSender_name();
+                                title       = response.body().getData().get(i).getMessage_title();
+                                read_status = response.body().getData().get(i).getRead_status();
+                                message_id  = response.body().getData().get(i).getMessageid();
+                                picture     = response.body().getData().get(i).getPicture();
                                 pesanAnakModel = new PesanModel();
                                 pesanAnakModel.setTanggal(tanggal);
                                 pesanAnakModel.setJam(jam);
@@ -126,26 +128,10 @@ public class PesanAnak extends AppCompatActivity {
                                 pesanAnakModel.setDari(guru);
                                 pesanAnakModel.setMessage_id(message_id);
                                 pesanAnakModel.setRead_status(read_status);
+                                pesanAnakModel.setPicture(ApiClient.BASE_IMAGE + picture);
                                 pesanAnakModelList.add(pesanAnakModel);
                             }
                             no_pesan.setVisibility(View.GONE);
-                        }
-                        else if (status == 0 && code.equals("DTS_ERR_0001")){
-                            no_pesan.setVisibility(View.VISIBLE);
-                            rv_pesan.setVisibility(View.GONE);
-                        }
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        hideDialog();
-                        Log.d("eror",e.toString());
-                    }
-
-                    @Override
-                    public void onComplete() {
-                        hideDialog();
-                        if (pesanAnakModelList!=null) {
                             pesanAnakAdapter = new PesanAdapter(pesanAnakModelList);
                             RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(PesanAnak.this);
                             rv_pesan.setLayoutManager(layoutManager);
@@ -173,8 +159,20 @@ public class PesanAnak extends AppCompatActivity {
                                 }
                             });
                         }
+                        else if (status == 0 && code.equals("DTS_ERR_0001")){
+                            no_pesan.setVisibility(View.VISIBLE);
+                            rv_pesan.setVisibility(View.GONE);
+                        }
                     }
-                });
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JSONResponse.PesanAnak> call, Throwable t) {
+                Log.e("gagal",t.toString());
+                hideDialog();
+            }
+        });
     }
 
 
@@ -204,10 +202,11 @@ public class PesanAnak extends AppCompatActivity {
                 calendar.add(Calendar.MONTH,-2);
                 date_from   = formattanggal.format(calendar.getTime());
                 date_to     = formattanggal.format(Calendar.getInstance().getTime());
-                dapat();
+                dapat_pesan();
             }
         }
     }
+
     private void showDialog() {
         if (!dialog.isShowing())
             dialog.show();

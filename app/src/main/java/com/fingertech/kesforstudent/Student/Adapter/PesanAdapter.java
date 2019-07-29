@@ -3,15 +3,21 @@ package com.fingertech.kesforstudent.Student.Adapter;
 import android.annotation.SuppressLint;
 
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.fingertech.kesforstudent.Rest.ApiClient;
 import com.fingertech.kesforstudent.Student.Model.PesanModel;
 import com.fingertech.kesforstudent.R;
+import com.github.florent37.shapeofview.shapes.CircleView;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -46,10 +52,9 @@ public class PesanAdapter extends RecyclerView.Adapter<PesanAdapter.MyHolder> {
     @Override
     public MyHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
-        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_pesan, parent, false);
+        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_pesan_anak, parent, false);
 
-        MyHolder myHolder = new MyHolder(itemView,onItemClickListener);
-        return myHolder;
+        return new MyHolder(itemView,onItemClickListener);
     }
 
 
@@ -76,27 +81,36 @@ public class PesanAdapter extends RecyclerView.Adapter<PesanAdapter.MyHolder> {
             e.printStackTrace();
         }
         Long times_pesan = date_pesan.getTime();
-
-        if (viewItem.getRead_status().equals("0")){
-            holder.imageView.setBackground(getContext().getResources().getDrawable(R.drawable.ic_hide));
-        }else if (viewItem.getRead_status().equals("1")){
-            holder.imageView.setBackground(getContext().getResources().getDrawable(R.drawable.ic_view));
+        if (times_pesan.equals(times_now)){
+            holder.tanggal.setText(convertjam(viewItem.getJam()));
+        }else {
+            holder.tanggal.setText(convertTanggal(viewItem.getTanggal()));
         }
 
-        if (times_pesan.equals(times_now)){
-            holder.jam.setText(convertjam(viewItem.getJam()));
-        }else {
-            holder.jam.setText(convertTanggal(viewItem.getTanggal()));
+        if (viewItem.getRead_status().equals("0")){
+            holder.title.setTextColor(Color.BLACK);
+            holder.title.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
+            holder.pengirim.setTextColor(Color.BLACK);
+            holder.pengirim.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
+            holder.tanggal.setTextColor(Color.BLACK);
+            holder.status.setBackground(getContext().getResources().getDrawable(R.drawable.ic_hide));
+        }else if (viewItem.getRead_status().equals("1")){
+            holder.status.setBackground(getContext().getResources().getDrawable(R.drawable.ic_view));
         }
 
         holder.pengirim.setText(viewItem.getDari());
         if (viewItem.getTitle().equals("")){
-            holder.subject.setText("( Tidak ada subject )");
+            holder.title.setText("( Tidak ada subject )");
         }else {
-            holder.subject.setText(viewItem.getTitle());
+            holder.title.setText(viewItem.getTitle());
         }
-        holder.isi_pesan.setText(viewItem.getPesan());
-        Glide.with(getContext()).load("https://ui-avatars.com/api/?name=" + viewItem.getDari()+"&background=1de9b6&color=fff&font-size=0.40&length=1").into(holder.image_pesan);
+        holder.pengirim.setText(viewItem.getDari());
+        if (viewItem.getPicture().equals(ApiClient.BASE_IMAGE)) {
+            Glide.with(getContext()).load("https://ui-avatars.com/api/?name=" + viewItem.getDari() + "&background=1de9b6&color=fff&font-size=0.40&length=1").into(holder.imageView);
+        }else {
+            Glide.with(getContext()).load(viewItem.getPicture()).into(holder.imageView);
+        }
+        holder.pesan.setText(viewItem.getPesan());
     }
 
     @Override
@@ -104,20 +118,27 @@ public class PesanAdapter extends RecyclerView.Adapter<PesanAdapter.MyHolder> {
         return viewItemList.size();
     }
 
-    class MyHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        TextView jam,pengirim,subject,isi_pesan;
-        CircleImageView image_pesan;
-        OnItemClickListener onItemClickListener;
-        ImageView imageView;
+    public List<PesanModel> getItems() {
+        return viewItemList;
+    }
 
-        public MyHolder(View itemView,OnItemClickListener onItemClickListener) {
+    class MyHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+        TextView pengirim,pesan,title,tanggal;
+        CircleView circleView;
+        ImageView imageView,status;
+        LinearLayout linearLayout;
+        OnItemClickListener onItemClickListener;
+
+        public MyHolder(View itemView, OnItemClickListener onItemClickListener) {
             super(itemView);
-            jam           = itemView.findViewById(R.id.jam);
-            pengirim      = itemView.findViewById(R.id.pengirim_pesan);
-            subject       = itemView.findViewById(R.id.subject);
-            isi_pesan     = itemView.findViewById(R.id.isi_pesan);
-            image_pesan   = itemView.findViewById(R.id.image_pesan);
-            imageView     = itemView.findViewById(R.id.image_status);
+            tanggal     = itemView.findViewById(R.id.Tv_tanggal);
+            pengirim    = itemView.findViewById(R.id.Tvpengirim);
+            pesan       = itemView.findViewById(R.id.Tvpesan);
+            title       = itemView.findViewById(R.id.Tvsubject);
+            circleView  = itemView.findViewById(R.id.profilanak);
+            imageView   = itemView.findViewById(R.id.image_guru);
+            status      = itemView.findViewById(R.id.image_pesan);
+            linearLayout    = itemView.findViewById(R.id.ll_pesan);
             itemView.setOnClickListener(this);
             this.onItemClickListener = onItemClickListener;
         }
@@ -127,10 +148,12 @@ public class PesanAdapter extends RecyclerView.Adapter<PesanAdapter.MyHolder> {
             onItemClickListener.onItemClick(v, getAdapterPosition());
         }
     }
+
     public interface OnItemClickListener {
 
         void onItemClick(View view, int position);
     }
+
     String convertDate(String date) {
         SimpleDateFormat calendarDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
         SimpleDateFormat newDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:dd",Locale.getDefault());

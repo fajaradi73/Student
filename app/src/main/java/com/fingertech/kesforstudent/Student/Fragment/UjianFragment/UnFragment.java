@@ -60,7 +60,7 @@ public class UnFragment extends Fragment {
     private List<JSONResponse.DataUjian> dataUjianList;
 
     private TextView tv_start;
-    private LinearLayout hint_ujian;
+    private LinearLayout hint_ujian,hint_ajaran;
     private SpinKitView spinKitView;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -80,6 +80,7 @@ public class UnFragment extends Fragment {
         tv_semester     = view.findViewById(R.id.tv_semesters);
         tv_start        = view.findViewById(R.id.tv_tanggal);
         spinKitView     = view.findViewById(R.id.spin_kits);
+        hint_ajaran     = view.findViewById(R.id.hint_ajaran);
 
 
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
@@ -101,19 +102,24 @@ public class UnFragment extends Fragment {
                 if (response.isSuccessful()) {
                     JSONResponse.CheckSemester resource = response.body();
 
-                    status = resource.status;
-                    code = resource.code;
-                    semester_id = response.body().getData();
-                    dapat_semester();
-                    Jadwal_ujian();
+                    status  = resource.status;
+                    code    = resource.code;
+                    if (status == 1 && code.equals("DTS_SCS_0001")) {
+                        semester_id = response.body().getData();
+                        if (semester_id.equals("0")){
+                            hint_ajaran.setVisibility(View.VISIBLE);
+                        }else {
+                            dapat_semester();
+                            Jadwal_ujian();
+                        }
+                    }
                 }
             }
 
 
             @Override
             public void onFailure(Call<JSONResponse.CheckSemester> call, Throwable t) {
-                Log.d("onFailure", t.toString());
-
+                Log.e("onFailure", t.toString());
             }
 
         });

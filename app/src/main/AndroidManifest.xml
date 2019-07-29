@@ -133,7 +133,7 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".Student.Activity.Setting.Setting_Activity"
+            android:name=".Setting.Setting_Activity"
             android:label="Pengaturan"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
@@ -289,10 +289,15 @@
             android:label="Riwayat Pelajaran"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".Student.Activity.LessonReview"
+        <activity
+            android:name=".Student.Activity.LessonReview"
             android:label="Riwayat Pelajaran"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".NotifikasiActivity"
+            android:label="Notifikasi"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>

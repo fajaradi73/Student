@@ -52,12 +52,10 @@ public class UtsFragment extends Fragment {
     private DateFormat times_format = new SimpleDateFormat("MM-yyyy", Locale.getDefault());
     private Auth mApiInterface;
     private String bulan,waktu, tanggal, mapel, deskripsi, semester_id, start_date, end_date, semester, start_year, start_end;
-    private TextView tv_semester,start,akhir;
+    private TextView tv_semester,tv_start,akhir;
     private List<ItemUjian> itemUjianList = new ArrayList<>();
 
-    private LinearLayout hint_ujian;
-    private List<JSONResponse.DataSemester> dataSemesters;
-    private List<JSONResponse.DataMapel> dataMapelList;
+    private LinearLayout hint_ujian,hint_ajaran;
     private String[] tipe = {
             "FINAL",
             "MID",
@@ -84,9 +82,10 @@ public class UtsFragment extends Fragment {
         mApiInterface   = ApiClient.getClient().create(Auth.class);
         recyclerView    = view.findViewById(R.id.recycleview_ujian);
         hint_ujian      = view.findViewById(R.id.hint_ujian);
-        tv_semester     = view.findViewById(R.id.semester);
-        start           = view.findViewById(R.id.startku);
+        tv_semester     = view.findViewById(R.id.tv_semesters);
+        tv_start        = view.findViewById(R.id.tv_tanggal);
         spinKitView     = view.findViewById(R.id.spin_kits);
+        hint_ajaran     = view.findViewById(R.id.hint_ajaran);
 
 
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
@@ -107,13 +106,17 @@ public class UtsFragment extends Fragment {
                 Log.i("KES", response.code() + "");
                 if (response.isSuccessful()) {
                     JSONResponse.CheckSemester resource = response.body();
-
                     status = resource.status;
                     code = resource.code;
-                    semester_id = response.body().getData();
-                    dapat_semester();
-                    Jadwal_ujian();
-                    dapat_mapel();
+                    if (status == 1 && code.equals("DTS_SCS_0001")) {
+                        semester_id = response.body().getData();
+                        if (semester_id.equals("0")){
+                            hint_ajaran.setVisibility(View.VISIBLE);
+                        }else {
+                            dapat_semester();
+                            Jadwal_ujian();
+                        }
+                    }
                 }
             }
 
@@ -127,28 +130,6 @@ public class UtsFragment extends Fragment {
         });
     }
 
-    public void dapat_mapel() {
-        Call<JSONResponse.ListMapel> call = mApiInterface.kes_list_cources_get(authorization.toString(), school_code.toLowerCase().toString(), classroom_id.toString());
-        call.enqueue(new Callback<JSONResponse.ListMapel>() {
-            @Override
-            public void onResponse(Call<JSONResponse.ListMapel> call, Response<JSONResponse.ListMapel> response) {
-                Log.d("onResponse", response.code() + "");
-                if (response.isSuccessful()) {
-                    JSONResponse.ListMapel resource = response.body();
-                    status = resource.status;
-                    code = resource.code;
-                    if (status == 1 && code.equals("KLC_SCS_0001")) {
-                        dataMapelList = response.body().getData();
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(Call<JSONResponse.ListMapel> call, Throwable t) {
-
-            }
-        });
-    }
 
     private void show_dialog(){
         Sprite sprite = new Wave();
@@ -169,8 +150,8 @@ public class UtsFragment extends Fragment {
                 if (response.isSuccessful()) {
                     JSONResponse.JadwalUjian resource = response.body();
 
-                    status = resource.status;
-                    code = resource.code;
+                    status  = resource.status;
+                    code    = resource.code;
 
                     ItemUjian itemUjian = null;
                     if (status == 1 && code.equals("DTS_SCS_0001")) {
@@ -252,7 +233,7 @@ public class UtsFragment extends Fragment {
                             start_date  = response.body().getData().get(i).getStart_date();
                             end_date    = response.body().getData().get(i).getEnd_date();
                             tv_semester.setText("Semester "+semester+"");
-                            start.setText(converttanggal(start_date)+" sampai "+ converttanggal(end_date));
+                            tv_start.setText(converttanggal(start_date)+" sampai "+ converttanggal(end_date));
                         }
                     }
                 }

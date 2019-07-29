@@ -13,72 +13,85 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:theme="@style/AppTheme.AppBarOverlay" />
-
-    <androidx.core.widget.NestedScrollView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_gravity="center"
+        android:visibility="gone"
+        android:id="@+id/hint_raport"
+        android:gravity="center">
+        <ImageView
+            android:layout_width="300dp"
+            android:layout_height="200dp"
+            android:src="@drawable/ic_no_raport"
+            android:layout_marginBottom="10dp"
+            android:scaleType="centerCrop"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Rapor belum diterbitkan oleh wali kelas"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:textSize="20sp"
+            android:visibility="visible"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/ll_rapor"
+        android:orientation="vertical">
+        <com.rbrooks.indefinitepagerindicator.IndefinitePagerIndicator
+            android:id="@+id/recyclerview_pager_indicator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            app:selectedDotColor="@color/colorPrimary"
+            app:dotColor="#bdc3c7"
+            android:layout_gravity="center"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="85dp"
+            android:id="@+id/rv_rapor">
+        </androidx.recyclerview.widget.RecyclerView>
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:layout_height="40dp"
+            android:background="@color/blues"
+            android:orientation="horizontal">
             <TextView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="30dp"
-                android:text="Rapor belum diterbitkan oleh wali kelas"
+                android:layout_height="match_parent"
+                android:text="Detail"
                 android:gravity="center"
-                android:id="@+id/tv_no_rapor"
-                android:visibility="gone"
-                android:textSize="20sp"/>
-            <com.rbrooks.indefinitepagerindicator.IndefinitePagerIndicator
-                android:id="@+id/recyclerview_pager_indicator"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                app:selectedDotColor="@color/colorPrimary"
-                app:dotColor="#bdc3c7"
-                android:layout_gravity="center"/>
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:layout_width="match_parent"
-                android:layout_height="85dp"
-                android:id="@+id/rv_rapor">
-            </androidx.recyclerview.widget.RecyclerView>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/blues"
-                android:id="@+id/ll_raport"
-                android:orientation="horizontal">
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:text="Detail"
-                    android:gravity="center"
-                    android:textColor="@color/white"
-                    android:layout_margin="10dp"
-                    android:layout_gravity="center"
-                    android:layout_weight="1"/>
-                <View
-                    android:layout_width="0.5dp"
-                    android:layout_height="match_parent"
-                    android:background="@color/black"/>
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:text="Nilai"
-                    android:gravity="center"
-                    android:layout_margin="10dp"
-                    android:textColor="@color/white"
-                    android:layout_gravity="center"
-                    android:layout_weight="1"/>
-            </LinearLayout>
-            <androidx.recyclerview.widget.RecyclerView
+                android:textColor="@color/white"
+                android:layout_margin="10dp"
+                android:layout_gravity="center"
+                android:layout_weight="1"/>
+            <View
+                android:layout_width="0.5dp"
+                android:layout_height="match_parent"
+                android:background="@color/black"/>
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:text="Nilai"
+                android:gravity="center"
+                android:layout_margin="10dp"
+                android:textColor="@color/white"
+                android:layout_gravity="center"
+                android:layout_weight="1"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:id="@+id/ll_raport"
+            android:layout_height="match_parent">
+            <androidx.recyclerview.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:id="@+id/rv_nilai">
-
             </androidx.recyclerview.widget.RecyclerView>
         </LinearLayout>
-    </androidx.core.widget.NestedScrollView>
+    </LinearLayout>
 </LinearLayout>

@@ -3,10 +3,11 @@ package com.fingertech.kesforstudent.Rest;
 
 import com.fingertech.kesforstudent.Controller.Auth;
 
+import static com.fingertech.kesforstudent.Rest.ApiClient.BASE_API;
+
 public class UtilsApi {
-    private static final String BASE_URL_API = "http://genpin.co.id/ztapi2/";
 
     public static Auth getAPIService(){
-        return ClientApi.getClient(BASE_URL_API).create(Auth.class);
+        return ClientApi.getClient(BASE_API).create(Auth.class);
     }
 }

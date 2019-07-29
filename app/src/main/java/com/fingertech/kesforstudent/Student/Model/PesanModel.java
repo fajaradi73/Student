@@ -9,6 +9,25 @@ public class PesanModel {
     private String tanggal;
     private String message_id;
     private String title;
+    private String status;
+
+    public String getPicture() {
+        return picture;
+    }
+
+    public void setPicture(String picture) {
+        this.picture = picture;
+    }
+
+    private String picture;
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
 
     public String getMessage_id() {
         return message_id;

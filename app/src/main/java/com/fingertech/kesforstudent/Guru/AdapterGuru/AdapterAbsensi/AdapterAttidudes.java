@@ -47,10 +47,13 @@ public class AdapterAttidudes extends RecyclerView.Adapter<AdapterAttidudes.MyHo
     private String[] colorabsen = new String[]{"#A2FB5E","#CF2138","#EFE138","#36B2E9","#2C3039","#529FBF"};
     JSONObject myJsonObject;
     private String color,grade_code,id;
-    AdapterAttidudes(Context context, List<ModelDataAttidude> viewItemList) {
+    private AdapterCode.OnImageClickListener onImageClickListener;
+
+    AdapterAttidudes(Context context, List<ModelDataAttidude> viewItemList, AdapterCode.OnImageClickListener onImageClickListener) {
         this.context = context;
         this.modelDataAttidudes = viewItemList;
         this.viewPool = new RecyclerView.RecycledViewPool();
+        this.onImageClickListener = onImageClickListener;
 
     }
 
@@ -93,7 +96,7 @@ public class AdapterAttidudes extends RecyclerView.Adapter<AdapterAttidudes.MyHo
 
         }
 
-        adapterCodeAbsen = new AdapterCode(context,modelAttendanceList);
+        adapterCodeAbsen = new AdapterCode(context,modelAttendanceList,onImageClickListener);
         LinearLayoutManager layoutManager = new LinearLayoutManager(context);
         layoutManager.setOrientation(RecyclerView.HORIZONTAL);
         holder.rv_code.setHasFixedSize(true);

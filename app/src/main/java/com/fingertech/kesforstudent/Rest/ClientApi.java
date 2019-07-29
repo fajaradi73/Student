@@ -10,7 +10,6 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ClientApi {
     //////////// http://192.168.43.182/apikes/
-    public static final String BASE_URL = "https://kes.co.id/ztapi2/";
     private static Retrofit retrofit = null;
 
     public static Retrofit getClient(String base_url){

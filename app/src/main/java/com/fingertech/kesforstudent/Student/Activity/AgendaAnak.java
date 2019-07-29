@@ -32,6 +32,7 @@ import com.fingertech.kesforstudent.CustomView.SnappyRecycleView;
 import com.fingertech.kesforstudent.R;
 import com.fingertech.kesforstudent.Rest.ApiClient;
 import com.fingertech.kesforstudent.Rest.JSONResponse;
+import com.fingertech.kesforstudent.Sqlite.NotifikasiTable;
 import com.fingertech.kesforstudent.Student.Adapter.AgendaAdapter;
 import com.fingertech.kesforstudent.Student.Adapter.AgendaDataTanggal;
 import com.fingertech.kesforstudent.Student.Model.AgendaModel;
@@ -99,6 +100,7 @@ public class AgendaAnak extends AppCompatActivity {
     String tanggals,calendardate,click;
     int id_notif;
     LinearLayout ll_agenda,no_ajaran;
+    private NotifikasiTable notifikasiTable = new NotifikasiTable();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -129,8 +131,13 @@ public class AgendaAnak extends AppCompatActivity {
         student_id          = sharedPreferences.getString("member_id",null);
         classroom_id        = sharedPreferences.getString("classroom_id",null);
         calendardate        = getIntent().getStringExtra("calendar");
-        date = df.format(Calendar.getInstance().getTime());
+        date                = df.format(Calendar.getInstance().getTime());
+        click               = getIntent().getStringExtra("clicked");
+        id_notif            = sharedPreferences.getInt("id_notif",0);
 
+        if (click != null){
+            notifikasiTable.updateStatus(id_notif,"0","1");
+        }
 
         if (calendardate != null){
             Calendar calendar = Calendar.getInstance();

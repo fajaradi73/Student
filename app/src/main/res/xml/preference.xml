@@ -6,33 +6,38 @@
 
     <PreferenceCategory
         android:key="Nada"
-        android:title="Ringtone"
-        >
+        android:title="Nada dering">
         <SwitchPreference
             android:key="SW_Notifikasi"
             android:title="Aktifkan Nada Pemberitahuan"
             android:editable="true"
+            android:thumb="@color/mint_color"
+            android:textColor="@color/colorPrimary"
+            android:trackTint="@color/colorPrimary"
+            android:theme="@style/SwitchCompatStyle"
             />
+
         <RingtonePreference
             android:key="Ringtone"
-            android:title="Ringtone"
+            android:title="Nada dering"
             android:summary="Pilih Nada Pemberitahuan"
             android:ringtoneType="notification"
             android:dependency="SW_Notifikasi"
+            android:defaultValue="content://settings/system/notification_sound"
             />
 
 
         <SwitchPreference
             android:defaultValue="true"
             android:key="key_vibrate"
-            android:summary="Bergetar saat ada pemberitahuan Baru"
+            android:summary="Bergetar saat ada pemberitahuan baru"
             android:title="Getar" />
 
     </PreferenceCategory>
-    <PreferenceCategory android:title="About">
+    <PreferenceCategory android:title="Tentang">
 
         <Preference
-            android:summary="1.0.10"
+            android:key="versi"
             android:title="Versi" />
 
         <!-- preference opens url in browser -->
@@ -43,16 +48,14 @@
                 android:action="android.intent.action.VIEW"
                 android:data="@string/url_faq" />
         </Preference>
-        <Preference android:title="TERM AND CONDITIONS">
+        <Preference android:title="Syarat dan Ketentuan">
             <intent
                 android:action="android.intent.action.VIEW"
                 android:data="@string/url_term" />
         </Preference>
-
-        <Preference android:title="Privacy policy">
-            <intent
-                android:action="android.intent.action.VIEW"
-                android:data="@string/url_term" />
+        <Preference
+            android:key="privacy"
+            android:title="Kebijakan Privasi">
         </Preference>
 
     </PreferenceCategory>

@@ -15,6 +15,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -50,7 +51,7 @@ import retrofit2.Response;
 
 import static android.content.Context.LAYOUT_INFLATER_SERVICE;
 
-public class AdapterDetailAbsen extends PagerAdapter {
+public class AdapterDetailAbsen extends PagerAdapter implements AdapterCode.OnImageClickListener {
     private Context context;
     private LayoutInflater inflater;
     private List<ModelDetailAbsen> modelDetailAbsenList;
@@ -63,7 +64,7 @@ public class AdapterDetailAbsen extends PagerAdapter {
 
     private View views;
 
-    String  schedule_id,authorization,school_code,member_id,scyear_id, classroom,code,nama,student_id,schedule_date,attidude,absentcode,absentwarna;
+    private String  schedule_id,authorization,school_code,member_id,scyear_id, classroom,code,nama,student_id,schedule_date,attidude,absentcode,absentwarna;
     int status,statusattidude;
     SharedPreferences sharedpreferences;
 
@@ -76,11 +77,14 @@ public class AdapterDetailAbsen extends PagerAdapter {
     public static final String TAG_CLASS_ID     = "classroom_id";
     public static final String TAG_YEAR_ID      = "scyear_id";
 
-    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", new Locale("in","ID"));
-    Dialog dialog;
-    Activity activity;
+    private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", new Locale("in","ID"));
+    private Dialog dialog;
+    private Activity activity;
+    private JSONArray jsonArraya,array;
 
-    public AdapterDetailAbsen(Context context, List<ModelDetailAbsen> viewItemlist, ViewPager viewPager, View views, String schedule_id, Dialog dialog,Activity activity) {
+    private String absen;
+
+    public AdapterDetailAbsen(Context context, List<ModelDetailAbsen> viewItemlist, ViewPager viewPager, View views, String schedule_id, Dialog dialog,Activity activity,String absen) {
         this.context            = context;
         this.modelDetailAbsenList = viewItemlist;
         this.viewPager          = viewPager;
@@ -88,12 +92,13 @@ public class AdapterDetailAbsen extends PagerAdapter {
         this.schedule_id        = schedule_id;
         this.dialog             = dialog;
         this.activity           = activity;
+        this.absen              = absen;
     }
     @Override
     public int getCount() {
         return modelDetailAbsenList.size();
     }
-    JSONArray jsonArraya;
+
 
     @Override
     public boolean isViewFromObject(@NonNull View view, Object object) {
@@ -101,7 +106,9 @@ public class AdapterDetailAbsen extends PagerAdapter {
     }
     private String[] grade     = new String[]{"1","2","3"};
     private String[] gradeid     = new String[]{"1","6","11"};
-    JSONObject jsonObject;
+    EditText editText;
+    JSONObject absenObject;
+
     @NonNull
     @Override
     public Object instantiateItem(@NonNull ViewGroup container, int position) {
@@ -115,6 +122,7 @@ public class AdapterDetailAbsen extends PagerAdapter {
         btn_next            = view.findViewById(R.id.btnnext);
         btn_simpan          = view.findViewById(R.id.btn_simpan);
         mApiInterface       = ApiClient.getClient().create(Auth.class);
+        editText            = view.findViewById(R.id.et_komentar);
 
         sharedpreferences   = context.getSharedPreferences(Masuk.my_shared_preferences, Context.MODE_PRIVATE);
         authorization       = sharedpreferences.getString(TAG_TOKEN,"");
@@ -128,7 +136,7 @@ public class AdapterDetailAbsen extends PagerAdapter {
         ModelDetailAbsen viewitem = modelDetailAbsenList.get(position);
         namaanak.setText(viewitem.getNama());
         nis.setText(viewitem.getNis());
-        AdapterAttidudes adapterAttidudes = new AdapterAttidudes(context, viewitem.getModelDataAttidudeList());
+        AdapterAttidudes adapterAttidudes = new AdapterAttidudes(context, viewitem.getModelDataAttidudeList(),this);
         LinearLayoutManager layoutManager = new LinearLayoutManager(context);
         layoutManager.setOrientation(RecyclerView.VERTICAL);
         rv_attidude.setHasFixedSize(true);
@@ -144,12 +152,17 @@ public class AdapterDetailAbsen extends PagerAdapter {
         }else {
             btn_simpan.setVisibility(View.GONE);
             btn_next.setVisibility(View.VISIBLE);
-            btn_back.setVisibility(View.VISIBLE);
+            btn_back.setVisibility(View.INVISIBLE);
         }
 
         btn_next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (absenObject != null) {
+                    Log.d("datas", absenObject + "");
+                }else {
+                    Log.d("datas", "data" + "kosong");
+                }
                 viewPager.setCurrentItem(position + 1, true);
             }
         });
@@ -159,6 +172,7 @@ public class AdapterDetailAbsen extends PagerAdapter {
                 viewPager.setCurrentItem(position - 1, true);
             }
         });
+
         btn_simpan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -166,16 +180,30 @@ public class AdapterDetailAbsen extends PagerAdapter {
                 for (int i = 0 ; i < modelDetailAbsenList.size(); i ++){
                     student_id  = modelDetailAbsenList.get(i).getId();
                     JSONArray jsonArray = new JSONArray();
-                    for (int o = 0; o < grade.length ;o++){
-                        JSONObject jsonObject1 = new JSONObject();
-                        try {
-                            jsonObject1.put("attitudeid",grade[o]);
-                            jsonObject1.put("gradeid",gradeid[o]);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
+                    if (modelDetailAbsenList.get(i).getModelDataAttidudeList() != null || modelDetailAbsenList.get(i).getModelDataAttidudeList().size() > 0 ) {
+                        for (int o = 1; o < modelDetailAbsenList.get(i).getModelDataAttidudeList().size(); o++) {
+                            String ids = modelDetailAbsenList.get(i).getModelDataAttidudeList().get(o).getAttitudeid();
+                            JSONObject jsonObject1 = new JSONObject();
+                            try {
+                                jsonObject1.put("attitudeid", ids);
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                            for (int p = 1; p < modelDetailAbsenList.get(i).getModelDataAttidudeList().get(o).getModelAttidudeList().size(); p++) {
+                                String id = modelDetailAbsenList.get(i).getModelDataAttidudeList().get(o).getModelAttidudeList().get(p).getId();
+                                if (id.equals(ids)) {
+                                    String gradeid = modelDetailAbsenList.get(i).getModelDataAttidudeList().get(o).getModelAttidudeList().get(p).getId_atitude();
+                                    try {
+                                        jsonObject1.put("gradeid", String.valueOf(Integer.valueOf(gradeid) - 4));
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            }
+                            jsonArray.put(jsonObject1);
                         }
-                        jsonArray.put(jsonObject1);
                     }
+
                     JSONObject jsonObject = new JSONObject();
                     try {
                         jsonObject.put("id",student_id);
@@ -188,12 +216,17 @@ public class AdapterDetailAbsen extends PagerAdapter {
                     }
                     jsonArraya.put(jsonObject);
                 }
-                sendPost();
+                if (absen.equals("insert")) {
+                    sendPost();
+                }else if (absen.equals("update")){
+                    updatePost();
+                }
             }
         });
 
         return view;
     }
+
 
     @Override
     public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
@@ -205,7 +238,7 @@ public class AdapterDetailAbsen extends PagerAdapter {
             @Override
             public void run() {
                 try {
-                    URL url = new URL(ApiClient.BASE_URL+"teachers/kes_insertdb_student_attendance");
+                    URL url = new URL(ApiClient.BASE_API+"teachers/kes_insertdb_student_attendance");
                     HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                     conn.setRequestMethod("POST");
                     conn.setRequestProperty("Content-Type", "application/json;charset=UTF-8");
@@ -235,7 +268,7 @@ public class AdapterDetailAbsen extends PagerAdapter {
                         activity.runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                FancyToast.makeText(context,"Sukses",Toast.LENGTH_LONG,FancyToast.SUCCESS,false).show();
+                                FancyToast.makeText(context,"Sukses absen",Toast.LENGTH_LONG,FancyToast.SUCCESS,false).show();
                                 dialog.dismiss();
                             }
                         });
@@ -248,5 +281,60 @@ public class AdapterDetailAbsen extends PagerAdapter {
         });
 
         thread.start();
+    }
+    private void updatePost() {
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    URL url = new URL(ApiClient.BASE_API+"teachers/kes_updatedb_student_attendance");
+                    HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                    conn.setRequestMethod("POST");
+                    conn.setRequestProperty("Content-Type", "application/json;charset=UTF-8");
+                    conn.setRequestProperty("Accept","application/json");
+                    conn.setRequestProperty("Authorization",authorization);
+                    conn.setDoOutput(true);
+                    conn.setDoInput(true);
+
+                    JSONObject jsonParam = new JSONObject();
+                    jsonParam.put("school_code",school_code.toLowerCase());
+                    jsonParam.put("teacher_id",member_id);
+                    jsonParam.put("classroom_id",classroom);
+                    jsonParam.put("schedule_time_id",schedule_id);
+                    jsonParam.put("schedule_date",schedule_date);
+                    jsonParam.put("studentAbsent",jsonArraya);
+
+                    DataOutputStream os = new DataOutputStream(conn.getOutputStream());
+                    //os.writeBytes(URLEncoder.encode(jsonParam.toString(), "UTF-8"));
+                    os.writeBytes(jsonParam.toString());
+
+                    os.flush();
+                    os.close();
+
+                    Log.i("STATUS", String.valueOf(conn.getResponseCode()));
+                    Log.i("MSG" , conn.getResponseMessage());
+                    if (conn.getResponseMessage().equals("OK")){
+                        activity.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                FancyToast.makeText(context,"Sukses update absen",Toast.LENGTH_LONG,FancyToast.SUCCESS,false).show();
+                                dialog.dismiss();
+                            }
+                        });
+                    }
+                    conn.disconnect();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        thread.start();
+    }
+
+    @Override
+    public void onImageClick(JSONObject jsonObject) {
+        absenObject = new JSONObject();
+        absenObject = jsonObject;
     }
 }

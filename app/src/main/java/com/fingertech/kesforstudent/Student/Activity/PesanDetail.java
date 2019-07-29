@@ -19,6 +19,7 @@ import com.fingertech.kesforstudent.Controller.Auth;
 import com.fingertech.kesforstudent.R;
 import com.fingertech.kesforstudent.Rest.ApiClient;
 import com.fingertech.kesforstudent.Rest.JSONResponse;
+import com.fingertech.kesforstudent.Sqlite.NotifikasiTable;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -51,8 +52,9 @@ public class PesanDetail extends AppCompatActivity {
     private SimpleDateFormat tanggalFormat  = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
 
     private DateFormat times_format = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
-    String tanggals;
-
+    String tanggals,click;
+    int id_notif;
+    private NotifikasiTable notifikasiTable = new NotifikasiTable();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,6 +79,13 @@ public class PesanDetail extends AppCompatActivity {
         classroom_id        = sharedPreferences.getString("classroom_id",null);
         message_id          = sharedPreferences.getString("message_id",null);
         nama_anak           = sharedPreferences.getString("student_name",null);
+
+        click               = getIntent().getStringExtra("clicked");
+        id_notif            = sharedPreferences.getInt("id_notif",0);
+
+        if (click != null){
+            notifikasiTable.updateStatus(id_notif,"0","1");
+        }
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -143,7 +152,7 @@ public class PesanDetail extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<JSONResponse.PesanDetail> call, Throwable t) {
-
+                Log.e("datagagal",t.toString());
             }
         });
     }

@@ -1,4 +1,4 @@
-package com.fingertech.kesforstudent.Student.Activity.Setting;
+package com.fingertech.kesforstudent.Setting;
 
 import android.graphics.PorterDuff;
 import android.os.Bundle;

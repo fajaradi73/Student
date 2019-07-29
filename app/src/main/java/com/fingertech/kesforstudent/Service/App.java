@@ -16,6 +16,7 @@ public class  App extends Application {
     public static final String ANDROID_CHANNEL_NAME = "Notifikasi KES";
     public static final String ANDROID_CHANNEL_DESC = "Notifikasi dari hp";
 
+
     @Override
     public void onCreate()
     {

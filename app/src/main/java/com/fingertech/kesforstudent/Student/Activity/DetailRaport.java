@@ -1,5 +1,6 @@
 package com.fingertech.kesforstudent.Student.Activity;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -29,6 +30,7 @@ import android.widget.Toast;
 
 import com.fingertech.kesforstudent.Controller.Auth;
 import com.fingertech.kesforstudent.CustomView.CustomLayoutManager;
+import com.fingertech.kesforstudent.CustomView.OnSwipeTouchListener;
 import com.fingertech.kesforstudent.R;
 import com.fingertech.kesforstudent.Rest.ApiClient;
 import com.fingertech.kesforstudent.Rest.JSONResponse;
@@ -85,14 +87,13 @@ public class DetailRaport extends AppCompatActivity {
     SlidingUpPanelLayout slidingUpPanelLayout;
     Spinner sp_semester;
     ImageView arrow;
-    LinearLayout drag,ll_raport;
+    LinearLayout drag,ll_raport,hint_raport,ll_rapor;
     String semester_nama;
     private List<JSONResponse.DataSemester> dataSemesters;
-    TextView tv_norapor;
     String detail;
     Dialog myDialog;
     List<JSONResponse.DataDetailRapor> detailRaporList;
-    CardView iv_close;
+    ImageView iv_close;
     RecyclerView rv_detail;
     DetailRaporAdapter detailRaporAdapter;
     List<DetailRaporModel> detailRaporModelList = new ArrayList<>();
@@ -110,8 +111,9 @@ public class DetailRaport extends AppCompatActivity {
         slidingUpPanelLayout    = findViewById(R.id.sliding_layout);
         arrow              = findViewById(R.id.arrow);
         drag               = findViewById(R.id.dragView);
-        tv_norapor         = findViewById(R.id.tv_no_rapor);
-        ll_raport          = findViewById(R.id.ll_raport);
+        hint_raport        = findViewById(R.id.hint_raport);
+        ll_raport          = findViewById(R.id.ll_rapor);
+        ll_rapor            = findViewById(R.id.ll_raport);
         indefinitePagerIndicator    = findViewById(R.id.recyclerview_pager_indicator);
 
         setSupportActionBar(toolbar);
@@ -147,7 +149,7 @@ public class DetailRaport extends AppCompatActivity {
                 if (panelState.equals(SlidingUpPanelLayout.PanelState.EXPANDED)){
                     arrow.setImageResource(R.drawable.ic_up_arrow);
                 }else if (panelState.equals(SlidingUpPanelLayout.PanelState.COLLAPSED)){
-                    arrow.setImageResource(R.drawable.ic_arrow_down);
+                    arrow.setImageResource(R.drawable.ic_down_arrow);
                 }
             }
         });
@@ -158,7 +160,7 @@ public class DetailRaport extends AppCompatActivity {
                 arrow.setImageResource(R.drawable.ic_up_arrow);
             }else if (slidingUpPanelLayout.getPanelState().equals(SlidingUpPanelLayout.PanelState.COLLAPSED)){
                 slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);
-                arrow.setImageResource(R.drawable.ic_arrow_down);
+                arrow.setImageResource(R.drawable.ic_down_arrow);
             }
         });
         dapat_semester();
@@ -284,7 +286,8 @@ public class DetailRaport extends AppCompatActivity {
                         sp_semester.setAdapter(adapterRaport);
                         sp_semester.setOnItemSelectedListener((parent, view, position, id) -> {
                             if (position > 0) {
-                                semester_id = dataSemesters.get(position - 1).getSemester_id();
+                                semester_id     = dataSemesters.get(position - 1).getSemester_id();
+                                semester_nama   = dataSemesters.get(position - 1).getSemester_name();
                                 dapat_semester();
                                 RaportAnak();
                                 posisi  = 1;
@@ -311,6 +314,7 @@ public class DetailRaport extends AppCompatActivity {
         showDialog();
         Call<JsonElement>call = mApiInterface.kes_rapor_get(authorization,school_code.toLowerCase(),student_id,classroom_id,semester_id);
         call.enqueue(new Callback<JsonElement>() {
+            @SuppressLint("ClickableViewAccessibility")
             @Override
             public void onResponse(Call<JsonElement> call, Response<JsonElement> response) {
                 Log.d("RaporSukses",response.code()+"");
@@ -332,7 +336,7 @@ public class DetailRaport extends AppCompatActivity {
                             e.printStackTrace();
                         }
                         if (detail.equals("null")){
-                            tv_norapor.setVisibility(View.VISIBLE);
+                            hint_raport.setVisibility(View.VISIBLE);
                             rv_mapel.setVisibility(View.GONE);
                             rv_nilai.setVisibility(View.GONE);
                             ll_raport.setVisibility(View.GONE);
@@ -343,7 +347,7 @@ public class DetailRaport extends AppCompatActivity {
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
-                            tv_norapor.setVisibility(View.GONE);
+                            hint_raport.setVisibility(View.GONE);
                             rv_mapel.setVisibility(View.VISIBLE);
                             rv_nilai.setVisibility(View.VISIBLE);
                             ll_raport.setVisibility(View.VISIBLE);
@@ -370,6 +374,14 @@ public class DetailRaport extends AppCompatActivity {
                             rv_mapel.scrollToPosition(posisi);
                             rv_mapel.smoothScrollToPosition(posisi);
                             rv_mapel.smoothScrollBy(1, 0);
+                            ll_rapor.setOnTouchListener(new OnSwipeTouchListener(DetailRaport.this) {
+                                public void onSwipeRight() {
+                                    Toast.makeText(DetailRaport.this, "right", Toast.LENGTH_SHORT).show();
+                                }
+                                public void onSwipeLeft() {
+                                    Toast.makeText(DetailRaport.this, "left", Toast.LENGTH_SHORT).show();
+                                }
+                            });
                             rv_mapel.addOnScrollListener(new RecyclerView.OnScrollListener() {
                                 @Override
                                 public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
@@ -474,6 +486,7 @@ public class DetailRaport extends AppCompatActivity {
                 intent.putExtra("student_id", student_id);
                 intent.putExtra("classroom_id", classroom_id);
                 intent.putExtra("semester_id", semester_id);
+                intent.putExtra("semester_nama",semester_nama);
                 setResult(RESULT_OK, intent);
                 finish();
                 return true;
@@ -489,6 +502,7 @@ public class DetailRaport extends AppCompatActivity {
         intent.putExtra("student_id", student_id);
         intent.putExtra("classroom_id", classroom_id);
         intent.putExtra("semester_id", semester_id);
+        intent.putExtra("semester_nama",semester_nama);
         setResult(RESULT_OK, intent);
         finish();
     }

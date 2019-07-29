@@ -4,6 +4,8 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+
+import com.fingertech.kesforstudent.Sqlite.NotifikasiTable;
 import com.google.android.material.appbar.AppBarLayout;
 
 import androidx.appcompat.app.AlertDialog;
@@ -99,6 +101,9 @@ public class AbsenAnak extends AppCompatActivity{
     ImageView arrow;
     TextView no_absen;
     RelativeLayout datePickerButton;
+    String click;
+    int id_notif;
+    private NotifikasiTable notifikasiTable = new NotifikasiTable();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -128,6 +133,14 @@ public class AbsenAnak extends AppCompatActivity{
         school_code         = sharedPreferences.getString("school_code",null);
         student_id          = sharedPreferences.getString("member_id",null);
         classroom_id        = sharedPreferences.getString("classroom_id",null);
+        click               = getIntent().getStringExtra("clicked");
+        id_notif            = sharedPreferences.getInt("id_notif",0);
+
+        if (click != null){
+            notifikasiTable.updateStatus(id_notif,"0","1");
+        }
+
+
 
         compactCalendarView.setLocale(TimeZone.getDefault(), new Locale("in","ID"));
 

@@ -24,6 +24,41 @@
         app:itemIconTint="@color/white"
         app:headerLayout="@layout/nav_header_menu_utama"
         app:itemIconPadding="@dimen/fab_margin"
-        app:menu="@menu/menu_utama_drawer" />
+        app:menu="@menu/menu_utama_drawer" >
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:clickable="true"
+            android:foreground="?android:attr/selectableItemBackground"
+            app:cardBackgroundColor="@color/transparent"
+            app:cardElevation="0dp"
+            android:focusable="true"
+            android:id="@+id/btn_logout"
+            android:orientation="vertical">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_log_out"
+                    android:paddingStart="20dp"
+                    android:paddingEnd="10dp"
+                    android:layout_gravity="center"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:textColor="@color/white"
+                    android:textAlignment="gravity"
+                    android:gravity="center_vertical"
+                    android:textStyle="bold"
+                    android:text="Keluar" />
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+    </com.google.android.material.navigation.NavigationView>
 
 </androidx.drawerlayout.widget.DrawerLayout>

@@ -41,6 +41,7 @@ import com.fingertech.kesforstudent.Masuk;
 import com.fingertech.kesforstudent.R;
 import com.fingertech.kesforstudent.Rest.ApiClient;
 import com.fingertech.kesforstudent.Rest.JSONResponse;
+import com.github.florent37.shapeofview.shapes.RoundRectView;
 import com.google.gson.JsonElement;
 
 import org.json.JSONArray;
@@ -100,6 +101,7 @@ public class AbsenMurid extends AppCompatActivity {
     JSONObject jsonObject;
     JSONArray jsonArray,arrayDetails;
     Dialog mBottomSheetDialog;
+    String absen;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -268,6 +270,7 @@ public class AbsenMurid extends AppCompatActivity {
                             picture     = response.body().getData().getStudentAbsent().get(i).getPicture();
                             student_id  = response.body().getData().getStudentAbsent().get(i).getMemberid();
                             if (response.body().getData().getStudentAbsent().get(i).getAbsenDetail() != null) {
+                                absen = "update";
                                 modelArrayAbsenList = new ArrayList<>();
                                 for (JSONResponse.AbsenDetailItem dataAbsen : response.body().getData().getStudentAbsent().get(i).getAbsenDetail()) {
                                     for (JSONResponse.AttendanceDetailItem attendanceDetailItem : dataAbsen.getAttendanceDetail()) {
@@ -281,6 +284,7 @@ public class AbsenMurid extends AppCompatActivity {
                                     }
                                 }
                             } else {
+                                absen = "insert";
                                 if (dataAttidudeList != null){
                                     modelArrayAbsenList = new ArrayList<>();
                                     modelArrayAbsen = new ModelArrayAbsen();
@@ -291,7 +295,7 @@ public class AbsenMurid extends AppCompatActivity {
                                     for (JSONResponse.DataAttidude attendanceDetailItem : dataAttidudeList) {
                                         absentwarna = attendanceDetailItem.getColour_code();
                                         modelArrayAbsen = new ModelArrayAbsen();
-                                        modelArrayAbsen.setCodeabsen("B");
+                                        modelArrayAbsen.setCodeabsen("A");
                                         modelArrayAbsen.setWarna(absentwarna);
                                         modelArrayAbsen.setNis(nis);
                                         modelArrayAbsenList.add(modelArrayAbsen);
@@ -312,7 +316,8 @@ public class AbsenMurid extends AppCompatActivity {
                         rv_absen.setLayoutManager(layoutManager);
                         rv_absen.setAdapter(adapterAbsen);
                         adapterAbsen.setOnItemClickListener((view, position) -> {
-                            CardView iv_close,btn_info;
+                            CardView btn_info;
+                            RoundRectView iv_close;
                             CustomViewPager viewpager;
                             AdapterDetailAbsen adapterDetailAbsen;
 
@@ -391,7 +396,7 @@ public class AbsenMurid extends AppCompatActivity {
                                 modelDetailAbsen.setModelDataAttidudeList(modelDataAttidudes);
                                 modelDetailAbsenList.add(modelDetailAbsen);
                             }
-                            adapterDetailAbsen = new AdapterDetailAbsen(AbsenMurid.this,modelDetailAbsenList,viewpager,view,schedule_id,mBottomSheetDialog,AbsenMurid.this);
+                            adapterDetailAbsen = new AdapterDetailAbsen(AbsenMurid.this,modelDetailAbsenList,viewpager,view,schedule_id,mBottomSheetDialog,AbsenMurid.this,absen);
                             viewpager.setAdapter(adapterDetailAbsen);
                             viewpager.setCurrentItem(position);
                             viewpager.setOffscreenPageLimit(modelDetailAbsenList.size());

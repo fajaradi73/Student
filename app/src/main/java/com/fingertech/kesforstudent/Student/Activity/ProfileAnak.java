@@ -17,13 +17,19 @@ import android.os.Build;
 import android.os.Environment;
 import android.provider.MediaStore;
 import androidx.constraintlayout.widget.ConstraintLayout;
+
+import com.fingertech.kesforstudent.CustomView.PhotoFullPopupWindow;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
+
+import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.core.content.FileProvider;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import androidx.cardview.widget.CardView;
 import androidx.appcompat.widget.Toolbar;
+import androidx.transition.TransitionManager;
+
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -83,7 +89,7 @@ public class ProfileAnak extends AppCompatActivity {
     CollapsingToolbarLayout collapsingToolbarLayout;
     AppBarLayout appBarLayout;
     ProgressDialog dialog;
-    CardView btn_logout,btn_edit,btn_gantifoto;
+    CardView btn_edit,btn_gantifoto;
     ConstraintLayout constraintLayout;
     public final int SELECT_FILE = 1;
     private static final int CAMERA_PIC_REQUEST = 1111;
@@ -100,6 +106,7 @@ public class ProfileAnak extends AppCompatActivity {
     File image;
     Intent intent;
     String mCurrentPhotoPath,code,school_name,status_profile;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -121,7 +128,6 @@ public class ProfileAnak extends AppCompatActivity {
         cv_profile              = findViewById(R.id.btn_image_anak);
         collapsingToolbarLayout = findViewById(R.id.collapse_profile_anak);
         appBarLayout            = findViewById(R.id.appbar_profile_anak);
-        btn_logout              = findViewById(R.id.btn_logout);
         btn_edit                = findViewById(R.id.btn_edit);
         btn_gantifoto           = findViewById(R.id.btn_edit_foto);
         constraintLayout        = findViewById(R.id.content_profile);
@@ -167,19 +173,15 @@ public class ProfileAnak extends AppCompatActivity {
                 }
             }
         });
+
         get_profile();
-        btn_logout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                pilihan();
-            }
-        });
         btn_gantifoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 selectImage();
             }
         });
+
         btn_edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -199,7 +201,16 @@ public class ProfileAnak extends AppCompatActivity {
                 startActivityForResult(intent,1);
             }
         });
+
+        image_profile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new PhotoFullPopupWindow(ProfileAnak.this, R.layout.popup_photo_full, view, Base_anak + picture, null);
+            }
+        });
+
     }
+
     @Override
     public void onBackPressed(){
         super.onBackPressed();
@@ -232,6 +243,7 @@ public class ProfileAnak extends AppCompatActivity {
         return true;
     }
 
+
     private void get_profile(){
         progressBar();
         showDialog();
@@ -245,16 +257,16 @@ public class ProfileAnak extends AppCompatActivity {
                     JSONResponse.GetProfile resource = response.body();
                     status = resource.status;
                     if (status == 1) {
-                        nama = response.body().getData().getFullname();
-                        nis = response.body().getData().getMember_code();
-                        email = response.body().getData().getEmail();
-                        alamat = response.body().getData().getAddress();
-                        gender = response.body().getData().getGender();
+                        nama    = response.body().getData().getFullname();
+                        nis     = response.body().getData().getMember_code();
+                        email   = response.body().getData().getEmail();
+                        alamat  = response.body().getData().getAddress();
+                        gender  = response.body().getData().getGender();
                         tanggal = response.body().getData().getBirth_date();
-                        tempat = response.body().getData().getBirth_place();
-                        agama = response.body().getData().getReligion();
+                        tempat  = response.body().getData().getBirth_place();
+                        agama   = response.body().getData().getReligion();
                         picture = response.body().getData().getPicture();
-                        no_hp = response.body().getData().getMobile_phone();
+                        no_hp   = response.body().getData().getMobile_phone();
 
                         tv_nama.setText(nama);
                         tv_nis.setText("Nomor induk siswa (NIS) : " + nis);
@@ -294,36 +306,7 @@ public class ProfileAnak extends AppCompatActivity {
         dialog.setIndeterminate(true);
         dialog.setCancelable(false);
     }
-    private void pilihan() {
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(ProfileAnak.this,R.style.DialogTheme);
-        builder.setTitle("Log out");
-        builder.setMessage("Apakah anda ingin keluar?");
-        builder.setIcon(R.drawable.ic_alarm);
-        builder.setPositiveButton("Ya", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                SharedPreferences.Editor editor = sharedpreferences.edit();
-                editor.putBoolean(Masuk.session_status, false);
-                editor.putString(TAG_EMAIL, null);
-                editor.putString(TAG_MEMBER_ID, null);
-                editor.putString(TAG_FULLNAME, null);
-                editor.putString(TAG_MEMBER_TYPE, null);
-                editor.putString(TAG_TOKEN, null);
-                editor.apply();
-                Intent intent = new Intent(ProfileAnak.this, MainActivity.class);
-                finish();
-                startActivity(intent);
-            }
-        });
-        builder.setNegativeButton("Tidak", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-            }
-        });
-        builder.show();
-    }
 
     private void selectImage() {
         BottomDialog dialog = BottomDialog.newInstance("Ganti foto profile",new String[]{"Buka kamera", "Pilih foto",});

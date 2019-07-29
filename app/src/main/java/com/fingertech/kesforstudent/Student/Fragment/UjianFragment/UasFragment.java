@@ -60,12 +60,12 @@ public class UasFragment extends Fragment {
     private String waktu, tanggal,bulan, mapel, deskripsi, semester_id, start_date, end_date, semester, start_year, start_end;
     String jam_db, tanggal_db;
     Date month_now, month_db;
-    private LinearLayout hint_ujian;
+    private LinearLayout hint_ujian,hint_ajaran;
     private List<ItemUjian> itemUjianList = new ArrayList<>();
-
 
     private TextView tv_star,tv_semester;
     private SpinKitView spinKitView;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -84,13 +84,15 @@ public class UasFragment extends Fragment {
         tv_star         = view.findViewById(R.id.tv_tanggal);
         tv_semester     = view.findViewById(R.id.tv_semesters);
         spinKitView     = view.findViewById(R.id.spin_kits);
+        hint_ajaran     = view.findViewById(R.id.hint_ajaran);
 
 
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
         date = df.format(Calendar.getInstance().getTime());
         bulan_sekarang = dateFormat.format(Calendar.getInstance().getTime());
 
-            Check_Semester();
+        Check_Semester();
+
         return view;
     }
 
@@ -106,19 +108,24 @@ public class UasFragment extends Fragment {
                 if (response.isSuccessful()) {
                     JSONResponse.CheckSemester resource = response.body();
 
-                    status = resource.status;
-                    code = resource.code;
-                    semester_id = response.body().getData();
-                    dapat_semester();
-                    Jadwal_ujian();
+                    status  = resource.status;
+                    code    = resource.code;
+                    if (status == 1 && code.equals("DTS_SCS_0001")) {
+                        semester_id = response.body().getData();
+                        if (semester_id.equals("0")){
+                            hint_ajaran.setVisibility(View.VISIBLE);
+                        }else {
+                            dapat_semester();
+                            Jadwal_ujian();
+                        }
+                    }
                 }
             }
 
 
             @Override
             public void onFailure(Call<JSONResponse.CheckSemester> call, Throwable t) {
-                Log.d("onFailure", t.toString());
-
+                Log.e("onFailure", t.toString());
             }
 
         });
@@ -132,6 +139,7 @@ public class UasFragment extends Fragment {
     private void hide_dialog(){
         spinKitView.setVisibility(View.GONE);
     }
+
     private void Jadwal_ujian() {
         show_dialog();
         Call<JSONResponse.JadwalUjian> call = mApiInterface.kes_exam_schedule_get(authorization.toString(), school_code.toString().toLowerCase(), memberid.toString(), classroom_id.toString(), semester_id.toString());
