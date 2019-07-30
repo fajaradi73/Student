@@ -60,7 +60,7 @@ public class PesanMasukGuru extends AppCompatActivity {
     AdapterPesanGuru adapterPesanGuru;
     ModelPesanGuru modelPesanGuru;
     List<ModelPesanGuru> modelPesanGuruList = new ArrayList<>();
-    String pengirim,isipesan,title,tanggal,jam,statusread,message_id,reply_message_id;
+    String pengirim,isipesan,title,tanggal,jam,statusread,message_id,reply_message_id,picture;
     int status;
     FloatingActionButton fab_pesan;
 
@@ -143,6 +143,7 @@ public class PesanMasukGuru extends AppCompatActivity {
                                 message_id          = dataPesanGuru.getMessageid();
                                 pengirim            = dataPesanGuru.getSender_name();
                                 reply_message_id    = dataPesanGuru.getReply_message_id();
+                                picture             = dataPesanGuru.getPicture();
                                 modelPesanGuru = new ModelPesanGuru();
                                 modelPesanGuru.setDari(pengirim);
                                 modelPesanGuru.setJam(jam);
@@ -152,6 +153,7 @@ public class PesanMasukGuru extends AppCompatActivity {
                                 modelPesanGuru.setTitle(title);
                                 modelPesanGuru.setReply_message_id(reply_message_id);
                                 modelPesanGuru.setTanggal(tanggal);
+                                modelPesanGuru.setPicture(ApiClient.BASE_IMAGE + picture);
                                 modelPesanGuruList.add(modelPesanGuru);
                             }
                             adapterPesanGuru = new AdapterPesanGuru(modelPesanGuruList);

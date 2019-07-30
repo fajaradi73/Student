@@ -24,6 +24,7 @@ import com.fingertech.kesforstudent.R;
 import com.fingertech.kesforstudent.Rest.ApiClient;
 import com.fingertech.kesforstudent.Rest.JSONResponse;
 import com.fingertech.kesforstudent.Masuk;
+import com.google.android.gms.common.api.Api;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -59,7 +60,7 @@ public class Pesan_Terkirim extends AppCompatActivity {
     AdapterPesanGuru adapterPesanGuru;
     ModelPesanGuru modelPesanGuru;
     List<ModelPesanGuru> modelPesanGuruList = new ArrayList<>();
-    String pengirim, isipesan, title, tanggal, jam, statusread, message_id, reply_message_id;
+    String pengirim, isipesan, title, tanggal, jam, statusread, message_id, reply_message_id,picture;
     int status;
 
     @Override
@@ -135,6 +136,7 @@ public class Pesan_Terkirim extends AppCompatActivity {
                                 message_id      = dataPesanTerkirimGuru.getMessageid();
                                 pengirim        = dataPesanTerkirimGuru.getSender_name();
                                 reply_message_id = dataPesanTerkirimGuru.getReply_message_id();
+                                picture             = dataPesanTerkirimGuru.getPicture();
                                 modelPesanGuru = new ModelPesanGuru();
                                 modelPesanGuru.setDari(pengirim);
                                 modelPesanGuru.setJam(jam);
@@ -144,6 +146,7 @@ public class Pesan_Terkirim extends AppCompatActivity {
                                 modelPesanGuru.setTitle(title);
                                 modelPesanGuru.setReply_message_id(reply_message_id);
                                 modelPesanGuru.setTanggal(tanggal);
+                                modelPesanGuru.setPicture(ApiClient.BASE_IMAGE + picture);
                                 modelPesanGuruList.add(modelPesanGuru);
                             }
                             adapterPesanGuru = new AdapterPesanGuru(modelPesanGuruList);
@@ -154,14 +157,14 @@ public class Pesan_Terkirim extends AppCompatActivity {
                             adapterPesanGuru.setOnItemClickListener(new AdapterPesanGuru.OnItemClickListener() {
                                 @Override
                                 public void onItemClick(View view, int position) {
-                                    Intent intent = new Intent(Pesan_Terkirim.this, PesanMasukDetail.class);
-                                    intent.putExtra("fullname", fullname);
-                                    intent.putExtra("authorization", authorization);
-                                    intent.putExtra("school_code", school_code);
-                                    intent.putExtra("member_id", memberid);
-                                    intent.putExtra("message_id", modelPesanGuruList.get(position).getMessage_id());
-                                    intent.putExtra("reply_message_id", modelPesanGuruList.get(position).getReply_message_id());
-                                    startActivityForResult(intent, 1);
+//                                    Intent intent = new Intent(Pesan_Terkirim.this, PesanMasukDetail.class);
+//                                    intent.putExtra("fullname", fullname);
+//                                    intent.putExtra("authorization", authorization);
+//                                    intent.putExtra("school_code", school_code);
+//                                    intent.putExtra("member_id", memberid);
+//                                    intent.putExtra("message_id", modelPesanGuruList.get(position).getMessage_id());
+//                                    intent.putExtra("reply_message_id", modelPesanGuruList.get(position).getReply_message_id());
+//                                    startActivityForResult(intent, 1);
                                 }
                             });
                         }

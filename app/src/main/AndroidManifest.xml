@@ -96,7 +96,7 @@
             android:name=".Student.Activity.ProfileAnak"
             android:label=""
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.DarkStatusBar" />
         <activity
             android:name=".Student.Activity.EditProfile"
             android:label="Edit Profile"
@@ -294,7 +294,12 @@
             android:label="Riwayat Pelajaran"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".NotifikasiActivity"
+        <activity
+            android:name=".NotifikasiActivity"
+            android:label="Notifikasi"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".Guru.ActivityGuru.NotifikasiGuruActivity"
             android:label="Notifikasi"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />

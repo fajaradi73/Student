@@ -2,7 +2,9 @@ package com.fingertech.kesforstudent.Guru.ActivityGuru;
 
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.ColorDrawable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -17,14 +19,22 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.fingertech.kesforstudent.Controller.Auth;
+import com.fingertech.kesforstudent.Masuk;
 import com.fingertech.kesforstudent.R;
 import com.fingertech.kesforstudent.Rest.ApiClient;
 import com.fingertech.kesforstudent.Rest.JSONResponse;
+import com.fingertech.kesforstudent.Sqlite.NotifikasiGuruTable;
+import com.fingertech.kesforstudent.Sqlite.NotifikasiTable;
+import com.fingertech.kesforstudent.Student.Activity.MenuUtama;
 import com.shashank.sony.fancytoastlib.FancyToast;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+
+import static com.fingertech.kesforstudent.Guru.ActivityGuru.KegiatanGuru.TAG_TOKEN;
+import static com.fingertech.kesforstudent.Guru.ActivityGuru.MenuUtamaGuru.TAG_MEMBER_ID;
+import static com.fingertech.kesforstudent.Guru.ActivityGuru.MenuUtamaGuru.TAG_SCHOOL_CODE;
 
 public class PesanMasukDetail extends AppCompatActivity {
 
@@ -38,6 +48,10 @@ public class PesanMasukDetail extends AppCompatActivity {
     int status;
     String code;
     String pengirim,title,tanggal,isipesan;
+    SharedPreferences sharedpreferences,sharedPreferences;
+    String tanggals,click;
+    int id_notif;
+    private NotifikasiGuruTable notifikasiTable = new NotifikasiGuruTable();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,12 +66,23 @@ public class PesanMasukDetail extends AppCompatActivity {
         iv_pesan        = findViewById(R.id.image_pesan);
         mApiInterface   = ApiClient.getClient().create(Auth.class);
 
-        authorization       = getIntent().getStringExtra("authorization");
-        school_code         = getIntent().getStringExtra("school_code");
-        member_id           = getIntent().getStringExtra("member_id");
+        sharedpreferences   = getSharedPreferences(Masuk.my_shared_preferences, Context.MODE_PRIVATE);
+        sharedPreferences   = getSharedPreferences(MenuUtama.my_viewpager_preferences, Context.MODE_PRIVATE);
+        authorization       = sharedpreferences.getString(TAG_TOKEN,"");
+        member_id           = sharedpreferences.getString(TAG_MEMBER_ID,"");
+        scyear_id           = sharedpreferences.getString("scyear_id","");
+        school_code         = sharedpreferences.getString(TAG_SCHOOL_CODE,"");
         message_id          = getIntent().getStringExtra("message_id");
         reply_message_id    = getIntent().getStringExtra("reply_message_id");
         fullname            = getIntent().getStringExtra("fullname");
+
+        click               = getIntent().getStringExtra("clicked");
+        id_notif            = sharedPreferences.getInt("id_notif",0);
+
+        if (click != null){
+            notifikasiTable.updateStatus(id_notif,"0","1");
+        }
+
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         toolbar.getNavigationIcon().setColorFilter(getResources().getColor(R.color.white), PorterDuff.Mode.SRC_ATOP);
@@ -121,7 +146,11 @@ public class PesanMasukDetail extends AppCompatActivity {
                         }else {
                             tv_title.setText(title);
                         }
-                        tv_kepada.setText(fullname);
+                        if (fullname != null) {
+                            tv_kepada.setText(fullname);
+                        }else {
+                            tv_kepada.setText("Anda");
+                        }
                     }
                 }else if (response.code() == 500){
                     FancyToast.makeText(getApplicationContext(),"Eror database",FancyToast.LENGTH_LONG,FancyToast.ERROR,false).show();
@@ -131,7 +160,7 @@ public class PesanMasukDetail extends AppCompatActivity {
             @Override
             public void onFailure(Call<JSONResponse.PesanDetail> call, Throwable t) {
                 Log.i("onFailure",t.toString());
-                FancyToast.makeText(getApplicationContext(),"Pesan Rusak", Toast.LENGTH_LONG,FancyToast.ERROR,false).show();
+                FancyToast.makeText(getApplicationContext(),"Pesan Tidak ditemukan", Toast.LENGTH_LONG,FancyToast.ERROR,false).show();
                 hideDialog();
             }
         });

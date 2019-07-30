@@ -240,6 +240,7 @@
                 android:layout_marginLeft="20dp"
                 android:layout_marginTop="20dp"
                 android:layout_marginRight="20dp"
+                android:layout_marginBottom="50dp"
                 android:clickable="true"
                 android:foreground="?android:attr/selectableItemBackground"
                 android:scaleType="centerCrop"
@@ -269,25 +270,6 @@
                 </LinearLayout>
 
             </androidx.cardview.widget.CardView>
-
-            <Button
-                android:layout_marginTop="50dp"
-                android:layout_marginRight="50dp"
-                android:layout_marginLeft="50dp"
-                android:id="@+id/btn_logout"
-                android:text="Log out"
-                android:textSize="15sp"
-                android:textAllCaps="false"
-                android:layout_marginBottom="100dp"
-                android:clickable="true"
-                android:foreground="?android:attr/selectableItemBackground"
-                android:background="@drawable/rectangle"
-                android:backgroundTint="@color/colorPrimary"
-                android:textColor="@android:color/white"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:focusable="true"
-                tools:ignore="UnusedAttribute" />
 
         </LinearLayout>
 

@@ -9,7 +9,15 @@ public class ModelPesanGuru {
     private String tanggal;
     private String message_id;
     private String title;
-    private String reply_message_id;
+    private String reply_message_id,picture;
+
+    public String getPicture() {
+        return picture;
+    }
+
+    public void setPicture(String picture) {
+        this.picture = picture;
+    }
 
     public String getReply_message_id() {
         return reply_message_id;

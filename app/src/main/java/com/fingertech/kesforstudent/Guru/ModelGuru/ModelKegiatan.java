@@ -1,7 +1,15 @@
 package com.fingertech.kesforstudent.Guru.ModelGuru;
 
 public class ModelKegiatan {
-    private String text,exam_id;
+    private String text,exam_id,idkelas;
+
+    public String getIdkelas() {
+        return idkelas;
+    }
+
+    public void setIdkelas(String idkelas) {
+        this.idkelas = idkelas;
+    }
 
     public String getText() {
         return text;

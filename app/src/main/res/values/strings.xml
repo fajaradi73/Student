@@ -96,7 +96,7 @@
     <string name="btn_profil_anak">Profil Anak</string>
     <string name="btn_jadwal">Jadwal Pelajaran</string>
     <string name="btn_jadwal_ujian">Jadwal Ujian</string>
-    <string name="btn_absensi_anak">Presensi</string>
+    <string name="btn_absensi_anak">Absensi</string>
     <string name="btn_tugas_anak">Tugas</string>
     <string name="btn_raport_anak">Rapor</string>
     <string-array name="kirim_kepada">

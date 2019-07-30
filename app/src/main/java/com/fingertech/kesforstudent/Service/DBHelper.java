@@ -8,6 +8,8 @@ import android.util.Log;
 
 import com.fingertech.kesforstudent.Rest.PositionTable;
 import com.fingertech.kesforstudent.Sqlite.Notifikasi;
+import com.fingertech.kesforstudent.Sqlite.NotifikasiGuru;
+import com.fingertech.kesforstudent.Sqlite.NotifikasiGuruTable;
 import com.fingertech.kesforstudent.Sqlite.NotifikasiTable;
 import com.fingertech.kesforstudent.Sqlite.Sound;
 import com.fingertech.kesforstudent.Sqlite.SoundTable;
@@ -20,7 +22,7 @@ import java.util.List;
 public class DBHelper extends SQLiteOpenHelper{
 
     private static final String db_name ="kes_school";
-    private static final int db_version = 9;
+    private static final int db_version = 10;
     public static final String TABLE_SQLite = "sqlite";
 
     public static final String COLUMN_ID = "id";
@@ -298,6 +300,7 @@ public class DBHelper extends SQLiteOpenHelper{
         db.execSQL(PositionTable.createTable());
         db.execSQL(NotifikasiTable.createTable());
         db.execSQL(SoundTable.createTable());
+        db.execSQL(NotifikasiGuruTable.createTable());
     }
 
     // dijalankan apabila ingin mengupgrade database
@@ -309,6 +312,7 @@ public class DBHelper extends SQLiteOpenHelper{
         db.execSQL("DROP TABLE IF EXISTS " + Position.TABLE);
         db.execSQL("DROP TABLE IF EXISTS " + Notifikasi.TABLE);
         db.execSQL("DROP TABLE IF EXISTS " + Sound.TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + NotifikasiGuru.TABLE);
         onCreate(db);
     }
 

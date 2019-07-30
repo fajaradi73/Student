@@ -198,7 +198,7 @@ public class MenuUtama extends AppCompatActivity
         scyear_id       = sharedpreferences.getString("scyear_id","");
         sharedViewpager = getSharedPreferences(my_viewpager_preferences,Context.MODE_PRIVATE);
         sharedLesson        = getSharedPreferences(my_lesson_preferences,Context.MODE_PRIVATE);
-
+        mNotifCount   = sharedpreferences.getInt("counting",0);
         ParentPager.setAdapter(fragmentAdapter);
         inkPageIndicator.setViewPager(ParentPager);
 
@@ -440,8 +440,23 @@ public class MenuUtama extends AppCompatActivity
                     get_profile();
                 }
             }
+            else if (requestCode == 1234){
+                mNotifCount = 0;
+                SharedPreferences.Editor editor = sharedpreferences.edit();
+                editor.putInt("counting",0);
+                editor.apply();
+                invalidateOptionsMenu();
+                refresh();
+            }
         }
     }
+
+    public void refresh() {
+        Intent intent = getIntent();
+        finish();
+        startActivity(intent);
+    }
+
 
     public void get_profile() {
         progressBar();

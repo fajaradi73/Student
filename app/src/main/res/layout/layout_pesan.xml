@@ -22,7 +22,7 @@
             android:layout_height="match_parent"
             android:layout_width="match_parent"
             android:layout_margin="10dp"
-            android:src="@drawable/image_profill"
+            android:src="@drawable/ic_face_blue"
             android:layout_weight="8"
             tools:ignore="ContentDescription" />
 
@@ -83,7 +83,6 @@
                 <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:src="@drawable/ic_view"
                     android:layout_margin="10dp"
                     android:id="@+id/image_status"
                     android:layout_weight="7"/>

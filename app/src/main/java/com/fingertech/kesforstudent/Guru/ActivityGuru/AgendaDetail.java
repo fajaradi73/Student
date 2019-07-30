@@ -528,13 +528,13 @@ public class AgendaDetail extends AppCompatActivity {
                                         } else {
                                             if (Integer.parseInt(tanggal) == agendaModelTanggalList.size() - 1) {
                                                 rvtanggal.scrollToPosition(Integer.parseInt(tanggal) - 1);
-                                                rvtanggal.smoothScrollToPosition(Integer.parseInt(tanggal));
+                                                rvtanggal.smoothScrollToPosition(Integer.parseInt(tanggal) -1);
                                                 rvtanggal.smoothScrollBy(1, 0);
-                                                datePicker.updateDate(Integer.parseInt(tahun), Integer.parseInt(bulan) - 1, Integer.parseInt(tanggal) + 1);
+                                                datePicker.updateDate(Integer.parseInt(tahun), Integer.parseInt(bulan) - 1, Integer.parseInt(tanggal));
                                             } else {
-                                                rvtanggal.scrollToPosition(Integer.parseInt(tanggal));
+                                                rvtanggal.scrollToPosition(Integer.parseInt(tanggal) - 1);
                                                 rvtanggal.smoothScrollBy(1, 0);
-                                                datePicker.updateDate(Integer.parseInt(tahun), Integer.parseInt(bulan) - 1, Integer.parseInt(tanggal) + 1);
+                                                datePicker.updateDate(Integer.parseInt(tahun), Integer.parseInt(bulan) - 1, Integer.parseInt(tanggal));
                                             }
                                         }
                                     } else {
@@ -552,13 +552,13 @@ public class AgendaDetail extends AppCompatActivity {
                                 } else {
                                     if (Integer.parseInt(tanggal) == agendaModelTanggalList.size() - 1) {
                                         rvtanggal.scrollToPosition(Integer.parseInt(tanggal) - 1);
-                                        rvtanggal.smoothScrollToPosition(Integer.parseInt(tanggal));
+                                        rvtanggal.smoothScrollToPosition(Integer.parseInt(tanggal) - 1);
                                         rvtanggal.smoothScrollBy(1, 0);
-                                        datePicker.updateDate(Integer.parseInt(tahun), Integer.parseInt(bulan) - 1, Integer.parseInt(tanggal) + 1);
+                                        datePicker.updateDate(Integer.parseInt(tahun), Integer.parseInt(bulan) - 1, Integer.parseInt(tanggal));
                                     } else {
                                         rvtanggal.scrollToPosition(Integer.parseInt(tanggal));
                                         rvtanggal.smoothScrollBy(1, 0);
-                                        datePicker.updateDate(Integer.parseInt(tahun), Integer.parseInt(bulan) - 1, Integer.parseInt(tanggal) + 1);
+                                        datePicker.updateDate(Integer.parseInt(tahun), Integer.parseInt(bulan) - 1, Integer.parseInt(tanggal));
                                     }
                                 }
                             }
@@ -572,13 +572,13 @@ public class AgendaDetail extends AppCompatActivity {
                             } else {
                                 if (Integer.parseInt(tanggal) == agendaModelTanggalList.size() - 1) {
                                     rvtanggal.scrollToPosition(Integer.parseInt(tanggal) - 1);
-                                    rvtanggal.smoothScrollToPosition(Integer.parseInt(tanggal));
+                                    rvtanggal.smoothScrollToPosition(Integer.parseInt(tanggal) - 1);
                                     rvtanggal.smoothScrollBy(1, 0);
-                                    datePicker.updateDate(Integer.parseInt(tahun), Integer.parseInt(bulan) - 1, Integer.parseInt(tanggal) + 1);
+                                    datePicker.updateDate(Integer.parseInt(tahun), Integer.parseInt(bulan) - 1, Integer.parseInt(tanggal));
                                 } else {
-                                    rvtanggal.scrollToPosition(Integer.parseInt(tanggal));
+                                    rvtanggal.scrollToPosition(Integer.parseInt(tanggal) -1);
                                     rvtanggal.smoothScrollBy(1, 0);
-                                    datePicker.updateDate(Integer.parseInt(tahun), Integer.parseInt(bulan) - 1, Integer.parseInt(tanggal) + 1);
+                                    datePicker.updateDate(Integer.parseInt(tahun), Integer.parseInt(bulan) - 1, Integer.parseInt(tanggal));
                                 }
                             }
                         }

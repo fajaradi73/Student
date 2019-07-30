@@ -87,7 +87,7 @@ public class KalendarGuru extends AppCompatActivity {
     Date date;
     String calendar_id,calendar_type,calendar_colour,calendar_time,calendar_date,calendar_title,calendar_desc;
     Toolbar toolbar;
-    TextView kalendar;
+    LinearLayout kalendar;
     SharedPreferences sharedpreferences;
     String hari;
 

@@ -6695,6 +6695,16 @@ public class JSONResponse {
         public String member_type_text;
         @SerializedName("reply_status")
         public String reply_status;
+        @SerializedName("picture")
+        public String picture;
+
+        public String getPicture() {
+            return picture;
+        }
+
+        public void setPicture(String picture) {
+            this.picture = picture;
+        }
 
         public String getMessageid() {
             return messageid;
@@ -7151,7 +7161,24 @@ public class JSONResponse {
         public String recipient_name;
         @SerializedName("member_type_text")
         public String member_type_text;
+        @SerializedName("picture")
+        public String picture;
 
+        public String getPicture() {
+            return picture;
+        }
+
+        public void setPicture(String picture) {
+            this.picture = picture;
+        }
+
+        public String getRecipient_name() {
+            return recipient_name;
+        }
+
+        public void setRecipient_name(String recipient_name) {
+            this.recipient_name = recipient_name;
+        }
 
         public String getMessageid() {
             return messageid;

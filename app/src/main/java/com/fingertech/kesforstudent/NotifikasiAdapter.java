@@ -64,6 +64,9 @@ public class NotifikasiAdapter extends RecyclerView.Adapter<NotifikasiAdapter.My
             case "insert_new_exam":
                 Glide.with(context).load(R.drawable.ic_jadwal_ujian).into(holder.imageView);
                 break;
+            case "pesan_guru":
+                Glide.with(context).load(R.drawable.ic_pesan).into(holder.imageView);
+                break;
         }
         if (viewItem.getStatus().equals("0")){
             holder.star.setVisibility(View.VISIBLE);

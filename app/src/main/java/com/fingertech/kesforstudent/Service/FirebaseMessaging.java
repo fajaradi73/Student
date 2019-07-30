@@ -22,10 +22,13 @@ import android.os.Vibrator;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
+import com.fingertech.kesforstudent.Guru.ActivityGuru.PesanMasukDetail;
 import com.fingertech.kesforstudent.MainActivity;
 import com.fingertech.kesforstudent.Masuk;
 import com.fingertech.kesforstudent.R;
 import com.fingertech.kesforstudent.Sqlite.Notifikasi;
+import com.fingertech.kesforstudent.Sqlite.NotifikasiGuru;
+import com.fingertech.kesforstudent.Sqlite.NotifikasiGuruTable;
 import com.fingertech.kesforstudent.Sqlite.NotifikasiTable;
 import com.fingertech.kesforstudent.Student.Activity.AbsenAnak;
 import com.fingertech.kesforstudent.Student.Activity.AgendaAnak;
@@ -49,10 +52,12 @@ public class FirebaseMessaging extends FirebaseMessagingService {
     String in,parent_id,member_type;
     JSONObject reader;
     private NotifikasiTable notifikasiTable = new NotifikasiTable();
+    private NotifikasiGuruTable notifikasiGuruTable = new NotifikasiGuruTable();
     SharedPreferences sharedPreferences,sharedpreferences;
     String path;
     boolean sound;
     Notification notification;
+    NotifikasiGuru notifikasiGuru;
     int id = 0;
 
     int id_notifikasi = 0;
@@ -108,13 +113,14 @@ public class FirebaseMessaging extends FirebaseMessagingService {
         Notifikasi data;
         id = messageBody.hashCode();
         id_notifikasi++;
-        Intent ins = new Intent();
-        ins.putExtra("counting","true");
-        ins.setAction("NOW");
-        LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(ins);
 
         switch (type) {
             case "pesan_siswa": {
+                Intent ins = new Intent();
+                ins.putExtra("counting","true");
+                ins.setAction("NOW");
+                LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(ins);
+
                 SharedPreferences.Editor editor = sharedPreferences.edit();
                 try {
                     editor.putString("school_code", jsonObject.getString("school_code"));
@@ -168,6 +174,11 @@ public class FirebaseMessaging extends FirebaseMessagingService {
                 break;
             }
             case "insert_new_agenda": {
+                Intent ins = new Intent();
+                ins.putExtra("counting","true");
+                ins.setAction("NOW");
+                LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(ins);
+
                 SharedPreferences.Editor editor = sharedPreferences.edit();
                 try {
                     editor.putString("school_code", jsonObject.getString("school_code"));
@@ -216,6 +227,11 @@ public class FirebaseMessaging extends FirebaseMessagingService {
                 break;
             }
             case "absen_siswa": {
+                Intent ins = new Intent();
+                ins.putExtra("counting","true");
+                ins.setAction("NOW");
+                LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(ins);
+
                 SharedPreferences.Editor editor = sharedPreferences.edit();
                 try {
                     editor.putString("school_code", jsonObject.getString("school_code"));
@@ -261,7 +277,70 @@ public class FirebaseMessaging extends FirebaseMessagingService {
                 }
                 break;
             }
+            case "pesan_guru": {
+                Intent ins = new Intent();
+                ins.putExtra("counting_guru","true");
+                ins.setAction("NOW");
+                LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(ins);
+
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                try {
+                    editor.putString("school_code", jsonObject.getString("school_code"));
+                    editor.putString("message_id", jsonObject.getString("message_id"));
+                    editor.putString("reply_message_id", jsonObject.getString("repply_message_id"));
+                    editor.putString("member_id", parent_id);
+                    editor.putString("clicked","click");
+                    editor.putInt("id_notif", id_notifikasi);
+                    editor.apply();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                Intent intent = new Intent(this, PesanMasukDetail.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                try {
+                    intent.putExtra("school_code", jsonObject.getString("school_code"));
+                    intent.putExtra("message_id", jsonObject.getString("message_id"));
+                    intent.putExtra("reply_message_id", jsonObject.getString("repply_message_id"));
+                    intent.putExtra("member_id", parent_id);
+                    intent.putExtra("clicked","click");
+                    intent.putExtra("id_notif",id_notifikasi);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                pendingIntent = PendingIntent.getActivity(this, id, intent,
+                        PendingIntent.FLAG_ONE_SHOT);
+                try {
+                    notifikasiGuru = new NotifikasiGuru();
+                    notifikasiGuru.setId_notifikasi(id_notifikasi);
+                    notifikasiGuru.setTitle(reader.getString("message_title"));
+                    notifikasiGuru.setBody(messageBody);
+                    notifikasiGuru.setMessage_id(reader.getString("message_id"));
+                    notifikasiGuru.setSchool_code(reader.getString("school_code"));
+                    notifikasiGuru.setParent_message_id(reader.getString("repply_message_id"));
+                    notifikasiGuru.setType(type);
+                    notifikasiGuru.setTime(convertTime(System.currentTimeMillis()));
+                    notifikasiGuru.setStatus("0");
+                    notifikasiGuru.setMember_id(parent_id);
+                    notifikasiGuru.setStudent_id("");
+                    notifikasiGuru.setClassroom_id("");
+                    notifikasiGuru.setAgenda_date("");
+                    notifikasiGuruTable.insert(notifikasiGuru);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                Intent in = new Intent();
+                in.putExtra("pesan_baru","true");
+                in.setAction("NOW");
+                LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(in);
+
+                break;
+            }
             case "logout": {
+                Intent ins = new Intent();
+                ins.putExtra("counting","true");
+                ins.setAction("NOW");
+                LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(ins);
+
                 Intent intent = new Intent(this, MenuUtama.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 pendingIntent = PendingIntent.getActivity(this, id, intent,
@@ -269,6 +348,11 @@ public class FirebaseMessaging extends FirebaseMessagingService {
                 break;
             }
             case "insert_new_exam": {
+                Intent ins = new Intent();
+                ins.putExtra("counting","true");
+                ins.setAction("NOW");
+                LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(ins);
+
                 SharedPreferences.Editor editor = sharedPreferences.edit();
                 try {
                     editor.putString("school_code", jsonObject.getString("school_code"));

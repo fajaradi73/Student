@@ -369,12 +369,17 @@ public class AgendaAnak extends AppCompatActivity {
                     if (status == 1 && code.equals("DTS_SCS_0001")){
                         semester_id = response.body().getData();
                         dapat_semester();
-                        if (semester_id.equals("0")){
-                            ll_agenda.setVisibility(View.GONE);
-                            no_ajaran.setVisibility(View.VISIBLE);
-                        }else {
+                        if (click != null) {
                             ll_agenda.setVisibility(View.VISIBLE);
                             no_ajaran.setVisibility(View.GONE);
+                        }else {
+                            if (semester_id.equals("0")) {
+                                ll_agenda.setVisibility(View.GONE);
+                                no_ajaran.setVisibility(View.VISIBLE);
+                            } else {
+                                ll_agenda.setVisibility(View.VISIBLE);
+                                no_ajaran.setVisibility(View.GONE);
+                            }
                         }
                     }
                 }
@@ -515,13 +520,13 @@ public class AgendaAnak extends AppCompatActivity {
                                         } else {
                                             if (Integer.parseInt(tanggal) == agendaTanggalModelList.size() - 1) {
                                                 rvtanggal.scrollToPosition(Integer.parseInt(tanggal) - 1);
-                                                rvtanggal.smoothScrollToPosition(Integer.parseInt(tanggal));
+                                                rvtanggal.smoothScrollToPosition(Integer.parseInt(tanggal) -1);
                                                 rvtanggal.smoothScrollBy(1, 0);
-                                                datePicker.updateDate(Integer.parseInt(tahun), Integer.parseInt(bulan) - 1, Integer.parseInt(tanggal) + 1);
+                                                datePicker.updateDate(Integer.parseInt(tahun), Integer.parseInt(bulan) - 1, Integer.parseInt(tanggal));
                                             } else {
-                                                rvtanggal.scrollToPosition(Integer.parseInt(tanggal));
+                                                rvtanggal.scrollToPosition(Integer.parseInt(tanggal) -1);
                                                 rvtanggal.smoothScrollBy(1, 0);
-                                                datePicker.updateDate(Integer.parseInt(tahun), Integer.parseInt(bulan) - 1, Integer.parseInt(tanggal) + 1);
+                                                datePicker.updateDate(Integer.parseInt(tahun), Integer.parseInt(bulan) - 1, Integer.parseInt(tanggal));
                                             }
                                         }
                                     } else {
@@ -539,13 +544,13 @@ public class AgendaAnak extends AppCompatActivity {
                                 } else {
                                     if (Integer.parseInt(tanggal) == agendaTanggalModelList.size() - 1) {
                                         rvtanggal.scrollToPosition(Integer.parseInt(tanggal) - 1);
-                                        rvtanggal.smoothScrollToPosition(Integer.parseInt(tanggal));
+                                        rvtanggal.smoothScrollToPosition(Integer.parseInt(tanggal) - 1);
                                         rvtanggal.smoothScrollBy(1, 0);
-                                        datePicker.updateDate(Integer.parseInt(tahun), Integer.parseInt(bulan) - 1, Integer.parseInt(tanggal) + 1);
+                                        datePicker.updateDate(Integer.parseInt(tahun), Integer.parseInt(bulan) - 1, Integer.parseInt(tanggal));
                                     } else {
-                                        rvtanggal.scrollToPosition(Integer.parseInt(tanggal));
+                                        rvtanggal.scrollToPosition(Integer.parseInt(tanggal) - 1);
                                         rvtanggal.smoothScrollBy(1, 0);
-                                        datePicker.updateDate(Integer.parseInt(tahun), Integer.parseInt(bulan) - 1, Integer.parseInt(tanggal) + 1);
+                                        datePicker.updateDate(Integer.parseInt(tahun), Integer.parseInt(bulan) - 1, Integer.parseInt(tanggal) );
                                     }
                                 }
                             }
@@ -559,13 +564,13 @@ public class AgendaAnak extends AppCompatActivity {
                             } else {
                                 if (Integer.parseInt(tanggal) == agendaTanggalModelList.size() - 1) {
                                     rvtanggal.scrollToPosition(Integer.parseInt(tanggal) - 1);
-                                    rvtanggal.smoothScrollToPosition(Integer.parseInt(tanggal));
+                                    rvtanggal.smoothScrollToPosition(Integer.parseInt(tanggal) - 1);
                                     rvtanggal.smoothScrollBy(1, 0);
-                                    datePicker.updateDate(Integer.parseInt(tahun), Integer.parseInt(bulan) - 1, Integer.parseInt(tanggal) + 1);
+                                    datePicker.updateDate(Integer.parseInt(tahun), Integer.parseInt(bulan) - 1, Integer.parseInt(tanggal));
                                 } else {
-                                    rvtanggal.scrollToPosition(Integer.parseInt(tanggal));
+                                    rvtanggal.scrollToPosition(Integer.parseInt(tanggal) - 1);
                                     rvtanggal.smoothScrollBy(1, 0);
-                                    datePicker.updateDate(Integer.parseInt(tahun), Integer.parseInt(bulan) - 1, Integer.parseInt(tanggal) + 1);
+                                    datePicker.updateDate(Integer.parseInt(tahun), Integer.parseInt(bulan) - 1, Integer.parseInt(tanggal));
                                 }
                             }
                         }

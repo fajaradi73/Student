@@ -86,7 +86,6 @@ public class ProfileGuru extends AppCompatActivity {
     TextView tv_nis,tv_email,tv_no_hp,tv_alamat,tv_gender,tv_tanggal,tv_agama,tv_last_login;
     String nama,nis,email,alamat,gender,tanggal,tempat,agama,Base_anak,picture,no_hp,last_login;
     CardView btn_edit,btn_katasandi;
-    Button btn_logout;
     FloatingActionButton fab_picture;
     ImageView imageView;
     ProgressDialog dialog;
@@ -126,7 +125,6 @@ public class ProfileGuru extends AppCompatActivity {
         tv_last_login           = findViewById(R.id.last_login);
         btn_edit                = findViewById(R.id.btn_edit);
         btn_katasandi           = findViewById(R.id.btn_katasandi);
-        btn_logout              = findViewById(R.id.btn_logout);
         fab_picture             = findViewById(R.id.floatingActionButton);
         imageView               = findViewById(R.id.image_guru);
         mApiInterface           = ApiClient.getClient().create(Auth.class);
@@ -166,13 +164,6 @@ public class ProfileGuru extends AppCompatActivity {
                 intent.putExtra("member_id",memberid);
                 intent.putExtra("picture",Base_anak+picture);
                 startActivityForResult(intent,2);
-            }
-        });
-
-        btn_logout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                pilihan();
             }
         });
 
@@ -343,37 +334,6 @@ public class ProfileGuru extends AppCompatActivity {
             e.printStackTrace();
             return "";
         }
-    }
-
-    private void pilihan() {
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(ProfileGuru.this,R.style.DialogTheme);
-        builder.setTitle("Log out");
-        builder.setMessage("Apakah anda ingin keluar?");
-        builder.setIcon(R.drawable.ic_alarm);
-        builder.setPositiveButton("Ya", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                SharedPreferences.Editor editor = sharedpreferences.edit();
-                editor.putBoolean(Masuk.session_status, false);
-                editor.putString(TAG_EMAIL, null);
-                editor.putString(TAG_MEMBER_ID, null);
-                editor.putString(TAG_FULLNAME, null);
-                editor.putString(TAG_MEMBER_TYPE, null);
-                editor.putString(TAG_TOKEN, null);
-                editor.apply();
-                Intent intent = new Intent(ProfileGuru.this, MainActivity.class);
-                finish();
-                startActivity(intent);
-            }
-        });
-        builder.setNegativeButton("Tidak", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-            }
-        });
-        builder.show();
     }
 
     private void selectImage() {

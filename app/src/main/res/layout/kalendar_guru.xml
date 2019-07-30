@@ -63,15 +63,26 @@
         app:compactCalendarOtherMonthDaysTextColor="@color/gray_active_icon"
         app:compactCalendarDisplayOtherMonthDays="true" />
 
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Tidak ada event"
-        android:layout_margin="30dp"
-        android:gravity="center"
+        android:orientation="vertical"
         android:visibility="gone"
-        android:textSize="20sp"
-        android:id="@+id/no_kalendar" />
+        android:id="@+id/no_kalendar">
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="200dp"
+            android:src="@drawable/ic_no_kalender"
+            android:layout_gravity="center"
+            android:layout_margin="10dp"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Tidak ada event hari ini"
+            android:gravity="center"
+            android:visibility="visible"
+            android:textSize="20sp" />
+    </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recylceview_calendar"

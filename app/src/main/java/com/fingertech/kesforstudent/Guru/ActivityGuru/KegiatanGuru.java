@@ -45,7 +45,7 @@ public class KegiatanGuru extends AppCompatActivity {
     Auth mApiInterface;
     JSONArray absenlist,nilailist;
     JsonElement jsonElement;
-    String authorization,school_code,member_id,scyear_id, texttodolist,exam_type,cources_id,cources_name,code;
+    String authorization,school_code,member_id,scyear_id, texttodolist,exam_type,cources_id,id_kelas,code;
     public static final String TAG_EMAIL        = "email";
     public static final String TAG_MEMBER_ID    = "member_id";
     public static final String TAG_FULLNAME     = "fullname";
@@ -114,12 +114,14 @@ public class KegiatanGuru extends AppCompatActivity {
                             for (int i = 0; i < absenlist.length(); i++) {
                                 try {
                                     texttodolist = absenlist.getJSONObject(i).getString("absent_todo_text");
+                                    id_kelas     = absenlist.getJSONObject(i).getString("class");
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                 }
                                 modelKegiatan = new ModelKegiatan();
                                 modelKegiatan.setExam_id(null);
                                 modelKegiatan.setText(texttodolist);
+                                modelKegiatan.setIdkelas(id_kelas);
                                 modelKegiatanList.add(modelKegiatan);
                             }
                         }
@@ -134,6 +136,7 @@ public class KegiatanGuru extends AppCompatActivity {
                                 modelKegiatan = new ModelKegiatan();
                                 modelKegiatan.setText(texttodolist);
                                 modelKegiatan.setExam_id(exam_type);
+                                modelKegiatan.setIdkelas(null);
                                 modelKegiatanList.add(modelKegiatan);
                             }
                         }
@@ -146,8 +149,15 @@ public class KegiatanGuru extends AppCompatActivity {
                             @Override
                             public void onItemClick(View view, int position) {
                                 if (modelKegiatanList.get(position).getExam_id() == null){
-                                    Intent intent = new Intent(KegiatanGuru.this,AbsenMurid.class);
-                                    startActivity(intent);
+                                    if (modelKegiatanList.get(position).getIdkelas() != null) {
+                                        id_kelas = modelKegiatanList.get(position).getIdkelas();
+                                        SharedPreferences.Editor editor = sharedpreferences.edit();
+                                        editor.putString("classroom_id", id_kelas);
+                                        editor.apply();
+                                        Intent intent = new Intent(KegiatanGuru.this, AbsenMurid.class);
+                                        intent.putExtra("classroom_id", id_kelas);
+                                        startActivity(intent);
+                                    }
                                 }else{
                                     FancyToast.makeText(getApplicationContext(),"Harap untuk menambahkan nilai di website", Toast.LENGTH_LONG,FancyToast.INFO,false).show();
                                 }

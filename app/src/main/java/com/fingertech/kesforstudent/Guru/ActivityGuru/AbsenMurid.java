@@ -155,9 +155,10 @@ public class AbsenMurid extends AppCompatActivity {
                                             if (id_kelas.equals(classroom)) {
                                                 ll_loading.setVisibility(View.VISIBLE);
                                                 schedule_id     = jadwalKelasGuru.getCscheduletimeid();
+                                                Log.e("dasca",schedule_id+"");
                                                 GetStudent();
                                             }
-                                        }else {
+                                        } else {
                                             ll_nojadwal.setVisibility(View.VISIBLE);
                                             ll_absen.setVisibility(View.GONE);
                                         }

@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.fingertech.kesforstudent.Guru.ModelGuru.ModelPesanGuru;
 import com.fingertech.kesforstudent.R;
+import com.fingertech.kesforstudent.Rest.ApiClient;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -95,7 +96,11 @@ public class AdapterPesanGuru extends RecyclerView.Adapter<AdapterPesanGuru.MyHo
             holder.subject.setText(viewItem.getTitle());
         }
         holder.isi_pesan.setText(viewItem.getPesan());
-        Glide.with(getContext()).load("https://ui-avatars.com/api/?name=" + viewItem.getDari()+"&background=1de9b6&color=fff&font-size=0.40&length=1").into(holder.image_pesan);
+        if (viewItem.getPicture().equals(ApiClient.BASE_IMAGE)) {
+            Glide.with(getContext()).load("https://ui-avatars.com/api/?name=" + viewItem.getDari() + "&background=1de9b6&color=fff&font-size=0.40&length=1").into(holder.image_pesan);
+        }else {
+            Glide.with(getContext()).load(viewItem.getPicture()).into(holder.image_pesan);
+        }
     }
 
     @Override

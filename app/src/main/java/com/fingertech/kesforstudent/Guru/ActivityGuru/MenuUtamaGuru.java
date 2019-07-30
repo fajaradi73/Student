@@ -1,9 +1,13 @@
 package com.fingertech.kesforstudent.Guru.ActivityGuru;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.ColorDrawable;
@@ -11,6 +15,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.viewpager.widget.ViewPager;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -20,6 +25,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.appcompat.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -30,11 +37,15 @@ import com.fingertech.kesforstudent.Guru.AdapterGuru.AdapterKegiatan;
 import com.fingertech.kesforstudent.Guru.FragmentGuru.FragMenuGuruDua;
 import com.fingertech.kesforstudent.Guru.FragmentGuru.FragMenuGuruSatu;
 import com.fingertech.kesforstudent.Guru.ModelGuru.ModelKegiatan;
+import com.fingertech.kesforstudent.MainActivity;
+import com.fingertech.kesforstudent.NotifikasiActivity;
 import com.fingertech.kesforstudent.Rest.ApiClient;
 import com.fingertech.kesforstudent.Rest.JSONResponse;
 import com.fingertech.kesforstudent.Masuk;
 import com.fingertech.kesforstudent.Controller.Auth;
 import com.fingertech.kesforstudent.R;
+import com.fingertech.kesforstudent.Service.FirebaseMessaging;
+import com.fingertech.kesforstudent.Student.Activity.MenuUtama;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.gson.JsonElement;
 import com.pixelcan.inkpageindicator.InkPageIndicator;
@@ -81,6 +92,11 @@ public class MenuUtamaGuru extends AppCompatActivity {
     Toolbar toolbar;
 
 
+    int mNotifCount = 0;
+    View actionView;
+    TextView countmenu;
+    private BroadcastReceiver statusReceiver;
+    private IntentFilter mIntent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,6 +121,7 @@ public class MenuUtamaGuru extends AppCompatActivity {
         school_code         = sharedpreferences.getString(TAG_SCHOOL_CODE, "");
         classroom           = sharedpreferences.getString(TAG_CLASS,"");
         scyear_id           = sharedpreferences.getString("scyear_id","");
+        mNotifCount         = sharedpreferences.getInt("counting_guru",0);
         Base_anak           = ApiClient.BASE_IMAGE;
 
         viewPager.setAdapter(fragmentAdapter);
@@ -176,6 +193,13 @@ public class MenuUtamaGuru extends AppCompatActivity {
                 if (status_profile != null){
                     get_profile();
                 }
+            }else if (requestCode == 1234){
+                mNotifCount = 0;
+                SharedPreferences.Editor editor = sharedpreferences.edit();
+                editor.putInt("counting_guru",0);
+                editor.apply();
+                invalidateOptionsMenu();
+                refresh();
             }
         }
     }
@@ -340,5 +364,144 @@ public class MenuUtamaGuru extends AppCompatActivity {
         }
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.item_keluar:
+                pilihan();
+                return true;
+            case R.id.action_cart:
+                mNotifCount = 0;
+                SharedPreferences.Editor editor = sharedpreferences.edit();
+                editor.putInt("counting_guru",0);
+                editor.apply();
+                Intent intent = new Intent(MenuUtamaGuru.this, NotifikasiGuruActivity.class);
+                intent.putExtra("counting_guru", mNotifCount);
+                startActivityForResult(intent,1234);
+                return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_guru, menu);
+        final MenuItem menuItem = menu.findItem(R.id.action_cart);
+        actionView  = menu.findItem(R.id.action_cart).getActionView();
+        countmenu   = actionView.findViewById(R.id.cart_badge);
+        if (mNotifCount == 0){
+            countmenu.setVisibility(View.GONE);
+        }else {
+            countmenu.setVisibility(View.VISIBLE);
+            countmenu.setText(String.valueOf(mNotifCount));
+        }
+        actionView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onOptionsItemSelected(menuItem);
+            }
+        });
+        return true;
+    }
+
+    private void pilihan() {
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(MenuUtamaGuru.this,R.style.DialogTheme);
+        builder.setTitle("Log out");
+        builder.setMessage("Apakah anda ingin keluar?");
+        builder.setIcon(R.drawable.ic_alarm);
+        builder.setPositiveButton("Ya", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                logout();
+            }
+        });
+        builder.setNegativeButton("Tidak", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        builder.show();
+    }
+
+    public void logout(){
+        Call<JSONResponse.Logout> call = mApiInterface.kes_logout_post(authorization,school_code.toLowerCase(),memberid);
+        call.enqueue(new Callback<JSONResponse.Logout>() {
+            @Override
+            public void onResponse(Call<JSONResponse.Logout> call, Response<JSONResponse.Logout> response) {
+                Log.d("Sukses",response.code()+"");
+                if (response.isSuccessful()){
+                    if (response.body() != null) {
+                        status  = response.body().status;
+                        code    = response.body().code;
+                        if (status == 1 && code.equals("DTS_SCS_0001")) {
+                            SharedPreferences.Editor editor = sharedpreferences.edit();
+                            editor.putBoolean(Masuk.session_status, false);
+                            editor.putString(TAG_EMAIL, null);
+                            editor.putString(TAG_MEMBER_ID, null);
+                            editor.putString(TAG_FULLNAME, null);
+                            editor.putString(TAG_MEMBER_TYPE, null);
+                            editor.putString(TAG_TOKEN, null);
+                            editor.apply();
+                            Intent intent = new Intent(MenuUtamaGuru.this, MainActivity.class);
+                            finish();
+                            startActivity(intent);
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JSONResponse.Logout> call, Throwable t) {
+                Log.e("gagal",t.toString());
+            }
+        });
+    }
+
+    public void refresh() {
+        Intent intent = getIntent();
+        finish();
+        startActivity(intent);
+    }
+
+    private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String counting = intent.getStringExtra("counting_guru");
+            if (counting != null){
+                if (counting.equals("true")){
+                    SharedPreferences.Editor editor = sharedpreferences.edit();
+                    editor.putInt("counting_guru",mNotifCount);
+                    editor.apply();
+                    mNotifCount++;
+                    invalidateOptionsMenu();
+                }
+            }
+        }
+    };
+
+    @Override
+    protected void onStart(){
+        super.onStart();
+        startService(new Intent(getBaseContext(), FirebaseMessaging.class));
+    }
+
+    @Override
+    protected void onResume(){
+        super.onResume();
+        LocalBroadcastManager.getInstance(MenuUtamaGuru.this).registerReceiver(broadcastReceiver, new IntentFilter("NOW"));
+    }
+
+    @Override
+    protected void onPause() {
+        if(mIntent != null) {
+            unregisterReceiver(statusReceiver);
+            mIntent = null;
+        }
+        super.onPause();
+    }
 
 }

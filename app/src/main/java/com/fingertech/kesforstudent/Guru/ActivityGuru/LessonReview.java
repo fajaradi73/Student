@@ -6,10 +6,12 @@ import androidx.core.app.NotificationManagerCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -52,7 +54,7 @@ public class LessonReview extends AppCompatActivity {
     AdapterLesson adapterLesson;
     String tanggal,nama,mapel,lampiran,title,desc,materi;
     NotificationManagerCompat notificationManager;
-    KAlertDialog dialog;
+    ProgressDialog dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,9 +80,8 @@ public class LessonReview extends AppCompatActivity {
 
         notificationManager = NotificationManagerCompat.from(this);
         get_lesson();
-
-
     }
+
     private void get_lesson(){
         progressBar();
         showDialog();
@@ -168,15 +169,17 @@ public class LessonReview extends AppCompatActivity {
     private void showDialog() {
         if (!dialog.isShowing())
             dialog.show();
+        dialog.setContentView(R.layout.progressbar);
     }
     private void hideDialog() {
         if (dialog.isShowing())
             dialog.dismiss();
+        dialog.setContentView(R.layout.progressbar);
     }
     public void progressBar(){
-        dialog = new KAlertDialog(this,KAlertDialog.PROGRESS_TYPE);
-        dialog.getProgressHelper().setBarColor(Color.parseColor("#4FC3FA"));
-        dialog.setTitleText("Loading");
+        dialog = new ProgressDialog(LessonReview.this);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        dialog.setIndeterminate(true);
         dialog.setCancelable(false);
     }
 

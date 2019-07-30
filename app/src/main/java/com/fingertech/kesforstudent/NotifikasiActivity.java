@@ -58,9 +58,9 @@ public class NotifikasiActivity extends AppCompatActivity {
     LinearLayoutManager layoutManager;
     private static final int MAX_ITEMS_PER_REQUEST = 5;
     private static final int SIMULATED_LOADING_TIME_IN_MS = 1000;
-    private int page;
+    private int page ;
     LinearLayout tv_no_notifikasi;
-    SharedPreferences sharedPreferences;
+    SharedPreferences sharedPreferences,sharedpreferences;
     String id_notif,title,body,message_id,school_code, parent_message_id,type,time,status, member_id,student_id,classroom_id,agenda_date;
     RefreshLayout refreshLayout ;
     ProgressDialog dialog;
@@ -76,26 +76,24 @@ public class NotifikasiActivity extends AppCompatActivity {
         layoutManager       = new LinearLayoutManager(this);
 
         sharedPreferences = getSharedPreferences(MenuUtama.my_viewpager_preferences, Context.MODE_PRIVATE);
+        sharedpreferences = getSharedPreferences(Masuk.my_shared_preferences, Context.MODE_PRIVATE);
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        progressBar();
-        showDialog();
 
         getAllData();
-        refreshLayout.setEnableRefresh(true);
         refreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(@NonNull RefreshLayout refreshLayout) {
                 getAllData();
+                refreshLayout.finishRefresh(200);
             }
         });
         refreshLayout.setRefreshFooter(new BallPulseFooter(this).setSpinnerStyle(SpinnerStyle.Scale));
     }
 
     private void getAllData(){
-        hideDialog();
         row = notifikasiTable.getAllData();
         if (row.size() > 0){
             tv_no_notifikasi.setVisibility(View.GONE);
@@ -135,116 +133,123 @@ public class NotifikasiActivity extends AppCompatActivity {
             if (notifikasiModelList != null) {
                 Collections.sort(notifikasiModelList, byDate);
             }
-            notifikasiAdapter = new NotifikasiAdapter(notifikasiModelList.subList(page,MAX_ITEMS_PER_REQUEST),this);
+//            if (MAX_ITEMS_PER_REQUEST > notifikasiModelList.size()){
+//                notifikasiAdapter = new NotifikasiAdapter(notifikasiModelList.subList(page,notifikasiModelList.size()),this);
+//            }else {
+//                notifikasiAdapter = new NotifikasiAdapter(notifikasiModelList.subList(page,MAX_ITEMS_PER_REQUEST),this);
+//            }
+            notifikasiAdapter = new NotifikasiAdapter(notifikasiModelList,this);
             layoutManager.setOrientation(RecyclerView.VERTICAL);
             rv_notifikasi.setLayoutManager(layoutManager);
             rv_notifikasi.setAdapter(notifikasiAdapter);
-            rv_notifikasi.addOnScrollListener(createInfiniteScrollListener());
-            notifikasiAdapter.setOnItemClickListener(new NotifikasiAdapter.OnItemClickListener() {
-                @Override
-                public void onItemClick(View view, int position) {
-                    type = notifikasiModelList.get(position).getType();
-                    switch (type) {
-                        case "pesan_siswa": {
-                            school_code         = notifikasiModelList.get(position).getSchool_code();
-                            message_id          = notifikasiModelList.get(position).getMessage_id();
-                            parent_message_id   = notifikasiModelList.get(position).getParent_message_id();
-                            member_id           = notifikasiModelList.get(position).getMember_id();
-                            id_notif            = notifikasiModelList.get(position).getId_notif();
-                            SharedPreferences.Editor editor = sharedPreferences.edit();
-                            editor.putString("school_code", school_code);
-                            editor.putString("message_id", message_id);
-                            editor.putString("parent_message_id", parent_message_id);
-                            editor.putString("member_id", member_id);
-                            editor.putString("clicked","click");
-                            editor.putInt("id_notif", Integer.parseInt(id_notif));
-                            editor.apply();
-                            Intent intent = new Intent(NotifikasiActivity.this, PesanDetail.class);
-                            intent.putExtra("school_code", school_code);
-                            intent.putExtra("message_id", message_id);
-                            intent.putExtra("parent_message_id", parent_message_id);
-                            intent.putExtra("member_id", member_id);
-                            intent.putExtra("clicked","click");
-                            intent.putExtra("id_notif",id_notif);
-                            startActivityForResult(intent,1);
-                            break;
-                        }
-                        case "absen_siswa": {
-                            school_code     = notifikasiModelList.get(position).getSchool_code();
-                            student_id      = notifikasiModelList.get(position).getStudent_id();
-                            classroom_id    = notifikasiModelList.get(position).getClassroom_id();
-                            id_notif        = notifikasiModelList.get(position).getId_notif();
-                            SharedPreferences.Editor editor = sharedPreferences.edit();
-                            editor.putString("school_code", school_code);
-                            editor.putString("student_id", student_id);
-                            editor.putString("classroom_id", classroom_id);
-                            editor.putString("clicked","click");
-                            editor.putInt("id_notif", Integer.parseInt(id_notif));
-                            editor.apply();
-                            Intent intent = new Intent(NotifikasiActivity.this, AbsenAnak.class);
-                            intent.putExtra("school_code", school_code);
-                            intent.putExtra("student_id", student_id);
-                            intent.putExtra("classroom_id", classroom_id);
-                            intent.putExtra("clicked","click");
-                            intent.putExtra("id_notif",id_notif);
-                            startActivityForResult(intent,1);
-                            break;
-                        }
-                        case "insert_new_agenda": {
-                            school_code     = notifikasiModelList.get(position).getSchool_code();
-                            student_id      = notifikasiModelList.get(position).getStudent_id();
-                            classroom_id    = notifikasiModelList.get(position).getClassroom_id();
-                            agenda_date     = notifikasiModelList.get(position).getAgenda_date();
-                            id_notif        = notifikasiModelList.get(position).getId_notif();
-                            SharedPreferences.Editor editor = sharedPreferences.edit();
-                            editor.putString("school_code", school_code);
-                            editor.putString("student_id", student_id);
-                            editor.putString("classroom_id", classroom_id);
-                            editor.putString("calendar", agenda_date);
-                            editor.putString("clicked","click");
-                            editor.putInt("id_notif", Integer.parseInt(id_notif));
-                            editor.apply();
-                            Intent intent = new Intent(NotifikasiActivity.this, AgendaAnak.class);
-                            intent.putExtra("school_code", school_code);
-                            intent.putExtra("student_id", student_id);
-                            intent.putExtra("classroom_id", classroom_id);
-                            intent.putExtra("calendar", agenda_date);
-                            intent.putExtra("clicked","click");
-                            intent.putExtra("id_notif",id_notif);
-                            startActivityForResult(intent,1);
-                            break;
-                        }
-                        case "insert_new_exam": {
-                            school_code     = notifikasiModelList.get(position).getSchool_code();
-                            student_id      = notifikasiModelList.get(position).getStudent_id();
-                            classroom_id    = notifikasiModelList.get(position).getClassroom_id();
-                            agenda_date     = notifikasiModelList.get(position).getAgenda_date();
-                            id_notif        = notifikasiModelList.get(position).getId_notif();
-                            SharedPreferences.Editor editor = sharedPreferences.edit();
-                            editor.putString("school_code", school_code);
-                            editor.putString("student_id", student_id);
-                            editor.putString("classroom_id", classroom_id);
-                            editor.putString("calendar", agenda_date);
-                            editor.putString("clicked","click");
-                            editor.putInt("id_notif", Integer.parseInt(id_notif));
-                            editor.apply();
-                            Intent intent = new Intent(NotifikasiActivity.this, AgendaAnak.class);
-                            intent.putExtra("school_code", school_code);
-                            intent.putExtra("student_id", student_id);
-                            intent.putExtra("classroom_id", classroom_id);
-                            intent.putExtra("calendar", agenda_date);
-                            intent.putExtra("clicked","click");
-                            intent.putExtra("id_notif",id_notif);
-                            startActivityForResult(intent,1);
-                            break;
-                        }
-                        default:{
-                            FancyToast.makeText(getApplicationContext(),position+"", Toast.LENGTH_LONG,FancyToast.INFO,false).show();
-                            break;
+//            rv_notifikasi.addOnScrollListener(createInfiniteScrollListener());
+            if (notifikasiAdapter != null) {
+                notifikasiAdapter.setOnItemClickListener(new NotifikasiAdapter.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(View view, int position) {
+                        type = notifikasiModelList.get(position).getType();
+                        switch (type) {
+                            case "pesan_siswa": {
+                                school_code = notifikasiModelList.get(position).getSchool_code();
+                                message_id = notifikasiModelList.get(position).getMessage_id();
+                                parent_message_id = notifikasiModelList.get(position).getParent_message_id();
+                                member_id = notifikasiModelList.get(position).getMember_id();
+                                id_notif = notifikasiModelList.get(position).getId_notif();
+                                SharedPreferences.Editor editor = sharedPreferences.edit();
+                                editor.putString("school_code", school_code);
+                                editor.putString("message_id", message_id);
+                                editor.putString("parent_message_id", parent_message_id);
+                                editor.putString("member_id", member_id);
+                                editor.putString("clicked", "click");
+                                editor.putInt("id_notif", Integer.parseInt(id_notif));
+                                editor.apply();
+                                Intent intent = new Intent(NotifikasiActivity.this, PesanDetail.class);
+                                intent.putExtra("school_code", school_code);
+                                intent.putExtra("message_id", message_id);
+                                intent.putExtra("parent_message_id", parent_message_id);
+                                intent.putExtra("member_id", member_id);
+                                intent.putExtra("clicked", "click");
+                                intent.putExtra("id_notif", id_notif);
+                                startActivityForResult(intent, 1);
+                                break;
+                            }
+                            case "absen_siswa": {
+                                school_code = notifikasiModelList.get(position).getSchool_code();
+                                student_id = notifikasiModelList.get(position).getStudent_id();
+                                classroom_id = notifikasiModelList.get(position).getClassroom_id();
+                                id_notif = notifikasiModelList.get(position).getId_notif();
+                                SharedPreferences.Editor editor = sharedPreferences.edit();
+                                editor.putString("school_code", school_code);
+                                editor.putString("student_id", student_id);
+                                editor.putString("classroom_id", classroom_id);
+                                editor.putString("clicked", "click");
+                                editor.putInt("id_notif", Integer.parseInt(id_notif));
+                                editor.apply();
+                                Intent intent = new Intent(NotifikasiActivity.this, AbsenAnak.class);
+                                intent.putExtra("school_code", school_code);
+                                intent.putExtra("student_id", student_id);
+                                intent.putExtra("classroom_id", classroom_id);
+                                intent.putExtra("clicked", "click");
+                                intent.putExtra("id_notif", id_notif);
+                                startActivityForResult(intent, 1);
+                                break;
+                            }
+                            case "insert_new_agenda": {
+                                school_code = notifikasiModelList.get(position).getSchool_code();
+                                student_id = notifikasiModelList.get(position).getStudent_id();
+                                classroom_id = notifikasiModelList.get(position).getClassroom_id();
+                                agenda_date = notifikasiModelList.get(position).getAgenda_date();
+                                id_notif = notifikasiModelList.get(position).getId_notif();
+                                SharedPreferences.Editor editor = sharedPreferences.edit();
+                                editor.putString("school_code", school_code);
+                                editor.putString("student_id", student_id);
+                                editor.putString("classroom_id", classroom_id);
+                                editor.putString("calendar", agenda_date);
+                                editor.putString("clicked", "click");
+                                editor.putInt("id_notif", Integer.parseInt(id_notif));
+                                editor.apply();
+                                Intent intent = new Intent(NotifikasiActivity.this, AgendaAnak.class);
+                                intent.putExtra("school_code", school_code);
+                                intent.putExtra("student_id", student_id);
+                                intent.putExtra("classroom_id", classroom_id);
+                                intent.putExtra("calendar", agenda_date);
+                                intent.putExtra("clicked", "click");
+                                intent.putExtra("id_notif", id_notif);
+                                startActivityForResult(intent, 1);
+                                break;
+                            }
+                            case "insert_new_exam": {
+                                school_code = notifikasiModelList.get(position).getSchool_code();
+                                student_id = notifikasiModelList.get(position).getStudent_id();
+                                classroom_id = notifikasiModelList.get(position).getClassroom_id();
+                                agenda_date = notifikasiModelList.get(position).getAgenda_date();
+                                id_notif = notifikasiModelList.get(position).getId_notif();
+                                SharedPreferences.Editor editor = sharedPreferences.edit();
+                                editor.putString("school_code", school_code);
+                                editor.putString("student_id", student_id);
+                                editor.putString("classroom_id", classroom_id);
+                                editor.putString("calendar", agenda_date);
+                                editor.putString("clicked", "click");
+                                editor.putInt("id_notif", Integer.parseInt(id_notif));
+                                editor.apply();
+                                Intent intent = new Intent(NotifikasiActivity.this, AgendaAnak.class);
+                                intent.putExtra("school_code", school_code);
+                                intent.putExtra("student_id", student_id);
+                                intent.putExtra("classroom_id", classroom_id);
+                                intent.putExtra("calendar", agenda_date);
+                                intent.putExtra("clicked", "click");
+                                intent.putExtra("id_notif", id_notif);
+                                startActivityForResult(intent, 1);
+                                break;
+                            }
+                            default: {
+                                FancyToast.makeText(getApplicationContext(), position + "", Toast.LENGTH_LONG, FancyToast.INFO, false).show();
+                                break;
+                            }
                         }
                     }
-                }
-            });
+                });
+            }
         }else {
             tv_no_notifikasi.setVisibility(View.VISIBLE);
             rv_notifikasi.setVisibility(View.GONE);
@@ -255,7 +260,7 @@ public class NotifikasiActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
 //            NavUtils.navigateUpFromSameTask(this);
-            SharedPreferences.Editor editor = sharedPreferences.edit();
+            SharedPreferences.Editor editor = sharedpreferences.edit();
             editor.putInt("counting",0);
             editor.apply();
             Intent intent = new Intent(NotifikasiActivity.this, MenuUtama.class);
@@ -271,7 +276,7 @@ public class NotifikasiActivity extends AppCompatActivity {
     @Override
     public void onBackPressed(){
 //        NavUtils.navigateUpFromSameTask(this);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
+        SharedPreferences.Editor editor = sharedpreferences.edit();
         editor.putInt("counting",0);
         editor.apply();
         Intent intent = new Intent(NotifikasiActivity.this,MenuUtama.class);
@@ -280,6 +285,7 @@ public class NotifikasiActivity extends AppCompatActivity {
         finish();
         super.onBackPressed();
     }
+
     public boolean onCreateOptionsMenu(Menu menu) {
         return true;
     }
