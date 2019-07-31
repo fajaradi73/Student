@@ -29,6 +29,7 @@
         tools:ignore="AllowBackup,GoogleAppIndexingWarning,InnerclassSeparator"
         tools:targetApi="n">
 
+        <activity android:name=".Student.KirimPesan" />
 
         <uses-library
             android:name="org.apache.http.legacy"
@@ -299,8 +300,23 @@
             android:label="Notifikasi"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".Guru.ActivityGuru.NotifikasiGuruActivity"
+        <activity
+            android:name=".Guru.ActivityGuru.NotifikasiGuruActivity"
             android:label="Notifikasi"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".Guru.ActivityGuru.BalasPesan"
+            android:label="Balas Pesan"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".Guru.ActivityGuru.SilabusView"
+            android:label=""
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".Guru.ActivityGuru.KirimPesan"
+            android:label="Tulis Pesan"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
     </application>

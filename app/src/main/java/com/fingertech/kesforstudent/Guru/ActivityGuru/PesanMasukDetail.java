@@ -14,6 +14,7 @@ import androidx.appcompat.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -52,6 +53,8 @@ public class PesanMasukDetail extends AppCompatActivity {
     String tanggals,click;
     int id_notif;
     private NotifikasiGuruTable notifikasiTable = new NotifikasiGuruTable();
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -87,6 +90,20 @@ public class PesanMasukDetail extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         toolbar.getNavigationIcon().setColorFilter(getResources().getColor(R.color.white), PorterDuff.Mode.SRC_ATOP);
         dapat_pesan();
+        btn_balas.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(PesanMasukDetail.this, BalasPesan.class);
+                intent.putExtra("authorization",authorization);
+                intent.putExtra("school_code",school_code);
+                intent.putExtra("member_id",member_id);
+                intent.putExtra("message_id",message_id);
+                intent.putExtra("reply_message_id",reply_message_id);
+                intent.putExtra("fullname",fullname);
+                startActivity(intent);
+            }
+        });
+
     }
 
     @Override

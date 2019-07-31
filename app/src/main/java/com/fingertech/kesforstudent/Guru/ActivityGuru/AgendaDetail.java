@@ -56,7 +56,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class AgendaDetail extends AppCompatActivity {
+public class AgendaDetail extends AppCompatActivity  implements AdapterAgenda.OnImageClickListener {
 
     String authorization,school_code,member_id,scyear_id,edulevel_id,semester_id,cources_id,cources_name,code;
     public static final String TAG_EMAIL        = "email";
@@ -79,17 +79,19 @@ public class AgendaDetail extends AppCompatActivity {
     SimpleDateFormat tanggalformat          = new SimpleDateFormat("d",new Locale("in","ID"));
     SimpleDateFormat bulanformat            = new SimpleDateFormat("M",new Locale("in","ID"));
     SimpleDateFormat tahunformat            = new SimpleDateFormat("yyyy",new Locale("in","ID"));
+    SimpleDateFormat parsetanggal           = new SimpleDateFormat("yyyy-M-d",new Locale("in","ID"));
     SimpleDateFormat formattanggal          = new SimpleDateFormat("yyyy-MM-dd",new Locale("in","ID"));
     SimpleDateFormat formatfull             = new SimpleDateFormat("yyyy-MM-dd HH:mm",new Locale("in","ID"));
+    SimpleDateFormat hariformat             = new SimpleDateFormat("EEEE", new Locale("in","ID"));
     DateFormat ds                           = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault());
 
     int status;
-    String tanggalagenda,bulan_sekarang,date,semester,start_date,end_date,color,tanggal_agenda,type_agenda,desc_agenda,content_agenda;
+    String tanggalagenda,hariagenda,bulan_sekarang,date,semester,start_date,end_date,color,tanggal_agenda,type_agenda,desc_agenda,content_agenda,id,type_data;
     ProgressDialog dialog;
     TextView tv_hint_agenda,tvsemester,tvtanggalsemester,tv_hint_agenda_hari;
     int day;
     List<JSONResponse.DataAgenda> dataAgendaList;
-    String tanggal,bulan,tahun;
+    String tanggal,bulan,tahun,hari;
     SlidingUpPanelLayout slidingUpPanelLayout;
     ImageView arrow;
     LinearLayout drag;
@@ -255,17 +257,29 @@ public class AgendaDetail extends AppCompatActivity {
                 currentItem = (currentItem >= agendaModelTanggalList.size()) ? agendaModelTanggalList.size() - 1 : currentItem;
                 tanggals = agendaModelTanggalList.get(currentItem).getDate();
                 if (dataAgendaList!=null) {
+                    Calendar calendar = Calendar.getInstance();
+                    try {
+                        calendar.setTime(fmt.parse(tanggals));
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                    hari = tanggalformat.format(calendar.getTime());
                     if (modelAgendaList != null) {
                         modelAgendaList.clear();
                         if (contains(dataAgendaList, convertTanggal(tanggals))) {
                             for (JSONResponse.DataAgenda dataAgenda : dataAgendaList) {
                                 if (dataAgenda.getDate().equals(convertTanggal(tanggals))) {
-                                    type_agenda = dataAgenda.getType();
-                                    desc_agenda = dataAgenda.getDesc();
-                                    color = dataAgenda.getAgenda_color();
-                                    content_agenda = dataAgenda.getAgenda_desc();
+                                    type_agenda     = dataAgenda.getType();
+                                    desc_agenda     = dataAgenda.getDesc();
+                                    color           = dataAgenda.getAgenda_color();
+                                    content_agenda  = dataAgenda.getAgenda_desc();
+                                    id              = dataAgenda.getId();
+                                    type_data       = dataAgenda.getType_data();
+                                    tanggal_agenda  = dataAgenda.getDate();
                                     modelAgenda = new ModelAgenda();
                                     modelAgenda.setColour(color);
+                                    modelAgenda.setId(id);
+                                    modelAgenda.setType_data(type_data);
                                     modelAgenda.setDate(tanggal_agenda);
                                     modelAgenda.setType(type_agenda);
                                     modelAgenda.setDesc(desc_agenda);
@@ -275,7 +289,7 @@ public class AgendaDetail extends AppCompatActivity {
                                     tv_hint_agenda_hari.setVisibility(View.GONE);
                                 }
                             }
-                            adapterAgenda = new AdapterAgenda(modelAgendaList);
+                            adapterAgenda = new AdapterAgenda(AgendaDetail.this,modelAgendaList,mApiInterface,authorization,member_id,school_code,AgendaDetail.this);
                             rv_agenda.setOnFlingListener(null);
                             rv_agenda.setLayoutManager(new VegaLayoutManager());
                             rv_agenda.setAdapter(adapterAgenda);
@@ -486,12 +500,17 @@ public class AgendaDetail extends AppCompatActivity {
                         if (contains(dataAgendaList, convertTanggal(tanggals))) {
                             for (JSONResponse.DataAgenda dataAgenda : dataAgendaList) {
                                 if (dataAgenda.getDate().equals(convertTanggal(tanggals))) {
-                                    type_agenda = dataAgenda.getType();
-                                    desc_agenda = dataAgenda.getDesc();
-                                    color = dataAgenda.getAgenda_color();
-                                    content_agenda = dataAgenda.getAgenda_desc();
+                                    type_agenda     = dataAgenda.getType();
+                                    desc_agenda     = dataAgenda.getDesc();
+                                    color           = dataAgenda.getAgenda_color();
+                                    content_agenda  = dataAgenda.getAgenda_desc();
+                                    id              = dataAgenda.getId();
+                                    type_data       = dataAgenda.getType_data();
+                                    tanggal_agenda  = dataAgenda.getDate();
                                     modelAgenda = new ModelAgenda();
                                     modelAgenda.setColour(color);
+                                    modelAgenda.setId(id);
+                                    modelAgenda.setType_data(type_data);
                                     modelAgenda.setDate(tanggal_agenda);
                                     modelAgenda.setType(type_agenda);
                                     modelAgenda.setDesc(desc_agenda);
@@ -506,82 +525,107 @@ public class AgendaDetail extends AppCompatActivity {
                             tv_hint_agenda_hari.setVisibility(View.VISIBLE);
                         }
                         String tanngall = formatfull.format(Calendar.getInstance().getTime());
-                        if (response.body().getClass_schedule().size() > 0) {
-                            if (response.body().getClass_schedule().get(0).getScheduleClass().size() > 0) {
-                                tanggalakhiran = response.body().getClass_schedule().get(0).getScheduleClass().get(0).getTimezFinish();
-                                try {
-                                    datenow = ds.parse(tanngall);
-                                    datejam = ds.parse(tanggalawalan + " " + tanggalakhiran);
-                                } catch (ParseException e) {
-                                    e.printStackTrace();
-                                }
-                                Long timesnow = datenow.getTime();
-                                Long timesakhir = datejam.getTime();
-                                if (agendaModelTanggalList != null) {
-                                    if (timesnow > timesakhir) {
-                                        if (Integer.parseInt(tanggal) > agendaModelTanggalList.size() - 1) {
-                                            datatanggal(Integer.parseInt(tahun), Integer.parseInt(bulan) + 1);
-                                            rvtanggal.scrollToPosition(1);
-                                            rvtanggal.smoothScrollToPosition(0);
-                                            rvtanggal.smoothScrollBy(1, 0);
-                                            datePicker.updateDate(Integer.parseInt(tahun), Integer.parseInt(bulan), 0);
-                                        } else {
-                                            if (Integer.parseInt(tanggal) == agendaModelTanggalList.size() - 1) {
-                                                rvtanggal.scrollToPosition(Integer.parseInt(tanggal) - 1);
-                                                rvtanggal.smoothScrollToPosition(Integer.parseInt(tanggal) -1);
-                                                rvtanggal.smoothScrollBy(1, 0);
-                                                datePicker.updateDate(Integer.parseInt(tahun), Integer.parseInt(bulan) - 1, Integer.parseInt(tanggal));
-                                            } else {
-                                                rvtanggal.scrollToPosition(Integer.parseInt(tanggal) - 1);
-                                                rvtanggal.smoothScrollBy(1, 0);
-                                                datePicker.updateDate(Integer.parseInt(tahun), Integer.parseInt(bulan) - 1, Integer.parseInt(tanggal));
-                                            }
-                                        }
-                                    } else {
-                                        rvtanggal.scrollToPosition(Integer.parseInt(tanggal) - 1);
-                                        rvtanggal.smoothScrollBy(1, 0);
-                                    }
-                                }
-                            } else {
-                                if (Integer.parseInt(tanggal) > agendaModelTanggalList.size() - 1) {
-                                    datatanggal(Integer.parseInt(tahun), Integer.parseInt(bulan) + 1);
-                                    rvtanggal.scrollToPosition(1);
-                                    rvtanggal.smoothScrollToPosition(0);
-                                    rvtanggal.smoothScrollBy(1, 0);
-                                    datePicker.updateDate(Integer.parseInt(tahun), Integer.parseInt(bulan), 0);
-                                } else {
-                                    if (Integer.parseInt(tanggal) == agendaModelTanggalList.size() - 1) {
-                                        rvtanggal.scrollToPosition(Integer.parseInt(tanggal) - 1);
-                                        rvtanggal.smoothScrollToPosition(Integer.parseInt(tanggal) - 1);
-                                        rvtanggal.smoothScrollBy(1, 0);
-                                        datePicker.updateDate(Integer.parseInt(tahun), Integer.parseInt(bulan) - 1, Integer.parseInt(tanggal));
-                                    } else {
-                                        rvtanggal.scrollToPosition(Integer.parseInt(tanggal));
-                                        rvtanggal.smoothScrollBy(1, 0);
-                                        datePicker.updateDate(Integer.parseInt(tahun), Integer.parseInt(bulan) - 1, Integer.parseInt(tanggal));
-                                    }
-                                }
-                            }
-                        }else {
-                            if (Integer.parseInt(tanggal) > agendaModelTanggalList.size() - 1) {
-                                datatanggal(Integer.parseInt(tahun), Integer.parseInt(bulan) + 1);
-                                rvtanggal.scrollToPosition(1);
-                                rvtanggal.smoothScrollToPosition(0);
-                                rvtanggal.smoothScrollBy(1, 0);
-                                datePicker.updateDate(Integer.parseInt(tahun), Integer.parseInt(bulan), 0);
-                            } else {
-                                if (Integer.parseInt(tanggal) == agendaModelTanggalList.size() - 1) {
-                                    rvtanggal.scrollToPosition(Integer.parseInt(tanggal) - 1);
-                                    rvtanggal.smoothScrollToPosition(Integer.parseInt(tanggal) - 1);
-                                    rvtanggal.smoothScrollBy(1, 0);
-                                    datePicker.updateDate(Integer.parseInt(tahun), Integer.parseInt(bulan) - 1, Integer.parseInt(tanggal));
-                                } else {
-                                    rvtanggal.scrollToPosition(Integer.parseInt(tanggal) -1);
-                                    rvtanggal.smoothScrollBy(1, 0);
-                                    datePicker.updateDate(Integer.parseInt(tahun), Integer.parseInt(bulan) - 1, Integer.parseInt(tanggal));
-                                }
-                            }
+                        if (Integer.parseInt(tanggal) == agendaModelTanggalList.size() - 1) {
+                            rvtanggal.scrollToPosition(Integer.parseInt(tanggal));
+                            rvtanggal.smoothScrollToPosition(Integer.parseInt(tanggal));
+                            rvtanggal.smoothScrollBy(1, 0);
+                            datePicker.updateDate(Integer.parseInt(tahun), Integer.parseInt(bulan) - 1, Integer.parseInt(tanggal));
+                        } else {
+                            rvtanggal.smoothScrollToPosition(Integer.parseInt(tanggal) -1);
+                            rvtanggal.scrollToPosition(Integer.parseInt(tanggal) - 1);
+                            rvtanggal.smoothScrollBy(1, 0);
+                            datePicker.updateDate(Integer.parseInt(tahun), Integer.parseInt(bulan) - 1, Integer.parseInt(tanggal));
                         }
+                        //// format agenda
+//                        if (response.body().getClass_schedule().size() > 0) {
+//                            if (response.body().getClass_schedule().get(0).getScheduleClass().size() > 0) {
+//                                tanggalakhiran = response.body().getClass_schedule().get(0).getScheduleClass().get(0).getTimezFinish();
+//                                try {
+//                                    datenow = ds.parse(tanngall);
+//                                    datejam = ds.parse(tanggalawalan + " " + tanggalakhiran);
+//                                } catch (ParseException e) {
+//                                    e.printStackTrace();
+//                                }
+//                                Long timesnow = datenow.getTime();
+//                                Long timesakhir = datejam.getTime();
+//                                if (agendaModelTanggalList != null) {
+//                                    if (timesnow > timesakhir) {
+//                                        if (Integer.parseInt(tanggal) > agendaModelTanggalList.size() - 1) {
+//                                            tanggal = "0";
+//                                            Calendar cal = Calendar.getInstance();
+//                                            try {
+//                                                cal.setTime(parsetanggal.parse(tahun+"-"+ String.valueOf(Integer.parseInt(bulan) + 1)+"-"+tanggal));
+//                                            } catch (ParseException e) {
+//                                                e.printStackTrace();
+//                                            }
+//                                            bulan_sekarang  = bulanFormat.format(cal.getTime());
+//                                            tanggals        = fmt.format(cal.getTime());
+//                                            day  = cal.get(Calendar.DAY_OF_WEEK);
+//                                            bulan = String.valueOf(Integer.parseInt(bulan) + 1);
+//                                            dapat_Agenda();
+//                                            datatanggal(Integer.parseInt(tahun), Integer.parseInt(bulan));
+////                                            rvtanggal.scrollToPosition(1);
+////                                            rvtanggal.smoothScrollToPosition(0);
+////                                            rvtanggal.smoothScrollBy(1, 0);
+////                                            datePicker.updateDate(Integer.parseInt(tahun), Integer.parseInt(bulan), 0);
+//                                        } else {
+//                                            if (Integer.parseInt(tanggal) == agendaModelTanggalList.size() - 1) {
+//                                                rvtanggal.scrollToPosition(Integer.parseInt(tanggal));
+//                                                rvtanggal.smoothScrollToPosition(Integer.parseInt(tanggal));
+//                                                rvtanggal.smoothScrollBy(1, 0);
+//                                                datePicker.updateDate(Integer.parseInt(tahun), Integer.parseInt(bulan) - 1, Integer.parseInt(tanggal));
+//                                            } else {
+//                                                rvtanggal.smoothScrollToPosition(Integer.parseInt(tanggal) -1);
+//                                                rvtanggal.scrollToPosition(Integer.parseInt(tanggal) - 1);
+//                                                rvtanggal.smoothScrollBy(1, 0);
+//                                                datePicker.updateDate(Integer.parseInt(tahun), Integer.parseInt(bulan) - 1, Integer.parseInt(tanggal));
+//                                            }
+//                                        }
+//                                    } else {
+//                                        rvtanggal.scrollToPosition(Integer.parseInt(tanggal) - 1);
+//                                        rvtanggal.smoothScrollBy(1, 0);
+//                                    }
+//                                }
+//                            } else {
+//                                if (Integer.parseInt(tanggal) > agendaModelTanggalList.size() - 1) {
+//                                    datatanggal(Integer.parseInt(tahun), Integer.parseInt(bulan) + 1);
+//                                    rvtanggal.scrollToPosition(1);
+//                                    rvtanggal.smoothScrollToPosition(0);
+//                                    rvtanggal.smoothScrollBy(1, 0);
+//                                    datePicker.updateDate(Integer.parseInt(tahun), Integer.parseInt(bulan), 0);
+//                                } else {
+//                                    if (Integer.parseInt(tanggal) == agendaModelTanggalList.size() - 1) {
+//                                        rvtanggal.scrollToPosition(Integer.parseInt(tanggal) - 1);
+//                                        rvtanggal.smoothScrollToPosition(Integer.parseInt(tanggal) - 1);
+//                                        rvtanggal.smoothScrollBy(1, 0);
+//                                        datePicker.updateDate(Integer.parseInt(tahun), Integer.parseInt(bulan) - 1, Integer.parseInt(tanggal));
+//                                    } else {
+//                                        rvtanggal.scrollToPosition(Integer.parseInt(tanggal));
+//                                        rvtanggal.smoothScrollBy(1, 0);
+//                                        datePicker.updateDate(Integer.parseInt(tahun), Integer.parseInt(bulan) - 1, Integer.parseInt(tanggal));
+//                                    }
+//                                }
+//                            }
+//                        }else {
+//                            if (Integer.parseInt(tanggal) > agendaModelTanggalList.size() - 1) {
+//                                datatanggal(Integer.parseInt(tahun), Integer.parseInt(bulan) + 1);
+//                                rvtanggal.scrollToPosition(1);
+//                                rvtanggal.smoothScrollToPosition(0);
+//                                rvtanggal.smoothScrollBy(1, 0);
+//                                datePicker.updateDate(Integer.parseInt(tahun), Integer.parseInt(bulan), 0);
+//                            } else {
+//                                if (Integer.parseInt(tanggal) == agendaModelTanggalList.size() - 1) {
+//                                    rvtanggal.scrollToPosition(Integer.parseInt(tanggal) - 1);
+//                                    rvtanggal.smoothScrollToPosition(Integer.parseInt(tanggal) - 1);
+//                                    rvtanggal.smoothScrollBy(1, 0);
+//                                    datePicker.updateDate(Integer.parseInt(tahun), Integer.parseInt(bulan) - 1, Integer.parseInt(tanggal));
+//                                } else {
+//                                    rvtanggal.scrollToPosition(Integer.parseInt(tanggal) -1);
+//                                    rvtanggal.smoothScrollBy(1, 0);
+//                                    datePicker.updateDate(Integer.parseInt(tahun), Integer.parseInt(bulan) - 1, Integer.parseInt(tanggal));
+//                                }
+//                            }
+//                        }
                     } else {
                         indefinitePagerIndicator.setVisibility(View.GONE);
                         rv_agenda.setVisibility(View.GONE);
@@ -605,10 +649,12 @@ public class AgendaDetail extends AppCompatActivity {
         if (agendaModelTanggalList!=null) {
             agendaModelTanggalList.clear();
             for (int i = 0; i < daysInMonth; i++) {
-                tanggalagenda = fmt.format(cal.getTime());
+                tanggalagenda   = fmt.format(cal.getTime());
+                hariagenda      = hariformat.format(cal.getTime());
                 cal.add(Calendar.DAY_OF_MONTH, 1);
                 agendaModelTanggal = new AgendaModelTanggal();
                 agendaModelTanggal.setDate(tanggalagenda);
+                agendaModelTanggal.setHari(hariagenda);
                 agendaModelTanggalList.add(agendaModelTanggal);
             }
         }
@@ -712,6 +758,7 @@ public class AgendaDetail extends AppCompatActivity {
                 tanggals        = fmt.format(cal.getTime());
                 if (times_sekarang.equals(times_picker)){
                     rvtanggal.smoothScrollToPosition(Integer.parseInt(tanggal) - 1);
+                    dapat_Agenda();
                 }else {
                     datatanggal(Integer.parseInt(tahun),Integer.parseInt(bulan));
                     if (Integer.parseInt(tanggal)-5 < 0){
@@ -757,4 +804,11 @@ public class AgendaDetail extends AppCompatActivity {
         }
     }
 
+    @Override
+    public void onImageClick(String change) {
+        if (change.equals("change")){
+            tanggal = hari;
+            dapat_Agenda();
+        }
+    }
 }

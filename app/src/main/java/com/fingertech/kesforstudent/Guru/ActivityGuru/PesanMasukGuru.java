@@ -93,7 +93,7 @@ public class PesanMasukGuru extends AppCompatActivity {
         fab_pesan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent   = new Intent(PesanMasukGuru.this,TulisPesan.class);
+                Intent intent   = new Intent(PesanMasukGuru.this,KirimPesan.class);
                 startActivity(intent);
             }
         });

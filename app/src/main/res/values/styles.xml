@@ -87,6 +87,9 @@
         <item name="colorAccent">@color/colorPrimary</item>
         <item name="android:datePickerStyle">@style/MySpinnerDatePicker</item>
     </style>
+    <style name="DialogThemeTanggal" parent="Theme.AppCompat.Light.Dialog">
+        <item name="colorAccent">@color/colorPrimary</item>
+    </style>
     <style name="MySpinnerDatePicker" parent="android:Widget.Material.DatePicker">
         <item name="android:datePickerMode">spinner</item>
         <item name="colorPrimary">@color/colorPrimary</item>

@@ -9,17 +9,35 @@
     android:layout_margin="10dp"
     android:orientation="vertical">
     <androidx.cardview.widget.CardView
-        android:layout_width="300dp"
-        android:layout_height="30dp"
+        android:layout_width="200dp"
+        android:layout_height="45dp"
         android:layout_gravity="center_horizontal"
         app:cardCornerRadius="8dp">
-        <TextView
-            android:id="@+id/tanggalagendalayout"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/colorPrimary"
-            android:textColor="@color/white"
-            android:gravity="center"/>
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/hari_agenda"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/colorPrimary"
+                android:textColor="@color/white"
+                android:layout_weight="1"
+                android:padding="1dp"
+                tools:text="Senin"
+                android:gravity="center"/>
+            <TextView
+                android:id="@+id/tanggalagendalayout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:padding="1dp"
+                android:background="@color/colorPrimary"
+                android:textColor="@color/white"
+                tools:text="20 November 2019"
+                android:gravity="center"/>
+        </LinearLayout>
 
     </androidx.cardview.widget.CardView>
 

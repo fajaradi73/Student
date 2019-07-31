@@ -68,7 +68,7 @@ public class PesanAnak extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.pesan_anak);
+        setContentView(R.layout.pesan_view);
         toolbar         = findViewById(R.id.toolbar_pesan_anak);
         rv_pesan        = findViewById(R.id.rv_pesan_anak);
         mApiInterface   = ApiClient.getClient().create(Auth.class);

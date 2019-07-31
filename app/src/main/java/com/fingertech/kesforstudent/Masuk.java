@@ -248,8 +248,9 @@ public class Masuk extends AppCompatActivity {
                                 intent.putExtra(TAG_SCHOLL_NAME, school_name);
                                 intent.putExtra(TAG_TOKEN, token);
                                 intent.putExtra("scyear_id", scyear_id);
-                                finish();
                                 startActivity(intent);
+                                finish();
+
 
                             } else if (member_type.equals("3")) {
                                 Intent intent = new Intent(Masuk.this, MenuUtamaGuru.class);
@@ -261,15 +262,15 @@ public class Masuk extends AppCompatActivity {
                                 intent.putExtra(TAG_SCHOLL_NAME, school_name);
                                 intent.putExtra(TAG_TOKEN, token);
                                 intent.putExtra("scyear_id", scyear_id);
-                                finish();
                                 startActivity(intent);
+                                finish();
                             }
 
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
                     }else if (status == 0 && code.equals("LP_ERR_0004")){
-                        FancyToast.makeText(getApplicationContext(),"Sekolah tidak ditemukan",Toast.LENGTH_LONG,FancyToast.INFO,false).show();
+                        FancyToast.makeText(Masuk.this,"Sekolah tidak ditemukan",Toast.LENGTH_LONG,FancyToast.INFO,false).show();
                         finish();
                     }else if (status == 0 && code.equals("LP_ERR_0006")){
                         til_email.setError("* Username yang anda masukan salah");

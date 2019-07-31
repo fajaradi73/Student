@@ -6414,6 +6414,26 @@ public class JSONResponse {
         public String agenda_color;
         @SerializedName("agenda_time")
         public String agenda_time;
+        @SerializedName("id")
+        public String id;
+        @SerializedName("type_data")
+        public String type_data;
+
+        public String getType_data() {
+            return type_data;
+        }
+
+        public void setType_data(String type_data) {
+            this.type_data = type_data;
+        }
+
+        public String getId() {
+            return id;
+        }
+
+        public void setId(String id) {
+            this.id = id;
+        }
 
         public String getAgenda_desc() {
             return agenda_desc;
@@ -8277,6 +8297,80 @@ public class JSONResponse {
 
     ///// Response Logout
     public class Logout{
+        @SerializedName("status")
+        public Integer status;
+
+        @SerializedName("code")
+        public String code;
+
+        @SerializedName("data")
+        public String data;
+
+        public Integer getStatus() {
+            return status;
+        }
+
+        public void setStatus(Integer status) {
+            this.status = status;
+        }
+
+        public String getCode() {
+            return code;
+        }
+
+        public void setCode(String code) {
+            this.code = code;
+        }
+
+        public String getData() {
+            return data;
+        }
+
+        public void setData(String data) {
+            this.data = data;
+        }
+    }
+    //// ------------------------------///
+
+    ///// Response Delete Agenda
+    public class DeleteAgenda{
+        @SerializedName("status")
+        public Integer status;
+
+        @SerializedName("code")
+        public String code;
+
+        @SerializedName("data")
+        public String data;
+
+        public Integer getStatus() {
+            return status;
+        }
+
+        public void setStatus(Integer status) {
+            this.status = status;
+        }
+
+        public String getCode() {
+            return code;
+        }
+
+        public void setCode(String code) {
+            this.code = code;
+        }
+
+        public String getData() {
+            return data;
+        }
+
+        public void setData(String data) {
+            this.data = data;
+        }
+    }
+    ///// -----------------------------///
+
+    ///// Response Delete Tugas
+    public class DeleteTugas{
         @SerializedName("status")
         public Integer status;
 

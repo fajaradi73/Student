@@ -15,6 +15,7 @@ import android.widget.FrameLayout;
 import com.fingertech.kesforstudent.Controller.Auth;
 import com.fingertech.kesforstudent.Guru.ActivityGuru.KalendarGuru;
 import com.fingertech.kesforstudent.Guru.ActivityGuru.Silabus;
+import com.fingertech.kesforstudent.Guru.ActivityGuru.SilabusView;
 import com.fingertech.kesforstudent.R;
 import com.fingertech.kesforstudent.Masuk;
 
@@ -92,7 +93,7 @@ public class FragMenuGuruDua extends Fragment {
                 editor.putString("school_code",school_code);
                 editor.putString("scyear_id",scyear_id);
                 editor.apply();
-                Intent intent = new Intent(getContext(), Silabus.class);
+                Intent intent = new Intent(getContext(), SilabusView.class);
                 intent.putExtra("authorization",authorization);
                 intent.putExtra("school_code",school_code);
                 intent.putExtra("member_id",memberid);

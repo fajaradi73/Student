@@ -38,6 +38,7 @@ public class AdapterDataTanggal extends RecyclerView.Adapter<AdapterDataTanggal.
 
         AgendaModelTanggal viewItem = viewItemList.get(position);
         holder.tanggalagenda.setText(viewItem.getDate());
+        holder.hariagenda.setText(viewItem.getHari());
     }
 
     @Override
@@ -46,12 +47,13 @@ public class AdapterDataTanggal extends RecyclerView.Adapter<AdapterDataTanggal.
     }
 
     class MyHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        TextView tanggalagenda;
+        TextView tanggalagenda,hariagenda;
         OnItemClickListener onItemClickListener;
 
-        public MyHolder(View itemView,OnItemClickListener onItemClickListener) {
+        MyHolder(View itemView, OnItemClickListener onItemClickListener) {
             super(itemView);
-            tanggalagenda = itemView.findViewById(R.id.tanggalagendalayout);
+            tanggalagenda   = itemView.findViewById(R.id.tanggalagendalayout);
+            hariagenda      = itemView.findViewById(R.id.hari_agenda);
 //            itemView.setOnClickListener(this);
 //            this.onItemClickListener = onItemClickListener;
         }

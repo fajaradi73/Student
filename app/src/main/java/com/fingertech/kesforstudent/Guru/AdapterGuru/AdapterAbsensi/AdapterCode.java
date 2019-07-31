@@ -29,7 +29,7 @@ public class AdapterCode extends RecyclerView.Adapter<AdapterCode.MyHolder>  {
     Context context;
     int row_index;
     private int focusedItem = 0;
-    private String id_grade;
+    private String id_grade,id_attitude;
 
     private OnItemClickListener onItemClickListener;
     private JSONArray jsonArray;
@@ -47,7 +47,7 @@ public class AdapterCode extends RecyclerView.Adapter<AdapterCode.MyHolder>  {
     public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
         this.onItemClickListener = onItemClickListener;
     }
-
+    JSONArray jsonArrays ;
     @Override
     public  MyHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
@@ -96,14 +96,15 @@ public class AdapterCode extends RecyclerView.Adapter<AdapterCode.MyHolder>  {
 
         @Override
         public void onClick(View v) {
-//            onItemClickListener.onItemClick(v, getAdapterPosition());
+//            onItemClickListener.onItemClick(v, getLayoutPosition());
             notifyItemChanged(focusedItem);
             focusedItem = getLayoutPosition();
             notifyItemChanged(focusedItem);
+            jsonObject = new JSONObject();
             if (modelCodeAttidudes.get(focusedItem).getId().equals("0")){
                 if (modelCodeAttidudes.get(focusedItem).getCodeabsen().equals("H")||modelCodeAttidudes.get(focusedItem).getCodeabsen().equals("T")||modelCodeAttidudes.get(focusedItem).getCodeabsen().equals("D")){
                     id_grade    = modelCodeAttidudes.get(focusedItem).getId_attitude();
-                    jsonObject = new JSONObject();
+
                     try {
                         jsonObject.put("absentStatus","1");
                         jsonObject.put("absentType",id_grade);
@@ -113,7 +114,7 @@ public class AdapterCode extends RecyclerView.Adapter<AdapterCode.MyHolder>  {
                 }
                 else {
                     id_grade    = modelCodeAttidudes.get(focusedItem).getId_attitude();
-                    jsonObject = new JSONObject();
+//                    jsonObject = new JSONObject();
                     try {
                         jsonObject.put("absentStatus", "0");
                         jsonObject.put("absentType", id_grade);
@@ -122,18 +123,35 @@ public class AdapterCode extends RecyclerView.Adapter<AdapterCode.MyHolder>  {
                     }
                 }
             }else {
+                jsonArrays = new JSONArray();
+                JSONObject detailObject = new JSONObject();
+                id_attitude = modelCodeAttidudes.get(focusedItem).getId();
                 id_grade    = modelCodeAttidudes.get(focusedItem).getId_attitude();
-                jsonObject = new JSONObject();
+//                jsonObject = new JSONObject();
                 try {
-                    jsonObject.put("absentStatus", "0");
-                    jsonObject.put("absentType", id_grade);
+                    detailObject.put("attitudeid", id_attitude);
+                    detailObject.put("gradeid", id_grade);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                jsonArrays.put(detailObject);
+                try {
+                    jsonObject.put("detail",jsonArrays);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
             }
-            Log.d("Json",jsonObject+"");
-            onImageClickListener.onImageClick(jsonObject);
+            setdata(jsonObject);
         }
+    }
+    JSONArray sourceArray = new JSONArray();
+    private void setdata(JSONObject jsonObject){
+
+        sourceArray.put(jsonObject);
+
+        Log.d("Json",sourceArray+"");
+
+        onImageClickListener.onImageClick(jsonObject,focusedItem);
     }
 
     @Override
@@ -176,7 +194,7 @@ public class AdapterCode extends RecyclerView.Adapter<AdapterCode.MyHolder>  {
     }
 
     public interface OnImageClickListener {
-        void onImageClick(JSONObject jsonObject);
+        void onImageClick(JSONObject jsonObject,int position);
     }
 
 

@@ -29,6 +29,8 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -86,6 +88,9 @@ public class TambahTugas extends AppCompatActivity {
     Uri uri;
     RequestBody fileBody;
     MultipartBody.Part photoPart;
+    RadioButton rb_latihan,rb_pr;
+    LinearLayout ll_radio;
+    String tipe_tugas;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,6 +104,9 @@ public class TambahTugas extends AppCompatActivity {
         btn_simpan      = findViewById(R.id.btn_simpan);
         btn_upload      = findViewById(R.id.btn_upload);
         tv_file         = findViewById(R.id.tv_file);
+        ll_radio        = findViewById(R.id.ll_radio);
+        rb_latihan      = findViewById(R.id.rb_latihan);
+        rb_pr           = findViewById(R.id.rb_pr);
         mApiInterface   = ApiClient.getClient().create(Auth.class);
 
         setSupportActionBar(toolbar);
@@ -126,7 +134,7 @@ public class TambahTugas extends AppCompatActivity {
 
         final DatePickerDialog mDatePicker;
 
-        mDatePicker = new DatePickerDialog(this, R.style.DialogTheme, new DatePickerDialog.OnDateSetListener() {
+        mDatePicker = new DatePickerDialog(this, R.style.DialogThemeTanggal, new DatePickerDialog.OnDateSetListener() {
             public void onDateSet(DatePicker datepicker, int selectedyear, int selectedmonth, int selectedday) {
                 et_tanggal.setText(convertDate(selectedyear, selectedmonth, selectedday));
             }
@@ -148,7 +156,22 @@ public class TambahTugas extends AppCompatActivity {
                 }
             }
         });
+
+        rb_pr.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                tipe_tugas = "1";
+            }
+        });
+        rb_latihan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                tipe_tugas = "0";
+            }
+        });
+
         dapat_tugas();
+
         btn_upload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -183,6 +206,8 @@ public class TambahTugas extends AppCompatActivity {
                     FancyToast.makeText(getApplicationContext(),"Harap untuk memilih tipe ujian terlebih dahulu",Toast.LENGTH_LONG,FancyToast.INFO,false).show();
                 }else if (et_keterangan.getText().toString().isEmpty()){
                     FancyToast.makeText(getApplicationContext(),"Harap untuk menambah deskripsi terlebih dahulu terlebih dahulu",Toast.LENGTH_LONG,FancyToast.INFO,false).show();
+                }else if (tipe_tugas == null){
+                    FancyToast.makeText(getApplicationContext(),"Harap untuk jenis latihan terlebih dahulu terlebih dahulu",Toast.LENGTH_LONG,FancyToast.INFO,false).show();
                 }else {
                     add_agenda();
                 }
@@ -311,10 +336,17 @@ public class TambahTugas extends AppCompatActivity {
                                 }
                                 else if (position > 0) {
                                     type_id = dataExamList.get(position - 1).getTypeid();
+                                    if (type_id.equals("4")){
+                                        ll_radio.setVisibility(View.VISIBLE);
+                                    }else {
+                                        tipe_tugas = "0";
+                                        ll_radio.setVisibility(View.GONE);
+                                    }
                                     exam_name = dataExamList.get(position - 1).getType_name();
                                 }
                             }
                         });
+                        Log.d("datase", tipe_tugas +"");
                     }
                 }
             }
@@ -342,6 +374,7 @@ public class TambahTugas extends AppCompatActivity {
         dialog.setIndeterminate(true);
         dialog.setCancelable(false);
     }
+
     private void add_agenda(){
         progressBar();
         showDialog();
@@ -354,17 +387,16 @@ public class TambahTugas extends AppCompatActivity {
             photoPart = MultipartBody.Part.createFormData("filename",
                     "", fileBody);
         }
-
         RequestBody memberid    = RequestBody.create(MediaType.parse("multipart/form-data"), member_id);
         RequestBody courcesid   = RequestBody.create(MediaType.parse("multipart/form-data"), cources_id);
-        RequestBody schoolcode  = RequestBody.create(MediaType.parse("multipart/form-data"), school_code);
+        RequestBody schoolcode  = RequestBody.create(MediaType.parse("multipart/form-data"), school_code.toLowerCase());
         RequestBody scyearid    = RequestBody.create(MediaType.parse("multipart/form-data"), scyear_id);
         RequestBody exam_type   = RequestBody.create(MediaType.parse("multipart/form-data"), type_id);
         RequestBody clasroom_id = RequestBody.create(MediaType.parse("multipart/form-data"), edulevel_id);
+        RequestBody exercise_type = RequestBody.create(MediaType.parse("multipart/form-data"), tipe_tugas.toString());
         RequestBody exam_date   = RequestBody.create(MediaType.parse("multipart/form-data"), convertTanggal(et_tanggal.getText().toString()));
         RequestBody examdesc    = RequestBody.create(MediaType.parse("multipart/form-data"), et_keterangan.getText().toString());
-
-        Call<JSONResponse.UploadTugas> call = mApiInterface.kes_add_exercises_post(authorization.toString(),schoolcode,memberid,clasroom_id,courcesid,exam_date,photoPart,exam_type,examdesc,scyearid);
+        Call<JSONResponse.UploadTugas> call = mApiInterface.kes_add_exercises_post(authorization.toString(),schoolcode,memberid,clasroom_id,courcesid,exam_date,exercise_type,photoPart,exam_type,examdesc,scyearid);
         call.enqueue(new Callback<JSONResponse.UploadTugas>() {
             @Override
             public void onResponse(retrofit2.Call<JSONResponse.UploadTugas> call, final Response<JSONResponse.UploadTugas> response) {
@@ -374,14 +406,18 @@ public class TambahTugas extends AppCompatActivity {
                     JSONResponse.UploadTugas resource = response.body();
                     status  = resource.status;
                     code    = resource.code;
-                    if (status == 1&& code.equals("DTS_SCS_0001")) {
+                    Log.e("data",status+"/"+code);
+                    if (status == 1 && code.equals("DTS_SCS_0001")) {
                         Intent intent = new Intent(TambahTugas.this,AgendaDetail.class);
                         intent.putExtra("date",convertTanggal(et_tanggal.getText().toString()));
                         setResult(RESULT_OK,intent);
                         FancyToast.makeText(getApplicationContext(),"Sukses Menyimpan", Toast.LENGTH_LONG,FancyToast.SUCCESS,false).show();
                         finish();
                     }
-                }else {
+                    else if (status == 0 && code.equals("DTS_ERR_0002")){
+                        FancyToast.makeText(getApplicationContext(), "Tidak bisa menambah tugas bukan pada harinya", FancyToast.LENGTH_LONG, FancyToast.ERROR, false).show();
+                    }
+                } else {
                     FancyToast.makeText(getApplicationContext(), "File gagal diupload", FancyToast.LENGTH_LONG, FancyToast.ERROR, false).show();
                 }
             }

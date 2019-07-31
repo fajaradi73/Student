@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Guru.ActivityGuru.KirimPesan"
+    android:background="@color/white"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:orientation="vertical">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbarTulisPesan"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorPrimary"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <com.rey.material.widget.Spinner
+            android:id="@+id/sp_kirim_kepada"
+            style="@style/Material.Widget.Spinner"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:layout_gravity="center"
+            android:layout_margin="10dp"
+            android:entries="@array/kirim_kepada"
+            android:background="@drawable/tab_semester"
+            android:gravity="center"
+            android:spinnerMode="dropdown"
+            app:rd_style="@style/Material.Drawable.Ripple.Wave"
+            app:spn_arrowAnimClockwise="true"
+            app:spn_arrowAnimDuration="300"
+            app:spn_arrowColor="@color/black"
+            app:spn_arrowSwitchMode="true"
+            app:spn_dividerColor="@color/black"
+            app:spn_dividerHeight="0dp"
+            app:spn_labelTextColor="@color/colorPrimary" />
+
+        <com.rey.material.widget.Spinner
+            android:id="@+id/sp_kelas"
+            style="@style/Material.Widget.Spinner"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:layout_gravity="center"
+            android:layout_margin="10dp"
+            android:background="@drawable/tab_semester"
+            android:gravity="center"
+            android:spinnerMode="dropdown"
+            android:visibility="gone"
+            app:rd_style="@style/Material.Drawable.Ripple.Wave"
+            app:spn_arrowAnimClockwise="true"
+            app:spn_arrowAnimDuration="300"
+            app:spn_arrowColor="@color/black"
+            app:spn_arrowSwitchMode="true"
+            app:spn_dividerColor="@color/black"
+            app:spn_dividerHeight="0dp"
+            app:spn_labelTextColor="@color/colorPrimary" />
+
+        <com.rey.material.widget.Spinner
+            android:id="@+id/sp_siswa"
+            style="@style/Material.Widget.Spinner"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:layout_gravity="center"
+            android:layout_margin="10dp"
+            android:background="@drawable/tab_semester"
+            android:gravity="center"
+            android:spinnerMode="dropdown"
+            android:visibility="gone"
+            app:rd_style="@style/Material.Drawable.Ripple.Wave"
+            app:spn_arrowAnimClockwise="true"
+            app:spn_arrowAnimDuration="300"
+            app:spn_arrowColor="@color/black"
+            app:spn_arrowSwitchMode="true"
+            app:spn_dividerColor="@color/black"
+            app:spn_dividerHeight="0dp"
+            app:spn_labelTextColor="@color/colorPrimary" />
+
+        <com.rey.material.widget.Spinner
+            android:id="@+id/sp_mapel"
+            style="@style/Material.Widget.Spinner"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:layout_gravity="center"
+            android:layout_margin="10dp"
+            android:background="@drawable/tab_semester"
+            android:gravity="center"
+            android:spinnerMode="dropdown"
+            android:visibility="gone"
+            app:rd_style="@style/Material.Drawable.Ripple.Wave"
+            app:spn_arrowAnimClockwise="true"
+            app:spn_arrowAnimDuration="300"
+            app:spn_arrowColor="@color/black"
+            app:spn_arrowSwitchMode="true"
+            app:spn_dividerColor="@color/black"
+            app:spn_dividerHeight="0dp"
+            app:spn_labelTextColor="@color/colorPrimary" />
+
+        <com.rey.material.widget.Spinner
+            android:id="@+id/sp_teacher"
+            style="@style/Material.Widget.Spinner"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:layout_gravity="center"
+            android:layout_margin="10dp"
+            android:background="@drawable/tab_semester"
+            android:gravity="center"
+            android:spinnerMode="dropdown"
+            android:visibility="gone"
+            app:rd_style="@style/Material.Drawable.Ripple.Wave"
+            app:spn_arrowAnimClockwise="true"
+            app:spn_arrowAnimDuration="300"
+            app:spn_arrowColor="@color/black"
+            app:spn_arrowSwitchMode="true"
+            app:spn_dividerColor="@color/black"
+            app:spn_dividerHeight="0dp"
+            app:spn_labelTextColor="@color/colorPrimary" />
+
+        <com.rey.material.widget.Spinner
+            android:id="@+id/sp_admin"
+            style="@style/Material.Widget.Spinner"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:layout_gravity="center"
+            android:layout_margin="10dp"
+            android:background="@drawable/tab_semester"
+            android:gravity="center"
+            android:spinnerMode="dropdown"
+            android:visibility="gone"
+            app:rd_style="@style/Material.Drawable.Ripple.Wave"
+            app:spn_arrowAnimClockwise="true"
+            app:spn_arrowAnimDuration="300"
+            app:spn_arrowColor="@color/black"
+            app:spn_arrowSwitchMode="true"
+            app:spn_dividerColor="@color/black"
+            app:spn_dividerHeight="0dp"
+            app:spn_labelTextColor="@color/colorPrimary" />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="@color/black"/>
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:theme="@style/TextLabelKes"
+            android:background="@drawable/edt_no_bg"
+            android:hint="Judul"
+            android:textSize="14sp"
+            android:padding="10dp"
+            android:gravity="top|start"
+            android:id="@+id/et_judul"/>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="@color/black"/>
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:theme="@style/TextLabelKes"
+            android:background="@drawable/edt_no_bg"
+            android:hint="Tulis Pesan"
+            android:textSize="14sp"
+            android:padding="10dp"
+            android:gravity="top|start"
+            android:id="@+id/et_pesan"/>
+    </LinearLayout>
+
+</LinearLayout>

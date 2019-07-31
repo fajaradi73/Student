@@ -66,6 +66,7 @@ public class TambahAgenda extends AppCompatActivity {
     private List<JSONResponse.DataMapelEdu> dataMapelEduList;
     Long times_awal,times_akhir;
     TextView tv_mapel;
+    String agenda_id,agenda_date,agenda_desc;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -92,6 +93,7 @@ public class TambahAgenda extends AppCompatActivity {
         cources_id          = sharedpreferences.getString("cources_id",null);
         cources_name        = sharedpreferences.getString("cources_name",null);
 
+
         Calendar mcurrentDate = Calendar.getInstance();
         int mYear   = mcurrentDate.get(Calendar.YEAR);
         int mMonth  = mcurrentDate.get(Calendar.MONTH);
@@ -109,6 +111,15 @@ public class TambahAgenda extends AppCompatActivity {
         mDatePicker.getDatePicker().setMinDate(times_awal);
         mDatePicker.getDatePicker().setMaxDate(times_akhir);
 
+        if (getIntent().getStringExtra("edit") != null){
+            setTitle("Edit Agenda");
+            agenda_id   = getIntent().getStringExtra("agenda_id");
+            agenda_date = getIntent().getStringExtra("agenda_date");
+            agenda_desc = getIntent().getStringExtra("agenda_desc");
+            et_tanggal.setText(convertDate(Integer.parseInt(convertTahun(agenda_date)),Integer.parseInt(convertBulan(agenda_date))-1,Integer.parseInt(convertDates(agenda_date))));
+            mDatePicker.updateDate(Integer.parseInt(convertTahun(agenda_date)),Integer.parseInt(convertBulan(agenda_date))-1,Integer.parseInt(convertDates(agenda_date)));
+            et_keterangan.setText(agenda_desc);
+        }
 
         et_tanggal.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
@@ -134,7 +145,11 @@ public class TambahAgenda extends AppCompatActivity {
                 }else if (et_keterangan.getText().toString().isEmpty()){
                     FancyToast.makeText(getApplicationContext(),"Harap untuk menambah deskripsi terlebih dahulu terlebih dahulu",Toast.LENGTH_LONG,FancyToast.INFO,false).show();
                 }else {
-                    add_agenda();
+                    if (getIntent().getStringExtra("edit") != null){
+                        edit_agenda();
+                    }else {
+                        add_agenda();
+                    }
                 }
             }
         });
@@ -147,6 +162,39 @@ public class TambahAgenda extends AppCompatActivity {
         SimpleDateFormat newDateFormat = new SimpleDateFormat("dd MMMM yyyy",Locale.getDefault());
         try {
             String e = newDateFormat.format(calendarDateFormat.parse(temp));
+            return e;
+        } catch (java.text.ParseException e) {
+            e.printStackTrace();
+            return "";
+        }
+    }
+    String convertDates(String date) {
+        SimpleDateFormat calendarDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+        SimpleDateFormat newDateFormat = new SimpleDateFormat("dd",Locale.getDefault());
+        try {
+            String e = newDateFormat.format(calendarDateFormat.parse(date));
+            return e;
+        } catch (java.text.ParseException e) {
+            e.printStackTrace();
+            return "";
+        }
+    }
+    String convertBulan(String date) {
+        SimpleDateFormat calendarDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+        SimpleDateFormat newDateFormat = new SimpleDateFormat("MM",Locale.getDefault());
+        try {
+            String e = newDateFormat.format(calendarDateFormat.parse(date));
+            return e;
+        } catch (java.text.ParseException e) {
+            e.printStackTrace();
+            return "";
+        }
+    }
+    String convertTahun(String date) {
+        SimpleDateFormat calendarDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+        SimpleDateFormat newDateFormat = new SimpleDateFormat("yyyy",Locale.getDefault());
+        try {
+            String e = newDateFormat.format(calendarDateFormat.parse(date));
             return e;
         } catch (java.text.ParseException e) {
             e.printStackTrace();
@@ -212,6 +260,7 @@ public class TambahAgenda extends AppCompatActivity {
         dialog.setIndeterminate(true);
         dialog.setCancelable(false);
     }
+
     private void add_agenda(){
         progressBar();
         showDialog();
@@ -244,4 +293,38 @@ public class TambahAgenda extends AppCompatActivity {
             }
         });
     }
+
+    private void edit_agenda(){
+        progressBar();
+        showDialog();
+        Call<JSONResponse.AddAgenda> call = mApiInterface.kes_edit_agenda_post(authorization,school_code.toLowerCase(),member_id,edulevel_id,convertTanggal(et_tanggal.getText().toString()),cources_id,et_keterangan.getText().toString(),agenda_id,scyear_id);
+        call.enqueue(new Callback<JSONResponse.AddAgenda>() {
+            @Override
+            public void onResponse(Call<JSONResponse.AddAgenda> call, Response<JSONResponse.AddAgenda> response) {
+                Log.d("editSukses",response.code()+"");
+                hideDialog();
+                if (response.isSuccessful()){
+                    JSONResponse.AddAgenda resource = response.body();
+                    status = resource.status;
+                    code    = resource.code;
+                    if (status == 1 && code.equals("DTS_SCS_0001")){
+                        Intent intent = new Intent(TambahAgenda.this,AgendaDetail.class);
+                        intent.putExtra("date",convertTanggal(et_tanggal.getText().toString()));
+                        setResult(RESULT_OK,intent);
+                        FancyToast.makeText(getApplicationContext(),"Sukses Mengubah agenda", Toast.LENGTH_LONG,FancyToast.SUCCESS,false).show();
+                        finish();
+                    }else {
+                        FancyToast.makeText(getApplicationContext(),"Gagal Menyimpan agenda", Toast.LENGTH_LONG,FancyToast.ERROR,false).show();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JSONResponse.AddAgenda> call, Throwable t) {
+                hideDialog();
+                Log.e("erorEdit",t.toString());
+            }
+        });
+    }
+
 }

@@ -194,6 +194,11 @@ public class RaporAnak extends AppCompatActivity {
                             });
                             start_year  = converTahun(dataSemesters.get(0).getStart_date());
                             start_end   = converTahun(dataSemesters.get(dataSemesters.size()-1).getEnd_date());
+                            if (dataSemesters.get(i).getSemester_id().equals(semester_id)) {
+                                start_date      = dataSemesters.get(i).getStart_date();
+                                end_date        = dataSemesters.get(i).getEnd_date();
+                                semester_nama   = dataSemesters.get(i).getSemester_name();
+                            }
                             listSpinner.add("Semester "+dataSemesters.get(i).getSemester_name()+" "+start_year+"/"+start_end);
                         }
                         adapterRaport = new ArrayAdapter<String>(
@@ -226,6 +231,7 @@ public class RaporAnak extends AppCompatActivity {
                         spinnerPosition = adapterRaport.getPosition("Semester "+semester_nama+" "+start_year+"/"+start_end);
                         adapterRaport.setDropDownViewResource(R.layout.custom_spinner_dropdown);
                         sp_semester.setAdapter(adapterRaport);
+                        sp_semester.setSelection(spinnerPosition);
                         sp_semester.setOnItemSelectedListener((parent, view, position, id) -> {
                             if (position > 0) {
                                 semester_id     = dataSemesters.get(position - 1).getSemester_id();
@@ -242,7 +248,7 @@ public class RaporAnak extends AppCompatActivity {
                                 }
                             }
                         });
-                        sp_semester.setSelection(spinnerPosition);
+
                         if (semester_id.equals("0")){
                             tv_semester.setText("Tahun ajaran telah selesai");
                         }else {

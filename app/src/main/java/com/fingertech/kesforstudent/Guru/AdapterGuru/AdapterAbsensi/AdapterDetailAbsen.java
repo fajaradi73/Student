@@ -15,6 +15,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -30,6 +31,7 @@ import com.fingertech.kesforstudent.Masuk;
 import com.fingertech.kesforstudent.R;
 import com.fingertech.kesforstudent.Rest.ApiClient;
 import com.fingertech.kesforstudent.Rest.JSONResponse;
+import com.github.florent37.shapeofview.shapes.RoundRectView;
 import com.shashank.sony.fancytoastlib.FancyToast;
 
 import org.json.JSONArray;
@@ -109,6 +111,7 @@ public class AdapterDetailAbsen extends PagerAdapter implements AdapterCode.OnIm
     EditText editText;
     JSONObject absenObject;
 
+    RoundRectView roundRectView;
     @NonNull
     @Override
     public Object instantiateItem(@NonNull ViewGroup container, int position) {
@@ -123,6 +126,7 @@ public class AdapterDetailAbsen extends PagerAdapter implements AdapterCode.OnIm
         btn_simpan          = view.findViewById(R.id.btn_simpan);
         mApiInterface       = ApiClient.getClient().create(Auth.class);
         editText            = view.findViewById(R.id.et_komentar);
+        roundRectView       = view.findViewById(R.id.cv_komentar);
 
         sharedpreferences   = context.getSharedPreferences(Masuk.my_shared_preferences, Context.MODE_PRIVATE);
         authorization       = sharedpreferences.getString(TAG_TOKEN,"");
@@ -152,15 +156,24 @@ public class AdapterDetailAbsen extends PagerAdapter implements AdapterCode.OnIm
         }else {
             btn_simpan.setVisibility(View.GONE);
             btn_next.setVisibility(View.VISIBLE);
-            btn_back.setVisibility(View.INVISIBLE);
+            btn_back.setVisibility(View.VISIBLE);
         }
+        roundRectView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                editText.setFocusableInTouchMode(true);
+                editText.requestFocus();
+            }
+        });
 
         btn_next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (absenObject != null) {
-                    Log.d("datas", absenObject + "");
+                    String ids = modelDetailAbsenList.get(0).getModelDataAttidudeList().get(postion).getAttitudeid();
+                    Log.d("datas", absenObject + "/"+ids);
                 }else {
+
                     Log.d("datas", "data" + "kosong");
                 }
                 viewPager.setCurrentItem(position + 1, true);
@@ -331,9 +344,11 @@ public class AdapterDetailAbsen extends PagerAdapter implements AdapterCode.OnIm
 
         thread.start();
     }
+    int postion;
 
     @Override
-    public void onImageClick(JSONObject jsonObject) {
+    public void onImageClick(JSONObject jsonObject,int position) {
+        this.postion = position;
         absenObject = new JSONObject();
         absenObject = jsonObject;
     }

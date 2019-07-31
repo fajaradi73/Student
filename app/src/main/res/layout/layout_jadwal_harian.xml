@@ -6,8 +6,8 @@
     android:layout_width="match_parent"
     android:layout_height="60dp"
     android:layout_marginTop="5dp"
-    android:layout_marginEnd="20dp"
-    android:layout_marginStart="20dp"
+    android:layout_marginEnd="50dp"
+    android:layout_marginStart="50dp"
     app:cardCornerRadius="5dp"
     tools:ignore="NestedWeights,RtlSymmetry">
     <LinearLayout

@@ -20,21 +20,28 @@ public class SabtuAdapter extends RecyclerView.Adapter<SabtuAdapter.MyHolder> {
 
     private OnItemClickListener onItemClickListener;
     public int row_index = 0;
-    public SabtuAdapter(List<JadwalSabtu> viewItemList) {
+    public SabtuAdapter(List<JadwalSabtu> viewItemList,String type) {
         this.viewItemList = viewItemList;
+        this.type   = type;
     }
 
+    private String type;
     public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
         this.onItemClickListener = onItemClickListener;
+
     }
+    private View itemView;
 
     @Override
     public MyHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
-        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_jadwal_harian, parent, false);
-
-        MyHolder myHolder = new MyHolder(itemView,onItemClickListener);
-        return myHolder;
+        if (type.equals("menu")) {
+            View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_jadwal_harian, parent, false);
+            return new MyHolder(itemView,onItemClickListener);
+        }else{
+            View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_jadwal, parent, false);
+            return new MyHolder(itemView,onItemClickListener);
+        }
     }
 
 

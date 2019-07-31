@@ -291,6 +291,7 @@ public interface Auth {
                                                             @Part("classroom_id") RequestBody classroom_id,
                                                             @Part ("cources_id") RequestBody cources_id,
                                                             @Part("exam_date") RequestBody exam_date,
+                                                            @Part("exercises_type") RequestBody exercises_type,
                                                             @Part MultipartBody.Part filename,
                                                             @Part("exam_type") RequestBody exam_type,
                                                             @Part("exam_desc") RequestBody exam_desc,
@@ -465,4 +466,43 @@ public interface Auth {
                                                @Field("school_code") String school_code,
                                                @Field("member_id") String member_id);
 
+    //////Login
+    @FormUrlEncoded
+    @POST("teachers/kes_reply_message")
+    Call<JSONResponse>kes_reply_post(@Header("Authorization") String authorization,
+                                     @Field("school_code") String school_code,
+                                     @Field("teacher_id") String teacher_id,
+                                     @Field("message_id") String message_id,
+                                     @Field("parent_message_id") String parent_message_id,
+                                     @Field("message_cont") String message_cont);
+
+
+    //////Delete Agenda
+    @FormUrlEncoded
+    @POST("teachers/kes_delete_agenda")
+    Call<JSONResponse.DeleteAgenda>kes_delete_agenda_post(@Header("Authorization") String authorization,
+                                             @Field("school_code") String school_code,
+                                             @Field("teacher_id") String teacher_id,
+                                             @Field("agenda_id") String agenda_id);
+
+    //////Delete Tugas
+    @FormUrlEncoded
+    @POST("teachers/kes_delete_exercises")
+    Call<JSONResponse.DeleteTugas>kes_delete_exercises_post(@Header("Authorization") String authorization,
+                                                          @Field("school_code") String school_code,
+                                                          @Field("teacher_id") String teacher_id,
+                                                          @Field("exercises_id") String exercises_id);
+
+    //////Edit Agenda
+    @FormUrlEncoded
+    @POST("teachers/kes_edit_agenda")
+    Call<JSONResponse.AddAgenda>kes_edit_agenda_post(@Header("Authorization") String authorization,
+                                                     @Field("school_code") String school_code,
+                                                     @Field("teacher_id") String teacher_id,
+                                                     @Field("classroom_id") String classroom_id,
+                                                     @Field("agenda_date") String agenda_date,
+                                                     @Field("cources_id") String cources_id,
+                                                     @Field("agenda_desc") String agenda_desc,
+                                                     @Field("agenda_id") String agenda_id,
+                                                     @Field("scyear_id") String scyear_id);
 }

@@ -607,7 +607,7 @@ public class MenuUtama extends AppCompatActivity
                                             jadwalSenin.setJam_selesai(jam_selesai);
                                             itemlist.add(jadwalSenin);
                                         }
-                                        seninAdapter = new SeninAdapter(itemlist);
+                                        seninAdapter = new SeninAdapter(itemlist,"menu");
                                         CarouselLayoutManager layoutManager = new CarouselLayoutManager(CarouselLayoutManager.HORIZONTAL, true);
                                         layoutManager.setPostLayoutListener(new CarouselZoomPostLayoutListener());
                                         rv_senin.addOnScrollListener(new CenterScrollListener());
@@ -658,7 +658,7 @@ public class MenuUtama extends AppCompatActivity
                                             itemselasa.add(jadwalSelasa);
                                         }
                                         LinearSnapHelper snapHelper = new LinearSnapHelper();
-                                        selasaAdapter = new SelasaAdapter(itemselasa);
+                                        selasaAdapter = new SelasaAdapter(itemselasa,"menu");
                                         final CarouselLayoutManager layoutManager = new CarouselLayoutManager(CarouselLayoutManager.HORIZONTAL, true);
                                         layoutManager.setPostLayoutListener(new CarouselZoomPostLayoutListener());
                                         rv_selasa.addOnScrollListener(new CenterScrollListener());
@@ -709,7 +709,7 @@ public class MenuUtama extends AppCompatActivity
                                             itemRabu.add(jadwalRabu);
                                         }
                                         LinearSnapHelper snapHelper = new LinearSnapHelper();
-                                        rabuAdapter = new RabuAdapter(itemRabu);
+                                        rabuAdapter = new RabuAdapter(itemRabu,"menu");
                                         final CarouselLayoutManager layoutManager = new CarouselLayoutManager(CarouselLayoutManager.HORIZONTAL, true);
                                         layoutManager.setPostLayoutListener(new CarouselZoomPostLayoutListener());
                                         rv_rabu.addOnScrollListener(new CenterScrollListener());
@@ -760,7 +760,7 @@ public class MenuUtama extends AppCompatActivity
                                             itemKamis.add(jadwalKamis);
                                         }
                                         LinearSnapHelper snapHelper = new LinearSnapHelper();
-                                        kamisAdapter = new KamisAdapter(itemKamis);
+                                        kamisAdapter = new KamisAdapter(itemKamis,"menu");
                                         final CarouselLayoutManager layoutManager = new CarouselLayoutManager(CarouselLayoutManager.HORIZONTAL, true);
                                         layoutManager.setPostLayoutListener(new CarouselZoomPostLayoutListener());
                                         rv_kamis.addOnScrollListener(new CenterScrollListener());
@@ -811,7 +811,7 @@ public class MenuUtama extends AppCompatActivity
                                             itemJumat.add(jadwalJumat);
                                         }
                                         LinearSnapHelper snapHelper = new LinearSnapHelper();
-                                        jumatAdapter = new JumatAdapter(itemJumat);
+                                        jumatAdapter = new JumatAdapter(itemJumat,"menu");
                                         final CarouselLayoutManager layoutManager = new CarouselLayoutManager(CarouselLayoutManager.HORIZONTAL, true);
                                         layoutManager.setPostLayoutListener(new CarouselZoomPostLayoutListener());
                                         rv_jumat.addOnScrollListener(new CenterScrollListener());
@@ -862,7 +862,7 @@ public class MenuUtama extends AppCompatActivity
                                             itemSabtu.add(jadwalSabtu);
                                         }
                                         LinearSnapHelper snapHelper = new LinearSnapHelper();
-                                        sabtuAdapter = new SabtuAdapter(itemSabtu);
+                                        sabtuAdapter = new SabtuAdapter(itemSabtu,"menu");
                                         final CarouselLayoutManager layoutManager = new CarouselLayoutManager(CarouselLayoutManager.HORIZONTAL, true);
                                         layoutManager.setPostLayoutListener(new CarouselZoomPostLayoutListener());
                                         rv_sabtu.addOnScrollListener(new CenterScrollListener());

@@ -430,7 +430,7 @@ public class JadwalPelajaran extends AppCompatActivity {
                                             jadwalSenin.setJam_selesai(jam_selesai);
                                             itemlist.add(jadwalSenin);
                                         }
-                                        seninAdapter = new SeninAdapter(itemlist);
+                                        seninAdapter = new SeninAdapter(itemlist,"jadwal");
                                         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(JadwalPelajaran.this);
                                         rv_senin.setLayoutManager(layoutManager);
                                         rv_senin.setAdapter(seninAdapter);
@@ -477,7 +477,7 @@ public class JadwalPelajaran extends AppCompatActivity {
                                             jadwalSelasa.setJam_selesai(jam_selesai);
                                             itemselasa.add(jadwalSelasa);
                                         }
-                                        selasaAdapter = new SelasaAdapter(itemselasa);
+                                        selasaAdapter = new SelasaAdapter(itemselasa,"jadwal");
                                         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(JadwalPelajaran.this);
                                         rv_selasa.setLayoutManager(layoutManager);
                                         rv_selasa.setAdapter(selasaAdapter);
@@ -524,7 +524,7 @@ public class JadwalPelajaran extends AppCompatActivity {
                                             jadwalRabu.setJam_selesai(jam_selesai);
                                             itemRabu.add(jadwalRabu);
                                         }
-                                        rabuAdapter = new RabuAdapter(itemRabu);
+                                        rabuAdapter = new RabuAdapter(itemRabu,"jadwal");
                                         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(JadwalPelajaran.this);
                                         rv_rabu.setLayoutManager(layoutManager);
                                         rv_rabu.setAdapter(rabuAdapter);
@@ -571,7 +571,7 @@ public class JadwalPelajaran extends AppCompatActivity {
                                             jadwalKamis.setJam_selesai(jam_selesai);
                                             itemKamis.add(jadwalKamis);
                                         }
-                                        kamisAdapter = new KamisAdapter(itemKamis);
+                                        kamisAdapter = new KamisAdapter(itemKamis,"jadwal");
                                         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(JadwalPelajaran.this);
                                         rv_kamis.setLayoutManager(layoutManager);
                                         rv_kamis.setAdapter(kamisAdapter);
@@ -619,7 +619,7 @@ public class JadwalPelajaran extends AppCompatActivity {
                                             jadwalJumat.setJam_selesai(jam_selesai);
                                             itemJumat.add(jadwalJumat);
                                         }
-                                        jumatAdapter = new JumatAdapter(itemJumat);
+                                        jumatAdapter = new JumatAdapter(itemJumat,"jadwal");
                                         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(JadwalPelajaran.this);
                                         rv_jumat.setLayoutManager(layoutManager);
                                         rv_jumat.setAdapter(jumatAdapter);
@@ -667,7 +667,7 @@ public class JadwalPelajaran extends AppCompatActivity {
                                             jadwalSabtu.setJam_selesai(jam_selesai);
                                             itemSabtu.add(jadwalSabtu);
                                         }
-                                        sabtuAdapter = new SabtuAdapter(itemSabtu);
+                                        sabtuAdapter = new SabtuAdapter(itemSabtu,"jadwal");
                                         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(JadwalPelajaran.this);
                                         rv_sabtu.setLayoutManager(layoutManager);
                                         rv_sabtu.setAdapter(sabtuAdapter);

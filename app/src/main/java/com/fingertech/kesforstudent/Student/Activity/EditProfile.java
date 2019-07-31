@@ -126,7 +126,6 @@ public class EditProfile extends AppCompatActivity {
             rb_pria.setChecked(false);
         }
 
-
         rb_pria.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

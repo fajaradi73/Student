@@ -41,20 +41,14 @@ public class Silabus extends AppCompatActivity {
 
     Auth mApiInterface;
     RecyclerView rv_silabus;
-    Spinner sp_edulevel,sp_mapel;
     String authorization,school_code,member_id,scyear_id,edulevel_id,edulevel_name,cources_id,cources_name,code;
     String mapel,datez,kelas,files,base_silabus;
     int status;
     Toolbar toolbar;
     LinearLayout tv_hint;
-    CardView btn_go;
-    List<String> listEdulevel           = new ArrayList<String>();
-    List<String> listMapel              = new ArrayList<String>();
     List<ModelSilabus> modelSilabusList = new ArrayList<>();
     ModelSilabus modelSilabus;
     AdapterSilabus adapterSilabus;
-    private List<JSONResponse.DataEdulevel> dataEdulevelList;
-    private List<JSONResponse.DataMapelEdu> dataMapelEduList;
     ProgressDialog dialog;
     public static final String TAG_EMAIL        = "email";
     public static final String TAG_MEMBER_ID    = "member_id";
@@ -69,179 +63,26 @@ public class Silabus extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.silabus);
-        toolbar     = findViewById(R.id.toolbarSilabus);
-        rv_silabus  = findViewById(R.id.rv_silabus);
-        tv_hint     = findViewById(R.id.hint_silabus);
-        btn_go      = findViewById(R.id.btn_go);
-        sp_edulevel = findViewById(R.id.sp_tingkatan_kelas);
-        sp_mapel    = findViewById(R.id.sp_mapel);
+        toolbar         = findViewById(R.id.toolbarSilabus);
+        rv_silabus      = findViewById(R.id.rv_silabus);
+        tv_hint         = findViewById(R.id.hint_silabus);
         mApiInterface   = ApiClient.getClient().create(Auth.class);
         base_silabus    = ApiClient.BASE_SILABUS;
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         toolbar.getNavigationIcon().setColorFilter(getResources().getColor(R.color.white), PorterDuff.Mode.SRC_ATOP);
-        sharedpreferences = getSharedPreferences(Masuk.my_shared_preferences, Context.MODE_PRIVATE);
+
+        sharedpreferences   = getSharedPreferences(Masuk.my_shared_preferences, Context.MODE_PRIVATE);
         authorization       = sharedpreferences.getString(TAG_TOKEN,"");
         member_id           = sharedpreferences.getString(TAG_MEMBER_ID,"");
         scyear_id           = sharedpreferences.getString("scyear_id","");
         school_code         = sharedpreferences.getString(TAG_SCHOOL_CODE,"");
-        listEdulevel.add("Semua Tingkatan Kelas");
-        listMapel.add("Semua Mata Pelajaran");
-        dapat_edulevel();
+        edulevel_id         = sharedpreferences.getString("classroom_id","");
+        cources_id          = sharedpreferences.getString("cources_id","");
 
-        final ArrayAdapter<String> adapterRaport = new ArrayAdapter<String>(
-                Silabus.this, R.layout.spinner_full, listEdulevel) {
-            @Override
-            public boolean isEnabled(int position) {
-                if (position == 0) {
-                    // Disable the first item from Spinner
-                    // First item will be use for hint
-                    return false;
-                } else {
-                    return true;
-                }
-            }
-
-            @Override
-            public View getDropDownView(int position, View convertView,
-                                        ViewGroup parent) {
-                View view = super.getDropDownView(position, convertView, parent);
-                TextView tv = (TextView) view;
-                if (position == 0) {
-                    // Set the hint text color gray
-                    tv.setTextColor(Color.GRAY);
-                } else {
-                    tv.setTextColor(Color.BLACK);
-                }
-                return view;
-            }
-        };
-        int spinnerPosition = adapterRaport.getPosition("Semua Tingkatan Kelas");
-        adapterRaport.setDropDownViewResource(R.layout.simple_spinner_dropdown);
-        sp_edulevel.setAdapter(adapterRaport);
-        sp_edulevel.setSelection(spinnerPosition);
-        sp_edulevel.setOnItemSelectedListener((parent, view, position, id) ->{
-            if (position == 0){
-                edulevel_id = "-1";
-                cources_id  = "-1";
-                sp_mapel.setEnabled(false);
-            }else {
-                edulevel_id = dataEdulevelList.get(position - 1).getEdulevelid();
-                sp_mapel.setEnabled(true);
-                listMapel.clear();
-                dapat_mapel();
-            }
-        });
-
-        if (sp_edulevel.getSelectedItemPosition() == 0){
-            edulevel_id = "-1";
-            cources_id  = "-1";
-            sp_mapel.setEnabled(false);
-        }
-
-        final ArrayAdapter<String> adapterMapel = new ArrayAdapter<String>(
-                Silabus.this, R.layout.spinner_full, listMapel) {
-            @Override
-            public boolean isEnabled(int position) {
-                if (position == 0) {
-                    // Disable the first item from Spinner
-                    // First item will be use for hint
-                    return false;
-                } else {
-                    return true;
-                }
-            }
-
-            @Override
-            public View getDropDownView(int position, View convertView,
-                                        ViewGroup parent) {
-                View view = super.getDropDownView(position, convertView, parent);
-                TextView tv = (TextView) view;
-                if (position == 0) {
-                    // Set the hint text color gray
-                    tv.setTextColor(Color.GRAY);
-                } else {
-                    tv.setTextColor(Color.BLACK);
-                }
-                return view;
-            }
-        };
-        adapterMapel.setDropDownViewResource(R.layout.simple_spinner_dropdown);
-        sp_mapel.setAdapter(adapterMapel);
-        sp_mapel.setOnItemSelectedListener((parent, view, position, id) ->{
-            if (position == 0){
-                cources_id = "-1";
-            }else {
-                cources_id = dataMapelEduList.get(position - 1).getCourcesid();
-            }
-        });
         dapat_silabus();
-        btn_go.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dapat_silabus();
-            }
-        });
     }
 
-    private void dapat_edulevel(){
-        Call<JSONResponse.ListEdulevel> call = mApiInterface.kes_get_edulevel_get(authorization,school_code.toLowerCase(),member_id,scyear_id);
-        call.enqueue(new Callback<JSONResponse.ListEdulevel>() {
-            @Override
-            public void onResponse(Call<JSONResponse.ListEdulevel> call, Response<JSONResponse.ListEdulevel> response) {
-                Log.d("Sukses",response.code()+"");
-                if (response.isSuccessful()) {
-                    JSONResponse.ListEdulevel resource = response.body();
-                    status = resource.status;
-                    code = resource.code;
-                    if (status == 1 && code.equals("DTS_SCS_0001")) {
-                        dataEdulevelList = response.body().getData();
-                        for (int i = 0; i < dataEdulevelList.size(); i++) {
-                            edulevel_name = dataEdulevelList.get(i).getEdulevel_name();
-                            listEdulevel.add(edulevel_name);
-                        }
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(Call<JSONResponse.ListEdulevel> call, Throwable t) {
-                Log.e("Gagal",t.toString());
-            }
-        });
-    }
-
-    private void dapat_mapel(){
-        progressBar();
-        showDialog();
-        Call<JSONResponse.ListMapelEdu> call = mApiInterface.kes_get_edulevel_cource_get(authorization,school_code.toLowerCase(),member_id,edulevel_id,scyear_id);
-        call.enqueue(new Callback<JSONResponse.ListMapelEdu>() {
-            @Override
-            public void onResponse(Call<JSONResponse.ListMapelEdu> call, Response<JSONResponse.ListMapelEdu> response) {
-                Log.d("MataPelajaran",response.code()+"");
-                hideDialog();
-                if (response.isSuccessful()) {
-                    JSONResponse.ListMapelEdu resource = response.body();
-                    status = resource.status;
-                    code = resource.code;
-                    if (status == 1 && code.equals("DTS_SCS_0001")) {
-                        dataMapelEduList = response.body().getData();
-                        listMapel.add("Semua Mata Pelajaran");
-                        for (int i = 0; i < response.body().getData().size(); i++) {
-                            cources_name = response.body().getData().get(i).getCources_name();
-                            listMapel.add(cources_name);
-                        }
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(Call<JSONResponse.ListMapelEdu> call, Throwable t) {
-                Log.e("Gagal",t.toString());
-                hideDialog();
-            }
-        });
-    }
     private void dapat_silabus(){
         progressBar();
         showDialog();
